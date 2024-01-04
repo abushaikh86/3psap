@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Beat Calender'); ?>
 <?php
 use Spatie\Permission\Models\Role;
