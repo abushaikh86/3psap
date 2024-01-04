@@ -1,0 +1,34 @@
+<form class="repeater">
+    <div data-repeater-list="outer-list">
+      <div data-repeater-item style="border: 1px solid red">
+        Repeater <input type="text" name="text-input" value="A"/>
+        <input data-repeater-delete type="button" value="Delete"/>
+
+        <!-- innner repeater -->
+        <div class="inner-repeater">
+          <div data-repeater-list="inner-list">
+            <div data-repeater-item style="background: #f1f1f1">
+              Inner Repeater <input type="text" name="inner-text-input" value="B"/>
+              <input data-repeater-delete type="button" value="Delete"/>
+              
+              <!-- innner repeater -->
+              <div class="deep-inner-repeater">
+                <div data-repeater-list="deep-inner-list">
+                  <div data-repeater-item style="background: #f9f9f9">
+                    Deep Repeater
+                    <input type="text" name="inner-text-input" value="B"/>
+                    <input data-repeater-delete type="button" value="Delete"/>
+                  </div>
+                </div>
+                <input data-repeater-create type="button" value="Add Deep Repeater"/>
+              </div>
+              
+            </div>
+          </div>
+          <input data-repeater-create type="button" value="Add Inner Repeater"/>
+        </div>
+
+      </div>
+    </div>
+    <input data-repeater-create type="button" value="Add Repeater"/>
+</form>
