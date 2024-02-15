@@ -180,6 +180,9 @@ class ProductsController extends Controller
         $products->fill($data);
         if (!empty($request->product_thumb)) {
             $imageName = time() . '.' . $request->product_thumb->extension();
+            if (!file_exists(public_path('backend-assets/images'))) {
+                mkdir(public_path('backend-assets/images'), 0777);
+            }
             $request->product_thumb->move(public_path('backend-assets/images'), $imageName);
             $products->product_thumb = $imageName;
         }
@@ -254,6 +257,9 @@ class ProductsController extends Controller
         $bussiness->fill($data);
         if (!empty($request->product_thumb)) {
             $imageName = time() . '.' . $request->product_thumb->extension();
+            if (!file_exists(public_path('backend-assets/images'))) {
+                mkdir(public_path('backend-assets/images'), 0777);
+            }
             $request->product_thumb->move(public_path('backend-assets/images'), $imageName);
             $bussiness->product_thumb = $imageName;
         }

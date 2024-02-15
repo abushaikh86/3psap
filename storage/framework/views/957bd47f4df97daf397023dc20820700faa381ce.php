@@ -99,22 +99,10 @@
 
 <?php $__env->startSection('scripts'); ?>
 
-
-
-
-
 <script>
   $(function() {
             var table = $('#tbl-datatable').DataTable({
 
-                // scrollY:        "300px",
-                // scrollX:        true,
-                // scrollCollapse: true,
-                // paging:         false,
-                // fixedColumns:   {
-                //     left: 0,
-                //     right: 1
-                // },
 
                 processing: true,
                 serverSide: true,
@@ -127,10 +115,7 @@
                         data: 'bill_date',
                         name: 'bill_date'
                     },
-                    // {
-                    //     data: 'new_action',
-                    //     name: 'new_action'
-                    // },
+          
                     {
                         data: 'bill_no',
                         name: 'bill_no'
@@ -187,20 +172,7 @@
                                 return pageTitle
                             }
                         },
-                        // {
-                        //     extend: 'print',
-                        //     exportOptions: {
-                        //         columns: [0, 2, 3, 4, 5, 6],
-                        //         modifier: {
-                        //             page: 'all',
-                        //             search: 'applied'
-                        //         }
-                        //     },
-                        //     title: function() {
-                        //         var pageTitle = 'Purchase Order';
-                        //         return pageTitle
-                        //     }
-                        // }
+                        
                     ]
                 }],
                 dom: 'lBfrtip',

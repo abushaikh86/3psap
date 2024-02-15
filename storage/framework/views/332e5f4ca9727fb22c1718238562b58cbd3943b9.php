@@ -897,9 +897,9 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
             var salesman = '<?php echo e($model->salesman); ?>';
 
             if(salesman){
-               var manager_id = '<?php echo e($asm_users->parent_users); ?>';
-               var ase_id = '<?php echo e($ase_users->parent_users); ?>';
-               var officer_id = '<?php echo e($officer_users->parent_users); ?>';
+               var manager_id = '<?php echo e($asm_users->parent_users??''); ?>';
+               var ase_id = '<?php echo e($ase_users->parent_users??''); ?>';
+               var officer_id = '<?php echo e($officer_users->parent_users??''); ?>';
                salesManager = manager_id;
                ase = ase_id;
                salesOfficer = officer_id;

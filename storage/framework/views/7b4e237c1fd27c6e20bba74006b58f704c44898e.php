@@ -3,257 +3,252 @@
 
 <?php $__env->startSection('content'); ?>
 
-    <div class="content-header row">
-        <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Purchase Order</h3>
-            <div class="row breadcrumbs-top">
-                <div class="breadcrumb-wrapper col-12">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">Purchase Order</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-            <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                <div class="btn-group" role="group">
-                    <a href="<?php echo e(route('admin.purchaseorder')); ?>" class="btn btn-outline-secondary float-right"><i
-                            class="bx bx-arrow-back"></i><span class="align-middle ml-25">Back</span></a>
-                </div>
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <h3 class="content-header-title">Purchase Order</h3>
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Purchase Order</li>
+                </ol>
             </div>
         </div>
     </div>
+    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
+        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+                <a href="<?php echo e(route('admin.purchaseorder')); ?>" class="btn btn-outline-secondary float-right"><i
+                        class="bx bx-arrow-back"></i><span class="align-middle ml-25">Back</span></a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="content-header row">
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="content-header row">
 
-                                <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                                <?php echo e(Form::open(['url' => 'admin/purchaseorder/store'])); ?>
+                            <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            <?php echo e(Form::open(['url' => 'admin/purchaseorder/store'])); ?>
 
-                                <?php echo e(Form::hidden('bill_to_state', '', ['class' => 'bill_to_state'])); ?>
+                            <?php echo e(Form::hidden('bill_to_state', '', ['class' => 'bill_to_state'])); ?>
 
-                                <?php echo e(Form::hidden('party_name', '', ['class' => 'party_name'])); ?>
+                            <?php echo e(Form::hidden('party_name', '', ['class' => 'party_name'])); ?>
 
-                                <?php echo e(Form::hidden('party_state', '', ['class' => 'party_state'])); ?>
+                            <?php echo e(Form::hidden('party_state', '', ['class' => 'party_state'])); ?>
 
-                                <?php echo e(Form::hidden('bill_to_gst_no', '', ['class' => 'bill_to_gst_no'])); ?>
+                            <?php echo e(Form::hidden('bill_to_gst_no', '', ['class' => 'bill_to_gst_no'])); ?>
 
-                                <div class="form-body">
-                                    <div class="row">
+                            <div class="form-body">
+                                <div class="row">
 
-                                        <div class="col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                
-                                                <?php echo e(Form::hidden('bill_date', date('Y-m-d'), [
-                                                    'class' => ' form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            digits',
-                                                    'placeholder' => 'PurchaseOrder Date',
-                                                    'required' => true,
-                                                    'readonly' => true,
-                                                ])); ?>
+                                    <div class="col-md-3 col-sm-12">
+                                        <div class="form-group">
+                                            <?php echo e(Form::hidden('bill_date', date('Y-m-d'), [
+                                            'class' => ' form-control
+                                            digits',
+                                            'placeholder' => 'PurchaseOrder Date',
+                                            'required' => true,
+                                            'readonly' => true,
+                                            ])); ?>
 
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-sm-12">
-                                            
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-
-                                                    <?php
-                                                        $values = array_keys($party->toArray());
-                                                        $party_code = array_combine($values, $values);
-                                                    ?>
 
 
-
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <?php echo e(Form::label('party_code', 'Vendor Code *')); ?>
-
-                                                            <?php echo e(Form::select('party_code', $party_code, null, [
-                                                                'class' => 'form-control select2',
-                                                                'id' => 'party_code',
-                                                                'placeholder' => 'Select Bill To',
-                                                                'required' => true,
-                                                            ])); ?>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <?php echo e(Form::label('party_id', 'Vendor *')); ?>
-
-                                                            <?php echo e(Form::select('party_id', $party, null, [
-                                                                'class' => 'form-control select2',
-                                                                'id' => 'party_id',
-                                                                'placeholder' => 'Select Bill To',
-                                                                'required' => true,
-                                                            ])); ?>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            
-                                                            <?php echo e(Form::hidden('bill_to_gst_no', null, [
-                                                                'class' => 'form-control bill_to_gst_no',
-                                                                'placeholder' => 'GSTIN/UIN',
-                                                                'readonly' => true,
-                                                            ])); ?>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <?php echo e(Form::label('contact_person', 'Contact Person *')); ?>
-
-                                                            <select name="contact_person" id="contact_person"
-                                                                class="form-control" required></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <?php echo e(Form::label('vendor_ref_no', 'Vendor PO Refrence Number *')); ?>
-
-                                                            <?php echo e(Form::text('vendor_ref_no', null, [
-                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            vendor_ref_no',
-                                                                'placeholder' => 'Vendor PO Refrence Number',
-                                                                'required' => true,
-                                                            ])); ?>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <?php echo e(Form::label('ship_from', 'Ship From *')); ?>
-
-                                                            <select name="ship_from" id="ship_from" class="form-control"
-                                                                required></select>
-
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="col-md-3 col-sm-3">
-                                        </div>
-                                        <div class="col-md-3 col-sm-3">
-
-
-                                            <div class="form-group">
-                                                <?php echo e(Form::label('status', 'Status *')); ?>
-
-                                                <?php echo e(Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
-                                                    'class' => 'form-control status',
-                                                    'required' => true,
-                                                ])); ?>
-
-                                            </div>
-
-
-                                            <?php
-                                                use App\Models\backend\Company;
-                                                $company = Company::where('company_id', session('company_id'))->first();
-                                            ?>
-                                            <?php if($company->is_backdated_date): ?>
-                                                <div class="form-group">
-                                                    <?php echo e(Form::label('bill_date', 'Date *')); ?>
-
-                                                    <?php echo e(Form::date('bill_date', date('Y-m-d'), [
-                                                        'class' => 'form-control ',
-                                                        'placeholder' => 'Date',
-                                                        'required' => true,
-                                                    ])); ?>
-
-                                                </div>
-                                            <?php endif; ?>
-
-
-
-                                            <div class="form-group">
-                                                <?php echo e(Form::label('delivery_date', 'Delivery Date *')); ?>
-
-                                                <?php echo e(Form::date('delivery_date', null, [
-                                                    'class' => 'form-control delivery_date',
-                                                    'placeholder' => 'Delivery Date',
-                                                    'required' => true,
-                                                ])); ?>
-
-                                            </div>
-
-                                            <div class="form-group">
-                                                <?php echo e(Form::label('document_date', 'Document Date *')); ?>
-
-                                                <?php echo e(Form::date('document_date', date('Y-m-d'), [
-                                                    'class' => 'form-control document_date',
-                                                    'placeholder' => 'Document Date',
-                                                    'required' => true,
-                                                    'readonly' => true,
-                                                ])); ?>
-
-                                            </div>
-
-
-                                        </div>
-
+                                    <div class="col-sm-12">
                                         
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+
+                                                <?php
+                                                $values = array_keys($party->toArray());
+                                                $party_code = array_combine($values, $values);
+                                                ?>
 
 
-                                    <div class="row">
 
-                                        <div class="col-sm-12">
-                                            <hr>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <?php echo e(Form::label('party_code', 'Vendor Code *')); ?>
+
+                                                        <?php echo e(Form::select('party_code', $party_code, null, [
+                                                        'class' => 'form-control select2',
+                                                        'id' => 'party_code',
+                                                        'placeholder' => 'Select Bill To',
+                                                        'required' => true,
+                                                        ])); ?>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <?php echo e(Form::label('party_id', 'Vendor *')); ?>
+
+                                                        <?php echo e(Form::select('party_id', $party, null, [
+                                                        'class' => 'form-control select2',
+                                                        'id' => 'party_id',
+                                                        'placeholder' => 'Select Bill To',
+                                                        'required' => true,
+                                                        ])); ?>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        
+                                                        <?php echo e(Form::hidden('bill_to_gst_no', null, [
+                                                        'class' => 'form-control bill_to_gst_no',
+                                                        'placeholder' => 'GSTIN/UIN',
+                                                        'readonly' => true,
+                                                        ])); ?>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <?php echo e(Form::label('contact_person', 'Contact Person *')); ?>
+
+                                                        <select name="contact_person" id="contact_person"
+                                                            class="form-control" required></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <?php echo e(Form::label('vendor_ref_no', 'Vendor PO Refrence Number *')); ?>
+
+                                                        <?php echo e(Form::text('vendor_ref_no', null, [
+                                                        'class' => 'form-control
+                                                        vendor_ref_no',
+                                                        'placeholder' => 'Vendor PO Refrence Number',
+                                                        'required' => true,
+                                                        ])); ?>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <?php echo e(Form::label('ship_from', 'Ship From *')); ?>
+
+                                                        <select name="ship_from" id="ship_from" class="form-control"
+                                                            required></select>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
                                         </div>
 
-                                        <div class="col-sm-12">
-                                            <section id="form-repeater-wrapper">
-                                                <!-- form default repeater -->
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h5 class="card-title">
-                                                            Particulars Detail
-                                                        </h5>
+                                    </div>
 
 
-                                                        
-                                                        
-
-                                                        
-                                                        
-                                                        <div class="repeater-heading">
+                                    <div class="col-md-3 col-sm-3">
+                                    </div>
+                                    <div class="col-md-3 col-sm-3">
 
 
-                                                        </div>
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('status', 'Status *')); ?>
 
-                                                        <!-- Repeater Items -->
-                                                        
+                                            <?php echo e(Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
+                                            'class' => 'form-control status',
+                                            'required' => true,
+                                            ])); ?>
+
+                                        </div>
+
+
+                                        <?php
+                                        use App\Models\backend\Company;
+                                        $company = Company::where('company_id', session('company_id'))->first();
+                                        ?>
+                                        <?php if($company->is_backdated_date): ?>
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('bill_date', 'Date *')); ?>
+
+                                            <?php echo e(Form::date('bill_date', date('Y-m-d'), [
+                                            'class' => 'form-control ',
+                                            'placeholder' => 'Date',
+                                            'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                        <?php endif; ?>
+
+
+
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('delivery_date', 'Delivery Date *')); ?>
+
+                                            <?php echo e(Form::date('delivery_date', null, [
+                                            'class' => 'form-control delivery_date',
+                                            'placeholder' => 'Delivery Date',
+                                            'required' => true,
+                                            ])); ?>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('document_date', 'Document Date *')); ?>
+
+                                            <?php echo e(Form::date('document_date', date('Y-m-d'), [
+                                            'class' => 'form-control document_date',
+                                            'placeholder' => 'Document Date',
+                                            'required' => true,
+                                            'readonly' => true,
+                                            ])); ?>
+
+                                        </div>
+
+
+                                    </div>
+
+                                    
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <hr>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <section id="form-repeater-wrapper">
+                                        <!-- form default repeater -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h5 class="card-title">
+                                                    Particulars Detail
+                                                </h5>
+
+
+                                                
+                                                
+                                                    <div class="repeater-heading">
+
+
+                                                    </div>
+
+                                                    <!-- Repeater Items -->
+                                                    
 
                                                         <div class="conatiner-fluid  repeater">
                                                             <button type="button" data-repeater-create
@@ -266,17 +261,17 @@
                                                                         <tr>
                                                                             <td class="adjust_col">
                                                                                 <?php echo e(Form::label(
-                                                                                    'item_code',
-                                                                                    'Item
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Code',
+                                                                                'item_code',
+                                                                                'Item
+                                                                                Code',
                                                                                 )); ?>
 
                                                                             </td>
                                                                             <td class="adjust_col">
                                                                                 <?php echo e(Form::label(
-                                                                                    'item_name',
-                                                                                    'Item
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Description',
+                                                                                'item_name',
+                                                                                'Item
+                                                                                Description',
                                                                                 )); ?>
 
                                                                             </td>
@@ -287,11 +282,11 @@
                                                                             <td><?php echo e(Form::label('qty', 'Quantity')); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::label('taxable_amount', 'Unit Price')); ?>
+                                                                            <td><?php echo e(Form::label('taxable_amount', 'Unit
+                                                                                Price')); ?>
 
                                                                             </td>
-                                                                            
-                                                                            
+
                                                                             <td><?php echo e(Form::label('total', 'Total INR')); ?>
 
                                                                             </td>
@@ -299,24 +294,31 @@
                                                                                 <?php echo e(Form::label('GST', 'GST (%)')); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::label('CGST', 'CGST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('SGST', 'SGST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('IGST', 'IGST (%)')); ?></td>
+                                                                            <td><?php echo e(Form::label('CGST', 'CGST (%)')); ?>
+
+                                                                            </td>
+                                                                            <td><?php echo e(Form::label('SGST', 'SGST (%)')); ?>
+
+                                                                            </td>
+                                                                            <td><?php echo e(Form::label('IGST', 'IGST (%)')); ?>
+
+                                                                            </td>
                                                                             <td><?php echo e(Form::label(
                                                                                 'Amount',
                                                                                 'GST
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Amount',
-                                                                            )); ?>
+                                                                                Amount',
+                                                                                )); ?>
 
                                                                             </td>
                                                                             <td><?php echo e(Form::label(
                                                                                 'gross_total',
                                                                                 'Gross
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Total',
-                                                                            )); ?>
+                                                                                Total',
+                                                                                )); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::label('storage_location_id', 'Warehouse')); ?>
+                                                                            <td><?php echo e(Form::label('storage_location_id',
+                                                                                'Warehouse')); ?>
 
                                                                             </td>
                                                                             <td></td>
@@ -326,239 +328,279 @@
                                                                     <tbody data-repeater-list="invoice_items"
                                                                         class="repeater">
 
-                                                                        
+
                                                                         <?php
                                                                   
                                                                     for ($i=0; $i < count(old('invoice_items')??['1']); $i++){ 
                                                                     ?>
                                                                         <tr data-repeater-item class="item_row">
 
-                                                                            <?php echo e(Form::hidden('bill_to_state', old('invoice_items')[$i]['bill_to_state'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    bill_to_state',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'bill_to_state',
-                                                                                'data-group' => 'invoice_items',
-                                                                                'required' => true,
+                                                                            <?php echo e(Form::hidden('bill_to_state',
+                                                                            old('invoice_items')[$i]['bill_to_state'] ??
+                                                                            null, [
+                                                                            'class' => 'form-control
+                                                                            bill_to_state',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'bill_to_state',
+                                                                            'data-group' => 'invoice_items',
+                                                                            'required' => true,
                                                                             ])); ?>
 
-                                                                            <?php echo e(Form::hidden('party_state', old('invoice_items')[$i]['party_state'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    party_state',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'party_state',
-                                                                                'data-group' => 'invoice_items',
-                                                                                'required' => true,
-                                                                            ])); ?>
-
-
-
-                                                                            <?php echo e(Form::hidden('cgst_amount', old('invoice_items')[$i]['cgst_amount'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-amount cgst_amount',
-                                                                                'placeholder' => 'Amt.',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'cgst_amount',
-                                                                                'data-group' => 'invoice_items',
-                                                                            ])); ?>
-
-
-                                                                            <?php echo e(Form::hidden('sgst_utgst_amount', old('invoice_items')[$i]['sgst_utgst_amount'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-amount sgst_utgst_amount',
-                                                                                'placeholder' => 'Amt.',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'sgst_utgst_amount',
-                                                                                'data-name' => 'sgst_utgst_amount',
-                                                                                'data-group' => 'invoice_items',
-                                                                            ])); ?>
-
-
-                                                                            <?php echo e(Form::hidden('igst_amount', old('invoice_items')[$i]['igst_amount'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-amount igst_amount',
-                                                                                'placeholder' => 'Amt.',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'igst_amount',
-                                                                                'data-group' => 'invoice_items',
+                                                                            <?php echo e(Form::hidden('party_state',
+                                                                            old('invoice_items')[$i]['party_state'] ??
+                                                                            null, [
+                                                                            'class' => 'form-control
+                                                                            party_state',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'party_state',
+                                                                            'data-group' => 'invoice_items',
+                                                                            'required' => true,
                                                                             ])); ?>
 
 
 
+                                                                            <?php echo e(Form::hidden('cgst_amount',
+                                                                            old('invoice_items')[$i]['cgst_amount'] ??
+                                                                            null, [
+                                                                            'class' => 'form-control
+                                                                            custom-amount cgst_amount',
+                                                                            'placeholder' => 'Amt.',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'cgst_amount',
+                                                                            'data-group' => 'invoice_items',
+                                                                            ])); ?>
 
-                                                                            <td><?php echo e(Form::number('item_code', old('invoice_items')[$i]['item_code'] ?? null, [
+
+                                                                            <?php echo e(Form::hidden('sgst_utgst_amount',
+                                                                            old('invoice_items')[$i]['sgst_utgst_amount']
+                                                                            ?? null, [
+                                                                            'class' => 'form-control
+                                                                            custom-amount sgst_utgst_amount',
+                                                                            'placeholder' => 'Amt.',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'sgst_utgst_amount',
+                                                                            'data-name' => 'sgst_utgst_amount',
+                                                                            'data-group' => 'invoice_items',
+                                                                            ])); ?>
+
+
+                                                                            <?php echo e(Form::hidden('igst_amount',
+                                                                            old('invoice_items')[$i]['igst_amount'] ??
+                                                                            null, [
+                                                                            'class' => 'form-control
+                                                                            custom-amount igst_amount',
+                                                                            'placeholder' => 'Amt.',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'igst_amount',
+                                                                            'data-group' => 'invoice_items',
+                                                                            ])); ?>
+
+
+
+
+                                                                            <td><?php echo e(Form::number('item_code',
+                                                                                old('invoice_items')[$i]['item_code'] ??
+                                                                                null, [
                                                                                 'data-id' => 'item_code',
                                                                                 'id' => 'auto_product_' . $i,
                                                                                 'class' => 'form-control item_code
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        typeahead',
+                                                                                typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::text('item_name', old('invoice_items')[$i]['item_name'] ?? null, [
+                                                                            <td><?php echo e(Form::text('item_name',
+                                                                                old('invoice_items')[$i]['item_name'] ??
+                                                                                null, [
                                                                                 'data-id' => 'item_name',
                                                                                 'id' => 'auto_product_' . $i,
                                                                                 'class' => 'form-control item_name
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        typeahead',
+                                                                                typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'oninput' => 'validateInput(this)',
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::text('hsn_sac', old('invoice_items')[$i]['hsn_sac'] ?? null, [
+                                                                            <td><?php echo e(Form::text('hsn_sac',
+                                                                                old('invoice_items')[$i]['hsn_sac'] ??
+                                                                                null, [
                                                                                 'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        hsn_sac',
+                                                                                hsn_sac',
                                                                                 'data-name' => 'hsn_sac',
                                                                                 'required' => true,
-                                                                            ])); ?>
+                                                                                'readonly'=>true,
+                                                                                ])); ?>
 
                                                                             </td>
-                                                                            <td> <?php echo e(Form::number('qty', old('invoice_items')[$i]['qty'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        qty',
+                                                                            <td> <?php echo e(Form::number('qty',
+                                                                                old('invoice_items')[$i]['qty'] ?? null,
+                                                                                [
+                                                                                'class' => 'form-control qty',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'qty',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::number('taxable_amount', old('invoice_items')[$i]['taxable_amount'] ?? null, [
+                                                                            <td><?php echo e(Form::number('taxable_amount',
+                                                                                old('invoice_items')[$i]['taxable_amount']
+                                                                                ?? null, [
                                                                                 'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        taxable_amount',
+                                                                                taxable_amount',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'taxable_amount',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'readonly' => true,
                                                                                 'required' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
 
-                                                                            <?php echo e(Form::hidden('discount_item', old('invoice_items')[$i]['discount_item'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    discount_item',
-                                                                                'id' => 'discount_item',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'discount_item',
-                                                                                'data-group' => 'invoice_items',
+                                                                            <?php echo e(Form::hidden('discount_item',
+                                                                            old('invoice_items')[$i]['discount_item'] ??
+                                                                            null, [
+                                                                            'class' => 'form-control
+                                                                            discount_item',
+                                                                            'id' => 'discount_item',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'discount_item',
+                                                                            'data-group' => 'invoice_items',
                                                                             ])); ?>
 
-                                                                            <?php echo e(Form::hidden('price_af_discount', old('invoice_items')[$i]['price_af_discount'] ?? null, [
-                                                                                'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    price_af_discount',
-                                                                                'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'price_af_discount',
-                                                                                'data-group' => 'invoice_items',
-                                                                                'readonly' => true,
+                                                                            <?php echo e(Form::hidden('price_af_discount',
+                                                                            old('invoice_items')[$i]['price_af_discount']
+                                                                            ?? null, [
+                                                                            'class' => 'form-control
+                                                                            price_af_discount',
+                                                                            'onchange' => 'calculategst(this)',
+                                                                            'data-name' => 'price_af_discount',
+                                                                            'data-group' => 'invoice_items',
+                                                                            'readonly' => true,
                                                                             ])); ?>
 
 
-                                                                            <td><?php echo e(Form::text('total', old('invoice_items')[$i]['total'] ?? null, [
+                                                                            <td><?php echo e(Form::text('total',
+                                                                                old('invoice_items')[$i]['total'] ??
+                                                                                null, [
                                                                                 'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        total',
+                                                                                total',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'total',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'readonly' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
                                                                             <td style="width: 130px;">
                                                                                 <?php
-                                                                                    $disable = true;
-                                                                                    if (old('party_id')) {
-                                                                                        $disable = false;
-                                                                                    }
+                                                                                $disable = true;
+                                                                                if (old('party_id')) {
+                                                                                $disable = false;
+                                                                                }
                                                                                 ?>
-                                                                                <?php echo e(Form::select('gst_rate', $gst, old('invoice_items')[$i]['gst_rate'] ?? null, [
-                                                                                    'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    gst_type gst_dropdown',
-                                                                                    'placeholder' => 'Select GST',
-                                                                                    'onchange' => 'calculategst(this)',
-                                                                                    'data-name' => 'gst_rate',
-                                                                                    'data-group' => 'invoice_items',
-                                                                                    'required' => true,
-                                                                                ])); ?>
-
-                                                                            </td>
-
-                                                                            <td>
-                                                                                <?php echo e(Form::text('cgst_rate', old('invoice_items')[$i]['cgst_rate'] ?? null, [
-                                                                                    'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-rate all_gst',
-                                                                                    'placeholder' => '%',
-                                                                                    'onchange' => 'calculategst(this)',
-                                                                                    'data-name' => 'cgst_rate',
-                                                                                    'data-group' => 'invoice_items',
-                                                                                    'readonly' => true,
-                                                                                ])); ?>
-
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo e(Form::text('sgst_utgst_rate', old('invoice_items')[$i]['sgst_utgst_rate'] ?? null, [
-                                                                                    'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-rate all_gst',
-                                                                                    'placeholder' => '%',
-                                                                                    'onchange' => 'calculategst(this)',
-                                                                                    'data-name' => 'sgst_utgst_rate',
-                                                                                    'data-group' => 'invoice_items',
-                                                                                    'readonly' => true,
-                                                                                ])); ?>
-
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo e(Form::text('igst_rate', old('invoice_items')[$i]['igst_rate'] ?? null, [
-                                                                                    'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    custom-rate all_gst',
-                                                                                    'placeholder' => '%',
-                                                                                    'onchange' => 'calculategst(this)',
-                                                                                    'data-name' => 'igst_rate',
-                                                                                    'data-group' => 'invoice_items',
-                                                                                    'readonly' => true,
-                                                                                ])); ?>
-
-                                                                            </td>
-
-                                                                            <td><?php echo e(Form::text('gst_amount', old('invoice_items')[$i]['gst_amount'] ?? null, [
+                                                                                <?php echo e(Form::select('gst_rate', $gst,
+                                                                                old('invoice_items')[$i]['gst_rate'] ??
+                                                                                null, [
                                                                                 'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        gst_amount',
+                                                                                gst_type gst_dropdown readonly',
+                                                                                'placeholder' => 'Select GST',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'gst_rate',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'required' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <?php echo e(Form::text('cgst_rate',
+                                                                                old('invoice_items')[$i]['cgst_rate'] ??
+                                                                                null, [
+                                                                                'class' => 'form-control
+                                                                                custom-rate all_gst',
+                                                                                'placeholder' => '%',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'cgst_rate',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+                                                                            <td>
+                                                                                <?php echo e(Form::text('sgst_utgst_rate',
+                                                                                old('invoice_items')[$i]['sgst_utgst_rate']
+                                                                                ?? null, [
+                                                                                'class' => 'form-control
+                                                                                custom-rate all_gst',
+                                                                                'placeholder' => '%',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'sgst_utgst_rate',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+                                                                            <td>
+                                                                                <?php echo e(Form::text('igst_rate',
+                                                                                old('invoice_items')[$i]['igst_rate'] ??
+                                                                                null, [
+                                                                                'class' => 'form-control
+                                                                                custom-rate all_gst',
+                                                                                'placeholder' => '%',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'igst_rate',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+
+                                                                            <td><?php echo e(Form::text('gst_amount',
+                                                                                old('invoice_items')[$i]['gst_amount']
+                                                                                ?? null, [
+                                                                                'class' => 'form-control
+                                                                                gst_amount',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'gst_amount',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'readonly' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::text('gross_total', old('invoice_items')[$i]['gross_total'] ?? null, [
+                                                                            <td><?php echo e(Form::text('gross_total',
+                                                                                old('invoice_items')[$i]['gross_total']
+                                                                                ?? null, [
                                                                                 'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        gross_total',
+                                                                                gross_total',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'gross_total',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'readonly' => true,
-                                                                            ])); ?>
+                                                                                ])); ?>
 
                                                                             </td>
                                                                             <td style="width: 210px;">
                                                                                 <?php echo e(Form::select(
-                                                                                    'storage_location_id',
-                                                                                    $storage_locations,
-                                                                                    old('invoice_items')[$i]['storage_location_id'] ?? null,
-                                                                                    [
-                                                                                        'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    storage_locations',
-                                                                                        'placeholder' => 'Select Storage Location',
-                                                                                        'data-name' => 'storage_location_id',
-                                                                                        'required' => true,
-                                                                                    ],
+                                                                                'storage_location_id',
+                                                                                $storage_locations,
+                                                                                old('invoice_items')[$i]['storage_location_id']
+                                                                                ?? null,
+                                                                                [
+                                                                                'class' => 'form-control
+                                                                                storage_locations',
+                                                                                'placeholder' => 'Select Storage
+                                                                                Location',
+                                                                                'data-name' => 'storage_location_id',
+                                                                                'required' => true,
+                                                                                ],
                                                                                 )); ?>
 
 
@@ -598,101 +640,101 @@
                                                     </div>
                                                 </div>
 
-                                            </section>
+                                    </section>
 
-                                        </div>
-
-
+                                </div>
 
 
 
 
 
-                                        <div class="col-sm-12">
-                                            
-                                        </div>
+
+
+                                <div class="col-sm-12">
+
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+
+                            <div class="row">
+
+
+                                <div class="col-md-3 col-sm-3">
+                                    <div class="form-group">
+                                        <?php echo e(Form::label('remarks', 'Remarks')); ?>
+
+                                        <?php echo e(Form::textarea('remarks', null, [
+                                        'class' => 'form-control remarks',
+                                        'placeholder' => 'Remarks',
+                                        'style' => 'height:100px;',
+                                        ])); ?>
 
                                     </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                </div>
 
-                                    <hr>
-
-
-                                    <div class="row">
-
-
-                                        <div class="col-md-3 col-sm-3">
-                                            <div class="form-group">
-                                                <?php echo e(Form::label('remarks', 'Remarks')); ?>
-
-                                                <?php echo e(Form::textarea('remarks', null, [
-                                                    'class' => 'form-control remarks',
-                                                    'placeholder' => 'Remarks',
-                                                    'style' => 'height:100px;',
-                                                ])); ?>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-                                        </div>
-
-                                        <div class="col-md-3 col-sm-3">
-                                            <div>
-                                                <p>Total Before Discount: <strong><span
-                                                            class="total_amount">0</span></strong></p>
-                                            </div>
-                                            <div>
-                                                <p>Discount: <strong><input type="number" name="discount" id="discount"
-                                                            style="width:30px;" onchange="calculate_grand_total()"
-                                                            value="<?php echo e(old('discount') ?? 0); ?>"> %</strong>
-                                                    <input class="discount_amt w-25" value="">
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p>Total After Discount: <strong><span
-                                                            class="total_af_disc"></span>0</strong></p>
-                                            </div>
-
-                                            <div>
-                                                <p>Tax: <strong><span class="gst_total">0</span></strong></p>
-                                            </div>
-                                            <div>
-                                                <p>Rounding: <strong><span class="rounding"></span></strong></p>
-                                            </div>
-                                            <div>
-                                                <p>Total Payment Due: <strong><span class="final_amount">0</span></strong>
-                                                </p>
-                                            </div>
-                                        </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <div>
+                                        <p>Total Before Discount: <strong><span class="total_amount">0</span></strong>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>Discount: <strong><input type="number" name="discount" id="discount"
+                                                    style="width:30px;" onchange="calculate_grand_total()"
+                                                    value="<?php echo e(old('discount') ?? 0); ?>"> %</strong>
+                                            <input class="discount_amt w-25 readonly" value="">
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p>Total After Discount: <strong><span class="total_af_disc"></span>0</strong>
+                                        </p>
                                     </div>
 
-                                    <div class="col-sm-12 d-flex justify-content-center">
-                                        <?php echo e(Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1'])); ?>
-
-                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                                    <div>
+                                        <p>Tax: <strong><span class="gst_total">0</span></strong></p>
                                     </div>
-                                    <?php echo e(Form::close()); ?>
-
+                                    <div>
+                                        <p>Rounding: <strong><span class="rounding"></span></strong></p>
+                                    </div>
+                                    <div>
+                                        <p>Total Payment Due: <strong><span class="final_amount">0</span></strong>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <?php echo e(Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1'])); ?>
+
+                                <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                            </div>
+                            <?php echo e(Form::close()); ?>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </section>
     </div>
     </div>
+</section>
+</div>
+</div>
 
 
 
-    <?php echo $__env->make('backend.autocomplete_typeahead_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('backend.autocomplete_typeahead_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
 
 
-    <script>
-        function get_data_display(customer_id) {
+<script>
+    function get_data_display(customer_id) {
 
             // alert(customer_id);
 
@@ -743,13 +785,13 @@
 
 
         });
-    </script>
+</script>
 
 
 
 
-    <script>
-        var generateId = function(string) {
+<script>
+    var generateId = function(string) {
             return string
                 .replace(/\[/g, '_')
                 .replace(/\]/g, '')
@@ -834,12 +876,11 @@
             });
 
         });
-    </script>
+</script>
 
 
 
 
 
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/purchaseorder/create.blade.php ENDPATH**/ ?>
