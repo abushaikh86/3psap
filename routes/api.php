@@ -59,6 +59,8 @@ Route::middleware('throttle:1000,1')->group(function () {
     Route::any('/get_previous_comments', [ApiController::class, 'get_previous_comments'])->name('admin.get_previous_comments');
     Route::any('/get_previous_soh', [ApiController::class, 'get_previous_soh'])->name('admin.get_previous_soh');
     Route::post('/save_soh', [ApiController::class, 'save_soh'])->name('admin.save_soh');
+    Route::post('/update_outlet_image', [ApiController::class, 'update_outlet_image'])->name('admin.update_outlet_image');
+
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

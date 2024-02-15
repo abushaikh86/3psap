@@ -40,7 +40,6 @@
                     <div class="card-content">
                         <div class="card-body card-dashboard">
 
-                            
                             <div class="table-responsive">
 
                                 <table class="table zero-configuration" id="tbl-datatable">

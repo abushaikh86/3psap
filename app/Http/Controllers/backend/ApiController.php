@@ -986,6 +986,57 @@ class ApiController extends Controller
     }
   }
 
+  public function update_outlet_image(Request $request)
+  {
+
+    $postedData = json_decode($request->input('posted_data'), true);
+
+    // Extract data from the $postedData array
+    $customer_id = (int) $postedData['outlet_id'];
+    $beat_id = (int) $postedData['beat_id'];
+    $latitude = $postedData['latitude'];
+    $longitude = $postedData['longitude'];
+    $outlet_image = [];
+
+    if ($request->hasFile('outlet_images')) {
+      $uploadDir = 'public/backend-assets/visibility/';
+
+      foreach ($request->file('outlet_images') as $file) {
+        // Generate a unique filename
+        $filename = uniqid() . '_' . $file->getClientOriginalName();
+        $file->move($uploadDir, $filename);
+        $outlet_image[] = $filename;
+      }
+    } elseif ($request->hasFile('outlet_image')) {
+      // Process uploaded file when only one image is present
+      $uploadDir = 'public/backend-assets/outlet/';
+      $filename = uniqid() . '_' . $request->file('outlet_image')->getClientOriginalName();
+
+      // Move the file to the upload directory
+      $request->file('outlet_image')->move($uploadDir, $filename);
+
+      // Add the filename to the array
+      $outlet_image[] = $filename;
+    }
+
+
+    $inserted = DB::table('visibility_app')
+      ->where('user_id', $customer_id)
+      ->where('beat_id', $beat_id)
+      ->update([
+        'latitude' => $latitude,
+        'longitude' => $longitude,
+        'outlet_image' => implode(",", $outlet_image),
+      ]);
+
+
+    if ($inserted) {
+      return response()->json(['success' => 'Payment Updated']);
+    } else {
+      return response()->json(['error' => 'Error']);
+    }
+  }
+
   public function save_comments(Request $request)
   {
 
