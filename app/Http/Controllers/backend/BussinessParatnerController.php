@@ -79,7 +79,7 @@ class BussinessParatnerController extends Controller
 
                     return $actionBtn;
                 })
-                
+
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -105,11 +105,12 @@ class BussinessParatnerController extends Controller
             $startcount = 1;
             $srno = 0;
             $uploadedFile = $excel_file;
-            $filename = date('Y-m-d') . '_' . date(' H:i:s') . '_' . $uploadedFile->getClientOriginalName();
+            $filename = date('Y-m-d_H-i-s') . '_' . str_replace(' ', '_', $uploadedFile->getClientOriginalName());
+
             if ($request->import_type == 'ven') {
-                $uploadedFile->move(public_path('uploads/')  . '/Vendors', $filename);
+                $uploadedFile->move(public_path('uploads/Vendors'), $filename);
             } else if ($request->import_type  == 'cus') {
-                $uploadedFile->move(public_path('uploads/')  . '/Customers', $filename);
+                $uploadedFile->move(public_path('uploads/Customers'), $filename);
             }
 
 
@@ -138,6 +139,34 @@ class BussinessParatnerController extends Controller
                             'pricing_profile' => trim(addslashes($sheet->getCell('K' . $row)->getValue())),
                             'msme_reg' => (int) trim(addslashes($sheet->getCell('L' . $row)->getValue())),
                             // Add more fields as needed
+                        ];
+
+                        //bill-address
+                        $bill_add = [
+                            'address_type' => 'Bill-To/ Bill-From',
+                            'bp_address_name' => trim(addslashes($sheet->getCell('N' . $row)->getValue())),
+                            'building_no_name' => trim(addslashes($sheet->getCell('O' . $row)->getValue())),
+                            'street_name' => trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                            'landmark' => trim(addslashes($sheet->getCell('Q' . $row)->getValue())),
+                            'country' => trim(addslashes($sheet->getCell('R' . $row)->getValue())),
+                            'state' => trim(addslashes($sheet->getCell('S' . $row)->getValue())),
+                            'district' => trim(addslashes($sheet->getCell('T' . $row)->getValue())),
+                            'city' => trim(addslashes($sheet->getCell('U' . $row)->getValue())),
+                            'pin_code' => trim(addslashes($sheet->getCell('V' . $row)->getValue())),
+                        ];
+
+                        //ship-address
+                        $ship_add = [
+                            'address_type' => 'Ship-To/ Ship-From',
+                            'bp_address_name' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
+                            'building_no_name' => trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
+                            'street_name' => trim(addslashes($sheet->getCell('Z' . $row)->getValue())),
+                            'landmark' => trim(addslashes($sheet->getCell('AA' . $row)->getValue())),
+                            'country' => trim(addslashes($sheet->getCell('AB' . $row)->getValue())),
+                            'state' => trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
+                            'district' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
+                            'city' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
+                            'pin_code' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
                         ];
                     } else if ($request->import_type  == 'cus') {
                         $data = [
@@ -171,6 +200,17 @@ class BussinessParatnerController extends Controller
                     $pricings->fill($data);
                     // }
                     $pricings->save();
+
+                    // $bill_address = new BussinessPartnerAddress();
+                    // $bill_address->fill($bill_add);
+                    // $bill_address->bussiness_partner_id = $pricings->business_partner_id;
+                    // $bill_address->save();
+
+                    // $ship_address = new BussinessPartnerAddress();
+                    // $ship_address->fill($ship_add);
+                    // $ship_address->bussiness_partner_id = $pricings->business_partner_id;
+                    // $ship_address->save();
+
 
                     // array_push($imported_data, $data);
                 }
@@ -375,13 +415,13 @@ class BussinessParatnerController extends Controller
         $ase_users = [];
         $asm_users = [];
         if (!empty($model->salesman)) {
-            $officer_users = AdminUsers::where(['admin_user_id'=>$model->salesman])->first();
-            $ase_users = AdminUsers::where(['admin_user_id'=>$officer_users->parent_users])->first();
-            $asm_users = AdminUsers::where(['admin_user_id'=>$ase_users->parent_users])->first();
+            $officer_users = AdminUsers::where(['admin_user_id' => $model->salesman])->first();
+            $ase_users = AdminUsers::where(['admin_user_id' => $officer_users->parent_users])->first();
+            $asm_users = AdminUsers::where(['admin_user_id' => $ase_users->parent_users])->first();
         }
 
 
-        return view('backend.bussinesspartner.edit', compact('officer_users','ase_users','asm_users','sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
+        return view('backend.bussinesspartner.edit', compact('officer_users', 'ase_users', 'asm_users', 'sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
     }
 
     public function update(Request $request, $id = null)
@@ -676,8 +716,4 @@ class BussinessParatnerController extends Controller
             }
         }
     }
-
-
-
-  
 } //end of class

@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Inventory Report'); ?>
 
 <?php $__env->startSection('content'); ?>

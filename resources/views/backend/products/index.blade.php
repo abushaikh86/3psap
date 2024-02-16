@@ -83,7 +83,7 @@
                                         <th>Image</th>
                                         <th>Item Type</th>
                                         <th>Item Code</th>
-                                        <th>SKU</th>
+                                        <th>Base Pack</th>
                                         <th>Brand</th>
                                         <th>Category</th>
         

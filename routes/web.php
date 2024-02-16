@@ -382,7 +382,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getSalesOfficers/', [MasterDropdownController::class, 'getSalesOfficers'])->name('admin.getSalesOfficers');
         Route::get('/master/getSalesmen/', [MasterDropdownController::class, 'getSalesmen'])->name('admin.getSalesmen');
         Route::get('/master/getAse/', [MasterDropdownController::class, 'getAse'])->name('admin.getAse');
-        
+        Route::get('/master/getHsnCodes/', [MasterDropdownController::class, 'getHsnCodes'])->name('admin.getHsnCodes');
+        Route::get('/master/getEanBarCodes/', [MasterDropdownController::class, 'getEanBarCodes'])->name('admin.getEanBarCodes');
+        Route::get('/master/getGst', [MasterDropdownController::class, 'getGst'])->name('admin.getGst');
+
         //contact details
         Route::get('/bussinesspartner/contact/{id}', [BussinessParatnerController::class, 'contactdetails'])->name('admin.bussinesspartner.contact');
         Route::get('/bussinesspartner/createcontact/{id}', [BussinessParatnerController::class, 'createcontact'])->name('admin.bussinesspartner.createcontact');

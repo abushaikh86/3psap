@@ -54,8 +54,8 @@ class ProductsController extends Controller
 
         return view('backend.products.index', compact('products'));
     }
-    
-        public function updateProduct(Request $request)
+
+    public function updateProduct(Request $request)
     {
 
         // dd($request->all());
@@ -72,8 +72,8 @@ class ProductsController extends Controller
             $startcount = 1;
             $srno = 0;
             $uploadedFile = $excel_file;
-            $filename = date('Y-m-d') . '_' . date(' H:i:s') . '_' . $uploadedFile->getClientOriginalName();
-            $uploadedFile->move(public_path('uploads/')  . '/products/', $filename);
+            $filename = date('Y-m-d_H-i-s') . '_' . str_replace(' ', '_', $uploadedFile->getClientOriginalName());
+            $uploadedFile->move(public_path('uploads/products'), $filename);
 
 
             foreach ($row_range as $row) {
@@ -86,26 +86,49 @@ class ProductsController extends Controller
                 }
 
                 if ($srno > 0 &&  !$isEmptyRow) {
+
+                    $gst_percent =  $numericPart = preg_replace('/[^0-9]/', '', $sheet->getCell('AB' . $row)->getFormattedValue());
+          
                     $data = [
-                        'item_type_id' => trim(addslashes($sheet->getCell('A' . $row)->getValue())),
+                        // 'item_type_id' => trim(addslashes($sheet->getCell('A' . $row)->getValue())),
+                        'item_type_id' => getOrCreateId(ItemTypes::class, 'item_type_name', $sheet->getCell('A' . $row)->getValue(), 'item_type_id'),
                         'item_code' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
                         'consumer_desc' => trim(addslashes($sheet->getCell('C' . $row)->getValue())),
                         'product_desc' => trim(addslashes($sheet->getCell('D' . $row)->getValue())),
-                        'brand_id' => trim(addslashes($sheet->getCell('E' . $row)->getValue())),
-                        'category_id' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
-                        'sub_category_id' => (int) trim(addslashes($sheet->getCell('G' . $row)->getValue())),
-                        'variant' => trim(addslashes($sheet->getCell('H' . $row)->getValue())),
+                        'brand_id' => getOrCreateId(Brands::class, 'brand_name', $sheet->getCell('E' . $row)->getValue(), 'brand_id'),
+                        'category_id' => getOrCreateId(Categories::class, 'category_name', $sheet->getCell('F' . $row)->getValue(), 'category_id'),
+                        'sub_category_id' => getOrCreateId(SubCategories::class, 'subcategory_name', $sheet->getCell('G' . $row)->getValue(), 'subcategory_id'),
+                        'variant' => getOrCreateId(Variant::class, 'name', $sheet->getCell('H' . $row)->getValue(), 'id'),
                         'buom_pack_size' => trim(addslashes($sheet->getCell('I' . $row)->getValue())),
-                        'uom_id' => (int) trim(addslashes($sheet->getCell('J' . $row)->getValue())),
+                        // 'uom_id' => (int) trim(addslashes($sheet->getCell('J' . $row)->getValue())),
+                        'uom_id' => getOrCreateId(UoMs::class, 'uom_name', $sheet->getCell('J' . $row)->getValue(), 'uom_id'),
                         'unit_case' => trim(addslashes($sheet->getCell('K' . $row)->getValue())),
                         'hsncode_id' =>  trim(addslashes($sheet->getCell('L' . $row)->getValue())),
-                        'dimensions_unit_pack' => trim(addslashes($sheet->getCell('M' . $row)->getValue())),
-                        'mrp' => trim(addslashes($sheet->getCell('N' . $row)->getValue())),
-                        'gst_id' => (int) trim(addslashes($sheet->getCell('O' . $row)->getValue())),
-                        'visibility' => (int) trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                        'shelf_life_number' =>  trim(addslashes($sheet->getCell('M' . $row)->getValue())),
+                        'shelf_life' =>  trim(addslashes($sheet->getCell('N' . $row)->getValue())),
+                        'sourcing' =>  trim(addslashes($sheet->getCell('O' . $row)->getValue())),
+                        'case_pallet' =>  trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                        'layer_pallet' =>  trim(addslashes($sheet->getCell('Q' . $row)->getValue())),
+                        'dimensions_unit_pack' =>  trim(addslashes($sheet->getCell('R' . $row)->getValue())),
+                        'dimensions_length' =>  trim(addslashes($sheet->getCell('S' . $row)->getValue())),
+                        'dimensions_width' =>  trim(addslashes($sheet->getCell('T' . $row)->getValue())),
+                        'dimensions_height' =>  trim(addslashes($sheet->getCell('U' . $row)->getValue())),
+                        // 'dimensions_length_uom_id' =>  trim(addslashes($sheet->getCell('V' . $row)->getValue())),
+                        'dimensions_length_uom_id' => getOrCreateId(UoMs::class, 'uom_name', $sheet->getCell('V' . $row)->getValue(), 'uom_id'),
+                        'dimensions_net_weight' =>  trim(addslashes($sheet->getCell('W' . $row)->getCalculatedValue())),
+                        'dimensions_gross_weight' =>  trim(addslashes($sheet->getCell('X' . $row)->getCalculatedValue())),
+                        // 'dimensions_net_uom_id' =>  trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
+                        'dimensions_net_uom_id' => getOrCreateId(UoMs::class, 'uom_name', $sheet->getCell('Y' . $row)->getValue(), 'uom_id'),
+                        'ean_barcode' =>  trim(addslashes($sheet->getCell('Z' . $row)->getValue())),
+                        'mrp' => trim(addslashes($sheet->getCell('AA' . $row)->getCalculatedValue())),
+                        // 'gst_id' => (int) trim(addslashes($sheet->getCell('AB' . $row)->getValue())),
+                        'gst_id' => getOrCreateId(Gst::class, 'gst_name', $sheet->getCell('AB' . $row)->getFormattedValue(), 'gst_id',$gst_percent),
+                        'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
                         // Add more fields as needed
                     ];
 
+                    // usama_16-02-2024- generate sku
+                    $sku = $data['brand_id']  . $data['category_id'] . $data['sub_category_id'] . $data['variant'];
 
                     // dd($data);
                     // $pricings = PricingItem::where(['pricing_master_id' => $request->pricing_master_id, 'sku' => $data['sku'], 'item_code' => $data['item_code']])->first();
@@ -115,6 +138,8 @@ class ProductsController extends Controller
                     // } else {
                     $pricings = new Products();
                     $pricings->fill($data);
+                    $pricings->sku = $sku;
+
                     // }
                     $pricings->save();
 
@@ -156,12 +181,12 @@ class ProductsController extends Controller
 
         // dd($request->all());
         $request->validate([
-            'item_type_id' => 'required',
-            'item_code' => 'required',
-            'brand_id' => 'required',
-            'category_id' => 'required',
-            'sub_category_id' => 'required',
-            'hsncode_id' => 'numeric|required',
+            // 'item_type_id' => 'required',
+            // 'item_code' => 'required',
+            // 'brand_id' => 'required',
+            // 'category_id' => 'required',
+            // 'sub_category_id' => 'required',
+            // 'hsncode_id' => 'required',
         ]);
         $data = $request->all();
 
@@ -226,6 +251,7 @@ class ProductsController extends Controller
         $qty_location = ProductQtyStorage::where('product_item_id', $id)->get();
         $gst = Gst::pluck('gst_percent', 'gst_id');
 
+
         $uoms = UoMs::pluck('uom_name', 'uom_id');
         $variants = Variant::pluck('name', 'id');
         $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id');
@@ -236,10 +262,10 @@ class ProductsController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'product_item_id' => 'required',
-            'item_type_id' => 'required',
-            'item_code' => 'required',
-            'brand_id' => 'required',
+            // 'product_item_id' => 'required',
+            // 'item_type_id' => 'required',
+            // 'item_code' => 'required',
+            // 'brand_id' => 'required',
             // 'category_id' => 'required',
             // 'sub_category_id' => 'required',
         ]);

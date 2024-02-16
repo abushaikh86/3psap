@@ -1,7 +1,7 @@
 // function getModuleNameFromUrl() {
 //     var url = window.location.href;
 //     var matches = url.match(/\/([^\/]+)\/edit\/\d+/);
-    
+
 //     if (matches && matches.length > 1) {
 //         return matches[1];
 //     }
@@ -9,20 +9,37 @@
 //     return null;
 // }
 
+//usama_16-02-2024-to get gst percent and do caluclation dynamic
+function getGstPercentage(gst, callback) {
+    var getGstRoute = document
+        .querySelector('meta[name="getGstRoute"]')
+        .getAttribute("content");
+
+    $.ajax({
+        url: getGstRoute,
+        method: "GET",
+        data: { id: gst },
+        success: function (response) {
+            var gst_percent = parseFloat(response.gst_percent);
+            callback(gst_percent);
+        },
+        error: function (error) {
+            console.error("Error fetching GST percentage: ", error);
+            callback(0); // Assuming default value is 0 in case of an error
+        },
+    });
+}
+
 function calculategst(elem) {
-    // alert("calculategst");
-
-
     // console.log("calculategst", elem);
     var name = $(elem).attr("name");
     var data_name = $(elem).data("name");
     var data_group = $(elem).data("group");
 
+    // var bill_to_state = $('#bill_to_state').val();
+    // var party_state =  $('#party_state').val();
 
-        // var bill_to_state = $('#bill_to_state').val();
-        // var party_state =  $('#party_state').val();
-
-        var index = name.match(/(\d+)/);
+    var index = name.match(/(\d+)/);
     index = index[0];
 
     // var gst_type = document.getElementsByClassName('gst_type');
@@ -31,11 +48,15 @@ function calculategst(elem) {
     // }
 
     if (data_group != "") {
-        var bill_to_state = ($("input[name='bill_to_state']").val()).toUpperCase();
-        var party_state = ($("input[name='party_state']").val()).toUpperCase();
+        var bill_to_state = $("input[name='bill_to_state']")
+            .val()
+            .toUpperCase();
+        var party_state = $("input[name='party_state']").val().toUpperCase();
 
         $("input[name='" + data_group + "[" + index + "][cgst_rate]']").val(0);
-        $("input[name='" + data_group + "[" + index + "][sgst_utgst_rate]']").val(0);
+        $(
+            "input[name='" + data_group + "[" + index + "][sgst_utgst_rate]']"
+        ).val(0);
         $("input[name='" + data_group + "[" + index + "][igst_rate]']").val(0);
 
         // alert(bill_to_state);
@@ -44,7 +65,6 @@ function calculategst(elem) {
         var gst = $(
             "select[name='" + data_group + "[" + index + "][gst_rate]']"
         ).val();
-        // alert(gst);
         var gst_amount = $(
             "input[name='" + data_group + "[" + index + "][gst_amount]']"
         );
@@ -52,7 +72,6 @@ function calculategst(elem) {
         var qty = $(
             "input[name='" + data_group + "[" + index + "][qty]']"
         ).val();
-        
 
         var taxable_amount = $(
             "input[name='" + data_group + "[" + index + "][taxable_amount]']"
@@ -86,91 +105,100 @@ function calculategst(elem) {
         // $(".price_af_discount").val(rate.toFixed(2));
 
         var total = taxable_amount * qty;
-        if(isNaN(total)){
-            total = parseInt($("input[name='" + data_group + "[" + index + "][amount]']").val());
-        }
-
-
-
-        if (gst == 4 || taxable_amount == "") {
-            taxt_amount = 0;
-            gst_amount.val(0);
-        } else {
-            var gst_percentage = 0;
-            if (gst == 1) {
-                gst_percentage = 18;
-                taxt_amount = (total * gst_percentage) / 100;
-                // alert(taxt_amount);
-            } else if (gst == 2) {
-                gst_percentage = 28;
-                taxt_amount = (total * gst_percentage) / 100;
-            } else if (gst == 3) {
-                gst_percentage = 5;
-                taxt_amount = (total * gst_percentage) / 100;
-            }
-        }
-        // alert(bill_to_state);
-     
-      
-
-        if (bill_to_state == party_state) {
-            gst_percentage = gst_percentage / 2;
-            cgst_rate.val(gst_percentage);
-            sgst_utgst_rate.val(gst_percentage);
-            var calculated_cgst_amount = parseFloat(
-                (total * gst_percentage) / 100
-            );
-            var calculated_sgst_utgst_amount = parseFloat(
-                (total * gst_percentage) / 100
-            );
-            var calculated_igst_amount = 0;
-        } else {
-            igst_rate.val(gst_percentage);
-            var calculated_cgst_amount = 0;
-            var calculated_sgst_utgst_amount = 0;
-            var calculated_igst_amount = parseFloat(
-                (total * gst_percentage) / 100
+        if (isNaN(total)) {
+            total = parseInt(
+                $(
+                    "input[name='" + data_group + "[" + index + "][amount]']"
+                ).val()
             );
         }
-        if (isNaN(calculated_cgst_amount)) {
-            calculated_cgst_amount = 0;
-        }
-        if (isNaN(calculated_sgst_utgst_amount)) {
-            calculated_sgst_utgst_amount = 0;
-        }
-        if (isNaN(calculated_igst_amount)) {
-            calculated_igst_amount = 0;
-        }
-
-        gross_total = total + taxt_amount;
-
-        $("input[name='" + data_group + "[" + index + "][cgst_amount]']").val(
-            calculated_cgst_amount
-        );
-        $(
-            "input[name='" + data_group + "[" + index + "][sgst_utgst_amount]']"
-        ).val(calculated_sgst_utgst_amount);
-        $("input[name='" + data_group + "[" + index + "][igst_amount]']").val(
-            calculated_igst_amount
-        );
-        $("input[name='" + data_group + "[" + index + "][total]']").val(total.toFixed(2));
-        $(
-            "input[name='" + data_group + "[" + index + "][price_af_discount]']"
-        ).val(price_after_discount.toFixed(2));
-        $("input[name='" + data_group + "[" + index + "][gst_amount]']").val(
-            taxt_amount.toFixed(2)
-        );
-     
-        $("input[name='" + data_group + "[" + index + "][gross_total]']").val(
-            gross_total.toFixed(2)
-        );
-        $("input[name='" + data_group + "[" + index + "][total_value]']").val(
-            gross_total.toFixed(2)
-        );
-
-
         
-        calculate_grand_total();
+        //get gst percent first
+        getGstPercentage(gst, function (gst_percentage) {
+            if (gst == 4 || taxable_amount == "") {
+                taxt_amount = 0;
+                gst_amount.val(0);
+            } else {
+                if (gst == 1) {
+                    gst_percentage = 18;
+                    taxt_amount = (total * gst_percentage) / 100;
+                    // alert(taxt_amount);
+                } else if (gst == 2) {
+                    gst_percentage = 28;
+                    taxt_amount = (total * gst_percentage) / 100;
+                } else if (gst == 3) {
+                    gst_percentage = 5;
+                    taxt_amount = (total * gst_percentage) / 100;
+                }
+            }
+
+            if (bill_to_state == party_state) {
+                gst_percentage = gst_percentage / 2;
+                cgst_rate.val(gst_percentage);
+                sgst_utgst_rate.val(gst_percentage);
+                var calculated_cgst_amount = parseFloat(
+                    (total * gst_percentage) / 100
+                );
+                var calculated_sgst_utgst_amount = parseFloat(
+                    (total * gst_percentage) / 100
+                );
+                var calculated_igst_amount = 0;
+            } else {
+                igst_rate.val(gst_percentage);
+                var calculated_cgst_amount = 0;
+                var calculated_sgst_utgst_amount = 0;
+                var calculated_igst_amount = parseFloat(
+                    (total * gst_percentage) / 100
+                );
+            }
+            if (isNaN(calculated_cgst_amount)) {
+                calculated_cgst_amount = 0;
+            }
+            if (isNaN(calculated_sgst_utgst_amount)) {
+                calculated_sgst_utgst_amount = 0;
+            }
+            if (isNaN(calculated_igst_amount)) {
+                calculated_igst_amount = 0;
+            }
+
+            gross_total = total + taxt_amount;
+
+            $(
+                "input[name='" + data_group + "[" + index + "][cgst_amount]']"
+            ).val(calculated_cgst_amount);
+            $(
+                "input[name='" +
+                    data_group +
+                    "[" +
+                    index +
+                    "][sgst_utgst_amount]']"
+            ).val(calculated_sgst_utgst_amount);
+            $(
+                "input[name='" + data_group + "[" + index + "][igst_amount]']"
+            ).val(calculated_igst_amount);
+            $("input[name='" + data_group + "[" + index + "][total]']").val(
+                total.toFixed(2)
+            );
+            $(
+                "input[name='" +
+                    data_group +
+                    "[" +
+                    index +
+                    "][price_af_discount]']"
+            ).val(price_after_discount.toFixed(2));
+            $(
+                "input[name='" + data_group + "[" + index + "][gst_amount]']"
+            ).val(taxt_amount.toFixed(2));
+
+            $(
+                "input[name='" + data_group + "[" + index + "][gross_total]']"
+            ).val(gross_total.toFixed(2));
+            $(
+                "input[name='" + data_group + "[" + index + "][total_value]']"
+            ).val(gross_total.toFixed(2));
+
+            calculate_grand_total();
+        });
     }
 }
 
@@ -275,14 +303,16 @@ function calculate_grand_total() {
     $(".sgst_utgst_total").html(sgst_utgst_amount_total.toFixed(2));
     $(".igst_total").html(igst_amount_total.toFixed(2));
     $(".gst_total").html(gst_total);
-    $(".gross_total").html((parseInt(total_amount) + parseInt(gst_total)).toFixed(2));
+    $(".gross_total").html(
+        (parseInt(total_amount) + parseInt(gst_total)).toFixed(2)
+    );
     $(".gst_rounded_off").html(rounded_off);
     $(".total_amount").html(total_amount);
     $("#t_down_pmnt").on("change", function () {
         t_down_pmnt = $(this).val();
         if (t_down_pmnt != "") {
-            $(".final_amount").html( Math.round(
-                parseFloat(final_amount - t_down_pmnt)).toFixed(2)
+            $(".final_amount").html(
+                Math.round(parseFloat(final_amount - t_down_pmnt)).toFixed(2)
             );
         }
     });
@@ -305,8 +335,8 @@ function calculate_grand_total() {
     }
 
     if (t_down_pmnt != "") {
-        $(".final_amount").html( Math.round(
-            parseFloat(final_amount - t_down_pmnt)).toFixed(2)
+        $(".final_amount").html(
+            Math.round(parseFloat(final_amount - t_down_pmnt)).toFixed(2)
         );
     } else {
         $(".final_amount").html(

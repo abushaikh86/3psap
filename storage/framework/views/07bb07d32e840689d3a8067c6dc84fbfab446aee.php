@@ -7,7 +7,7 @@
         <span class="float-md-left d-block d-md-inline-block">
             Copyright &copy; 2018 - <?php echo e(date('Y')); ?>
 
-            <a class="text-bold-800 grey darken-2" href="<?php echo e(route('admin.dashboard')); ?>" target="_blank">3PSAP</a>
+            <a class="text-bold-800 grey darken-2" href="<?php echo e(route('admin.dashboard')); ?>" target="_blank">EUREKA</a>
         </span>
     </p>
 </footer>

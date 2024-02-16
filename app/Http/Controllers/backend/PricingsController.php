@@ -20,6 +20,7 @@ use App\Models\backend\UoMs;
 use App\Models\backend\Pricings;
 use Carbon\Exceptions\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Yajra\DataTables\Facades\DataTables;
 
 class PricingsController extends Controller
 {
@@ -35,7 +36,6 @@ class PricingsController extends Controller
     public function index()
     {
         $pricings = Pricings::all();
-
         return view('backend.pricings.index', compact('pricings'));
     }
 
@@ -93,8 +93,8 @@ class PricingsController extends Controller
     public function destroy($id)
     {
         $pricings = Pricings::findOrFail($id);
-        if($pricings->delete()){
-            PricingItem::where('pricing_master_id',$id)->delete();
+        if ($pricings->delete()) {
+            PricingItem::where('pricing_master_id', $id)->delete();
         }
 
         Session::flash('success', 'Pricing deleted!');
@@ -103,12 +103,28 @@ class PricingsController extends Controller
         return redirect('admin/pricings');
     }
 
-    public function setpricing($id)
+    public function setpricing(Request $request, $id)
     {
         $pricings = Pricings::where('pricing_master_id', $id)->first();
+        $products = Products::all();
+        if ($request->ajax()) {
+            return DataTables::of($products)
+                ->addIndexColumn()
+                ->addColumn('brand.brand_name', fn ($row) => $row->brand->brand_name)
+                ->addColumn('category.category_name', fn ($row) => $row->category->category_name)
+                ->addColumn('sub_category.subcategory_name', fn ($row) => $row->sub_category->subcategory_name)
+                ->addColumn('variants.name', fn ($row) => $row->variants->name)
+                ->addColumn('selling_price', function ($row) use ($id) {
+                    $pricing_item = PricingItem::where(['sku' => $row->sku, 'item_code' => $row->item_code, 'pricing_master_id' => $id])->first();
+                    return '<input type="number" name="selling_price" class="selling-price-input" value="' . ($pricing_item->selling_price ?? 0) . '">';
+                })
+                ->rawColumns(['selling_price'])
+                ->make(true);
+        }
         $pricing_items = PricingItem::where('pricing_master_id', $id)->get();
-        return view('backend.pricings.setpricing', compact('pricings', 'pricing_items'));
+        return view('backend.pricings.setpricing', compact('pricings', 'pricing_items', 'products'));
     }
+
     public function updatepricings(Request $request)
     {
 
@@ -136,24 +152,37 @@ class PricingsController extends Controller
                 $sheet = $spreadsheet->getActiveSheet();
                 $row_limit = $sheet->getHighestDataRow();
                 $column_limit = $sheet->getHighestDataColumn();
-                $row_range = range(1, $row_limit);
+                $row_range = range(2, $row_limit);
                 $column_range = range('E', $column_limit);
                 $startcount = 1;
                 $srno = 0;
                 $uploadedFile = $excel_file;
-                $filename = date('Y-m-d') . '_' . date(' H:i:s') . '_' . $uploadedFile->getClientOriginalName();
-                $uploadedFile->move(public_path('uploads/') . $request->pricing_master_id . '/', $filename);
+                $filename = date('Y-m-d_H-i-s') . '_' . str_replace(' ', '_', $uploadedFile->getClientOriginalName());
+                $uploadedFile->move(public_path('uploads/' . $request->pricing_master_id), $filename);
+
 
                 foreach ($row_range as $row) {
-                    if ($srno > 0) {
+
+                    $isEmptyRow = true;
+                    foreach ($column_range as $column) {
+                        if (!empty($sheet->getCell($column . $row)->getValue())) {
+                            $isEmptyRow = false;
+                            break;
+                        }
+                    }
+                    if ($srno > 0  &&  !$isEmptyRow) {
                         $data = [
-                            'sku' => trim(addslashes($sheet->getCell('A' . $row)->getValue())),
-                            'item_code' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
-                            'selling_price' => trim(addslashes($sheet->getCell('C' . $row)->getValue())),
+                            'sku' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
+                            'item_code' => trim(addslashes($sheet->getCell('C' . $row)->getValue())),
+                            'consumer_desc' => trim(addslashes($sheet->getCell('D' . $row)->getValue())),
+                            'brand_id' => trim(addslashes($sheet->getCell('E' . $row)->getValue())),
+                            'category_id' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
+                            'sub_category_id' => trim(addslashes($sheet->getCell('G' . $row)->getValue())),
+                            'variant' => trim(addslashes($sheet->getCell('H' . $row)->getValue())),
+                            'selling_price' => trim(addslashes($sheet->getCell('I' . $row)->getValue())),
                             // Add more fields as needed
                         ];
 
-                        // dd($data);
                         $pricings = PricingItem::where(['pricing_master_id' => $request->pricing_master_id, 'sku' => $data['sku'], 'item_code' => $data['item_code']])->first();
 
                         if (!empty($pricings)) {

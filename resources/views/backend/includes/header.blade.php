@@ -1,22 +1,22 @@
 @php
-    use App\Models\backend\YearManagement;
-    use App\Models\backend\Company;
-    use App\Models\backend\AdminUsers;
-    use App\Models\backend\Financialyear;
+use App\Models\backend\YearManagement;
+use App\Models\backend\Company;
+use App\Models\backend\AdminUsers;
+use App\Models\backend\Financialyear;
 
-    if (request()->is('api/*')) {
-        $user_id = request()->segment(3, 'default');
+if (request()->is('api/*')) {
+$user_id = request()->segment(3, 'default');
 
-        $user = AdminUsers::where('admin_user_id', $user_id)->first();
-    } else {
-        $user_id = Auth()
-            ->guard('admin')
-            ->user()->id;
+$user = AdminUsers::where('admin_user_id', $user_id)->first();
+} else {
+$user_id = Auth()
+->guard('admin')
+->user()->id;
 
-        $user = Auth()
-            ->guard('admin')
-            ->user();
-    }
+$user = Auth()
+->guard('admin')
+->user();
+}
 
 @endphp
 
@@ -36,7 +36,7 @@
                     <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
                         <img class="brand-logo" alt="logo"
                             src="{{ asset('public/backend-assets/images/logo-demo.png') }}">
-                        <h2 class="brand-text">3PSAP</h2>
+                        <h2 class="brand-text">EUREKA</h2>
                     </a>
                 </li>
                 <li class="nav-item d-none d-lg-block nav-toggle">
@@ -57,22 +57,22 @@
                 <div class="mr-auto"></div>
 
                 @php
-                   
-                    $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
 
-                    // If the financial year does not exist, create a new entry and deactivate other financial years
-                    if (empty($financial_year)) {
-                        Financialyear::where('active', 1)->update(['active' => 0]);
+                $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
 
-                        $financial_year = new Financialyear();
-                        $financial_year->year = session('fy_year');
-                        $financial_year->active = 1;
-                        $financial_year->save();
-                    }
+                // If the financial year does not exist, create a new entry and deactivate other financial years
+                if (empty($financial_year)) {
+                Financialyear::where('active', 1)->update(['active' => 0]);
+
+                $financial_year = new Financialyear();
+                $financial_year->year = session('fy_year');
+                $financial_year->active = 1;
+                $financial_year->save();
+                }
 
                 @endphp
 
-             
+
                 <ul class="nav navbar-nav float-right">
                     <li class="dropdown dropdown-user nav-item">
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
@@ -82,10 +82,11 @@
                                     alt="avatar"><i></i>
                             </div>
                             @php
-                                $company = Company::where('company_id', session('company_id'))->first();
+                            $company = Company::where('company_id', session('company_id'))->first();
                             @endphp
-                            <span class="user-name">{{ $user->first_name }} {{ $user->last_name }} (
-                                {{ $company->name ?? '' }} )</span>
+                            {{-- {{dd($user)}} --}}
+                            <span class="user-name">{{ $user->first_name }} {{ $user->last_name }}
+                                {{ isset($user->company_id)? '('.$company->name.')' : '' }} </span>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

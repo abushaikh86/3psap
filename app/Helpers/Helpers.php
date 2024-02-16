@@ -191,4 +191,28 @@ if (!function_exists('amount_in_words')) {
             return !empty($role) ? 1 : 0;
         }
     }
+
+    // usama_16-02-2024- fetch id with name or create new for excel
+    if (!function_exists('getOrCreateId')) {
+        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $gst_percent = null)
+        {
+            $value = trim(addslashes($excelValue));
+            $record = $model::where($fieldName, $value)->first();
+
+            if (!$record) {
+                // Record doesn't exist, create a new one
+                $newRecord = new $model([$fieldName => $value]);
+                if (!empty($gst_percent)) {
+                    $newRecord->gst_percent = $gst_percent;
+                }
+                $newRecord->save();
+
+                // Return the new ID
+                return $newRecord->$primaryKeyName;
+            }
+
+            // Record exists, return its ID
+            return $record->$primaryKeyName;
+        }
+    }
 }

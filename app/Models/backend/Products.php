@@ -25,6 +25,7 @@ class Products extends Model
      */
     protected $fillable = [
       'item_type_id','item_code','item_description','consumer_description','brand_id',
+      'dimensions_length_uom_id','dimensions_net_uom_id',
       'category_id','sub_category_id','variant','buom_pack_size','uom_id','unit_case','sku',
       'hsncode_id','batch','expiry_date','shelf_life_number','shelf_life','sourcing','case_pallet',
       'layer_pallet','dimensions','dimensions_unit_pack','dimensions_length',

@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Create PurchaseOrder'); ?>
 
 
@@ -734,6 +735,7 @@
 
 
 <script>
+
     function get_data_display(customer_id) {
 
             // alert(customer_id);

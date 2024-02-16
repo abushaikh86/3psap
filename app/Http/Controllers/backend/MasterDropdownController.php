@@ -19,6 +19,7 @@ use App\Models\backend\Expensemaster;
 use App\Models\backend\Financialyear;
 use App\Models\backend\GLCodes;
 use App\Models\backend\GoodsServiceReceipts;
+use App\Models\backend\Gst;
 use App\Models\backend\HSNCodes;
 use App\Models\backend\PricingItem;
 use App\Models\backend\Pricings;
@@ -65,7 +66,7 @@ class MasterDropdownController extends Controller
         $model->first_name = $request->data_name[0];
         $model->last_name = $request->data_name[1];
         $model->email = $request->data_name[2];
-        $model->parent_users = $request->data_name[3]??'';
+        $model->parent_users = $request->data_name[3] ?? '';
         $model->password = 'Pass12@#';
         $model->account_status = 1;
         $model->role_id = $request->role;
@@ -330,12 +331,40 @@ class MasterDropdownController extends Controller
     }
 
 
+    public function getHsnCodes(Request $request)
+    {
+        $query = $request->get('query');
+        $hsnCodes = Products::where('hsncode_id', 'like', $query . '%')->pluck('hsncode_id');
+
+        return response()->json($hsnCodes);
+    }
+
+    public function getEanBarCodes(Request $request)
+    {
+        $query = $request->get('query');
+        $eanbarcodes = Products::where('ean_barcode', 'like', $query . '%')->pluck('ean_barcode');
+
+        return response()->json($eanbarcodes);
+    }
+
+
+    public function getGst(Request $request)
+    {
+        $query = $request->get('id');
+        $gst = Gst::where('gst_id', $query)->first();
+
+        return response()->json($gst);
+    }
+
     public function autocomplete()
     {
 
         $query = $_GET['query'] ?? '';
         if (is_numeric($query)) {
-            $data = Products::select(DB::raw("item_code as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'consumer_desc')->where("item_code", "LIKE", "%" . $query . "%")->get();
+            $data = Products::select(DB::raw("item_code as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'consumer_desc')
+                ->where("item_code", "LIKE", "%" . $query . "%")
+                ->orWhere("hsncode_id", "LIKE", "%" . $query . "%")
+                ->get();
         } else if (preg_match('/^\d+-\d+$/', $query)) {
             // Check if the query matches the pattern "digits-hyphen-digits"
             $data = Products::select(DB::raw("sku as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'item_code')
