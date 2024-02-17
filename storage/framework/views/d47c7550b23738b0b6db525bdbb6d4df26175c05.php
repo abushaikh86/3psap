@@ -1,3 +1,7 @@
+<!-- In your Blade view file -->
+<meta name="getGstRoute" content="<?php echo e(route('admin.getGst')); ?>">
+
+
 <script type="text/javascript">
     var typeaheadElement;
     var selectedItemData;

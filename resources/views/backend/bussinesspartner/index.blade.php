@@ -57,11 +57,11 @@
                         <i class="feather icon-trending-down"></i> Pending Requests
                     </a>
                     @if (is_superAdmin())
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        {{-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#importModal">
                             <i class="feather icon-download"></i>
                             Import
-                        </button>
+                        </button> --}}
                     @endif
                 </div>
             </div>

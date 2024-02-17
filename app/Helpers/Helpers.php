@@ -215,4 +215,28 @@ if (!function_exists('amount_in_words')) {
             return $record->$primaryKeyName;
         }
     }
+
+    // usama_16-02-2024- fetch id with name or create new for excel
+    if (!function_exists('getOrCreateIdUsingDB')) {
+        function getOrCreateIdUsingDB($tableName, $fieldName, $excelValue, $primaryKeyName)
+        {
+            $value = trim(addslashes($excelValue));
+            $record = DB::table($tableName)->where($fieldName, $value)->first();
+
+            if (!$record) {
+                // Record doesn't exist, create a new one
+                $newRecordData = [
+                    $fieldName => $value,
+                ];
+
+                $newRecordId = DB::table($tableName)->insertGetId($newRecordData);
+
+                // Return the new ID
+                return $newRecordId;
+            }
+
+            // Record exists, return its ID
+            return $record->$primaryKeyName;
+        }
+    }
 }

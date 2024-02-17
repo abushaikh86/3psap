@@ -734,6 +734,7 @@
 
 
 <script>
+
     function get_data_display(customer_id) {
 
             // alert(customer_id);

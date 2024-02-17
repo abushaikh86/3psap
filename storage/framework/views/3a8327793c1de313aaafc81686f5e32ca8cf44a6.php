@@ -19,7 +19,6 @@
   <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
     <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
       <div class="btn-group" role="group">
-        
         <a class="btn btn-outline-primary" href="<?php echo e(route('admin.outlet.create')); ?>">
           <i class="feather icon-plus"></i> Add Outlet
         </a>
@@ -68,7 +67,6 @@
 
                                                 <td>
                                    
-                                                    
                                                     <a href="<?php echo e(url('admin/bussinesspartner/edit/'.$data->business_partner_id)); ?>" class="btn btn-primary" title="Edit"><i class="feather icon-edit"></i></a>
                                        
                                                     <?php echo Form::open([
@@ -100,11 +98,6 @@
     </div>
 </section>
 
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('scripts'); ?>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/datatables.min.js')); ?>"></script>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js')); ?>"></script>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.buttons.min.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/outlet/index.blade.php ENDPATH**/ ?>

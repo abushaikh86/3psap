@@ -1,22 +1,22 @@
 <?php
-    use App\Models\backend\YearManagement;
-    use App\Models\backend\Company;
-    use App\Models\backend\AdminUsers;
-    use App\Models\backend\Financialyear;
+use App\Models\backend\YearManagement;
+use App\Models\backend\Company;
+use App\Models\backend\AdminUsers;
+use App\Models\backend\Financialyear;
 
-    if (request()->is('api/*')) {
-        $user_id = request()->segment(3, 'default');
+if (request()->is('api/*')) {
+$user_id = request()->segment(3, 'default');
 
-        $user = AdminUsers::where('admin_user_id', $user_id)->first();
-    } else {
-        $user_id = Auth()
-            ->guard('admin')
-            ->user()->id;
+$user = AdminUsers::where('admin_user_id', $user_id)->first();
+} else {
+$user_id = Auth()
+->guard('admin')
+->user()->id;
 
-        $user = Auth()
-            ->guard('admin')
-            ->user();
-    }
+$user = Auth()
+->guard('admin')
+->user();
+}
 
 ?>
 
@@ -36,7 +36,7 @@
                     <a class="navbar-brand" href="<?php echo e(route('admin.dashboard')); ?>">
                         <img class="brand-logo" alt="logo"
                             src="<?php echo e(asset('public/backend-assets/images/logo-demo.png')); ?>">
-                        <h2 class="brand-text">3PSAP</h2>
+                        <h2 class="brand-text">EUREKA</h2>
                     </a>
                 </li>
                 <li class="nav-item d-none d-lg-block nav-toggle">
@@ -57,22 +57,22 @@
                 <div class="mr-auto"></div>
 
                 <?php
-                   
-                    $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
 
-                    // If the financial year does not exist, create a new entry and deactivate other financial years
-                    if (empty($financial_year)) {
-                        Financialyear::where('active', 1)->update(['active' => 0]);
+                $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
 
-                        $financial_year = new Financialyear();
-                        $financial_year->year = session('fy_year');
-                        $financial_year->active = 1;
-                        $financial_year->save();
-                    }
+                // If the financial year does not exist, create a new entry and deactivate other financial years
+                if (empty($financial_year)) {
+                Financialyear::where('active', 1)->update(['active' => 0]);
+
+                $financial_year = new Financialyear();
+                $financial_year->year = session('fy_year');
+                $financial_year->active = 1;
+                $financial_year->save();
+                }
 
                 ?>
 
-             
+
                 <ul class="nav navbar-nav float-right">
                     <li class="dropdown dropdown-user nav-item">
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
@@ -82,10 +82,12 @@
                                     alt="avatar"><i></i>
                             </div>
                             <?php
-                                $company = Company::where('company_id', session('company_id'))->first();
+                            $company = Company::where('company_id', session('company_id'))->first();
                             ?>
-                            <span class="user-name"><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?> (
-                                <?php echo e($company->name ?? ''); ?> )</span>
+                            
+                            <span class="user-name"><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?>
+
+                                <?php echo e(isset($user->company_id)? '('.$company->name.')' : ''); ?> </span>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -106,5 +108,4 @@
         </div>
     </div>
 </nav>
-<!-- END: Header-->
-<?php /**PATH /var/www/html/3psap/resources/views/backend/includes/header.blade.php ENDPATH**/ ?>
+<!-- END: Header--><?php /**PATH /var/www/html/3psap/resources/views/backend/includes/header.blade.php ENDPATH**/ ?>

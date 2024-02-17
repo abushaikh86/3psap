@@ -116,7 +116,7 @@ class PricingsController extends Controller
                 ->addColumn('variants.name', fn ($row) => $row->variants->name)
                 ->addColumn('selling_price', function ($row) use ($id) {
                     $pricing_item = PricingItem::where(['sku' => $row->sku, 'item_code' => $row->item_code, 'pricing_master_id' => $id])->first();
-                    return '<input type="number" name="selling_price" class="selling-price-input" value="' . ($pricing_item->selling_price ?? 0) . '">';
+                    return $pricing_item->selling_price ?? 0;
                 })
                 ->rawColumns(['selling_price'])
                 ->make(true);

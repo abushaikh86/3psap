@@ -98,12 +98,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                         <?php echo e(Form::select(
                                         'residential_status',
-                                        [
-                                        'resident' => 'Resident',
-                                        'non-resident' => 'Non Resident',
-                                        'indian-company' => 'Indian company',
-                                        'foriegn-company' => 'Foriegn company',
-                                        ],
+                                        DB::table('residential_status')->pluck('name'),
                                         null,
                                         [
                                         'class' => 'form-control',

@@ -126,10 +126,10 @@ class BussinessParatnerController extends Controller
                 if ($srno > 0 &&  !$isEmptyRow) {
                     if ($request->import_type == 'ven') {
                         $data = [
-                            'business_partner_type' => trim(addslashes($sheet->getCell('A' . $row)->getValue())),
+                            'business_partner_type' => getOrCreateIdUsingDB('bussiness_master_type','bussiness_master_type', $sheet->getCell('A' . $row)->getValue(), 'bussiness_master_type_id'),
                             'bp_name' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
-                            'bp_organisation_type' => (int) trim(addslashes($sheet->getCell('C' . $row)->getValue())),
-                            'residential_status' => trim(addslashes($sheet->getCell('D' . $row)->getValue())),
+                            'bp_organisation_type' => getOrCreateIdUsingDB('bp_organisation_type','bp_organisation_type', $sheet->getCell('C' . $row)->getValue(), 'bp_organisation_type_id'),
+                            'residential_status' => getOrCreateIdUsingDB('residential_status','name', $sheet->getCell('D' . $row)->getValue(), 'id'),
                             'bp_category' => trim(addslashes($sheet->getCell('E' . $row)->getValue())),
                             'bp_group' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
                             'payment_terms_id' => (int) trim(addslashes($sheet->getCell('G' . $row)->getValue())),
@@ -152,7 +152,7 @@ class BussinessParatnerController extends Controller
                             'state' => trim(addslashes($sheet->getCell('S' . $row)->getValue())),
                             'district' => trim(addslashes($sheet->getCell('T' . $row)->getValue())),
                             'city' => trim(addslashes($sheet->getCell('U' . $row)->getValue())),
-                            'pin_code' => trim(addslashes($sheet->getCell('V' . $row)->getValue())),
+                            'pin_code' => (int) trim(addslashes($sheet->getCell('V' . $row)->getValue())),
                         ];
 
                         //ship-address
@@ -167,6 +167,25 @@ class BussinessParatnerController extends Controller
                             'district' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
                             'city' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
                             'pin_code' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
+                        ];
+
+                        // contact-data
+                        $contact_details = [
+                            'type' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
+                            'contact_person' => trim(addslashes($sheet->getCell('AH' . $row)->getValue())),
+                            'email_id' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
+                            'mobile_no' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
+                            'landline' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
+                        ];
+
+                        // bank-data
+                        $bank_details = [
+                            'acc_holdername' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
+                            'bank_name' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
+                            'bank_branch' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
+                            'ifsc' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
+                            'ac_number' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                            'bank_address' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
                         ];
                     } else if ($request->import_type  == 'cus') {
                         $data = [
@@ -190,7 +209,7 @@ class BussinessParatnerController extends Controller
                         ];
                     }
 
-                    // dd($data);
+                    // dd($data, $bill_add, $ship_add,$contact_details,$bank_details);
                     // $pricings = PricingItem::where(['pricing_master_id' => $request->pricing_master_id, 'sku' => $data['sku'], 'item_code' => $data['item_code']])->first();
 
                     // if (!empty($pricings)) {
@@ -201,15 +220,33 @@ class BussinessParatnerController extends Controller
                     // }
                     $pricings->save();
 
-                    // $bill_address = new BussinessPartnerAddress();
-                    // $bill_address->fill($bill_add);
-                    // $bill_address->bussiness_partner_id = $pricings->business_partner_id;
-                    // $bill_address->save();
+                    if (!empty($bill_add)) {
+                        $bill_address = new BussinessPartnerAddress();
+                        $bill_address->fill($bill_add);
+                        $bill_address->bussiness_partner_id = $pricings->business_partner_id;
+                        $bill_address->save();
+                    }
+                    if (!empty($ship_add)) {
+                        $ship_address = new BussinessPartnerAddress();
+                        $ship_address->fill($ship_add);
+                        $ship_address->bussiness_partner_id = $pricings->business_partner_id;
+                        $ship_address->save();
+                    }
 
-                    // $ship_address = new BussinessPartnerAddress();
-                    // $ship_address->fill($ship_add);
-                    // $ship_address->bussiness_partner_id = $pricings->business_partner_id;
-                    // $ship_address->save();
+                    if (!empty($contact_details)) {
+                        $contact_data = new BussinessPartnerContactDetails();
+                        $contact_data->fill($contact_details);
+                        $contact_data->bussiness_partner_id = $pricings->business_partner_id;
+                        $contact_data->save();
+                    }
+
+
+                    if (!empty($bank_details)) {
+                        $bank_data = new BussinessPartnerBankingDetails();
+                        $bank_data->fill($bank_details);
+                        $bank_data->bussiness_partner_id = $pricings->business_partner_id;
+                        $bank_data->save();
+                    }
 
 
                     // array_push($imported_data, $data);
