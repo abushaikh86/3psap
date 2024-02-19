@@ -271,7 +271,7 @@
 
 
                                 <div class="col-md-6 col-6">
-                                    {{ Form::label('visibility', 'Show / Hide') }}
+                                    {{ Form::label('visibility', 'Active / In-Active') }}
                                     <fieldset class="">
                                         <div class="radio radio-success">
                                             {{ Form::radio('visibility', '1', true, ['id' => 'radioshow']) }}

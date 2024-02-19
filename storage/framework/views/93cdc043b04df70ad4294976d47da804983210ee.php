@@ -1,16 +1,17 @@
-<?php $__env->startSection('title', 'Bussiness Partner Address'); ?>
+<?php $__env->startSection('title', 'Bussiness Partner Bank Details'); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Bussiness Partner Address</h3>
+            <h3 class="content-header-title">Bussiness Partner Bank Details</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Bussiness Partner Address</li>
+
+                        <li class="breadcrumb-item active">Bussiness Partner Bank Details</li>
                     </ol>
                 </div>
             </div>
@@ -18,8 +19,7 @@
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
-                    <a class="btn btn-outline-primary"
-                        href="<?php echo e(route('admin.bussinesspartner.createaddress', ['id' => $id])); ?>">
+                    <a class="btn btn-outline-primary" href="<?php echo e(route('admin.bussinesspartner.addbank', ['id' => $id])); ?>">
                         <i class="feather icon-plus"></i> Add
                     </a>
                     <?php
@@ -55,44 +55,35 @@
                                     <thead>
                                         <tr>
                                             <th>Sr. No</th>
-                                            <th>Address Type</th>
-                                            <th>Address Name</th>
-                                            <th>Address</th>
-                                            <th>Landmark</th>
-                                            <th>City</th>
-                                            <th>Pin Code</th>
-                                            <th>State</th>
-                                            <th>District</th>
+                                            <th>Bank Name</th>
+                                            <th>Branch Name</th>
+                                            <th>IFSC</th>
+                                            <th>Ac No</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        <?php if(isset($addresses) && count($addresses) > 0): ?>
+                                        <?php if(isset($banking_data) && count($banking_data) > 0): ?>
                                             <?php $srno = 1; ?>
-                                            <?php $__currentLoopData = $addresses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php $__currentLoopData = $banking_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td><?php echo e($srno); ?></td>
-                                                    <td><?php echo e($data->address_type); ?></td>
-                                                    <td><?php echo e($data->bp_address_name); ?></td>
-                                                    <td><?php echo e($data->building_no_name); ?> <br>
-                                                        <?php echo e($data->street_name); ?>
+                                                    <td><?php echo e($data->bank_name); ?></td>
+                                                    <td><?php echo e($data->bank_branch); ?> </td>
+                                                    <td><?php echo e($data->ifsc); ?> </td>
+                                                    <td><?php echo e($data->ac_number); ?> </td>
 
-                                                    </td>
-                                                    <td><?php echo e($data->landmark); ?></td>
-                                                    <td><?php echo e($data->city); ?></td>
-                                                    <td><?php echo e($data->pin_code); ?></td>
-                                                    <td><?php echo e($data->getState->name??''); ?></td>
-                                                    <td><?php echo e($data->getDistrict->city_name ??''); ?></td>
                                                     <td>
 
                                                         
-                                                        <a href="<?php echo e(url('admin/bussinesspartner/editaddress/' . $data->bp_address_id)); ?>"
+                                                        <a href="<?php echo e(url('admin/bussinesspartner/editbank/' . $data->banking_details_id)); ?>"
                                                             class="btn btn-primary"><i class="feather icon-edit-2"></i></a>
 
                                                         
                                                         <?php echo Form::open([
                                                             'method' => 'GET',
-                                                            'url' => ['admin/bussinesspartner/deleteaddress', $data->bp_address_id],
+                                                            'url' => ['admin/bussinesspartner/deletebank', $data->banking_details_id],
                                                         ]); ?>
 
                                                         <?php echo Form::button('<i class="feather icon-trash"></i>', [
@@ -110,7 +101,7 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         <?php else: ?>
                                             <tr>
-                                                <td colspan=10>Address Not Found</td>
+                                                <td colspan=10>No Banks Found</td>
                                             </tr>
                                         <?php endif; ?>
                                     </tbody>
@@ -132,4 +123,4 @@
     <script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.buttons.min.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/bussinesspartner/address.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/bussinesspartner/bank_detail.blade.php ENDPATH**/ ?>

@@ -191,8 +191,8 @@ class BussinessParatnerController extends Controller
                         }
 
                         if (!empty($sheet->getCell('AE' . $row)->getValue())) {
-                            // contact-data
-                            $contact_details = [
+                            // contact-data bill
+                            $contact_details_bill = [
                                 'type' => 'Bill-To/ Bill-From',
                                 'contact_person' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
                                 'email_id' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
@@ -202,14 +202,25 @@ class BussinessParatnerController extends Controller
                         }
 
                         if (!empty($sheet->getCell('AI' . $row)->getValue())) {
+                            // contact-data ship
+                            $contact_details_ship = [
+                                'type' => 'Ship-To/ Ship-From',
+                                'contact_person' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
+                            ];
+                        }
+
+                        if (!empty($sheet->getCell('AM' . $row)->getValue())) {
                             // bank-data
                             $bank_details = [
-                                'acc_holdername' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
-                                'bank_name' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
-                                'bank_branch' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
-                                'ifsc' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
-                                'ac_number' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
-                                'bank_address' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
+                                'acc_holdername' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
+                                'bank_name' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
+                                'bank_branch' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
+                                'ifsc' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                                'ac_number' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
+                                'bank_address' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
                             ];
                         }
                     } else if ($request->import_type  == 'cus') {
@@ -227,8 +238,6 @@ class BussinessParatnerController extends Controller
                                 }
                             }
                         }
-
-
 
                         $data = [
                             'business_partner_type' => getOrCreateId(BussinessMasterType::class, 'bussiness_master_type', $sheet->getCell('A' . $row)->getValue(), 'bussiness_master_type_id'),
@@ -289,8 +298,8 @@ class BussinessParatnerController extends Controller
                         }
 
                         if (!empty($sheet->getCell('AI' . $row)->getValue())) {
-                            // contact-data
-                            $contact_details = [
+                            // contact-data bill
+                            $contact_details_bill = [
                                 'type' => 'Bill-To/ Bill-From',
                                 'contact_person' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
                                 'email_id' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
@@ -300,19 +309,31 @@ class BussinessParatnerController extends Controller
                         }
 
                         if (!empty($sheet->getCell('AM' . $row)->getValue())) {
+                            // contact-data ship
+                            $contact_details_ship = [
+                                'type' => 'Ship-To/ Ship-From',
+                                'contact_person' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                            ];
+                        }
+
+                        if (!empty($sheet->getCell('AM' . $row)->getValue())) {
                             // bank-data
                             $bank_details = [
-                                'acc_holdername' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
-                                'bank_name' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
-                                'bank_branch' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
-                                'ifsc' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
-                                'ac_number' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
-                                'bank_address' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
+                                'acc_holdername' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
+                                'bank_name' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
+                                'bank_branch' => trim(addslashes($sheet->getCell('AS' . $row)->getValue())),
+                                'ifsc' => trim(addslashes($sheet->getCell('AT' . $row)->getValue())),
+                                'ac_number' => trim(addslashes($sheet->getCell('AU' . $row)->getValue())),
+                                'bank_address' => trim(addslashes($sheet->getCell('AV' . $row)->getValue())),
                             ];
                         }
                     }
+                    
 
-                    // dd($data, $bill_add, $ship_add, $contact_details, $bank_details);
+                    // dd($data, $bill_add, $ship_add, $contact_details_bill,$contact_details_ship, $bank_details);
                     // $pricings = PricingItem::where(['pricing_master_id' => $request->pricing_master_id, 'sku' => $data['sku'], 'item_code' => $data['item_code']])->first();
 
                     // if (!empty($pricings)) {
@@ -323,12 +344,12 @@ class BussinessParatnerController extends Controller
                     // }
                     $pricings->save();
 
-                    foreach (['bill_add', 'ship_add', 'contact_details', 'bank_details'] as $detail) {
+                    foreach (['bill_add', 'ship_add', 'contact_details_bill','contact_details_ship', 'bank_details'] as $detail) {
                         if (!empty($$detail)) {
                             $className = "";
                             if ($detail == 'bill_add' || $detail == 'ship_add') {
                                 $className = BussinessPartnerAddress::class;
-                            } else if ($detail == 'contact_details') {
+                            } else if ($detail == 'contact_details_bill' || $detail == 'contact_details_ship') {
                                 $className = BussinessPartnerContactDetails::class;
                             } else if ($detail == 'bank_details') {
                                 $className = BussinessPartnerBankingDetails::class;

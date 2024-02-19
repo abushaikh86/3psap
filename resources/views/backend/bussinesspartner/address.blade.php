@@ -62,8 +62,8 @@
                                             <th>Landmark</th>
                                             <th>City</th>
                                             <th>Pin Code</th>
-                                            <th>District</th>
                                             <th>State</th>
+                                            <th>District</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,8 +81,8 @@
                                                     <td>{{ $data->landmark }}</td>
                                                     <td>{{ $data->city }}</td>
                                                     <td>{{ $data->pin_code }}</td>
-                                                    <td>{{ $data->getDistrict->city_name ??''}}</td>
                                                     <td>{{ $data->getState->name??'' }}</td>
+                                                    <td>{{ $data->getDistrict->city_name ??''}}</td>
                                                     <td>
 
                                                         {{--  update Button  --}}

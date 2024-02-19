@@ -334,7 +334,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-6">
-                                    <?php echo e(Form::label('visibility', 'Show / Hide')); ?>
+                                    <?php echo e(Form::label('visibility', 'Active / In-Active')); ?>
 
                                     <fieldset class="">
                                         <div class="radio radio-success">
@@ -343,8 +343,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                             <?php echo e(Form::label('radioshow', 'Yes')); ?>
 
                                         </div>
-                                        <!-- </fieldset>
-                                                                                        <fieldset> -->
+                                        <!-- </fieldset><fieldset> -->
                                         <div class="radio radio-danger">
                                             <?php echo e(Form::radio('visibility', '0', false, ['id' => 'radiohide'])); ?>
 

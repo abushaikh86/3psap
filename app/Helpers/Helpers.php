@@ -194,10 +194,11 @@ if (!function_exists('amount_in_words')) {
 
     // usama_16-02-2024- fetch id with name or create new for excel
     if (!function_exists('getOrCreateId')) {
-        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $extra_id = null, ...$other_params)
+        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $extra_id = null)
         {
+            //St.Ives
             $value = trim(addslashes($excelValue));
-            $record = $model::where($fieldName, $value)->first();
+            $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
 
             if (!empty($value)) {
                 if (!$record) {
@@ -212,6 +213,7 @@ if (!function_exists('amount_in_words')) {
                     if ($model == 'App\Models\backend\City' && !empty($extra_id)) {
                         $newRecord->state_id = $extra_id;
                     }
+                    // dd($newRecord);
 
                     $newRecord->save();
 

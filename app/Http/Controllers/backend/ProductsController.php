@@ -127,6 +127,8 @@ class ProductsController extends Controller
                         // Add more fields as needed
                     ];
 
+                    // dd($data);
+
                     // usama_16-02-2024- generate sku
                     $sku = $data['brand_id']  . $data['category_id'] . $data['sub_category_id'] . $data['variant'];
 

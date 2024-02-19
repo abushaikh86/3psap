@@ -179,10 +179,6 @@
         $(this).val(), '#district',null);
         });
 
-        $('#country1').change(function() {       
-        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
-        $(this).val(), '#state1',null,'#district1');
-        });
     });
     </script>
 
