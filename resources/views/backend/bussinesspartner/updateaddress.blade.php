@@ -2,6 +2,8 @@
 @section('title', 'Bussiness Partner Address')
 @php
     use Spatie\Permission\Models\Role;
+    use App\Models\backend\Country;
+
 @endphp
 
 @section('content')
@@ -101,7 +103,7 @@
                                             <div class="form-label-group">
                                                 {{ Form::label('country', 'Country') }}
                                                 {{-- {{dd($address->country)}} --}}
-                                                {{ Form::select('country', [], $address->country, ['class' => 'form-control', 'required' => true]) }}
+                                                {{ Form::select('country',  Country::pluck('name','country_id'), $address->country, ['class' => 'form-control','placeholder'=>'Select Country', 'required' => true]) }}
 
                                             </div>
                                         </div>
@@ -159,13 +161,40 @@
         </section>
     @endif
 
-    <script src="{{ asset('public/backend-assets/js/country_state_city.js') }}"></script>
-    
+    <script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
+
     <script>
-        var country_selected = `{{ (old('country') ?? $address->country) ?? '' }}`;
-        var state_selected = `{{ (old('state') ?? $address->state) ?? '' }}`;
-        var district_selected = `{{ (old('district') ?? $address->district) ?? '' }}`;
-    </script>
+    $(document).ready(function() {
+
+       // usama_19-02-2024_get states
+
+       var country = '{{$address->country}}';
+       var state = '{{$address->state}}';
+       var district = '{{$address->district}}';
+
+       if(country){
+            new DynamicDropdown('{{ route('admin.getStates') }}', 
+            country, '#state',state);
+       }
+
+       if(state){
+            new DynamicDropdown('{{ route('admin.getCities') }}', 
+            state, '#district',district);
+       }
+
+
+       $('#country').change(function() {       
+       new DynamicDropdown('{{ route('admin.getStates') }}', 
+       $(this).val(), '#state',null,'#district');
+       });
+
+       $('#state').change(function() {       
+       new DynamicDropdown('{{ route('admin.getCities') }}', 
+       $(this).val(), '#district',null);
+       });
+
+   });
+   </script>
 
 
 

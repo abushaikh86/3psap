@@ -1,6 +1,8 @@
 <?php $__env->startSection('title', 'Bussiness Partner Address'); ?>
 <?php
     use Spatie\Permission\Models\Role;
+    use App\Models\backend\Country;
+
 ?>
 <?php $__env->startSection('content'); ?>
     <div class="content-header row">
@@ -98,7 +100,7 @@
                                         <div class="form-label-group">
                                             <?php echo e(Form::label('country', 'Country')); ?>
 
-                                            <?php echo e(Form::select('country', [], null, ['class' => 'form-control', 'required' => true])); ?>
+                                            <?php echo e(Form::select('country', Country::pluck('name','country_id'), null, ['class' => 'form-control','placeholder'=>'Select Country', 'required' => true])); ?>
 
                                         </div>
                                     </div>
@@ -161,11 +163,27 @@
         </div>
     </section>
 
-    <script src="<?php echo e(asset('public/backend-assets/js/country_state_city.js')); ?>"></script>
-        <script>
-        var country_selected = `<?php echo e(old('country') ?? ''); ?>`;
-        var state_selected = `<?php echo e(old('state') ?? ''); ?>`;
-        var district_selected = `<?php echo e(old('district') ?? ''); ?>`;
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
+
+     <script>
+     $(document).ready(function() {
+
+        // usama_19-02-2024_get states
+        $('#country').change(function() {       
+        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+        $(this).val(), '#state',null,'#district');
+        });
+
+        $('#state').change(function() {       
+        new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+        $(this).val(), '#district',null);
+        });
+
+        $('#country1').change(function() {       
+        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+        $(this).val(), '#state1',null,'#district1');
+        });
+    });
     </script>
 
 <?php $__env->stopSection(); ?>

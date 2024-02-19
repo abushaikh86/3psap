@@ -69,6 +69,50 @@
 
 
 
+{{-- usama_19-02-2024-copy system for address and contact --}}
+<script>
+    // for addresss
+    $("#filladdress").change(function() {
+        // If the checkbox is checked, copy values
+        if ($(this).prop("checked")) {
+            $("#bp_address_name1").val($("#bp_address_name").val());
+            $("#building_no_name1").val($("#building_no_name").val());
+            $("#street_name1").val($("#street_name").val());
+            $("#landmark1").val($("#landmark").val());
+            $("#city1").val($("#city").val());
+            $("#pin_code1").val($("#pin_code").val());
+            if ($("#country").val() != '') {
+                $("#country1").val($("#country").val());
+                $("#country1").trigger("change");
+            }
+            setTimeout(() => {
+                if ($("#state").val() != '') {
+                    $("#state1").val($("#state").val());
+                    $("#state1").trigger("change");
+                }
+            }, 200);
+
+            setTimeout(() => {
+                if ($("#district").val() != '') {
+                    $("#district1").val($("#district").val());
+                    $("#district1").trigger("change");
+                }
+            }, 400);
+
+        }
+    });
+
+    //for contact
+    $("#fillcontactInfo").change(function() {
+        // If the checkbox is checked, copy values
+        if ($(this).prop("checked")) {
+            $("#contact_person1").val($("#contact_person").val());
+            $("#email_id1").val($("#email_id").val());
+            $("#mobile_no1").val($("#mobile_no").val());
+            $("#landline1").val($("#landline").val());
+        }
+    });
+</script>
 
 
 {{-- new js by prathamesh end --}}
@@ -267,7 +311,7 @@
         });
     });
 
-    
+
     $("#repeater").createRepeater({
         showFirstItemToDefault: true,
     });

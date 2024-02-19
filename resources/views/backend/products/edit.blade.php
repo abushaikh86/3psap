@@ -297,7 +297,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
 
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
-                                        {{ Form::label('product_thumb', 'Product Thumbnail *') }}
+                                        {{ Form::label('product_thumb', 'Product Thumbnail ') }}
                                         <div class="custom-file">
                                             {{ Form::file('product_thumb', ['class' => 'custom-file-input', 'id' =>
                                             'product_thumb']) }}

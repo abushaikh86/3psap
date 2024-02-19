@@ -81,8 +81,8 @@
                                                     <td><?php echo e($data->landmark); ?></td>
                                                     <td><?php echo e($data->city); ?></td>
                                                     <td><?php echo e($data->pin_code); ?></td>
-                                                    <td><?php echo e($data->district); ?></td>
-                                                    <td><?php echo e($data->state); ?></td>
+                                                    <td><?php echo e($data->getDistrict->city_name ??''); ?></td>
+                                                    <td><?php echo e($data->getState->name??''); ?></td>
                                                     <td>
 
                                                         

@@ -258,8 +258,7 @@
                                 <div class="col-md-3 col-12">
                                     <div class="form-group">
                                         {{ Form::label('mrp', 'MRP') }}
-                                        {{ Form::number('mrp', null, ['class' => 'form-control', 'placeholder' => 'Enter
-                                        MRP']) }}
+                                        {{ Form::number('mrp', null, ['class' => 'form-control', 'placeholder' => 'Enter MRP']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-12">

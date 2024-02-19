@@ -20,7 +20,7 @@
 
                     <div class="col-md-6">
                         <div class="form-content">
-                            <h1 class="heading mb-4"><span>3P SAP</span> Admin Panel</h1>
+                            <h1 class="heading mb-4"><span>EUREKA</span> Admin Panel</h1>
                             @include('backend.includes.errors')
 
                             <form method="POST" action="{{ route('admin.login.submit') }}">

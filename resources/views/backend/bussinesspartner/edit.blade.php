@@ -220,8 +220,8 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
                                         {{ Form::label('gst_reg_type', 'GST Registration Type *') }}
-                                        {{ Form::select('gst_reg_type', ['composite' => 'Composite', 'regular' =>
-                                        'Regular'], $model->gst_reg_type, [
+                                        {{ Form::select('gst_reg_type',DB::table('gst_reg_type')->pluck('name'),
+                                        $model->gst_reg_type, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select GST Registration Type',
                                         'required' => true,

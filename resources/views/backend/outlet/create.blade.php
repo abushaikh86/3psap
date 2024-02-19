@@ -4,6 +4,8 @@
 @section('title', 'Create Outlet')
 @php
 use Spatie\Permission\Models\Role;
+use App\Models\backend\Country;
+
 @endphp
 @section('content')
 
@@ -92,8 +94,8 @@ use Spatie\Permission\Models\Role;
                                 <div class="col-md-6 col-6">
                                     <div class="form-label-group">
                                         {{ Form::label('country', 'Country') }}
-                                        {{ Form::select('country', [], null, ['class' => 'form-control ', 'required' =>
-                                        true]) }}
+                                        {{ Form::select('country', Country::pluck('name','country_id'), null, ['class' => 'form-control ',
+                                         'required' =>true,'placeholder'=>'Select Country']) }}
                                     </div>
                                 </div>
 
@@ -195,11 +197,23 @@ use Spatie\Permission\Models\Role;
         </div>
     </div>
 </section>
-<script src="{{ asset('public/backend-assets/js/country_state_city.js') }}"></script>
 
+<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
+
+
+{{-- add data for area,route and beat --}}
 <script>
-    var country_selected = `{{ old('country') ?? '' }}`;
-        var state_selected = `{{ old('state') ?? '' }}`;
-        var district_selected = `{{ old('district') ?? '' }}`;
+    $(document).ready(function() {
+            // usama_19-02-2024_get states
+            $('#country').change(function() {       
+            new DynamicDropdown('{{ route('admin.getStates') }}', 
+             $(this).val(), '#state',null,'#district');
+            });
+
+            $('#state').change(function() {       
+            new DynamicDropdown('{{ route('admin.getCities') }}', 
+             $(this).val(), '#district',null);
+            });
+        });
 </script>
 @endsection

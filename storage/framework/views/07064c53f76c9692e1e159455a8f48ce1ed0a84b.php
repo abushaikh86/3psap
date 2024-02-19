@@ -151,10 +151,11 @@
                 {
                     data: 'selling_price',
                     name: 'selling_price',
-                    // render: function(data, type, row) {
-                    //     return '<input type="number" name="selling_price" class="selling-price-input" value="' +
-                    //         data + '">';
-                    // }
+                    render: function(data, type, row) {
+                        return data==0?0:data;
+                        // return '<input type="number" name="selling_price" class="selling-price-input" value="' +
+                        //     data + '">';
+                    }
                 },
             ],
             buttons: [{

@@ -29,6 +29,8 @@ use App\Models\backend\Route;
 use App\Models\backend\SeriesMaster;
 use App\Models\backend\SubCategories;
 use App\Models\backend\Variant;
+use App\Models\backend\State;
+use App\Models\backend\City;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule; //import Rule class
 use Spatie\Permission\Models\Role;
@@ -242,6 +244,22 @@ class MasterDropdownController extends Controller
         // dd($data->toArray());
 
         return response()->json($data);
+    }
+
+    public function getStates(Request $request)
+    {
+        $id = $request->input('id');
+        $sales_officer = State::where(['country_id' => $id])->pluck('name', 'id');
+
+        return response()->json($sales_officer);
+    }
+
+    public function getCities(Request $request)
+    {
+        $id = $request->input('id');
+        $sales_officer = City::where(['state_id' => $id])->pluck('city_name', 'city_id');
+
+        return response()->json($sales_officer);
     }
 
 

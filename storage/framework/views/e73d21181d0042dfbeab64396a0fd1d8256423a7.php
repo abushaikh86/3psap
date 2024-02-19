@@ -95,17 +95,6 @@
 </div>
 
 <?php $__env->stopSection(); ?>
-<?php $__env->startSection('scripts'); ?>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/datatables.min.js')); ?>"></script>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js')); ?>"></script>
-<script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.buttons.min.js')); ?>"></script>
 
-<script>
-  $(document).ready(function()
-  {
-
-  });
-</script>
-<?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/backendmenu/index.blade.php ENDPATH**/ ?>

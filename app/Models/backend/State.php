@@ -5,15 +5,18 @@ namespace App\Models\backend;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Countries extends Model
-{
 
+use App\Models\backend\Papers;
+
+class State extends Model
+{
+    use SoftDeletes;
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'countries';
+    protected $table = 'states';
     protected $primaryKey = 'id';
 
     /**
@@ -21,11 +24,9 @@ class Countries extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-      ];
+    protected $fillable = ['name','country_id'];
+    protected $dates = ['deleted_at'];
 
-    // use SoftDeletes;
-    // protected $dates = ['deleted_at'];
 
-}
+    }
+

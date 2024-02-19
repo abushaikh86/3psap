@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class States extends Authenticatable
+class Country extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -17,15 +17,15 @@ class States extends Authenticatable
      *
      * @var string
      */
-    protected $table = 'states';
-    protected $primaryKey = 'id';
+    protected $table = 'country';
+    protected $primaryKey = 'country_id';
 
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['id', 'name'];
+    protected $fillable = ['name'];
 
     use SoftDeletes;
     protected $dates = ['deleted_at'];

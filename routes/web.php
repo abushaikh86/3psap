@@ -62,6 +62,9 @@ use App\Http\Controllers\backend\ReportsController;
 use App\Http\Controllers\backend\InventoryController;
 use App\Http\Controllers\backend\GoodsissueController;
 use App\Http\Controllers\backend\OutletController;
+use App\Http\Controllers\backend\CountryController;
+use App\Http\Controllers\backend\StateController;
+use App\Http\Controllers\backend\CityController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -385,6 +388,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getHsnCodes/', [MasterDropdownController::class, 'getHsnCodes'])->name('admin.getHsnCodes');
         Route::get('/master/getEanBarCodes/', [MasterDropdownController::class, 'getEanBarCodes'])->name('admin.getEanBarCodes');
         Route::get('/master/getGst', [MasterDropdownController::class, 'getGst'])->name('admin.getGst');
+        Route::get('/master/getStates/', [MasterDropdownController::class, 'getStates'])->name('admin.getStates');
+        Route::get('/master/getCities/', [MasterDropdownController::class, 'getCities'])->name('admin.getCities');
+
 
         //contact details
         Route::get('/bussinesspartner/contact/{id}', [BussinessParatnerController::class, 'contactdetails'])->name('admin.bussinesspartner.contact');
@@ -754,6 +760,28 @@ Route::prefix('admin')->group(function () {
         Route::get('/gst/delete/{id}', [GSTController::class, 'destroyUser'])->name('admin.gst.delete');
         Route::get('/gst/edit/{id}', [GSTController::class, 'edit'])->name('admin.gst.edit');
         Route::post('/gst/update', [GSTController::class, 'update'])->name('admin.gst.update');
+
+        // usama_17-02-2024-country module
+        Route::get('/country', [CountryController::class, 'index'])->name('admin.country');
+        Route::get('/country/create', [CountryController::class, 'create'])->name('admin.country.create');
+        Route::post('/country/store', [CountryController::class, 'store'])->name('admin.country.store');
+        Route::get('/country/delete/{id}', [CountryController::class, 'destroy'])->name('admin.country.delete');
+        Route::get('/country/edit/{id}', [CountryController::class, 'edit'])->name('admin.country.edit');
+        Route::post('/country/update', [CountryController::class, 'update'])->name('admin.country.update');
+
+        Route::get('/state/{id}', [StateController::class, 'index'])->name('admin.state');
+        Route::get('/state/create', [StateController::class, 'create'])->name('admin.state.create');
+        Route::post('/state/store', [StateController::class, 'store'])->name('admin.state.store');
+        Route::get('/state/delete/{id}', [StateController::class, 'delete'])->name('admin.state.delete');
+        Route::get('/state/edit/{id}', [StateController::class, 'edit'])->name('admin.state.edit');
+        Route::post('/state/update', [StateController::class, 'update'])->name('admin.state.update');
+
+        Route::get('/states/city/{id}', [CityController::class, 'index'])->name('admin.city');
+        Route::get('/states/city/create', [CityController::class, 'create'])->name('admin.city.create');
+        Route::post('/states/city/store', [CityController::class, 'store'])->name('admin.city.store');
+        Route::get('/states/city/delete/{id}', [CityController::class, 'delete'])->name('admin.city.delete');
+        Route::get('/states/city/edit/{id}', [CityController::class, 'edit'])->name('admin.city.edit');
+        Route::post('/states/city/update', [CityController::class, 'update'])->name('admin.city.update');
 
         Route::get('/company', [CompanyController::class, 'index'])->name('admin.company');
         Route::get('/company/create', [CompanyController::class, 'create'])->name('admin.company.create');

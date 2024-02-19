@@ -81,8 +81,8 @@
                                                     <td>{{ $data->landmark }}</td>
                                                     <td>{{ $data->city }}</td>
                                                     <td>{{ $data->pin_code }}</td>
-                                                    <td>{{ $data->district }}</td>
-                                                    <td>{{ $data->state }}</td>
+                                                    <td>{{ $data->getDistrict->city_name ??''}}</td>
+                                                    <td>{{ $data->getState->name??'' }}</td>
                                                     <td>
 
                                                         {{--  update Button  --}}

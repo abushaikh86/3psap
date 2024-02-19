@@ -1,6 +1,8 @@
 <?php $__env->startSection('title', 'Create Outlet'); ?>
 <?php
 use Spatie\Permission\Models\Role;
+use App\Models\backend\Country;
+
 ?>
 <?php $__env->startSection('content'); ?>
 
@@ -99,8 +101,8 @@ use Spatie\Permission\Models\Role;
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('country', 'Country')); ?>
 
-                                        <?php echo e(Form::select('country', [], null, ['class' => 'form-control ', 'required' =>
-                                        true])); ?>
+                                        <?php echo e(Form::select('country', Country::pluck('name','country_id'), null, ['class' => 'form-control ',
+                                         'required' =>true,'placeholder'=>'Select Country'])); ?>
 
                                     </div>
                                 </div>
@@ -219,12 +221,24 @@ use Spatie\Permission\Models\Role;
         </div>
     </div>
 </section>
-<script src="<?php echo e(asset('public/backend-assets/js/country_state_city.js')); ?>"></script>
+
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
+
+
 
 <script>
-    var country_selected = `<?php echo e(old('country') ?? ''); ?>`;
-        var state_selected = `<?php echo e(old('state') ?? ''); ?>`;
-        var district_selected = `<?php echo e(old('district') ?? ''); ?>`;
+    $(document).ready(function() {
+            // usama_19-02-2024_get states
+            $('#country').change(function() {       
+            new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+             $(this).val(), '#state',null,'#district');
+            });
+
+            $('#state').change(function() {       
+            new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+             $(this).val(), '#district',null);
+            });
+        });
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make(request()->is('api/*') ? 'backend.layouts.appempty' : 'backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/outlet/create.blade.php ENDPATH**/ ?>

@@ -33,6 +33,19 @@ class BussinessPartnerAddress extends Authenticatable
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 
+    public function getCountry(){
+        return $this->hasOne(Country::class,'country_id','country');
+    }
+
+    public function getState(){
+        return $this->hasOne(State::class,'id','state');
+    }
+
+    public function getDistrict(){
+        return $this->hasOne(City::class,'city_id','district');
+    }
+
+
 
 
 

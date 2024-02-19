@@ -110,12 +110,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                         <?php echo e(Form::select(
                                         'residential_status',
-                                        [
-                                        'resident' => 'Resident',
-                                        'non-resident' => 'Non Resident',
-                                        'indian-company' => 'Indian company',
-                                        'foriegn-company' => 'Foriegn company',
-                                        ],
+                                        DB::table('residential_status')->pluck('name'),
                                         $model->residential_status,
                                         ['class' => 'form-control', 'placeholder' => 'Select Residential status',
                                         'required' => true],
@@ -252,8 +247,8 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('gst_reg_type', 'GST Registration Type *')); ?>
 
-                                        <?php echo e(Form::select('gst_reg_type', ['composite' => 'Composite', 'regular' =>
-                                        'Regular'], $model->gst_reg_type, [
+                                        <?php echo e(Form::select('gst_reg_type',DB::table('gst_reg_type')->pluck('name'),
+                                        $model->gst_reg_type, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select GST Registration Type',
                                         'required' => true,

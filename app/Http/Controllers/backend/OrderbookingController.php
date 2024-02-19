@@ -66,8 +66,7 @@ class OrderbookingController extends Controller
           }
           $is_any_of_exist = OrderFulfilment::where('order_booking_id', $purchaseorder->order_booking_id)->first();
 
-          if (request()->user()->can('Clone Sales Order')) {
-
+          if (request()->user()->can('Clone Sales Order') && !empty($purchaseorder->customer_ref_no)) {
             $actionBtn .= '<a href="' . route('admin.orderbooking.creategr', ['id' => $purchaseorder->order_booking_id]) . '
                " class="btn btn-sm btn-info" title="Create Order Fulfilment" >
                <i class="feather icon-plus"></i></a> ';
