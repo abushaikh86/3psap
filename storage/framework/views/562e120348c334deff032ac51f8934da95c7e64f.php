@@ -62,8 +62,8 @@
                                             <th>Landmark</th>
                                             <th>City</th>
                                             <th>Pin Code</th>
-                                            <th>District</th>
                                             <th>State</th>
+                                            <th>District</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,8 +82,8 @@
                                                     <td><?php echo e($data->landmark); ?></td>
                                                     <td><?php echo e($data->city); ?></td>
                                                     <td><?php echo e($data->pin_code); ?></td>
-                                                    <td><?php echo e($data->district); ?></td>
-                                                    <td><?php echo e($data->state); ?></td>
+                                                    <td><?php echo e($data->getState->name??''); ?></td>
+                                                    <td><?php echo e($data->getDistrict->city_name ??''); ?></td>
                                                     <td>
 
                                                         

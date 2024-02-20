@@ -77,7 +77,13 @@
                                         <th>Category</th>
                                         <th>Format</th>
                                         <th>Variant</th>
-                                        <th>Selling Price</th>
+                                        <th>
+                                            @if($pricings->pricing_type == 'sale')
+                                            Selling Price
+                                            @else
+                                            Purchase Price
+                                            @endif
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>

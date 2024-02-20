@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Edit Business Partner'); ?>
 <?php
 use Spatie\Permission\Models\Role;
@@ -52,7 +53,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('Business Partner Type', 'Business Partner Type *')); ?>
 
-                                    
+
                                         <?php echo e(Form::select('business_partner_type', $bussiness_master_type,
                                         $model->business_partner_type, [
                                         'class' => 'form-control',
@@ -65,11 +66,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         <?php echo e(Form::hidden('business_partner_id', $model->business_partner_id, ['class' =>
                                         'form-control'])); ?>
 
-                       
+
 
                                     </div>
                                 </div>
-                               
+
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
@@ -92,7 +93,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         Organization Type *',
                                         )); ?>
 
-                                       
+
                                         <?php echo e(Form::select('bp_organisation_type', $bpOrgType,
                                         $model->bp_organisation_type, [
                                         'class' => 'form-control',
@@ -106,19 +107,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('residential_status', 'Residential status *')); ?>
+                                        <?php echo e(Form::label('residential_status', 'Residential status')); ?>
 
                                         <?php echo e(Form::select(
                                         'residential_status',
-                                        [
-                                        'resident' => 'Resident',
-                                        'non-resident' => 'Non Resident',
-                                        'indian-company' => 'Indian company',
-                                        'foriegn-company' => 'Foriegn company',
-                                        ],
+                                        DB::table('residential_status')->pluck('name'),
                                         $model->residential_status,
-                                        ['class' => 'form-control', 'placeholder' => 'Select Residential status',
-                                        'required' => true],
+                                        ['class' => 'form-control',
+                                        'placeholder' => 'Select Residential status'],
                                         )); ?>
 
                                     </div>
@@ -138,7 +134,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         ])); ?>
 
 
-                                    
+
                                     </div>
                                 </div>
 
@@ -250,13 +246,12 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('gst_reg_type', 'GST Registration Type *')); ?>
+                                        <?php echo e(Form::label('gst_reg_type', 'GST Registration Type')); ?>
 
-                                        <?php echo e(Form::select('gst_reg_type', ['composite' => 'Composite', 'regular' =>
-                                        'Regular'], $model->gst_reg_type, [
+                                        <?php echo e(Form::select('gst_reg_type',DB::table('gst_reg_type')->pluck('name'),
+                                        $model->gst_reg_type, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select GST Registration Type',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -264,11 +259,10 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('rcm_app', 'RCM Application *')); ?>
+                                        <?php echo e(Form::label('rcm_app', 'RCM Application')); ?>
 
                                         <?php echo e(Form::select('rcm_app', ['1' => 'Yes', '0' => 'No'], $model->rcm_app, [
                                         'class' => 'form-control',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -276,12 +270,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile *')); ?>
+                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
 
                                         <?php echo e(Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Pricing Profile',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -301,11 +294,10 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12 ">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('msme_reg', 'MSME registration *')); ?>
+                                        <?php echo e(Form::label('msme_reg', 'MSME registration')); ?>
 
                                         <?php echo e(Form::select('msme_reg', ['1' => 'Yes', '0' => 'No'], $model->msme_reg, [
                                         'class' => 'form-control',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -322,7 +314,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-group">
                                         <?php echo e(Form::label('beat_id', 'Beat *')); ?>
 
-                                   
+
                                         <?php echo e(Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), $model->beat_id,
                                         [
                                         'class' => 'form-control select2',
@@ -535,7 +527,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                             <?php echo e(Form::label('route_id', 'Select Route *')); ?>
 
                             <select name="route_id" id="route_id" class="form-control select2"></select>
-                           
+
                         </div>
                     </div>
 
@@ -888,6 +880,34 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 <script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
 <script>
+    function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
+            var id = id;
+            if(parent_id != null){
+                id = parent_id;
+            }
+            $.ajax({
+                    url: route,
+                    type: 'get',
+                    data: {
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        var html = '';
+                        for (var index in data) {
+                            if (data.hasOwnProperty(index)) {
+                                if(selectedValue == index) {
+                                    html += '<option value="' + index + '" selected>' + data[index] + '</option>';
+                                }else{
+                                    html += '<option value="' + index + '">' + data[index] + '</option>';
+                                }
+                            }
+                        }
+                        $(append_id).html(html);
+                    }
+                });
+        } 
     //fetch  asm->ase->sales officer->salesman dependent data and for modal also
         $(document).ready(function() {
 
@@ -914,9 +934,24 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
                 salesManager, '#ase',ase);
             }
-            $('#sales_manager').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
-             $(this).val(), '#ase',null,'#sales_officer','#salesman');
+
+            //get ase from asm
+            $('#sales_manager').change(function() {     
+                var selectedValue = $(this).val();
+
+                new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
+                selectedValue, '#ase',null,'#sales_officer','#salesman');
+                // fetch asm data in ase modal
+                fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                  selectedValue,'#salesManager_ase')
+            });
+
+            // fetch asm data in ase modal and show default selected
+            $('#submit_sales_manager').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                        $('#sales_manager').val(),'#salesManager_ase')
+                }, 500);
             });
 
             //get sales officers from ase
@@ -924,9 +959,24 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
                 ase, '#sales_officer',salesOfficer);
             }
-            $('#ase').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
-             $(this).val(), '#sales_officer',null,'#salesman');
+
+            //get sales officers from ase
+            $('#ase').change(function() {  
+                var selectedValue = $(this).val();
+                new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
+                 $(this).val(), '#sales_officer',null,'#salesman');
+
+                 // fetch ase data in sales officer modal
+                 fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                        selectedValue,'#ase_salesoff',$('#sales_manager').val())
+            });
+
+            // fetch ase data in sales officer modal and show default selected
+            $('#submit_ase').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                        $('#ase').val(),'#ase_salesoff',$('#sales_manager').val())
+                }, 800);
             });
 
             //get salesmans from sales officer
@@ -934,12 +984,25 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
                 salesOfficer, '#salesman',salesman);
             }
-            $('#sales_officer').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
-             $(this).val(), '#salesman');
+
+            //get salesmans from sales officer
+            $('#sales_officer').change(function() {  
+                var selectedValue = $(this).val();
+                new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
+                 $(this).val(), '#salesman');
+
+                // fetch sales officer data in salesman modal
+                fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                     selectedValue,'#salesOfficer',$('#ase').val())
             });
 
-
+            // fetch sales officer data in salesman modal and show default selected
+            $('#submit_sales_officer').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                        $('#sales_officer').val(),'#salesOfficer',$('#ase').val())
+                }, 800);
+            });
            
 
             new MasterHandler('#bp_category', '#add_bp_cat_modal', '#submit_bp_cat',
@@ -996,10 +1059,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
@@ -1016,10 +1083,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile');
             }
         });
 

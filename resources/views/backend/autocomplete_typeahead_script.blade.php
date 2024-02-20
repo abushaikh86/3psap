@@ -66,6 +66,7 @@
                             'sku': sku
                         },
                         success: function(response) {
+                            // alert(response);
                             if (response == -1) {
                                 // alert(`Please Set Pricing For Product ${item.name}`);
                                 Swal.fire({

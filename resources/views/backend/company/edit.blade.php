@@ -1,6 +1,8 @@
 @extends('backend.layouts.app')
 @section('title', 'Update Company')
-
+@php
+    use App\Models\backend\Country;
+@endphp
 @section('content')
 @php
 
@@ -104,8 +106,8 @@
                                                 @endphp --}}
                                                 {{ Form::label('country', 'Country *') }}
                                                 {{-- {{dd($address->country)}} --}}
-                                                {{ Form::select('country', [], $company->country, ['class' =>
-                                                'form-control', 'required' => true]) }}
+                                                {{ Form::select('country', Country::pluck('name','country_id'), $company->country, ['class' =>
+                                                'form-control','placeholder'=>'Select Country', 'required' => true]) }}
 
                                             </div>
                                         </div>
@@ -205,16 +207,42 @@
 </div>
 
 
-<script src="{{ asset('public/backend-assets/js/country_state_city.js') }}"></script>
+<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
-
+<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
 <script>
-    var country_selected = `{{ (old('country') ?? $company->country) ?? '' }}`;
-      var state_selected = `{{ (old('state') ?? $company->state) ?? '' }}`;
-      var district_selected = `{{ (old('district') ?? $company->district) ?? '' }}`;
-</script>
+$(document).ready(function() {
 
+   // usama_19-02-2024_get states
+
+   var country = '{{$company->country}}';
+   var state = '{{$company->state}}';
+   var district = '{{$company->district}}';
+
+   if(country){
+        new DynamicDropdown('{{ route('admin.getStates') }}', 
+        country, '#state',state);
+   }
+
+   if(state){
+        new DynamicDropdown('{{ route('admin.getCities') }}', 
+        state, '#district',district);
+   }
+
+
+   $('#country').change(function() {       
+   new DynamicDropdown('{{ route('admin.getStates') }}', 
+   $(this).val(), '#state',null,'#district');
+   });
+
+   $('#state').change(function() {       
+   new DynamicDropdown('{{ route('admin.getCities') }}', 
+   $(this).val(), '#district',null);
+   });
+
+});
+</script>
 
 
 

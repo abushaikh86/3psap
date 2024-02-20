@@ -3,7 +3,7 @@
     $categories = BusinessPartnerCategory::pluck('business_partner_category_name');
 ?>
 
-<?php $__env->startSection('title', 'Bussiness Partner'); ?>
+<?php $__env->startSection('title', 'Business Master'); ?>
 
 <style>
     tr td {
@@ -33,14 +33,14 @@
 
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Bussiness Partner</h3>
+            <h3 class="content-header-title">Business Master</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Bussiness Partner</li>
+                        <li class="breadcrumb-item active">Business Master</li>
                     </ol>
                 </div>
             </div>
@@ -48,7 +48,7 @@
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Login Management')): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Business Master')): ?>
                         <a class="btn btn-outline-primary" href="<?php echo e(route('admin.bussinesspartner.create')); ?>">
                             <i class="feather icon-plus"></i> Add
                         </a>
@@ -117,7 +117,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Bussiness Partner</h4>
+                        <h4 class="card-title">Business Partners</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
@@ -130,7 +130,7 @@
                                         <tr>
                                             <th>Sr. No</th>
                                             
-                                            <th>Bussines Partner Type</th>
+                                            <th>Business Partner Type</th>
                                             
                                             <th>Partner Name</th>
                                             <th>Organization Type</th>
@@ -153,8 +153,11 @@
                                                         class="btn btn-sm border border-dark dropdown-toggle" type="button"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                         <option value="">Select</option>
-                                                        <option value="customer">Customer</option>
-                                                        <option value="vendor">Vendor</option>
+                                                        <?php $__currentLoopData = $bussinesstype; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($category); ?>"><?php echo e($category); ?>
+
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </div>
                                             </th>
@@ -165,10 +168,11 @@
                                                         class="btn btn-sm border border-dark dropdown-toggle" type="button"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                         <option value="">Select</option>
-                                                        <option value="proprietor">Proprietor</option>
-                                                        <option value="partnership">Partnership</option>
-                                                        <option value="company">Company</option>
-                                                        <option value="llp">LLP</option>
+                                                        <?php $__currentLoopData = $bpOrgType; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($category); ?>"><?php echo e($category); ?>
+
+                                                        </option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </div>
                                             </th>
@@ -193,10 +197,11 @@
                                                         class="btn btn-sm border border-dark dropdown-toggle"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <option value="">Select</option>
-                                                        <option value="lc">LC</option>
-                                                        <option value="advance_prepayment">Advance/Pre-Payment</option>
-                                                        <option value="pdc">PDC</option>
-                                                        <option value="on_credit">On Credit</option>
+                                                        <?php $__currentLoopData = $termPayment; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($category); ?>"><?php echo e($category); ?>
+
+                                                        </option>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </div>
                                             </th>
@@ -233,7 +238,7 @@
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
-      
+
                     {
                         data: 'get_partner_type_name.bussiness_master_type',
                         name: 'get_partner_type_name.bussiness_master_type'
@@ -305,7 +310,7 @@
                                 return pageTitle
                             }
                         },
-      
+
                     ]
                 }],
                 dom: 'lBfrtip',

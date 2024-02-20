@@ -661,12 +661,12 @@
         }
         $(document).ready(function() {
 
-            var customer_id = $('#party_id option:selected').val();
+            var customer_id = $('#party_id option:selected,#party_code option:selected').val();
             // alert(customer_id);
             if (customer_id != "") {
                 get_data_display(customer_id);
             }
-            $("#party_id").on('change', function() {
+            $("#party_id,#party_code").on('change', function() {
                 $(".gst_dropdown").val('');
                 $(".all_gst").val('');
 

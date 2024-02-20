@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
-use App\Models\backend\States;
+use App\Models\backend\State;
 use App\Models\backend\Company;
 use Auth;
 use Illuminate\Support\Facades\Session;
@@ -44,7 +44,7 @@ class CompanyController extends Controller
   public function create()
   {
     $roles = Role::pluck('name', 'id')->all();
-    $states = States::all();
+    $states = State::all();
     $states = collect($states)->mapWithKeys(function ($item, $key) {
       return [$item['name'] => $item['name']];
     });
@@ -126,7 +126,7 @@ class CompanyController extends Controller
   {
     $company = Company::findOrFail($id);
     $roles = Role::pluck('name', 'id')->all();
-    $states = States::all();
+    $states = State::all();
     $states = collect($states)->mapWithKeys(function ($item, $key) {
       return [$item['name'] => $item['name']];
     });

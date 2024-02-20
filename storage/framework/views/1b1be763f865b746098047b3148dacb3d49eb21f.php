@@ -309,8 +309,7 @@
                                     <div class="form-group">
                                         <?php echo e(Form::label('mrp', 'MRP')); ?>
 
-                                        <?php echo e(Form::number('mrp', null, ['class' => 'form-control', 'placeholder' => 'Enter
-                                        MRP'])); ?>
+                                        <?php echo e(Form::number('mrp', null, ['class' => 'form-control', 'placeholder' => 'Enter MRP'])); ?>
 
                                     </div>
                                 </div>
@@ -326,7 +325,7 @@
 
 
                                 <div class="col-md-6 col-6">
-                                    <?php echo e(Form::label('visibility', 'Show / Hide')); ?>
+                                    <?php echo e(Form::label('visibility', 'Active / In-Active')); ?>
 
                                     <fieldset class="">
                                         <div class="radio radio-success">

@@ -35,7 +35,7 @@ class PricingsController extends Controller
      */
     public function index()
     {
-        $pricings = Pricings::all();
+        $pricings = Pricings::where('pricing_type','purchase')->get();
         return view('backend.pricings.index', compact('pricings'));
     }
 
@@ -47,7 +47,7 @@ class PricingsController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $request->validate([
             'pricing_name' => 'required',
         ]);

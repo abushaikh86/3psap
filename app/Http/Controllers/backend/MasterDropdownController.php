@@ -75,7 +75,8 @@ class MasterDropdownController extends Controller
         $model->role = $request->role;
         $model->save();
 
-        $data = AdminUsers::orderBy('created_at', 'desc')->where('role', $request->role)->pluck('first_name', 'admin_user_id');
+        $data = AdminUsers::orderBy('created_at', 'desc')->
+        where(['parent_users'=>$request->data_name[3],'role'=> $request->role])->pluck('first_name', 'admin_user_id');
         $data_options = "";
         foreach ($data as $key => $val) {
             $data_options .= '<option value="' . $key . '">' . $val . '</option>';
@@ -263,11 +264,19 @@ class MasterDropdownController extends Controller
     }
 
 
+    
+    public function getAsm(Request $request)
+    {
+        $role = $request->input('id');
+        $sales_managers = AdminUsers::where(['account_status'=>1,'role'=>$role])->pluck('first_name', 'admin_user_id');
+        return response()->json($sales_managers);
+    }
+
 
     public function getAse(Request $request)
     {
         $salesManagerId = $request->input('id');
-        $sales_officer = AdminUsers::where(['parent_users' => $salesManagerId])->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::where(['account_status'=>1,'parent_users' => $salesManagerId])->pluck('first_name', 'admin_user_id');
 
         return response()->json($sales_officer);
     }
@@ -275,7 +284,7 @@ class MasterDropdownController extends Controller
     public function getSalesOfficers(Request $request)
     {
         $aseId = $request->input('id');
-        $sales_officer = AdminUsers::where(['parent_users' => $aseId])->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::where(['account_status'=>1,'parent_users' => $aseId])->pluck('first_name', 'admin_user_id');
 
         return response()->json($sales_officer);
     }
@@ -283,10 +292,19 @@ class MasterDropdownController extends Controller
     public function getSalesmen(Request $request)
     {
         $salesOfficerId = $request->input('id');
-        $salesmen = AdminUsers::where(['parent_users' => $salesOfficerId])->pluck('first_name', 'admin_user_id');
+        $salesmen = AdminUsers::where(['account_status'=>1,'parent_users' => $salesOfficerId])->pluck('first_name', 'admin_user_id');
 
         return response()->json($salesmen);
     }
+
+
+    public function getPricing(Request $request)
+    {
+        $pricing_type = $request->input('id');
+        $pricing = Pricings::where(['pricing_type'=>$pricing_type,'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        return response()->json($pricing);
+    }
+
 
     public function get_bill_bookings(Request $request)
     {
@@ -406,7 +424,7 @@ class MasterDropdownController extends Controller
         $item_code = $_GET['item_code'];
         $sku = $_GET['sku'];
 
-        $data = BussinessPartnerMaster::where(['business_partner_type' => 1, 'business_partner_id' => $customer_id])->first();
+        $data = BussinessPartnerMaster::where(['business_partner_id' => $customer_id])->first();
         if (!empty($data)) {
             $pricing_data = PricingItem::where([
                 'pricing_master_id' => $data->pricing_profile,

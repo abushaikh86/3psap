@@ -1,6 +1,8 @@
 
 <?php $__env->startSection('title', 'Update Company'); ?>
-
+<?php
+    use App\Models\backend\Country;
+?>
 <?php $__env->startSection('content'); ?>
 <?php
 
@@ -119,8 +121,8 @@
                                                 <?php echo e(Form::label('country', 'Country *')); ?>
 
                                                 
-                                                <?php echo e(Form::select('country', [], $company->country, ['class' =>
-                                                'form-control', 'required' => true])); ?>
+                                                <?php echo e(Form::select('country', Country::pluck('name','country_id'), $company->country, ['class' =>
+                                                'form-control','placeholder'=>'Select Country', 'required' => true])); ?>
 
 
                                             </div>
@@ -239,16 +241,42 @@
 </div>
 
 
-<script src="<?php echo e(asset('public/backend-assets/js/country_state_city.js')); ?>"></script>
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
-
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
 <script>
-    var country_selected = `<?php echo e((old('country') ?? $company->country) ?? ''); ?>`;
-      var state_selected = `<?php echo e((old('state') ?? $company->state) ?? ''); ?>`;
-      var district_selected = `<?php echo e((old('district') ?? $company->district) ?? ''); ?>`;
-</script>
+$(document).ready(function() {
 
+   // usama_19-02-2024_get states
+
+   var country = '<?php echo e($company->country); ?>';
+   var state = '<?php echo e($company->state); ?>';
+   var district = '<?php echo e($company->district); ?>';
+
+   if(country){
+        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+        country, '#state',state);
+   }
+
+   if(state){
+        new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+        state, '#district',district);
+   }
+
+
+   $('#country').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+   $(this).val(), '#state',null,'#district');
+   });
+
+   $('#state').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+   $(this).val(), '#district',null);
+   });
+
+});
+</script>
 
 
 

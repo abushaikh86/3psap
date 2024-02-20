@@ -86,7 +86,8 @@ $user = Auth()
                             @endphp
                             {{-- {{dd($user)}} --}}
                             <span class="user-name">{{ $user->first_name }} {{ $user->last_name }}
-                                {{ isset($user->company_id)? '('.$company->name.')' : '' }} </span>
+                                {{-- {{ isset($user->company_id)? '('.$company->name.')' : '' }} --}}
+                             </span>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

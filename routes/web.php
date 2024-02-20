@@ -38,6 +38,7 @@ use App\Http\Controllers\backend\CompanyController;
 use App\Http\Controllers\backend\AreaController;
 use App\Http\Controllers\backend\RouteController;
 use App\Http\Controllers\backend\BeatController;
+use App\Http\Controllers\backend\SelllingpricingController;
 use App\Http\Controllers\backend\DropdownController;
 use App\Http\Controllers\backend\BeatCalenderController;
 use App\Http\Controllers\backend\BillbookingController;
@@ -385,6 +386,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getSalesOfficers/', [MasterDropdownController::class, 'getSalesOfficers'])->name('admin.getSalesOfficers');
         Route::get('/master/getSalesmen/', [MasterDropdownController::class, 'getSalesmen'])->name('admin.getSalesmen');
         Route::get('/master/getAse/', [MasterDropdownController::class, 'getAse'])->name('admin.getAse');
+        Route::get('/master/getAsm/', [MasterDropdownController::class, 'getAsm'])->name('admin.getAsm');
+        Route::get('/master/getPricing/', [MasterDropdownController::class, 'getPricing'])->name('admin.getPricing');
         Route::get('/master/getHsnCodes/', [MasterDropdownController::class, 'getHsnCodes'])->name('admin.getHsnCodes');
         Route::get('/master/getEanBarCodes/', [MasterDropdownController::class, 'getEanBarCodes'])->name('admin.getEanBarCodes');
         Route::get('/master/getGst', [MasterDropdownController::class, 'getGst'])->name('admin.getGst');
@@ -485,6 +488,20 @@ Route::prefix('admin')->group(function () {
         Route::any('/pricings/get_product', [PricingsController::class, 'get_product'])->name('admin.pricings.get_product');
         Route::post('/updatepricings/update', [PricingsController::class, 'updatepricings'])->name('admin.pricings.updatepricings');
         Route::resource('admin/pricings', 'PricingsController');
+
+        //price master Routes
+        Route::get('/sellingpricing', [SelllingpricingController::class, 'index'])->name('admin.sellingpricing');
+        Route::get('/sellingpricing/create', [SelllingpricingController::class, 'create'])->name('admin.sellingpricing.create');
+        Route::post('/sellingpricing/store', [SelllingpricingController::class, 'store'])->name('admin.sellingpricing.store');
+        Route::get('/sellingpricing/edit/{id}', [SelllingpricingController::class, 'edit'])->name('admin.sellingpricing.edit');
+        Route::post('/sellingpricing/update', [SelllingpricingController::class, 'update'])->name('admin.sellingpricing.update');
+        Route::get('/sellingpricing/delete/{id}', [SelllingpricingController::class, 'destroy'])->name('admin.sellingpricing.delete');
+        Route::get('/sellingpricing/view/{id}', [SelllingpricingController::class, 'show'])->name('admin.sellingpricing.view');
+        Route::any('/sellingpricing/setpricing/{id}', [SelllingpricingController::class, 'setpricing'])->name('admin.sellingpricing.setpricing');
+        Route::any('/sellingpricing/item_codes', [SelllingpricingController::class, 'item_codes'])->name('admin.sellingpricing.item_codes');
+        Route::any('/sellingpricing/get_product', [SelllingpricingController::class, 'get_product'])->name('admin.sellingpricing.get_product');
+        Route::post('/updatesellingpricing/update', [SelllingpricingController::class, 'updatesellingpricing'])->name('admin.sellingpricing.updatepricings');
+        Route::resource('admin/sellingpricing', 'SelllingpricingController');
 
         //inventory Routes
         Route::get('/inventory', [InventoryController::class, 'index'])->name('admin.inventory');

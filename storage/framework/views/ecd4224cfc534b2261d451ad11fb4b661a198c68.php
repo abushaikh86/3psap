@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Admin Login'); ?>
 <?php $__env->startSection('content'); ?>
 
@@ -19,7 +20,7 @@
 
                     <div class="col-md-6">
                         <div class="form-content">
-                            <h1 class="heading mb-4"><span>3P SAP</span> Admin Panel</h1>
+                            <h1 class="heading mb-4"><span>EUREKA</span> Admin Panel</h1>
                             <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
                             <form method="POST" action="<?php echo e(route('admin.login.submit')); ?>">

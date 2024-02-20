@@ -59,12 +59,12 @@ class BussinessParatnerController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($bussinesspartner) {
                     $actionBtn = '<div id="action_buttons">';
-                    if (request()->user()->can('Update Login Management')) {
+                    if (request()->user()->can('Update Business Master')) {
                         // dd("yes");
                         $actionBtn .= '<a href="' . route('admin.bussinesspartner.edit', ['id' => $bussinesspartner->business_partner_id]) . '
                      " class="btn btn-sm btn-primary" title="Edit"><i class="feather icon-edit"></i></a> ';
                     }
-                    if (request()->user()->can('Delete Login Management')) {
+                    if (request()->user()->can('Delete Business Master')) {
                         $actionBtn .= '<a href="' . route('admin.bussinesspartner.delete', ['id' => $bussinesspartner->business_partner_id]) . '"
                     class="btn btn-sm btn-danger" title="Delete" id="delete_btn" onclick="return confirm(`Are you sure you want to Delete this Entry ?`)">
                     <i class="feather icon-trash"></i></a>';
@@ -256,6 +256,7 @@ class BussinessParatnerController extends Controller
                             'rcm_app' => (int) trim(addslashes($sheet->getCell('N' . $row)->getValue())),
                             'pricing_profile' => getOrCreateId(Pricings::class, 'pricing_name', $sheet->getCell('O' . $row)->getValue(), 'pricing_master_id'),
                             'msme_reg' => (int) trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                            // 'beat_id' => getOrCreateId(Beat::class, 'beat_name', $sheet->getCell('AW' . $row)->getValue(), 'beat_id'),
                         ];
 
                         // dd($data);
@@ -428,7 +429,7 @@ class BussinessParatnerController extends Controller
             'bp_name' => 'required|unique:business_partner_master,bp_name',
             'bp_organisation_type' => 'required',
             'bp_category' => 'required',
-            'pricing_profile' => 'required',
+            // 'pricing_profile' => 'required',
             // 'shelf_life' => 'required',
             'bp_group' => 'required',
             // 'sales_manager' => 'required_if',
@@ -437,9 +438,9 @@ class BussinessParatnerController extends Controller
             'payment_terms_id' => 'required',
             // 'credit_limit' => 'required',
             'gst_details' => 'required',
-            'residential_status' => 'required',
-            'gst_reg_type' => 'required',
-            'msme_reg' => 'required',
+            // 'residential_status' => 'required',
+            // 'gst_reg_type' => 'required',
+            // 'msme_reg' => 'required',
             // 'area_id' => 'required',
             // 'route_id' => 'required',
             // 'beat_id' => 'required',
@@ -605,7 +606,7 @@ class BussinessParatnerController extends Controller
             ],
             'bp_organisation_type' => 'required',
             'bp_category' => 'required',
-            'pricing_profile' => 'required',
+            // 'pricing_profile' => 'required',
             // 'shelf_life' => 'required',
             'bp_group' => 'required',
             // 'sales_manager' => 'required',
@@ -614,9 +615,9 @@ class BussinessParatnerController extends Controller
             'payment_terms_id' => 'required',
             // 'credit_limit' => 'required',
             'gst_details' => 'required',
-            'residential_status' => 'required',
-            'gst_reg_type' => 'required',
-            'msme_reg' => 'required',
+            // 'residential_status' => 'required',
+            // 'gst_reg_type' => 'required',
+            // 'msme_reg' => 'required',
             // 'area_id' => 'required',
             // 'route_id' => 'required',
             // 'beat_id' => 'required',

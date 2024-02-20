@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\backend\ActivityLog;
+use App\Models\backend\Company;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -238,6 +239,7 @@ if (!function_exists('amount_in_words')) {
             $record = $model::where($conditions)->first();
 
             $role = Role::where('department_id', $dep_id)->first();
+            $company = Company::first();
 
             if (!empty($value)) {
                 if (!$record) {
@@ -247,6 +249,8 @@ if (!function_exists('amount_in_words')) {
                     if (!empty($extra_id)) {
                         $newRecord->parent_users = $extra_id;
                     }
+                    $newRecord->account_status = 1;
+                    $newRecord->company_id = $company->company_id;
 
                     $newRecord->save();
 

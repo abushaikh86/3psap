@@ -1,6 +1,8 @@
 @extends('backend.layouts.app')
 @section('title', 'Create Company')
-
+@php
+use App\Models\backend\Country;
+@endphp
 @section('content')
 @php
 
@@ -51,36 +53,37 @@
                       <div class="col-md-6 col-12">
                         <div class="form-group">
                           {{ Form::label('email', 'Company Email *') }}
-                          {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Enter Company
-                          Email',
+                          {{ Form::text('email', null, ['class' => 'form-control',
+                          'placeholder' => 'Enter Company Email',
                           'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-6 col-12">
                         <div class="form-group">
                           {{ Form::label('mobile_no', 'Company Phone Number *') }}
-                          {{ Form::text('mobile_no', null, ['class' => 'form-control', 'placeholder' => 'Enter Company
-                          Phone Number', 'required' => true]) }}
+                          {{ Form::text('mobile_no', null, ['class' => 'form-control',
+                          'placeholder' => 'Enter Company Phone Number', 'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-12 col-12">
                         <div class="form-group">
                           {{ Form::label('address_line1', 'Address Line 1 *') }}
-                          {{ Form::text('address_line1', null, ['class' => 'form-control', 'placeholder' => 'Enter
-                          Address Line 1', 'required' => true]) }}
+                          {{ Form::text('address_line1', null, ['class' => 'form-control',
+                          'placeholder' => 'Enter Address Line 1', 'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-12 col-12">
                         <div class="form-group">
                           {{ Form::label('address_line2', 'Address Line 2 *') }}
-                          {{ Form::text('address_line2', null, ['class' => 'form-control', 'placeholder' => 'Enter
-                          Address Line 2', 'required' => true]) }}
+                          {{ Form::text('address_line2', null, ['class' => 'form-control',
+                          'placeholder' => 'Enter Address Line 2', 'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-12 col-12">
                         <div class="form-group">
                           {{ Form::label('landmark', 'Landmark *') }}
-                          {{ Form::text('landmark', null, ['class' => 'form-control', 'placeholder' => 'Enter Landmark',
+                          {{ Form::text('landmark', null, ['class' => 'form-control',
+                          'placeholder' => 'Enter Landmark',
                           'required' => true]) }}
                         </div>
                       </div>
@@ -91,12 +94,14 @@
                           'required' => true]) }}
                         </div>
                       </div>
-                  
+
                       <div class="col-md-6 col-12">
                         <div class="form-label-group">
-                          
+
                           {{ Form::label('country', 'Country *') }}
-                          {{ Form::select('country', [], null, ['class' => 'form-control', 'required' => true]) }}
+                          {{ Form::select('country', Country::pluck('name', 'country_id'), null, ['class' =>
+                          'form-control',
+                          'placeholder' => 'Select Country', 'required' => true]) }}
 
                         </div>
                       </div>
@@ -174,7 +179,7 @@
                         </div>
                       </div>
 
-                     
+
 
                       <div class="col-12 d-flex justify-content-start">
                         {{ Form::submit('Update', ['class' => 'btn btn-primary mr-1 mb-1']) }}
@@ -191,15 +196,20 @@
   </div>
 </div>
 
-
-<script src="{{ asset('public/backend-assets/js/country_state_city.js') }}"></script>
-
-
+<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
 <script>
-  var country_selected = `{{ old('country') ?? '' }}`;
-        var state_selected = `{{ old('state') ?? '' }}`;
-        var district_selected = `{{ old('district') ?? '' }}`;
+  $(document).ready(function() {
+     // usama_19-02-2024_get states
+     $('#country').change(function() {
+         new DynamicDropdown('{{ route('admin.getStates') }}',
+             $(this).val(), '#state', null, '#district');
+     });
+     $('#state').change(function() {
+         new DynamicDropdown('{{ route('admin.getCities') }}',
+             $(this).val(), '#district', null);
+     });
+  });
 </script>
 
 

@@ -51,7 +51,6 @@
                                             {{ Form::label('type', 'Address Type') }}
 
                                             <select name="type" id="address_type" class='form-control'>
-                                                <option value="Official">Official</option>
                                                 <option value="Bill-To/ Bill-From">Bill-To/ Bill-From</option>
                                                 <option value="Ship-To/ Ship-From">Ship-To/ Ship-From</option>
                                             </select>

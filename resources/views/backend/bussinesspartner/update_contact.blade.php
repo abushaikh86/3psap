@@ -51,9 +51,7 @@ use Spatie\Permission\Models\Role;
                                             {{ Form::label('type', 'Address Type') }}
                                             {{ Form::hidden('contact_details_id', $contact->contact_details_id, ['class' => 'form-control', 'placeholder' => 'Address Type', 'required' => true]) }}
                                             <select name="type" id="address_type" class='form-control'>
-                                                <option value="Official" @if ($contact->type == "Official")
-                                                    selected
-                                                @endif>Official</option>
+                                                
                                                 <option value="Bill-To/ Bill-From" @if ($contact->type == "Bill-To/ Bill-From")
                                                     selected
                                                 @endif>Bill-To/ Bill-From</option>
