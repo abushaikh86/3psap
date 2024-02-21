@@ -26,6 +26,7 @@ Route::middleware('throttle:1000,1')->group(function () {
     Route::get('/view_outlet', [ApiController::class, 'view_outlet'])->name('admin.view_outlet');
     Route::any('/delete_outlet', [ApiController::class, 'delete_outlet'])->name('admin.delete_outlet');
     Route::get('/get_area_route_beat', [ApiController::class, 'get_area_route_beat'])->name('admin.get_area_route_beat');
+    Route::get('/get_country_state_district', [ApiController::class, 'get_country_state_district'])->name('admin.get_country_state_district');
 
 
     Route::get('/get_companies', [ApiController::class, 'get_companies'])->name('admin.get_companies');

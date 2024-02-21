@@ -153,8 +153,8 @@ class BussinessParatnerController extends Controller
                         ];
 
                         //to enter dependent data in database
-                        $country = getOrCreateId(Country::class, 'name', $sheet->getCell('Q' . $row)->getValue(), 'country_id');
-                        $state = getOrCreateId(State::class, 'name', $sheet->getCell('R' . $row)->getValue(), 'id', $country);
+                        $country = getOrCreateId(Country::class, 'name', $sheet->getCell('Q' . $row)->getValue(), 'country_id',1);
+                        $state = getOrCreateId(State::class, 'name', $sheet->getCell('R' . $row)->getValue(), 'id', $country,1);
                         //bill-address
                         if (!empty($sheet->getCell('M' . $row)->getValue())) {
                             $bill_add = [
@@ -165,15 +165,15 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('P' . $row)->getValue())),
                                 'country' => $country,
                                 'state' => !empty($country) ? $state : null,
-                                'district' => !empty($state) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('S' . $row)->getValue(), 'city_id', $state) : null,
+                                'district' => !empty($state) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('S' . $row)->getValue(), 'city_id', $state,1) : null,
                                 'city' => trim(addslashes($sheet->getCell('T' . $row)->getValue())),
                                 'pin_code' => (int) trim(addslashes($sheet->getCell('U' . $row)->getValue())),
                             ];
                         }
 
                         //to enter dependent data in database
-                        $country1 = getOrCreateId(Country::class, 'name', $sheet->getCell('Z' . $row)->getValue(), 'country_id');
-                        $state1 = getOrCreateId(State::class, 'name', $sheet->getCell('AA' . $row)->getValue(), 'id', $country);
+                        $country1 = getOrCreateId(Country::class, 'name', $sheet->getCell('Z' . $row)->getValue(), 'country_id',1);
+                        $state1 = getOrCreateId(State::class, 'name', $sheet->getCell('AA' . $row)->getValue(), 'id', $country,1);
                         //ship-address
                         if (!empty($sheet->getCell('V' . $row)->getValue())) {
                             $ship_add = [
@@ -184,7 +184,7 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('AB' . $row)->getValue(), 'city_id') : null,
+                                'district' => !empty($state1) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('AB' . $row)->getValue(), 'city_id',1) : null,
                                 'city' => trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
                                 'pin_code' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
                             ];
@@ -261,8 +261,8 @@ class BussinessParatnerController extends Controller
 
                         // dd($data);
                         //to enter dependent data in database
-                        $country = getOrCreateId(Country::class, 'name', $sheet->getCell('U' . $row)->getValue(), 'country_id');
-                        $state = getOrCreateId(State::class, 'name', $sheet->getCell('V' . $row)->getValue(), 'id', $country);
+                        $country = getOrCreateId(Country::class, 'name', $sheet->getCell('U' . $row)->getValue(), 'country_id',1);
+                        $state = getOrCreateId(State::class, 'name', $sheet->getCell('V' . $row)->getValue(), 'id', $country,1);
                         //bill-address
                         if (!empty($sheet->getCell('Q' . $row)->getValue())) {
                             $bill_add = [
@@ -273,15 +273,15 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('T' . $row)->getValue())),
                                 'country' => $country,
                                 'state' => !empty($country) ? $state : null,
-                                'district' => !empty($state) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('W' . $row)->getValue(), 'city_id', $state) : null,
+                                'district' => !empty($state) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('W' . $row)->getValue(), 'city_id', $state,1) : null,
                                 'city' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
                                 'pin_code' => (int) trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
                             ];
                         }
 
                         //to enter dependent data in database
-                        $country1 = getOrCreateId(Country::class, 'name', $sheet->getCell('AD' . $row)->getValue(), 'country_id');
-                        $state1 = getOrCreateId(State::class, 'name', $sheet->getCell('AE' . $row)->getValue(), 'id', $country);
+                        $country1 = getOrCreateId(Country::class, 'name', $sheet->getCell('AD' . $row)->getValue(), 'country_id',1);
+                        $state1 = getOrCreateId(State::class, 'name', $sheet->getCell('AE' . $row)->getValue(), 'id', $country,1);
                         //ship-address
                         if (!empty($sheet->getCell('Z' . $row)->getValue())) {
                             $ship_add = [
@@ -292,7 +292,7 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('AF' . $row)->getValue(), 'city_id') : null,
+                                'district' => !empty($state1) ? getOrCreateId(City::class, 'city_name', $sheet->getCell('AF' . $row)->getValue(), 'city_id',1) : null,
                                 'city' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
                                 'pin_code' => trim(addslashes($sheet->getCell('AH' . $row)->getValue())),
                             ];

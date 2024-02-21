@@ -195,11 +195,15 @@ if (!function_exists('amount_in_words')) {
 
     // usama_16-02-2024- fetch id with name or create new for excel
     if (!function_exists('getOrCreateId')) {
-        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $extra_id = null)
+        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $extra_id = null,$not_exact=null)
         {
             //St.Ives
             $value = trim(addslashes($excelValue));
-            $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
+            if(!empty($not_exact)){
+                $record = $model::where($fieldName,$value)->first();
+            }else{
+                $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
+            }
 
             if (!empty($value)) {
                 if (!$record) {

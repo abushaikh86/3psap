@@ -14,6 +14,8 @@ use App\Models\backend\Outlet;
 use App\Models\backend\OrderBooking;
 use App\Models\backend\BussinessPartnerAddress;
 use App\Models\backend\BussinessPartnerMaster;
+use App\Models\backend\City;
+use App\Models\backend\Country;
 use App\Models\backend\Financialyear;
 use App\Models\backend\Gst;
 use App\Models\backend\OrderBookingItems;
@@ -24,6 +26,7 @@ use App\Models\backend\Products;
 use Illuminate\Http\Request;
 
 use App\Models\backend\SeriesMaster;
+use App\Models\backend\State;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -331,6 +334,18 @@ class ApiController extends Controller
     $result_data['area'] = $area;
     $result_data['routes'] = $routes;
     $result_data['beats'] = $beats;
+    return json_encode($result_data);
+  }
+
+  public function get_country_state_district()
+  {
+    $country = Country::get()->toArray();
+
+    $states = State::where('country_id', $_REQUEST['country_id'] ?? '')->get()->toArray();
+    $districts = City::where(['state_id' => $_REQUEST['state_id'] ?? ''])->get()->toArray();
+    $result_data['countries'] = $country;
+    $result_data['states'] = $states;
+    $result_data['districts'] = $districts;
     return json_encode($result_data);
   }
 
