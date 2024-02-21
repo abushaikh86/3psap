@@ -118,7 +118,7 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo e(Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true])); ?>
+                                                                    <?php echo e(Form::text('Base Pack', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true])); ?>
 
                                                                 </td>
                                                                 <td>

@@ -48,7 +48,7 @@
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Login Management')): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Business Master')): ?>
                         <a class="btn btn-outline-primary" href="<?php echo e(route('admin.bussinesspartner.create')); ?>">
                             <i class="feather icon-plus"></i> Add
                         </a>

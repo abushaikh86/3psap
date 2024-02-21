@@ -1,17 +1,17 @@
 @extends('backend.layouts.app')
-@section('title', 'Purchase Pricing')
+@section('title', 'Purchase Pricelist')
 
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Purchase Pricing</h3>
+            <h3 class="content-header-title">Purchase Pricelist</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Purchase Pricing</li>
+                        <li class="breadcrumb-item active">Purchase Pricelist</li>
                     </ol>
                 </div>
             </div>
@@ -19,7 +19,7 @@
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
-                    @can('Create Purchase Pricing')
+                    @can('Create Purchase Pricelist')
                         <a class="btn btn-outline-primary" href="{{ route('admin.pricings.create') }}">
                             <i class="feather icon-plus"></i> Add
                         </a>
@@ -33,7 +33,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Purchase Pricing</h4>
+                        <h4 class="card-title">Purchase Pricelist</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">
@@ -59,12 +59,12 @@
                                                     <td><a href="{{ route('admin.pricings.setpricing', ['id' => $pricing->pricing_master_id]) }}"
                                                             class="btn btn-sm btn-outline-primary">Update</a></td>
                                                     <td>
-                                                        @can('Update Purchase Pricing')
+                                                        @can('Update Purchase Pricelist')
                                                             <a href="{{ url('admin/pricings/edit/' . $pricing->pricing_master_id) }}"
                                                                 class="btn btn-primary" title="Edit"><i
                                                                     class="feather icon-edit"></i></a>
                                                         @endcan
-                                                        @can('Delete Purchase Pricing')
+                                                        @can('Delete Purchase Pricelist')
                                                             {!! Form::open([
                                                                 'method' => 'GET',
                                                                 'url' => ['admin/pricings/delete', $pricing->pricing_master_id],

@@ -3,6 +3,7 @@
 use Spatie\Permission\Models\Role;
 use App\Models\backend\Beat;
 use App\Models\backend\AdminUsers;
+use App\Models\backend\Country;
 
 $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->first())->first();
 $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
@@ -28,7 +29,13 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
     <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
         <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group">
-                <a class="btn btn-outline-secondary" href="<?php echo e(url()->previous()); ?>">
+                <a href=<?php echo e(route('admin.bussinesspartner.address', ['id' => $model->business_partner_id])); ?> 
+                    class="btn btn-outline-primary" title="Address"><i class="feather icon-map"></i></a> 
+                <a href=<?php echo e(route('admin.bussinesspartner.contact', ['id' => $model->business_partner_id])); ?> 
+                    class="btn btn-outline-primary" title="Contact"><i class="feather icon-mail"></i></a> 
+                <a href=<?php echo e(route('admin.bussinesspartner.banking', ['id' => $model->business_partner_id])); ?> 
+                    class="btn btn-outline-primary" title="Banking"><i class="feather icon-dollar-sign"></i></a>
+                <a class="btn btn-outline-secondary" href="<?php echo e(route('admin.bussinesspartner')); ?>">
                     <i class="feather icon-arrow-left"></i> Back
                 </a>
             </div>
@@ -52,7 +59,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('Business Partner Type', 'Business Partner Type *')); ?>
 
-                                    
+
                                         <?php echo e(Form::select('business_partner_type', $bussiness_master_type,
                                         $model->business_partner_type, [
                                         'class' => 'form-control',
@@ -65,11 +72,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         <?php echo e(Form::hidden('business_partner_id', $model->business_partner_id, ['class' =>
                                         'form-control'])); ?>
 
-                       
+
 
                                     </div>
                                 </div>
-                               
+
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
@@ -92,7 +99,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         Organization Type *',
                                         )); ?>
 
-                                       
+
                                         <?php echo e(Form::select('bp_organisation_type', $bpOrgType,
                                         $model->bp_organisation_type, [
                                         'class' => 'form-control',
@@ -106,14 +113,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('residential_status', 'Residential status *')); ?>
+                                        <?php echo e(Form::label('residential_status', 'Residential status')); ?>
 
                                         <?php echo e(Form::select(
                                         'residential_status',
-                                        DB::table('residential_status')->pluck('name'),
+                                        DB::table('residential_status')->pluck('name','id'),
                                         $model->residential_status,
-                                        ['class' => 'form-control', 'placeholder' => 'Select Residential status',
-                                        'required' => true],
+                                        ['class' => 'form-control',
+                                        'placeholder' => 'Select Residential status'],
                                         )); ?>
 
                                     </div>
@@ -133,7 +140,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         ])); ?>
 
 
-                                    
+
                                     </div>
                                 </div>
 
@@ -245,13 +252,12 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('gst_reg_type', 'GST Registration Type *')); ?>
+                                        <?php echo e(Form::label('gst_reg_type', 'GST Registration Type')); ?>
 
-                                        <?php echo e(Form::select('gst_reg_type',DB::table('gst_reg_type')->pluck('name'),
+                                        <?php echo e(Form::select('gst_reg_type',DB::table('gst_reg_type')->pluck('name','id'),
                                         $model->gst_reg_type, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select GST Registration Type',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -259,11 +265,10 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('rcm_app', 'RCM Application *')); ?>
+                                        <?php echo e(Form::label('rcm_app', 'RCM Application')); ?>
 
                                         <?php echo e(Form::select('rcm_app', ['1' => 'Yes', '0' => 'No'], $model->rcm_app, [
                                         'class' => 'form-control',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -271,12 +276,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile *')); ?>
+                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
 
                                         <?php echo e(Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Pricing Profile',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
@@ -296,37 +300,514 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12 ">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('msme_reg', 'MSME registration *')); ?>
+                                        <?php echo e(Form::label('msme_reg', 'MSME registration')); ?>
 
                                         <?php echo e(Form::select('msme_reg', ['1' => 'Yes', '0' => 'No'], $model->msme_reg, [
                                         'class' => 'form-control',
-                                        'required' => true,
                                         ])); ?>
 
                                     </div>
                                 </div>
 
+                                 
 
-
-                                <div class="col-md-12 col-12 mt-3 d-none beat_det">
-                                    <h4><strong>Beat Details</strong></h4>
+                                 <div class="col-md-12 col-12 mt-3">
+                                    <h4><strong>Address Details</strong></h4>
                                 </div>
+                                <div class="ml-3 mt-2 mb-2">
+                                    
+                                    <?php echo e(Form::checkbox('filladdress', null, null, ['id' => 'filladdress'])); ?>
+
+                                    <span><b>Copy Same Address To Ship Address</b></span>
+                                </div>
+                                <div class="col-sm-12">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class=" col-12">
 
 
-                                <div class="col-md-6 col-12 d-none beat_det">
-                                    <div class="form-group">
-                                        <?php echo e(Form::label('beat_id', 'Beat *')); ?>
 
-                                   
-                                        <?php echo e(Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), $model->beat_id,
-                                        [
-                                        'class' => 'form-control select2',
-                                        'placeholder' => 'Select Beat',
-                                        ])); ?>
+                                                <select name="address_type" id="address_type"
+                                                    class='form-control d-none'>
+                                                    <option value="Bill-To/ Bill-From" selected>Bill-To/ Bill-From
+                                                    </option>
+                                                </select>
+
+                                                <h4>Bill-To/ Bill-From</h4>
+                                            </div>
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('bp_address_name', 'Address Name ')); ?>
+
+                                                    <?php echo e(Form::text('bp_address_name', $business_partner_address[0]->bp_address_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Address Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('building_no_name', 'Building No and Name ')); ?>
+
+                                                    <?php echo e(Form::text('building_no_name', $business_partner_address[0]->building_no_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Building No and Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('street_name', 'Street Name ')); ?>
+
+                                                    <?php echo e(Form::text('street_name', $business_partner_address[0]->street_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Street Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('landmark', 'Landmark ')); ?>
+
+                                                    <?php echo e(Form::text('landmark', $business_partner_address[0]->landmark, ['class' => 'form-control', 'placeholder' => 'Landmark'])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('country', 'Country')); ?>
+
+                                                    <?php echo e(Form::select('country', Country::pluck('name', 'country_id'), $business_partner_address[0]->country, [
+                                                        'class' => 'form-control ',
+                                                        'required' => true,
+                                                        'placeholder' => 'Select Country',
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('state', 'State')); ?>
+
+                                                    <?php echo e(Form::select('state', [], $business_partner_address[0]->state, ['class' => 'form-control ', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('district', 'District ')); ?>
+
+                                                    <?php echo e(Form::select('district', [], $business_partner_address[0]->district, ['class' => 'form-control ', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('city', 'Name of City ')); ?>
+
+                                                    <?php echo e(Form::text('city', $business_partner_address[0]->city, ['class' => 'form-control', 'placeholder' => 'Name of City', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
 
 
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('pin_code', 'Pin Code ')); ?>
+
+                                                    <?php echo e(Form::number('pin_code', $business_partner_address[0]->pin_code, [
+                                                        'class' => 'form-control',
+                                                        'onkeypress' => 'return event.charCode === 0 ||/\d/.test(String.fromCharCode(event.charCode));',
+                                                        'placeholder' => 'Pin Code',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class=" col-12">
+
+
+
+                                                <select name="address_type1" id="address_type1"
+                                                    class='form-control d-none'>
+                                                    <option value="Ship-To/ Ship-From" selected>Ship-To/ Ship-From
+                                                    </option>
+                                                </select>
+
+                                                <h4>Ship-To/ Ship-From</h4>
+
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('bp_address_name1', 'Address Name ')); ?>
+
+                                                    <?php echo e(Form::text('bp_address_name1', $business_partner_address[1]->bp_address_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Address Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('building_no_name1', 'Building No and Name ')); ?>
+
+                                                    <?php echo e(Form::text('building_no_name1',  $business_partner_address[1]->building_no_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Building No and Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('street_name1', 'Street Name ')); ?>
+
+                                                    <?php echo e(Form::text('street_name1',  $business_partner_address[1]->street_name, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Street Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('landmark1', 'Landmark ')); ?>
+
+                                                    <?php echo e(Form::text('landmark1',  $business_partner_address[1]->landmark, ['class' => 'form-control', 'placeholder' => 'Landmark'])); ?>
+
+                                                </div>
+                                            </div>
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('country1', 'Country')); ?>
+
+                                                    <?php echo e(Form::select('country1', Country::pluck('name', 'country_id'),  $business_partner_address[1]->country, [
+                                                        'class' => 'form-control ',
+                                                        'required' => true,
+                                                        'placeholder' => 'Select Country',
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('state1', 'State')); ?>
+
+                                                    <?php echo e(Form::select('state1', [],  $business_partner_address[1]->state, ['class' => 'form-control ', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('district1', 'District ')); ?>
+
+                                                    <?php echo e(Form::select('district1', [],  $business_partner_address[1]->district, ['class' => 'form-control ', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('city1', 'Name of City ')); ?>
+
+                                                    <?php echo e(Form::text('city1',  $business_partner_address[1]->city, ['class' => 'form-control', 'placeholder' => 'Name of City', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('pin_code1', 'Pin Code ')); ?>
+
+                                                    <?php echo e(Form::number('pin_code1',  $business_partner_address[1]->pin_code, [
+                                                        'class' => 'form-control',
+                                                        'onkeypress' => 'return event.charCode === 0 ||/\d/.test(String.fromCharCode(event.charCode));',
+                                                        'placeholder' => 'Pin Code',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        </div>
+                                    </div>
+
+                                    
+
+                                </div> 
+
+                                <div class="col-md-12 col-12 mt-3">
+                                    <h4><strong>Contact Details</strong></h4>
+                                    <div class="ml-3 mt-2 mb-2">
+                                        <?php echo e(Form::checkbox('fillcontactInfo', null, null, ['id' => 'fillcontactInfo'])); ?>
+
+                                        <span><b>Copy Same Contact Details To Ship-To/Ship-From</b></span>
                                     </div>
                                 </div>
+
+                                <div class="col-sm-12">
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class=" col-12">
+                                                <?php echo e(Form::select(
+                                                    'type',
+                                                    [
+                                                        'Bill-To/ Bill-From' => 'Bill-To/ Bill-From',
+                                                        'Ship-To/ Ship-From' => 'Ship-To/Ship-From',
+                                                    ],
+                                                    null,
+                                                    ['class' => 'form-control d-none', 'required' => true],
+                                                )); ?>
+
+                                                <h5>Bill-To/ Bill-From</h5>
+
+                                            </div>
+
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('contact_person', 'Contact Person Name')); ?>
+
+                                                    <?php echo e(Form::text('contact_person', $business_partner_contact[0]->contact_person??'', [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Contact Person Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('email_id', 'Email')); ?>
+
+                                                    <?php echo e(Form::text('email_id', $business_partner_contact[0]->email_id??'', ['class' => 'form-control', 'placeholder' => 'Email', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('mobile_no', 'Mobile No')); ?>
+
+                                                    <?php echo e(Form::number('mobile_no', $business_partner_contact[0]->mobile_no??'', [
+                                                        'class' => 'form-control',
+                                                        'onkeypress' => 'return event.charCode === 0 ||/\d/.test(String.fromCharCode(event.charCode));',
+                                                        'placeholder' => 'Mobile No',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('landline', 'Landline')); ?>
+
+                                                    <?php echo e(Form::text('landline', $business_partner_contact[0]->landline??'', ['class' => 'form-control', 'placeholder' => 'Landline'])); ?>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class=" col-12">
+                                                <?php echo e(Form::select(
+                                                    'type1',
+                                                    [
+                                                        'Ship-To/ Ship-From' => 'Ship-To/Ship-From',
+                                                        'Bill-To/ Bill-From' => 'Bill-To/ Bill-From',
+                                                    ],
+                                                    null,
+                                                    ['class' => 'form-control d-none', 'required' => true],
+                                                )); ?>
+
+                                                <h5>Ship-To/Ship-From</h5>
+
+                                            </div>
+
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('contact_person1', 'Contact Person Name')); ?>
+
+                                                    <?php echo e(Form::text('contact_person1', $business_partner_contact[1]->contact_person??null, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'Contact Person Name',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('email_id1', 'Email')); ?>
+
+                                                    <?php echo e(Form::text('email_id1', $business_partner_contact[1]->email_id??null, ['class' => 'form-control', 'placeholder' => 'Email', 'required' => true])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('mobile_no1', 'Mobile No')); ?>
+
+                                                    <?php echo e(Form::number('mobile_no1', $business_partner_contact[1]->mobile_no??null, [
+                                                        'class' => 'form-control',
+                                                        'onkeypress' => 'return event.charCode === 0 ||/\d/.test(String.fromCharCode(event.charCode));',
+                                                        'placeholder' => 'Mobile No',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('landline1', 'Landline')); ?>
+
+                                                    <?php echo e(Form::text('landline1', $business_partner_contact[1]->landline??null, ['class' => 'form-control', 'placeholder' => 'Landline'])); ?>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12 mt-3">
+                                        <h4><strong>Banking Details</strong></h4>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('acc_holdername', 'Account Holder Name')); ?>
+
+                                            <?php echo e(Form::text('acc_holdername', $business_partner_banking->acc_holdername??'', [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Account Holder Name',
+                                                'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('bank_name', 'Bank Name')); ?>
+
+                                            <?php echo e(Form::text('bank_name', $business_partner_banking->bank_name??'', ['class' => 'form-control', 'placeholder' => 'Bank Name', 'required' => true])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('bank_branch', 'Branch Name')); ?>
+
+                                            <?php echo e(Form::text('bank_branch',  $business_partner_banking->bank_branch??'', [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Branch Name',
+                                                'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('ifsc', 'IFSC Code')); ?>
+
+                                            <?php echo e(Form::text('ifsc',  $business_partner_banking->ifsc??'', [
+                                                'class' => 'form-control',
+                                                'maxlength' => '15',
+                                                'placeholder' => 'IFSC Code',
+                                                'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('ac_number', 'Account No')); ?>
+
+                                            <?php echo e(Form::text('ac_number',  $business_partner_banking->ac_number??'', [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Account No',
+                                                'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('bank_address', 'Bank Address')); ?>
+
+                                            <?php echo e(Form::text('bank_address', $business_partner_banking->bank_address??'', [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Bank Address',
+                                                'required' => true,
+                                            ])); ?>
+
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    <div class="col-md-12 col-12 mt-3 d-none beat_det">
+                                        <h4><strong>Beat Details</strong></h4>
+                                    </div>
+
+
+
+
+
+                                    <div class="col-md-6 col-12 d-none beat_det">
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('beat_id', 'Beat *')); ?>
+
+
+                                            <?php echo e(Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), $model->beat_id??'', [
+                                                'class' => 'form-control select2',
+                                                'placeholder' => 'Select Beat',
+                                            ])); ?>
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                               
 
 
 
@@ -530,7 +1011,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                             <?php echo e(Form::label('route_id', 'Select Route *')); ?>
 
                             <select name="route_id" id="route_id" class="form-control select2"></select>
-                           
+
                         </div>
                     </div>
 
@@ -882,7 +1363,96 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 <script src="<?php echo e(asset('public/backend-assets/js/MasterHandler.js')); ?>"></script>
 <script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
+
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
+
 <script>
+$(document).ready(function() {
+
+   // usama_19-02-2024_get states
+
+   var country = '<?php echo e($business_partner_address[0]->country); ?>';
+   var state = '<?php echo e($business_partner_address[0]->state); ?>';
+   var district = '<?php echo e($business_partner_address[0]->district); ?>';
+
+   var country1 = '<?php echo e($business_partner_address[1]->country); ?>';
+   var state1 = '<?php echo e($business_partner_address[1]->state); ?>';
+   var district1 = '<?php echo e($business_partner_address[1]->district); ?>';
+
+   if(country){
+        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+        country, '#state',state);
+   }
+
+   if(state){
+        new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+        state, '#district',district);
+   }
+
+
+   if(country1){
+        new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+        country1, '#state1',state1);
+   }
+
+   if(state1){
+        new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+        state1, '#district1',district1);
+   }
+
+
+   $('#country').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+   $(this).val(), '#state',null,'#district');
+   });
+
+   $('#state').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+   $(this).val(), '#district',null);
+   });
+
+   $('#country1').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
+   $(this).val(), '#state1',null,'#district1');
+   });
+
+   $('#state1').change(function() {       
+   new DynamicDropdown('<?php echo e(route('admin.getCities')); ?>', 
+   $(this).val(), '#district1',null);
+   });
+
+});
+</script>
+
+<script>
+    function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
+            var id = id;
+            if(parent_id != null){
+                id = parent_id;
+            }
+            $.ajax({
+                    url: route,
+                    type: 'get',
+                    data: {
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        var html = '';
+                        for (var index in data) {
+                            if (data.hasOwnProperty(index)) {
+                                if(selectedValue == index) {
+                                    html += '<option value="' + index + '" selected>' + data[index] + '</option>';
+                                }else{
+                                    html += '<option value="' + index + '">' + data[index] + '</option>';
+                                }
+                            }
+                        }
+                        $(append_id).html(html);
+                    }
+                });
+        } 
     //fetch  asm->ase->sales officer->salesman dependent data and for modal also
         $(document).ready(function() {
 
@@ -909,9 +1479,24 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
                 salesManager, '#ase',ase);
             }
-            $('#sales_manager').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
-             $(this).val(), '#ase',null,'#sales_officer','#salesman');
+
+            //get ase from asm
+            $('#sales_manager').change(function() {     
+                var selectedValue = $(this).val();
+
+                new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>', 
+                selectedValue, '#ase',null,'#sales_officer','#salesman');
+                // fetch asm data in ase modal
+                fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                  selectedValue,'#salesManager_ase')
+            });
+
+            // fetch asm data in ase modal and show default selected
+            $('#submit_sales_manager').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                        $('#sales_manager').val(),'#salesManager_ase')
+                }, 500);
             });
 
             //get sales officers from ase
@@ -919,9 +1504,24 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
                 ase, '#sales_officer',salesOfficer);
             }
-            $('#ase').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
-             $(this).val(), '#sales_officer',null,'#salesman');
+
+            //get sales officers from ase
+            $('#ase').change(function() {  
+                var selectedValue = $(this).val();
+                new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>', 
+                 $(this).val(), '#sales_officer',null,'#salesman');
+
+                 // fetch ase data in sales officer modal
+                 fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                        selectedValue,'#ase_salesoff',$('#sales_manager').val())
+            });
+
+            // fetch ase data in sales officer modal and show default selected
+            $('#submit_ase').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                        $('#ase').val(),'#ase_salesoff',$('#sales_manager').val())
+                }, 800);
             });
 
             //get salesmans from sales officer
@@ -929,12 +1529,25 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
                 salesOfficer, '#salesman',salesman);
             }
-            $('#sales_officer').change(function() {       
-            new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
-             $(this).val(), '#salesman');
+
+            //get salesmans from sales officer
+            $('#sales_officer').change(function() {  
+                var selectedValue = $(this).val();
+                new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>', 
+                 $(this).val(), '#salesman');
+
+                // fetch sales officer data in salesman modal
+                fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                     selectedValue,'#salesOfficer',$('#ase').val())
             });
 
-
+            // fetch sales officer data in salesman modal and show default selected
+            $('#submit_sales_officer').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                        $('#sales_officer').val(),'#salesOfficer',$('#ase').val())
+                }, 800);
+            });
            
 
             new MasterHandler('#bp_category', '#add_bp_cat_modal', '#submit_bp_cat',
@@ -991,10 +1604,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
@@ -1011,10 +1628,14 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile');
             }
         });
 

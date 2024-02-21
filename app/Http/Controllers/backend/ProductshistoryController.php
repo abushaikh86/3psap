@@ -20,6 +20,7 @@ use App\Models\backend\Products;
 use App\Models\backend\StorageLocations;
 use App\Models\backend\SubCategories;
 use App\Models\backend\UoMs;
+use App\Models\backend\Variant;
 use Carbon\Carbon;
 
 class ProductshistoryController extends Controller
@@ -51,11 +52,13 @@ class ProductshistoryController extends Controller
         $hsncodes = HSNCodes::pluck('hsncode_desc', 'hsncode_desc');
         $item_types = ItemTypes::pluck('item_type_name', 'item_type_id');
         $brands = Brands::pluck('brand_name', 'brand_id');
+        $variants = Variant::pluck('name', 'id');
+
         $qty_location = ProductQtyStorageRevision::where('product_item_id', $products->product_item_id)->get();
-        // dd($qty_location);
+        // dd($products);
         $gst = Gst::pluck('gst_percent', 'gst_id');
         $uoms = UoMs::pluck('uom_name', 'uom_id');
         $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id');
-        return view('backend.productshistory.show', compact('products', 'categories', 'sub_categories', 'hsncodes', 'item_types', 'brands', 'uoms', 'storage_locations', 'qty_location', 'gst'));
+        return view('backend.productshistory.show', compact('products', 'categories', 'variants','sub_categories', 'hsncodes', 'item_types', 'brands', 'uoms', 'storage_locations', 'qty_location', 'gst'));
     }
 }

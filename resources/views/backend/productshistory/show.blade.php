@@ -129,7 +129,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             {{ Form::label('variant', 'Variant ') }}
-                                            {{ Form::text('variant', null, ['class' => 'form-control', 'placeholder' => 'Enter Variant', 'id' => 'variant']) }}
+                                            {{ Form::select('variant', $variants, null,['class' => 'form-control', 'placeholder' => 'Enter Variant', 'id' => 'variant']) }}
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -153,21 +153,10 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             {{ Form::label('hsncode_id', 'HSN Code ', ['class' => '']) }}
-                                            {{ Form::select('hsncode_id', $hsncodes, null, ['class' => 'select2 form-control hsncode_id', 'placeholder' => 'Please Select HSN Code']) }}
+                                            {{ Form::text('hsncode_id', null, ['class' => ' form-control ', 'placeholder' => 'Please Select HSN Code']) }}
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            {{ Form::label('batch', 'Batch ') }}
-                                            {{ Form::text('batch', null, ['class' => 'form-control', 'placeholder' => 'Enter Batch', 'id' => 'batch']) }}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            {{ Form::label('expiry_date', 'Expiry Date ') }}
-                                            {{ Form::date('expiry_date', null, ['class' => 'form-control pickadate', 'placeholder' => 'Enter Expiry Date', 'id' => 'expiry_date']) }}
-                                        </div>
-                                    </div>
+            
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             {{ Form::label('shelf_life', 'Shelf Life ', ['class' => '']) }}
@@ -285,106 +274,21 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    {{-- Repeater code  --}}
-                                    <div class='col-md-12 col-12'>
-                                        {{ Form::label('table', 'Inventory') }}
-                                        <table class='table borderd'>
-                                            <tr>
-                                                <th>Sr. No</th>
-                                                <th>Storage Location</th>
-                                                {{-- <th>Quantity</th> --}}
-                                            </tr>
-                                            <tbody>
-                                                @if (isset($qty_location) && count($qty_location) > 0)
-                                                    @foreach ($qty_location as $qty)
-                                                        <tr>
-                                                            <td>
-                                                                {{ $loop->index + 1 }}
-                                                            </td>
-
-                                                            <td>
-                                                                {{ Form::select('storage_location_id[]', $storage_locations, $qty->storage_location_id, ['class' => 'select2 form-control w-100', 'placeholder' => 'Please Select Storage Location']) }}
-                                                            </td>
-
-
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td>
-                                                            1
-                                                        </td>
-
-                                                        <td>
-                                                            {{ Form::select('storage_location_id[]', $storage_locations, null, ['class' => 'select2 form-control w-100', 'placeholder' => 'Please Select Storage Location']) }}
-                                                        </td>
-
-                                                        <td class="d-none">
-                                                            {{ Form::text('qty[]', null, ['class' => 'form-control ', 'placeholder' => 'Please Enter Quantity']) }}
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            2
-                                                        </td>
-
-                                                        <td>
-                                                            {{ Form::select('storage_location_id[]', $storage_locations, null, ['class' => 'select2 form-control w-100', 'placeholder' => 'Please Select Storage Location']) }}
-                                                        </td>
-
-                                                        <td class="d-none">
-                                                            {{ Form::text('qty[]', null, ['class' => 'form-control ', 'placeholder' => 'Please Enter Quantity']) }}
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            3
-                                                        </td>
-
-                                                        <td>
-                                                            {{ Form::select('storage_location_id[]', $storage_locations, null, ['class' => 'select2 form-control w-100', 'placeholder' => 'Please Select Storage Location']) }}
-                                                        </td>
-
-                                                        <td class="d-none">
-                                                            {{ Form::text('qty[]', null, ['class' => 'form-control ', 'placeholder' => 'Please Enter Quantity']) }}
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            4
-                                                        </td>
-
-                                                        <td>
-                                                            {{ Form::select('storage_location_id[]', $storage_locations, null, ['class' => 'select2 form-control w-100', 'placeholder' => 'Please Select Storage Location']) }}
-                                                        </td>
-
-                                                        <td class="d-none">
-                                                            {{ Form::text('qty[]', null, ['class' => 'form-control ', 'placeholder' => 'Please Enter Quantity']) }}
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-
-
-                                    </div>
+                      
                                     {{-- Repeater code end  --}}
+                                    @if (!empty($products->product_thumb))
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             {{ Form::label('product_thumb', 'Product Thumbnail *') }}
                                             <div class="custom-file">
-                                                @if (!empty($products->product_thumb))
                                                     <a href="{{ asset('public/backend-assets/images/') }}/{{ $products->product_thumb }}"
                                                         target="_blank"><img class="card-img-top img-fluid mb-1"
                                                             src="{{ asset('public/backend-assets/images/') }}/{{ $products->product_thumb }}"
                                                             alt="Product Image" style="width:50px"></a>
-                                                @endif
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
 
                                 </div>
                             </div>

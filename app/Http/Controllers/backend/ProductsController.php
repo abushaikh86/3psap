@@ -123,7 +123,7 @@ class ProductsController extends Controller
                         'mrp' => trim(addslashes($sheet->getCell('AA' . $row)->getCalculatedValue())),
                         // 'gst_id' => (int) trim(addslashes($sheet->getCell('AB' . $row)->getValue())),
                         'gst_id' => getOrCreateId(Gst::class, 'gst_name', $sheet->getCell('AB' . $row)->getFormattedValue(), 'gst_id',$gst_percent),
-                        'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
+                        'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue()=='Yes'?1:0)),
                         // Add more fields as needed
                     ];
 
@@ -141,9 +141,13 @@ class ProductsController extends Controller
                     $pricings = new Products();
                     $pricings->fill($data);
                     $pricings->sku = $sku;
-
-                    // }
                     $pricings->save();
+
+                    $productsRevision = new ProductRevision();
+                    $productsRevision->fill($data);
+                    $productsRevision->sku = $sku;
+                    $productsRevision->save();
+
 
                     // array_push($imported_data, $data);
                 }

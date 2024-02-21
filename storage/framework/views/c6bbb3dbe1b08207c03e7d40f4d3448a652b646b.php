@@ -40,14 +40,12 @@
                     <div class="card-content">
                         <div class="card-body card-dashboard">
 
-                            
                             <div class="table-responsive">
 
                                 <table class="table zero-configuration" id="tbl-datatable">
                                     <thead>
                                         <tr>
                                             <th>Sr. No</th>
-                                            <!--<th>Beat Number</th>-->
                                             <th>Beat</th>
                                             <th>Area</th>
                                             <th>Route</th>
@@ -121,11 +119,6 @@
         </div>
     </section>
 
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('scripts'); ?>
-    <script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/datatables.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('public/backend-assets/vendors/js/tables/datatable/dataTables.buttons.min.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/beat/index.blade.php ENDPATH**/ ?>

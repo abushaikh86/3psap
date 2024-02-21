@@ -165,7 +165,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
 
                                             </div>
                                             <div class="col-md-6">
-                                                {{ Form::select('shelf_life', ['month' => 'Month', 'days' => 'Days'],
+                                                {{ Form::select('shelf_life', ['Month' => 'Month', 'Days' => 'Days'],
                                                 null, ['class' => 'form-control select2', 'id' => 'shelf_life']) }}
                                             </div>
                                         </div>

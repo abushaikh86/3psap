@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'Edit Purchase Pricing')
+@section('title', 'Edit Purchase Pricelist')
 
 @section('content')
 @php
@@ -12,7 +12,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
 </style>
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title">Edit Purchase Pricing</h3>
+        <h3 class="content-header-title">Edit Purchase Pricelist</h3>
         <div class="row breadcrumbs-top">
             <div class="breadcrumb-wrapper col-12">
                 <ol class="breadcrumb">
@@ -20,9 +20,9 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                         <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.pricings') }}">Purchase Pricing</a>
+                        <a href="{{ route('admin.pricings') }}">Purchase Pricelist</a>
                     </li>
-                    <li class="breadcrumb-item active">Edit Purchase Pricing</li>
+                    <li class="breadcrumb-item active">Edit Purchase Pricelist</li>
                 </ol>
             </div>
         </div>
@@ -42,7 +42,7 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Edit Purchase Pricing</h4>
+                    <h4 class="card-title">Edit Purchase Pricelist</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body">

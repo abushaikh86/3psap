@@ -120,7 +120,7 @@
                                                                 <td>{{ Form::select('to_bin', [], null, ['class' => 'form-control to_bin', 'required' => true]) }}
                                                                 </td>
                                                                 <td>
-                                                                    {{ Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true]) }}
+                                                                    {{ Form::text('Base Pack', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true]) }}
                                                                 </td>
                                                                 <td>
                                                                     {{ Form::select('batch', [], null, ['class' => 'form-control  batch', 'data-name' => 'batch', 'required' => true]) }}

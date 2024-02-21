@@ -43,7 +43,7 @@ class AdminController extends Controller
     {
         //  dd('welcoome');
         $adminusers = AdminUsers::where('admin_user_id', '!=', Auth()->guard('admin')->user()->admin_user_id)->orderBy('admin_user_id', 'DESC')->get();
-        
+        // dd($adminusers);
         return view('backend.admin.index', compact('adminusers'));
     }
 

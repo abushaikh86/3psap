@@ -43,7 +43,7 @@
                                             <th>#</th>
                                             <th>From (Warehouse/Bin)</th>
                                             <th>To (Warehouse/Bin)</th>
-                                            <th>SKU</th>
+                                            <th>Base Pack</th>
                                             <th>Bacth Number</th>
                                             <th>Item Code</th>
                                             <th>Available Quantity</th>

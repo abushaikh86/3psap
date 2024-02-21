@@ -87,7 +87,8 @@ $user = Auth()
                             
                             <span class="user-name"><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?>
 
-                                <?php echo e(isset($user->company_id)? '('.$company->name.')' : ''); ?> </span>
+                                
+                             </span>
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

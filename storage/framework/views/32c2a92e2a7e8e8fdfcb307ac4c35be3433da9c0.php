@@ -95,12 +95,11 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('residential_status', 'Residential status *')); ?>
+                                            <?php echo e(Form::label('residential_status', 'Residential status')); ?>
 
-                                            <?php echo e(Form::select('residential_status', DB::table('residential_status')->pluck('name'), null, [
+                                            <?php echo e(Form::select('residential_status', DB::table('residential_status')->pluck('name','id'), null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Select Residential status',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -227,13 +226,11 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('gst_reg_type', 'GST Registration Type *')); ?>
+                                            <?php echo e(Form::label('gst_reg_type', 'GST Registration Type')); ?>
 
-                                            <?php echo e(Form::select('gst_reg_type', DB::table('gst_reg_type')->pluck('name'), null, [
+                                            <?php echo e(Form::select('gst_reg_type', DB::table('gst_reg_type')->pluck('name','id'), null, [
                                                 'class' => 'form-control',
-                                                'placeholder' => 'Select GST
-                                                                                                                                                                                                                                                                                                                Registration Type',
-                                                'required' => true,
+                                                'placeholder' => 'Select GST Registration Type',
                                             ])); ?>
 
                                         </div>
@@ -241,9 +238,9 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('rcm_app', 'RCM Application *')); ?>
+                                            <?php echo e(Form::label('rcm_app', 'RCM Application')); ?>
 
-                                            <?php echo e(Form::select('rcm_app', ['1' => 'Yes', '0' => 'No'], null, ['class' => 'form-control', 'required' => true])); ?>
+                                            <?php echo e(Form::select('rcm_app', ['1' => 'Yes', '0' => 'No'], null, ['class' => 'form-control'])); ?>
 
                                         </div>
                                     </div>
@@ -251,12 +248,11 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('pricing_profile', 'Pricing Profile *')); ?>
+                                            <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
 
-                                            <?php echo e(Form::select('pricing_profile', $pricing_data, null, [
+                                            <?php echo e(Form::select('pricing_profile', [], null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Select Pricing Profile',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -273,9 +269,9 @@
 
                                     <div class="col-md-6 col-12 ">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('msme_reg', 'MSME registration *')); ?>
+                                            <?php echo e(Form::label('msme_reg', 'MSME registration')); ?>
 
-                                            <?php echo e(Form::select('msme_reg', ['1' => 'Yes', '0' => 'No'], null, ['class' => 'form-control', 'required' => true])); ?>
+                                            <?php echo e(Form::select('msme_reg', ['1' => 'Yes', '0' => 'No'], null, ['class' => 'form-control'])); ?>
 
                                         </div>
                                     </div>
@@ -351,7 +347,7 @@
                                                     <div class="form-label-group">
                                                         <?php echo e(Form::label('landmark', 'Landmark ')); ?>
 
-                                                        <?php echo e(Form::text('landmark', null, ['class' => 'form-control', 'placeholder' => 'Landmark', 'required' => true])); ?>
+                                                        <?php echo e(Form::text('landmark', null, ['class' => 'form-control', 'placeholder' => 'Landmark'])); ?>
 
                                                     </div>
                                                 </div>
@@ -538,6 +534,7 @@
                                         
 
                                     </div> 
+                                    
                                     <div class="col-md-12 col-12 mt-3">
                                         <h4><strong>Contact Details</strong></h4>
                                         <div class="ml-3 mt-2 mb-2">
@@ -607,7 +604,7 @@
                                                     <div class="form-label-group">
                                                         <?php echo e(Form::label('landline', 'Landline')); ?>
 
-                                                        <?php echo e(Form::text('landline', null, ['class' => 'form-control', 'placeholder' => 'Landline', 'required' => true])); ?>
+                                                        <?php echo e(Form::text('landline', null, ['class' => 'form-control', 'placeholder' => 'Landline'])); ?>
 
                                                     </div>
                                                 </div>
@@ -669,7 +666,7 @@
                                                     <div class="form-label-group">
                                                         <?php echo e(Form::label('landline1', 'Landline')); ?>
 
-                                                        <?php echo e(Form::text('landline1', null, ['class' => 'form-control', 'placeholder' => 'Landline', 'required' => true])); ?>
+                                                        <?php echo e(Form::text('landline1', null, ['class' => 'form-control', 'placeholder' => 'Landline'])); ?>
 
                                                     </div>
                                                 </div>
@@ -823,8 +820,7 @@
 
                                 <?php echo e(Form::text('area_name', null, [
                                     'class' => 'form-control',
-                                    'placeholder' => 'Enter Area
-                                                                                                                                                                                                                            Name',
+                                    'placeholder' => 'Enter Area Name',
                                     'required' => true,
                                 ])); ?>
 
@@ -918,8 +914,7 @@
 
                                 <?php echo e(Form::text('beat_name', null, [
                                     'class' => 'form-control',
-                                    'placeholder' => 'Enter Beat
-                                                                                                                                                                                                                            Name',
+                                    'placeholder' => 'Enter Beat Name',
                                     'required' => true,
                                 ])); ?>
 
@@ -1300,6 +1295,35 @@
 
     
     <script>
+        function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
+            var id = id;
+            if(parent_id != null){
+                id = parent_id;
+            }
+            $.ajax({
+                    url: route,
+                    type: 'get',
+                    data: {
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        var html = '';
+                        for (var index in data) {
+                            if (data.hasOwnProperty(index)) {
+                                if(selectedValue == index) {
+                                    html += '<option value="' + index + '" selected>' + data[index] + '</option>';
+                                }else{
+                                    html += '<option value="' + index + '">' + data[index] + '</option>';
+                                }
+                            }
+                        }
+                        $(append_id).html(html);
+                    }
+                });
+        } 
+
         $(document).ready(function() {
 
 
@@ -1328,20 +1352,62 @@
 
             //get ase from asm
             $('#sales_manager').change(function() {
+                var selectedValue = $(this).val();
                 new DynamicDropdown('<?php echo e(route('admin.getAse')); ?>',
-                    $(this).val(), '#ase', null, '#sales_officer', '#salesman');
+                    selectedValue, '#ase', null, '#sales_officer', '#salesman');
+
+                // fetch asm data in ase modal
+                fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                selectedValue,'#salesManager_ase')
+                
             });
+
+            // fetch asm data in ase modal and show default selected
+            $('#submit_sales_manager').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAsm')); ?>','<?php echo e($sales_manager_dep->role ?? ''); ?>',
+                        $('#sales_manager').val(),'#salesManager_ase')
+                }, 500);
+            });
+
+  
 
             //get sales officers from ase
             $('#ase').change(function() {
+                var selectedValue = $(this).val();
                 new DynamicDropdown('<?php echo e(route('admin.getSalesOfficers')); ?>',
-                    $(this).val(), '#sales_officer', null, '#salesman');
+                    selectedValue, '#sales_officer', null, '#salesman');
+
+                // fetch ase data in sales officer modal
+                fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                    selectedValue,'#ase_salesoff',$('#sales_manager').val())
+            });
+
+            // fetch ase data in sales officer modal and show default selected
+            $('#submit_ase').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
+                        $('#ase').val(),'#ase_salesoff',$('#sales_manager').val())
+                }, 800);
             });
 
             //get salesmans from sales officer
             $('#sales_officer').change(function() {
+                var selectedValue = $(this).val();
                 new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>',
                     $(this).val(), '#salesman');
+
+                // fetch sales officer data in salesman modal
+                fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                    selectedValue,'#salesOfficer',$('#ase').val())
+            });
+
+            // fetch sales officer data in salesman modal and show default selected
+            $('#submit_sales_officer').click(function(){
+                setTimeout(() => {
+                    fetchmodaldropdown('<?php echo e(route('admin.getSalesOfficers')); ?>','<?php echo e($sales_officer_dep->role ?? ''); ?>',
+                        $('#sales_officer').val(),'#salesOfficer',$('#ase').val())
+                }, 800);
             });
 
 
@@ -1386,13 +1452,6 @@
                 '#beat_name', '.area_id', '#route_id');
 
 
-
-
-
-
-
-
-
         });
     </script>
 
@@ -1405,10 +1464,14 @@
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile');
             }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
@@ -1428,10 +1491,14 @@
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'sale', '#pricing_profile');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
+                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+                    'purchase', '#pricing_profile');
             }
         });
 

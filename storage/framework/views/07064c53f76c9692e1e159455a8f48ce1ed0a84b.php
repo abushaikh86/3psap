@@ -80,7 +80,13 @@
                                         <th>Category</th>
                                         <th>Format</th>
                                         <th>Variant</th>
-                                        <th>Selling Price</th>
+                                        <th>
+                                            <?php if($pricings->pricing_type == 'sale'): ?>
+                                            Selling Price
+                                            <?php else: ?>
+                                            Purchase Price
+                                            <?php endif; ?>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>

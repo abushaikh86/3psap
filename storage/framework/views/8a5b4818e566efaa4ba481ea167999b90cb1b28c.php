@@ -29,6 +29,8 @@
                             $url_back = route('admin.company');
                         } elseif ($previousController == 'BussinessParatnerController@index') {
                             $url_back = route('admin.bussinesspartner');
+                        } elseif ($previousController == 'BussinessParatnerController@edit') {
+                            $url_back = route('admin.bussinesspartner.edit',['id'=>request('id')]);
                         }
 
                     ?>

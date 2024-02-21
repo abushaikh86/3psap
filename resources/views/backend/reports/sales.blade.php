@@ -38,7 +38,7 @@
                                     <thead>
                                         <tr>
                                             <th>Sr.No</th>
-                                            <th>SKU</th>
+                                            <th>Base Pack</th>
                                             <th>Customer</th>
                                             <th>Customer Name</th>
                                             <th>Custimer Tag</th>

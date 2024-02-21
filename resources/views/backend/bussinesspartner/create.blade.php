@@ -90,7 +90,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
                                             {{ Form::label('residential_status', 'Residential status') }}
-                                            {{ Form::select('residential_status', DB::table('residential_status')->pluck('name'), null, [
+                                            {{ Form::select('residential_status', DB::table('residential_status')->pluck('name','id'), null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Select Residential status',
                                             ]) }}
@@ -201,7 +201,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
                                             {{ Form::label('gst_reg_type', 'GST Registration Type') }}
-                                            {{ Form::select('gst_reg_type', DB::table('gst_reg_type')->pluck('name'), null, [
+                                            {{ Form::select('gst_reg_type', DB::table('gst_reg_type')->pluck('name','id'), null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Select GST Registration Type',
                                             ]) }}
@@ -303,7 +303,7 @@
                                                 <div class=" col-12">
                                                     <div class="form-label-group">
                                                         {{ Form::label('landmark', 'Landmark ') }}
-                                                        {{ Form::text('landmark', null, ['class' => 'form-control', 'placeholder' => 'Landmark', 'required' => true]) }}
+                                                        {{ Form::text('landmark', null, ['class' => 'form-control', 'placeholder' => 'Landmark']) }}
                                                     </div>
                                                 </div>
 
@@ -461,6 +461,7 @@
                                         {{-- Address Details --}}
 
                                     </div> {{-- main row --}}
+                                    
                                     <div class="col-md-12 col-12 mt-3">
                                         <h4><strong>Contact Details</strong></h4>
                                         <div class="ml-3 mt-2 mb-2">
@@ -521,7 +522,7 @@
                                                 <div class=" col-12">
                                                     <div class="form-label-group">
                                                         {{ Form::label('landline', 'Landline') }}
-                                                        {{ Form::text('landline', null, ['class' => 'form-control', 'placeholder' => 'Landline', 'required' => true]) }}
+                                                        {{ Form::text('landline', null, ['class' => 'form-control', 'placeholder' => 'Landline']) }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -574,7 +575,7 @@
                                                 <div class=" col-12">
                                                     <div class="form-label-group">
                                                         {{ Form::label('landline1', 'Landline') }}
-                                                        {{ Form::text('landline1', null, ['class' => 'form-control', 'placeholder' => 'Landline', 'required' => true]) }}
+                                                        {{ Form::text('landline1', null, ['class' => 'form-control', 'placeholder' => 'Landline']) }}
                                                     </div>
                                                 </div>
                                             </div>

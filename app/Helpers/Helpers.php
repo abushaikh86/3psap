@@ -228,6 +228,36 @@ if (!function_exists('amount_in_words')) {
         }
     }
 
+    if (!function_exists('getId')) {
+        function getId($model, $fieldName, $excelValue, $primaryKeyName)
+        {
+            //St.Ives
+            $value = trim(addslashes($excelValue));
+            $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
+
+            if (!empty($value)) {
+                return $record->$primaryKeyName;
+            }else{
+                return null;
+            }
+        }
+    }
+
+    if (!function_exists('getIdDB')) {
+        function getIdDB($tableName, $fieldName, $excelValue, $primaryKeyName)
+        {
+            //St.Ives
+            $value = trim(addslashes($excelValue));
+            $record = DB::table($tableName)->where($fieldName, $value)->first();
+
+            if (!empty($value)) {
+                return $record->$primaryKeyName;
+            }else{
+                return null;
+            }
+        }
+    }
+
     // usama_19-02-2024-for creating or updating multiple fields
     if (!function_exists('getOrCreateIdModelWise')) {
         function getOrCreateIdModelWise($model, $firstName, $lastName, $excelValue, $primaryKeyName, $dep_id, $extra_id = null)

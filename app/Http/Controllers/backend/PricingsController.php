@@ -18,6 +18,7 @@ use App\Models\backend\PricingItem;
 use App\Models\backend\SubCategories;
 use App\Models\backend\UoMs;
 use App\Models\backend\Pricings;
+use App\Models\backend\Pricingslog;
 use Carbon\Exceptions\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\Facades\DataTables;
@@ -35,7 +36,7 @@ class PricingsController extends Controller
      */
     public function index()
     {
-        $pricings = Pricings::where('pricing_type','purchase')->get();
+        $pricings = Pricings::where('pricing_type', 'purchase')->get();
         return view('backend.pricings.index', compact('pricings'));
     }
 
@@ -185,14 +186,20 @@ class PricingsController extends Controller
 
                         $pricings = PricingItem::where(['pricing_master_id' => $request->pricing_master_id, 'sku' => $data['sku'], 'item_code' => $data['item_code']])->first();
 
-                        if (!empty($pricings)) {
-                            $pricings->selling_price = $data['selling_price'];
-                        } else {
-                            $pricings = new PricingItem();
-                            $pricings->fill($data);
-                            $pricings->pricing_master_id = $request->pricing_master_id;
+                        if ($data['selling_price'] != 0) {
+                            if (!empty($pricings)) {
+                                $pricings->selling_price = $data['selling_price'];
+                            } else {
+                                $pricings = new PricingItem();
+                                $pricings->fill($data);
+                                $pricings->pricing_master_id = $request->pricing_master_id;
+                            }
+                            $pricings->save();
+                            $pricing_log = new Pricingslog();
+                            $pricing_log->fill($data);
+                            $pricing_log->pricing_master_id = $request->pricing_master_id;
+                            $pricing_log->save();
                         }
-                        $pricings->save();
 
                         // array_push($imported_data, $data);
                     }

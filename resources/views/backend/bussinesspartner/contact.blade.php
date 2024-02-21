@@ -22,6 +22,18 @@
         <a class="btn btn-outline-primary" href="{{ route('admin.bussinesspartner.createcontact', ['id' => $id]) }}">
           <i class="feather icon-plus"></i> Add
         </a>
+              @php
+                $previousController = session('previous_controller');
+
+                if ($previousController == 'CompanyController@index') {
+                    $url_back = route('admin.company');
+                } elseif ($previousController == 'BussinessParatnerController@index') {
+                    $url_back = route('admin.bussinesspartner');
+                } elseif ($previousController == 'BussinessParatnerController@edit') {
+                    $url_back = route('admin.bussinesspartner.edit',['id'=>request('id')]);
+                }
+              @endphp
+        <a class="btn btn-outline-dark" href="{{ $url_back }}"> Back</a>
       </div>
     </div>
   </div>

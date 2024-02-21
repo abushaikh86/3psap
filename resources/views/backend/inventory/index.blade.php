@@ -45,7 +45,7 @@
                                             <th>#</th>
                                             <th>Warehouse</th>
                                             <th>Bin</th>
-                                            <th>SKU</th>
+                                            <th>Base Pack</th>
                                             <th>Batch No.</th>
                                             <th>EAN Code</th>
                                             <th>Item Code</th>
