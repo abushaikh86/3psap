@@ -123,25 +123,6 @@ use App\Models\backend\Beat;
 
 
 
-                                <?php if($userdata->userrole->department_id == 8): ?>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <?php
-                                        $beats = [];
-                                        if (!empty($userdata->beat_id)) {
-                                        $beats = explode(',', $userdata->beat_id);
-                                        }
-                                        ?>
-                                        <?php echo e(Form::label('beat_id', 'Beat *')); ?>
-
-                                        
-                                        <?php echo e(Form::select('beat_id[]', Beat::pluck('beat_name', 'beat_id'), $beats,
-                                        ['class' => 'form-control select2', 'multiple' => 'multiple'])); ?>
-
-
-                                    </div>
-                                </div>
-                                <?php endif; ?>
 
                                 <div class="col md-12 ">
                                     <br>

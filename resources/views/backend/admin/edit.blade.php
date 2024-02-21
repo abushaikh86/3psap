@@ -112,7 +112,7 @@ use App\Models\backend\Beat;
                                 </div>
 
 
-
+{{-- 
                                 @if ($userdata->userrole->department_id == 8)
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
@@ -123,14 +123,13 @@ use App\Models\backend\Beat;
                                         }
                                         @endphp
                                         {{ Form::label('beat_id', 'Beat *') }}
-                                        {{-- <select name="beat_id" id="beat" class="form-control select2"></select>
-                                        --}}
+                                       
                                         {{ Form::select('beat_id[]', Beat::pluck('beat_name', 'beat_id'), $beats,
                                         ['class' => 'form-control select2', 'multiple' => 'multiple']) }}
 
                                     </div>
                                 </div>
-                                @endif
+                                @endif --}}
 
                                 <div class="col md-12 ">
                                     <br>
