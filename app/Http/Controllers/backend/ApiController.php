@@ -264,8 +264,8 @@ class ApiController extends Controller
     $postedData = json_decode($request->input('posted_data'), true);
 
     try {
-      if (!empty($postedData['business_partner_id'])) {
-        $bussiness =  BussinessPartnerMaster::where('business_partner_id', $postedData['business_partner_id'])->first();
+      if (isset($postedData['business_partner_id'])) {
+        $bussiness = BussinessPartnerMaster::where('business_partner_id', $postedData['business_partner_id'])->first();
       } else {
         $bussiness = new BussinessPartnerMaster();
       }
