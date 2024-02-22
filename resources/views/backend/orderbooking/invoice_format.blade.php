@@ -1,5 +1,8 @@
 @php
 use Carbon\Carbon;
+use App\Models\backend\Company;
+
+$company = Company::where('company_id',session('company_id'))->first();
 @endphp
 @php
 // dd($invoice->gst_rate);
@@ -25,7 +28,7 @@ use Carbon\Carbon;
                   <img class="img-fluid for-light" src="{{ asset('public/assets/images/logo/logo.png')}}" width="80" alt="">
                   </td>
                   <td>
-                    <h2 class="text-uppercase" style="text-transform: uppercase;">3P SAP Services</h2>
+                    <h2 class="text-uppercase" style="text-transform: uppercase;">{{$company->name}}</h2>
                     <p class="mb-0">Kalyan</p>
                     <p>Tel : 55544422 Fax : 55577784</p>
                   </td>
@@ -164,7 +167,7 @@ use Carbon\Carbon;
                 <p>RTGS/NEFT IFSC Code:- {{ $bank_details->ifsc??'' }}</p>
                 <p>Branch: {{ $bank_details->bank_branch??'' }}</p>
               </td>
-              <td colspan="3" style="text-align:center;">For 3P SAP Services.</td>
+              <td colspan="3" style="text-align:center;">For {{$company->name}}</td>
             </tr>
             <tr>
               <td colspan="3" style="vertical-align: bottom;text-align: center;padding-top:100px;">Authorised Signatory</td>

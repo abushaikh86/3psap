@@ -214,7 +214,7 @@
 
                                         <div class="form-group">
                                             {{ Form::label('document_date', 'Document Date *') }}
-                                            {{ Form::date('document_date', null, [
+                                            {{ Form::date('document_date', date('Y-m-d'), [
                                             'class' => 'form-control document_date',
                                             'placeholder' => 'Document Date',
                                             'required' => true,

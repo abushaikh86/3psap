@@ -52,9 +52,10 @@ class StockManagementController extends Controller
   public function update(Request $request)
   {
     // dd($request->all());
-
     // Additional validation or manipulation of data
     $invoiceItems = $request->input('invoice_items');
+
+    // dd($invoiceItems);
     foreach ($invoiceItems as $item) {
       if ($item['qty'] > $item['from_qty']) {
         return redirect()->back()->withErrors(['error' => 'Quantity must be less than or equal to Available Quantity']);
@@ -64,6 +65,7 @@ class StockManagementController extends Controller
       $from_binData = BinManagement::where(['bin_type' => $item['from_bin'], 'warehouse_id' => $item['from_warehouse']])->first();
       $to_binData = BinManagement::where(['bin_type' => $item['to_bin'], 'warehouse_id' => $item['to_warehouse']])->first();
 
+      // dd($from_binData,$to_binData);
       $binTransfer = new BinTransfer();
       $binTransfer->remarks = $request->remarks;
       $binTransfer->fy_year = session('fy_year');
@@ -72,19 +74,22 @@ class StockManagementController extends Controller
       $binTransfer->fill($item);
       $binTransfer->from_bin =  $from_binData->bin_id;
       $binTransfer->to_bin = $to_binData->bin_id;
+
       if ($binTransfer->save()) {
 
         // Update 'from' inventory
+        // dd($item,$from_binData);
         if (!empty($from_inventory = Inventory::where([
-          'warehouse_id' => $item['from_warehouse'], 'bin_id' => $from_binData->bin_id, 'sku' => $item['sku'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
+          'warehouse_id' => $item['from_warehouse'], 'bin_id' => $from_binData->bin_id, 'sku' => $item['sku'],'item_code'=>$item['item_code'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
           'company_id' => session('company_id')
         ])->first())) {
+          // dd($from_inventory,$item);
           $this->updateInventory($from_inventory, $item['from_qty'], -$item['qty'], $item, $from_binData->bin_id, $request->remarks);
         }
 
         // Update 'to' inventory
         if (!empty($to_inventory = Inventory::where([
-          'warehouse_id' => $item['to_warehouse'], 'bin_id' => $to_binData->bin_id, 'sku' => $item['sku'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
+          'warehouse_id' => $item['to_warehouse'], 'bin_id' => $to_binData->bin_id, 'sku' => $item['sku'],'item_code'=>$item['item_code'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
           'company_id' => session('company_id')
         ])->first())) {
           $this->updateInventory($to_inventory, $to_inventory->qty, $item['qty'], $item, $to_binData->bin_id, $request->remarks);
@@ -93,20 +98,22 @@ class StockManagementController extends Controller
           $this->createNewInventory($item, $to_binData->bin_id, $request->remarks);
         }
 
-        return redirect()->back()->with(['success' => 'Data Transfer Successfully']);
       }
     }
+    return redirect()->back()->with(['success' => 'Data Transfer Successfully']);
   }
 
 
   // Function to update inventory and create transaction history
   private function updateInventory($inventory, $qty, $changeQty, $item, $binId, $remarks)
   {
+
     $inventory->fy_year = session('fy_year');
     $inventory->company_id = session('company_id');
     $inventory->user_id = Auth()->guard('admin')->user()->admin_user_id;
     $inventory->remarks = $remarks;
     $inventory->qty = $qty + $changeQty;
+    // dd($inventory);
     $inventory->save();
 
     $transactionHistory = new Transaction();
@@ -206,13 +213,15 @@ class StockManagementController extends Controller
     $warehouse_id = $_GET['warehouse_id'];
     $from_bin_id = $_GET['from_bin_id'];
     $batch_no = $_GET['batch_no'];
+    $sku = $_GET['sku'];
+    $item_code = $_GET['item_code'];
 
 
 
     $binData = BinManagement::where(['bin_type' => $from_bin_id, 'warehouse_id' => $warehouse_id])->first();
-    $data = Inventory::where(['warehouse_id' => $warehouse_id, 'bin_id' => $binData->bin_id, 'batch_no' => $batch_no])->first();
+    $data = Inventory::where(['warehouse_id' => $warehouse_id,'item_code'=>$item_code, 'bin_id' => $binData->bin_id,'sku'=>$sku, 'batch_no' => $batch_no])->first();
 
-    // dd($warehouse_id,$from_bin_id,$batch_no);
+    // dd($data);
 
     if (!empty($data)) {
       return $data->toArray();

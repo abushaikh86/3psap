@@ -414,7 +414,7 @@ class OrderfulfilmentController extends Controller
 
                     foreach ($filteredItems as $row) {
 
-                        $good_bin_type_id = Bintype::where('name', 'Goods')->first();
+                        $good_bin_type_id = Bintype::where('name', 'Good')->first();
                         $good_bin = BinManagement::where(['bin_type' => $good_bin_type_id->bin_type_id, 'warehouse_id' => $row['storage_location_id']])->first();
 
 

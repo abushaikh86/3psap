@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <div class="content-header row">
+                        <div class="content-header row" >
 
                             @include('backend.includes.errors')
                             {{ Form::open(['url' => 'admin/purchaseorder/store']) }}
@@ -231,11 +231,11 @@
                                                     <!-- Repeater Items -->
                                                     {{-- <div class="row w-100"> --}}
 
-                                                        <div class="conatiner-fluid  repeater">
+                                                        <div class="conatiner-fluid  repeater ">
                                                             <button type="button" data-repeater-create
                                                                 class="btn btn-primary pull-right mb-2 add_btn_rep">Add</button>
 
-                                                            <div class="table-responsive">
+                                                            <div class="table-responsive ">
                                                                 <table class="table table-bordered " id="repeater"
                                                                     style="width:120%;">
                                                                     <thead class="bg-light" style="font-size:10px;">
@@ -813,6 +813,7 @@
 
             // 08-01-2024 -usama
             $('#party_code').on('change', function() {
+                $('.repeater').show();
                 $('#party_id').val($(this).val()).trigger('change.select2');
             });
 

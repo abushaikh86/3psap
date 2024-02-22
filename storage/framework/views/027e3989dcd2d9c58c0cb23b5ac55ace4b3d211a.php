@@ -19,7 +19,8 @@
         </div>
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                <a href="<?php echo e(route('admin.stockmanagement.bin_transfer_history')); ?>" class="btn btn-secondary">Bin Transfer Histroy</a>
+                <a href="<?php echo e(route('admin.stockmanagement.bin_transfer_history')); ?>" class="btn btn-secondary">Bin Transfer
+                    Histroy</a>
             </div>
         </div>
     </div>
@@ -73,7 +74,7 @@
 
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    <?php echo e(Form::label('sku', 'SKU')); ?>
+                                                                    <?php echo e(Form::label('sku', 'Base Pack')); ?>
 
                                                                 </td>
                                                                 <td class="adjust_col"><?php echo e(Form::label('batch', 'Batch')); ?>
@@ -118,7 +119,7 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo e(Form::text('Base Pack', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true])); ?>
+                                                                    <?php echo e(Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true])); ?>
 
                                                                 </td>
                                                                 <td>
@@ -204,11 +205,16 @@
         $(document).ready(function() {
 
             //get available quantity for bin
-            $(document).on('change', '.batch', function() {
-                var from_warehouse_id = $('.from_warehouse').val();
-                var from_bin_id = $('.from_bin').val();
-                var batch_no = $(this).val();
-                var avialableQty = $(this).closest('.item_row').find('.from_qty');
+            $(document).on('blur', '.item_code', function() {
+                var row = $(this).closest('.item_row');
+                var from_warehouse_id = row.find('.from_warehouse').val();
+                var from_bin_id = row.find('.from_bin').val();
+                var batch_no = row.find('.batch').val();
+                var sku = row.find('.sku').val();
+                var item_code = $(this).val();
+                var avialableQty = row.find('.from_qty');
+
+                // console.log(from_warehouse_id,from_bin_id,batch_no,item_code,avialableQty);
 
                 // Make an AJAX request to get bins for 'from_warehouse'
                 $.ajax({
@@ -217,13 +223,14 @@
                     data: {
                         warehouse_id: from_warehouse_id,
                         from_bin_id: from_bin_id,
-                        batch_no: batch_no
+                        batch_no: batch_no,
+                        sku: sku,
+                        item_code: item_code
                     },
                     success: function(data) {
+
                         if (data) {
                             avialableQty.val(data['qty']);
-                        } else {
-                            avialableQty.val(0);
                         }
                     },
                     error: function(error) {
@@ -294,8 +301,8 @@
                     },
                     success: function(data) {
                         // Update the 'to_bin' dropdown with the retrieved data
-                        toBinDropdown.html(data); 
-                   },
+                        toBinDropdown.html(data);
+                    },
                     error: function(error) {
                         console.log(error);
                     }

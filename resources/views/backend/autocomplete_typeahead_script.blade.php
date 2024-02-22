@@ -40,7 +40,7 @@
             },
             updater: function(item) {
                 selectedItemData = item;
-                console.log(item);
+                // console.log(item);
                 var counter = globalCounter;
                 var name = this.$element.attr('name');
                 var group = name.substring(0, name.indexOf('['));
@@ -56,37 +56,41 @@
 
 
                 var customer_id = $('#party_id').val();
-                if (customer_id) {
-                    $.ajax({
-                        url: '{{ route('admin.get_customer') }}', // Replace with your actual API endpoint
-                        method: 'GET',
-                        data: {
-                            customer_id: customer_id,
-                            'item_code': item.name,
-                            'sku': sku
-                        },
-                        success: function(response) {
-                            // alert(response);
-                            if (response == -1) {
-                                // alert(`Please Set Pricing For Product ${item.name}`);
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    title: `Please Set Pricing For Product ${item.name}`,
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                });
-                                $("input[name='" + group + "[" + index + "][taxable_amount]']")
-                                    .val('');
-                            } else {
-                                $("input[name='" + group + "[" + index + "][taxable_amount]']")
-                                    .val(response);
+                if (customer_id || customer_id != '') {
+                    if ($('#party_id').length != 0) {
+                        $.ajax({
+                            url: '{{ route('admin.get_customer') }}', // Replace with your actual API endpoint
+                            method: 'GET',
+                            data: {
+                                customer_id: customer_id,
+                                'item_code': item.name,
+                                'sku': sku
+                            },
+                            success: function(response) {
+                                // alert(response);
+                                if (response == -1) {
+                                    // alert(`Please Set Pricing For Product ${item.name}`);
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        title: `Please Set Pricing For Product ${item.name}`,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                    });
+                                    $("input[name='" + group + "[" + index +
+                                            "][taxable_amount]']")
+                                        .val('');
+                                } else {
+                                    $("input[name='" + group + "[" + index +
+                                            "][taxable_amount]']")
+                                        .val(response);
+                                }
+                            },
+                            error: function() {
+                                console.error('Error fetching customer data');
                             }
-                        },
-                        error: function() {
-                            console.error('Error fetching customer data');
-                        }
-                    });
+                        });
+                    }
 
 
                     // for default bacth number

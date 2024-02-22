@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Create Goods Receipt'); ?>
+<?php $__env->startSection('title', 'Create Goods Issue'); ?>
 
 <?php $__env->startSection('content'); ?>
     <?php
@@ -7,14 +7,14 @@
     ?>
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Create Goods Receipt</h3>
+            <h3 class="content-header-title">Create Goods Issue</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Create Goods Receipt</li>
+                        <li class="breadcrumb-item active">Create Goods Issue</li>
                     </ol>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <div class="content-header row">
                                 <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                                <?php echo e(Form::model([], ['url' => 'admin/goodsreceipt/update', 'class' => 'w-100'])); ?>
+                                <?php echo e(Form::model([], ['url' => 'admin/goodsissue/update', 'class' => 'w-100'])); ?>
 
                                 <?php echo e(Form::hidden('bill_to_state', null, ['class' => 'bill_to_state'])); ?>
 
@@ -47,18 +47,21 @@
                                 <?php echo e(Form::hidden('bill_to_gst_no', null, ['class' => 'bill_to_gst_no'])); ?>
 
                                 <div class="form-body">
-
+             
 
                                     <div class="row">
 
-
+                                       
 
                                         <div class="col-sm-12 mb-3">
                                             <section id="form-repeater-wrapper">
                                                 <!-- form default repeater -->
                                                 <div class="row">
                                                     <div class="col-12">
+                                      
 
+                                                        
+                                                        
 
                                                         
                                                         <div class="conatiner-fluid table-responsive repeater">
@@ -85,7 +88,8 @@
                                                                             <td><?php echo e(Form::label('taxable_amount', 'Unit Price')); ?>
 
                                                                             </td>
-
+                                                                            
+                                                                            
                                                                             <td><?php echo e(Form::label('total', 'Total INR')); ?>
 
                                                                             </td>
@@ -135,19 +139,19 @@
                                                                             <?php echo e(Form::hidden('old_invoice_items[' . $i . '][igst_amount]', null, ['class' => 'form-control custom-amount igst_amount', 'placeholder' => 'Amt.', 'onchange' => 'calculategst(this)', 'data-name' => 'igst_amount', 'data-group' => 'old_invoice_items'])); ?>
 
 
-                                                                            <?php echo e(Form::hidden('old_invoice_items[' . $i . '][sku]', null, ['class' => 'form-control  sku', 'data-name' => 'sku', 'data-group' => 'old_invoice_items'])); ?>
+                                                                            <?php echo e(Form::hidden('old_invoice_items[' . $i . '][sku]',null, ['class' => 'form-control  sku', 'data-name' => 'sku', 'data-group' => 'old_invoice_items'])); ?>
 
 
 
-                                                                            <td><?php echo e(Form::number('old_invoice_items[' . $i . '][item_code]', null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true])); ?>
+                                                                            <td><?php echo e(Form::number('old_invoice_items[' . $i . '][item_code]',null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true])); ?>
 
                                                                             </td>
 
-                                                                            <td><?php echo e(Form::text('old_invoice_items[' . $i . '][item_name]', null, ['data-name' => 'item_name', 'class' => 'form-control item_name typeahead', 'required' => true, 'oninput' => 'validateInput(this)'])); ?>
+                                                                            <td><?php echo e(Form::text('old_invoice_items[' . $i . '][item_name]',null, ['data-name' => 'item_name', 'class' => 'form-control item_name typeahead', 'required' => true, 'oninput' => 'validateInput(this)'])); ?>
 
                                                                             </td>
                                                                             <td>
-                                                                                <?php echo e(Form::text('old_invoice_items[' . $i . '][hsn_sac]', null, ['class' => 'form-control readonly', 'data-name' => 'hsn_sac ', 'required' => true])); ?>
+                                                                                <?php echo e(Form::text('old_invoice_items[' . $i . '][hsn_sac]', null, ['class' => 'form-control readonly', 'data-name' => 'hsn_sac', 'required' => true])); ?>
 
                                                                             </td>
                                                                             <td>
@@ -155,12 +159,14 @@
 
                                                                             </td>
                                                                             <td>
-                                                                                <?php echo e(Form::number('old_invoice_items[' . $i . '][taxable_amount]', null, ['class' => 'form-control taxable_amount readonly', 'onchange' => 'calculategst(this)', 'data-name' => 'taxable_amount', 'data-group' => 'old_invoice_items', 'required' => true])); ?>
+                                                                                <?php echo e(Form::number('old_invoice_items[' . $i . '][taxable_amount]',null, ['class' => 'form-control taxable_amount readonly', 'onchange' => 'calculategst(this)', 'data-name' => 'taxable_amount', 'data-group' => 'old_invoice_items', 'required' => true])); ?>
 
                                                                             </td>
-                                                                            <?php echo e(Form::hidden('old_invoice_items[' . $i . '][discount_item]', null, ['class' => 'form-control discount_item', 'onchange' => 'calculategst(this)', 'data-name' => 'discount_item', 'data-group' => 'old_invoice_items'])); ?>
+                                                                            
+                                                                                <?php echo e(Form::hidden('old_invoice_items[' . $i . '][discount_item]', null, ['class' => 'form-control discount_item', 'onchange' => 'calculategst(this)', 'data-name' => 'discount_item', 'data-group' => 'old_invoice_items'])); ?>
 
-
+                                                                            
+                                                                            
                                                                             <td><?php echo e(Form::text('old_invoice_items[' . $i . '][total]', null, ['class' => 'form-control  total', 'onchange' => 'calculategst(this)', 'data-name' => 'total', 'data-group' => 'old_invoice_items', 'required' => true, 'readonly' => true])); ?>
 
                                                                             </td>
@@ -170,7 +176,7 @@
 
                                                                             </td>
                                                                             <td>
-                                                                                <?php echo e(Form::text('old_invoice_items[' . $i . '][cgst_rate]', null, ['class' => 'form-control custom-rate all_gst', 'placeholder' => '%', 'onchange' => 'calculategst(this)', 'data-name' => 'cgst_rate', 'data-group' => 'old_invoice_items', 'readonly' => true])); ?>
+                                                                                <?php echo e(Form::text('old_invoice_items[' . $i . '][cgst_rate]',null, ['class' => 'form-control custom-rate all_gst', 'placeholder' => '%', 'onchange' => 'calculategst(this)', 'data-name' => 'cgst_rate', 'data-group' => 'old_invoice_items', 'readonly' => true])); ?>
 
                                                                             </td>
                                                                             <td>
@@ -191,7 +197,7 @@
 
                                                                             </td>
                                                                             <td style="width: 210px;">
-                                                                                <?php echo e(Form::select('old_invoice_items[' . $i . '][storage_location_id]', $storage_locations, null, ['class' => 'form-control  ', 'placeholder' => 'Warehouse', 'data-name' => 'storage_location_id', 'required' => true])); ?>
+                                                                                <?php echo e(Form::select('old_invoice_items[' . $i . '][storage_location_id]', $storage_locations, null, ['class' => 'form-control  ',  'placeholder' => 'Warehouse', 'data-name' => 'storage_location_id', 'required' => true])); ?>
 
 
                                                                             </td>
@@ -394,6 +400,7 @@
                 }
             });
 
+
             $(document).on('click', '.batch-details-button', function(e) {
                 $(this).closest('.item_row').find('.modal').modal('show');
             });
@@ -438,8 +445,7 @@
                     // console.log(el.name);
                     var attrName = $(el).attr('name');
                     var dataName = $(el).data('name');
-                    // alert(attrName);
-                    // console.log(attrName);
+
                     var key = attrName.match(/\d+/)[0];
                     // alert(key);
                     var skipName = $(el).data('skip-name');
@@ -473,18 +479,11 @@
                 isFirstItemUndeletable: false,
                 // initEmpty: false,
             });
-
-            // console.log('test');
-
-            //practice code
             get_invoice_itemnames();
 
             $('.add_btn_rep').click(function() {
                 get_invoice_itemnames();
             });
-
-
-
 
 
         });
@@ -517,4 +516,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/inventoryrectification/goodsreceipt_create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/3psap/resources/views/backend/inventoryrectification/goodsissue_create.blade.php ENDPATH**/ ?>

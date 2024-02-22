@@ -134,13 +134,13 @@
                                                                             <td>{{ Form::text('old_invoice_items[' . $i . '][item_name]',null, ['data-name' => 'item_name', 'class' => 'form-control item_name typeahead', 'required' => true, 'oninput' => 'validateInput(this)']) }}
                                                                             </td>
                                                                             <td>
-                                                                                {{ Form::text('old_invoice_items[' . $i . '][hsn_sac]', null, ['class' => 'form-control', 'data-name' => 'hsn_sac', 'required' => true]) }}
+                                                                                {{ Form::text('old_invoice_items[' . $i . '][hsn_sac]', null, ['class' => 'form-control readonly', 'data-name' => 'hsn_sac', 'required' => true]) }}
                                                                             </td>
                                                                             <td>
                                                                                 {{ Form::number('old_invoice_items[' . $i . '][qty]', null, ['class' => 'form-control qty', 'onchange' => 'calculategst(this)', 'oninput' => 'validateInputZero(this)', 'data-name' => 'qty', 'data-group' => 'old_invoice_items', 'required' => true]) }}
                                                                             </td>
                                                                             <td>
-                                                                                {{ Form::number('old_invoice_items[' . $i . '][taxable_amount]',null, ['class' => 'form-control taxable_amount', 'onchange' => 'calculategst(this)', 'data-name' => 'taxable_amount', 'data-group' => 'old_invoice_items', 'required' => true]) }}
+                                                                                {{ Form::number('old_invoice_items[' . $i . '][taxable_amount]',null, ['class' => 'form-control taxable_amount readonly', 'onchange' => 'calculategst(this)', 'data-name' => 'taxable_amount', 'data-group' => 'old_invoice_items', 'required' => true]) }}
                                                                             </td>
                                                                             {{-- <td> --}}
                                                                                 {{ Form::hidden('old_invoice_items[' . $i . '][discount_item]', null, ['class' => 'form-control discount_item', 'onchange' => 'calculategst(this)', 'data-name' => 'discount_item', 'data-group' => 'old_invoice_items']) }}
@@ -151,7 +151,7 @@
                                                                             </td>
 
                                                                             <td style="width: 130px;">
-                                                                                {{ Form::select('old_invoice_items[' . $i . '][gst_rate]', $gst, null, ['class' => 'form-control gst_dropdown', 'placeholder' => 'Select GST', 'onchange' => 'calculategst(this)', 'data-name' => 'gst_rate', 'data-group' => 'old_invoice_items', 'required' => true]) }}
+                                                                                {{ Form::select('old_invoice_items[' . $i . '][gst_rate]', $gst, null, ['class' => 'form-control gst_dropdown readonly', 'placeholder' => 'Select GST', 'onchange' => 'calculategst(this)', 'data-name' => 'gst_rate', 'data-group' => 'old_invoice_items', 'required' => true]) }}
                                                                             </td>
                                                                             <td>
                                                                                 {{ Form::text('old_invoice_items[' . $i . '][cgst_rate]',null, ['class' => 'form-control custom-rate all_gst', 'placeholder' => '%', 'onchange' => 'calculategst(this)', 'data-name' => 'cgst_rate', 'data-group' => 'old_invoice_items', 'readonly' => true]) }}
@@ -165,7 +165,7 @@
 
 
                                                                             <td>
-                                                                                {{ Form::text('old_invoice_items[' . $i . '][gst_amount]', null, ['class' => 'form-control', 'placeholder' => 'GST Amount', 'onchange' => 'calculategst(this)', 'data-name' => 'gst_amount', 'data-group' => 'old_invoice_items', 'required' => true]) }}
+                                                                                {{ Form::text('old_invoice_items[' . $i . '][gst_amount]', null, ['class' => 'form-control readonly', 'placeholder' => 'GST Amount', 'onchange' => 'calculategst(this)', 'data-name' => 'gst_amount', 'data-group' => 'old_invoice_items', 'required' => true]) }}
                                                                             </td>
                                                                             <td>{{ Form::text('old_invoice_items[' . $i . '][gross_total]', null, ['class' => 'form-control gross_total', 'onchange' => 'calculategst(this)', 'data-name' => 'gross_total', 'data-group' => 'old_invoice_items', 'required' => true, 'readonly' => true]) }}
                                                                             </td>

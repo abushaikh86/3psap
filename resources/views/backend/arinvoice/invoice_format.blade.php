@@ -1,5 +1,8 @@
 @php
 use Carbon\Carbon;
+use App\Models\backend\Company;
+
+$company = Company::where('company_id',session('company_id'))->first();
 @endphp
 @php
 // dd($invoice->gst_rate);
@@ -49,7 +52,7 @@ use Carbon\Carbon;
               width="200"
             />
 
-            <h5><b>3P SAP Services</b></h5>
+            <h5><b>{{$company->name}}</b></h5>
             Address : Kalyan<br />
             Tel : 55544422 Fax : 55577784<br />
             GSTIN :{{ $invoice->bill_to_gst_no }} <br />
@@ -275,7 +278,7 @@ use Carbon\Carbon;
 
         <tr>
           <td colspan="10">
-            For : 3P SAP Services
+            For : {{$company->name}}
             <br /><br /><br />
             Authorised Signatory
           </td>

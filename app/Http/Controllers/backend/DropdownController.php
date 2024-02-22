@@ -43,7 +43,7 @@ class DropdownController extends Controller
 
   public function get_contact_person(){
     $party_id = $_POST['party_id'];
-    $contact_person_data = BussinessPartnerContactDetails::where('bussiness_partner_id',$party_id)->pluck('contact_person','contact_details_id');
+    $contact_person_data = BussinessPartnerContactDetails::where(['type'=>'Bill-To/ Bill-From','bussiness_partner_id'=>$party_id])->pluck('contact_person','contact_details_id');
     // dd($beat_data);
     return json_encode($contact_person_data);
     // dd($area_id);

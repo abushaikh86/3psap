@@ -270,7 +270,6 @@ class ApiController extends Controller
         $bussiness = new BussinessPartnerMaster();
       }
 
-
       $bussiness->fill($postedData);
       $bussiness->business_partner_type = 1;
       $bussiness->bp_name = $postedData['outlet_name'];
@@ -283,13 +282,13 @@ class ApiController extends Controller
         $full_data = array_merge($uid, $postedData);
 
         //usama_07-02-2024
-        $billToAddress = BussinessPartnerAddress::firstOrNew(['bussiness_partner_id' => $postedData['bussiness_partner_id'], 'address_type' => 'Bill-To/ Bill-From']);
+        $billToAddress = BussinessPartnerAddress::firstOrNew(['bussiness_partner_id' => $uid, 'address_type' => 'Bill-To/ Bill-From']);
         $billToAddress->fill($full_data);
         $billToAddress->bp_address_name = $full_data['street_name']; // Adjust field name as needed
         $billToAddress->save();
 
         // Create or update Ship-To/ Ship-From address
-        $shipToAddress = BussinessPartnerAddress::firstOrNew(['bussiness_partner_id' => $postedData['bussiness_partner_id'], 'address_type' => 'Ship-To/ Ship-From']);
+        $shipToAddress = BussinessPartnerAddress::firstOrNew(['bussiness_partner_id' => $uid, 'address_type' => 'Ship-To/ Ship-From']);
         $shipToAddress->fill($full_data);
         $shipToAddress->bp_address_name = $full_data['street_name']; // Adjust field name as needed
         $shipToAddress->save();

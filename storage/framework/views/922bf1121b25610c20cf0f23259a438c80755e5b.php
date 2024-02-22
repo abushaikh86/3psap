@@ -1,10 +1,10 @@
-@php
+<?php
 use Carbon\Carbon;
 use App\Models\backend\Company;
 
 $company = Company::where('company_id',session('company_id'))->first();
-@endphp
-@php
+?>
+<?php
 // dd($invoice->gst_rate);
   if($invoice->igst_total <= 0){
     $cs_gst_percent = "@ ".($invoice->gst_rate/2)." %";
@@ -15,7 +15,7 @@ $company = Company::where('company_id',session('company_id'))->first();
     $cs_gst_percent='';
     $st_gst_percent='';
   }
-@endphp
+?>
 <style>
   * {
     margin: 0;
@@ -52,26 +52,26 @@ $company = Company::where('company_id',session('company_id'))->first();
               width="200"
             />
 
-            <h5><b>{{$company->name}}</b></h5>
+            <h5><b><?php echo e($company->name); ?></b></h5>
             Address : Kalyan<br />
             Tel : 55544422 Fax : 55577784<br />
-            GSTIN :{{ $invoice->bill_to_gst_no }} <br />
+            GSTIN :<?php echo e($invoice->bill_to_gst_no); ?> <br />
             State : Maharashtra, State Code : 27<br />
           </td>
           <td colspan="5" style="width: 25%">
             Invoice No:<br />
-            <b>{{$invoice->bill_no}}</b>
+            <b><?php echo e($invoice->bill_no); ?></b>
           </td>
           <td colspan="5" style="width: 25%">
             Date:<br />
-            <b>{{ Carbon::parse($invoice->bill_date)->format('d-m-Y')}}</b>
+            <b><?php echo e(Carbon::parse($invoice->bill_date)->format('d-m-Y')); ?></b>
           </td>
         </tr>
 
         <tr>
           <td colspan="10" style="width: 50%">
             Place Of Supply:<br />
-            <b>{{ $invoice->ship_from }}</b>
+            <b><?php echo e($invoice->place_of_supply); ?></b>
           </td>
         </tr>
 
@@ -83,29 +83,31 @@ $company = Company::where('company_id',session('company_id'))->first();
         </tr>
 
         <tr>
-          @if(!empty($bill_address))
+          <?php if(!empty($bill_address)): ?>
           <td colspan="10">
             Bill To
-            <h5>{{$party->bp_name ?? ''}}</h5>
-            Address : {{$bill_address->building_no_name. " ,".$bill_address->street_name ." ,". $bill_address->landmark
-             ." ,". $bill_address->city." ".$bill_address->district." ".$bill_address->pin_code }}<br />
-            Phone No: {{$contact->mobile_no}} <br />
-            GSTIN:  {{ $invoice->bill_to_gst_no }}<br />
-            State: {{$bill_address->state}}
-          </td>
-          @endif
+            <h5><?php echo e($invoice->get_bill_toaddress->bp_address_name ?? ''); ?></h5>
+            Address : <?php echo e($invoice->get_bill_toaddress->building_no_name. " ,".$invoice->get_bill_toaddress->street_name ." ,". $invoice->get_bill_toaddress->landmark
+             ." ,". $invoice->get_bill_toaddress->city." ".$invoice->get_bill_toaddress->district." ".$invoice->get_bill_toaddress->pin_code); ?><br />
+            Phone No: <?php echo e($contact->mobile_no); ?> <br />
+            GSTIN:  <?php echo e($invoice->bill_to_gst_no); ?><br />
+            State: <?php echo e($invoice->get_bill_toaddress->state); ?>
 
-          @if(!empty($ship_address))
+          </td>
+          <?php endif; ?>
+
+          <?php if(!empty($ship_address)): ?>
           <td colspan="10">
             Ship To
-            <h5>{{$invoice->get_ship_toaddress->bp_address_name ?? ''}}</h5>
-            Address : {{$invoice->get_ship_toaddress->building_no_name. " ,".$invoice->get_ship_toaddress->street_name ." ,". $invoice->get_ship_toaddress->landmark
-             ." ,". $invoice->get_ship_toaddress->city." ".$invoice->get_ship_toaddress->district." ".$invoice->get_ship_toaddress->pin_code }}<br />
-            Phone No: {{$contact->mobile_no}} <br />
-            GSTIN:  {{ $invoice->bill_to_gst_no }}<br />
-            State: {{$invoice->get_ship_toaddress->state}}
+            <h5><?php echo e($invoice->get_ship_toaddress->bp_address_name ?? ''); ?></h5>
+            Address : <?php echo e($invoice->get_ship_toaddress->building_no_name. " ,".$invoice->get_ship_toaddress->street_name ." ,". $invoice->get_ship_toaddress->landmark
+             ." ,". $invoice->get_ship_toaddress->city." ".$invoice->get_ship_toaddress->district." ".$invoice->get_ship_toaddress->pin_code); ?><br />
+            Phone No: <?php echo e($contact->mobile_no); ?> <br />
+            GSTIN:  <?php echo e($invoice->bill_to_gst_no); ?><br />
+            State: <?php echo e($invoice->get_ship_toaddress->state); ?>
+
           </td>
-          @endif
+          <?php endif; ?>
         </tr>
 
         <tr>
@@ -119,54 +121,54 @@ $company = Company::where('company_id',session('company_id'))->first();
           <td colspan="4">Amount</td>
         </tr>
 
-        @php
+        <?php
         $gst_amt=0;
         $total_inr=0;
-        @endphp
+        ?>
 
-        @if($invoice->goodsservicereceipts_items)
-        @php $i=1; @endphp
-        @foreach($invoice->goodsservicereceipts_items as $item)
-        @php
+        <?php if($invoice->goodsservicereceipts_items): ?>
+        <?php $i=1; ?>
+        <?php $__currentLoopData = $invoice->goodsservicereceipts_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php
         $gst_amt += $item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount;
         $total_inr += $item->total;
-        @endphp
+        ?>
 
         <tr>
-          <td colspan="4">{{ $i++ }}</td>
-          <td colspan="1">{{ $item->item_name }}</td>
-          <td colspan="3">{{ $item->hsn_sac }}</td>
-          <td colspan="2">{{ $item->qty }}</td>
-          <td colspan="2">{{ $item->price_af_discount }}</td>
-          <td colspan="2">{{ $item->discount_item ?? 0}}%</td>
-          <td colspan="4">{{ round($item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount,2)}}</td>
-          <td colspan="3">{{ $item->total }}</td>
+          <td colspan="4"><?php echo e($i++); ?></td>
+          <td colspan="1"><?php echo e($item->item_name); ?></td>
+          <td colspan="3"><?php echo e($item->hsn_sac); ?></td>
+          <td colspan="2"><?php echo e($item->qty); ?></td>
+          <td colspan="2"><?php echo e($item->price_af_discount); ?></td>
+          <td colspan="2"><?php echo e($item->discount_item ?? 0); ?>%</td>
+          <td colspan="4"><?php echo e(round($item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount,2)); ?></td>
+          <td colspan="3"><?php echo e($item->total); ?></td>
         </tr>
-        @endforeach
-        @endif
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
 
         <tr>
           <td colspan="14">Total</td>
-          <td colspan="4">{{ round($gst_amt,2) }}</td>
-          <td colspan="3">{{ $total_inr}}</td>
+          <td colspan="4"><?php echo e(round($gst_amt,2)); ?></td>
+          <td colspan="3"><?php echo e($total_inr); ?></td>
         </tr>
 
         <tr>
           <td colspan="10" style="width: 50%">
             Invoice Amount In Words<br />
-            <strong>{{ $invoice->amount_in_words }}</strong>
+            <strong><?php echo e($invoice->amount_in_words); ?></strong>
           </td>
           <td colspan="10" style="width: 50%">
             <b>Amounts:</b><br />
-            @php
+            <?php
             $discount_amount = ($total_inr * $invoice->discount) / 100 ?? 0;
            //  dd($discount_amount);
            $rounded = ($total_inr +  $gst_amt)- $discount_amount;
-         @endphp
+         ?>
 
-              Sub Total  <span style="float:right;">{{ round(($total_inr +  $gst_amt)- $discount_amount)  }}</span>
+              Sub Total  <span style="float:right;"><?php echo e(round(($total_inr +  $gst_amt)- $discount_amount)); ?></span>
               <br>
-              Round off  <span style="float:right;">{{ round(fmod($rounded,1),2)  }}</span>
+              Round off  <span style="float:right;"><?php echo e(round(fmod($rounded,1),2)); ?></span>
           
           </td>
         </tr>
@@ -178,7 +180,7 @@ $company = Company::where('company_id',session('company_id'))->first();
           </td>
 
           <td colspan="10" style="width: 50%">
-             <b>Total</b> <span style="float:right;">{{ round($rounded) }}</span>
+             <b>Total</b> <span style="float:right;"><?php echo e(round($rounded)); ?></span>
           </td>
         </tr>
 
@@ -200,50 +202,50 @@ $company = Company::where('company_id',session('company_id'))->first();
           <td colspan="2">Amount</td>
         </tr>
 
-        @php 
+        <?php 
         $taxable_amt=0;
         $csgst_amt=0;
         $sgst_amt=0;
         $igst_amt=0;
         $total_taxable_amt=0;
         $i=1;
-         @endphp
+         ?>
 
-        @if($invoice->goodsservicereceipts_items)
-        @foreach($invoice->goodsservicereceipts_items as $item)
+        <?php if($invoice->goodsservicereceipts_items): ?>
+        <?php $__currentLoopData = $invoice->goodsservicereceipts_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
 
-          @php
+          <?php
           $taxable_amt += $item->taxable_amount;
           $csgst_amt += $item->cgst_amount;
           $sgst_amt += $item->sgst_utgst_amount;
           $igst_amt += $item->igst_amount;
           $total_taxable_amt += $item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount;
-          @endphp
+          ?>
 
-          <td colspan="3">{{ $item->hsn_sac }}</td>
-          <td colspan="3">{{ $item->taxable_amount }}</td>
-          <td colspan="2">{{ $cs_gst_percent}}</td>
-          <td colspan="2">{{ round($item->cgst_amount,2) }}</td>
-          <td colspan="2">{{ $st_gst_percent}}</td>
-          <td colspan="2">{{ round($item->sgst_utgst_amount,2) }}</td>
-          <td colspan="2">{{ $igst_percent}}</td>
-          <td colspan="2">{{ round($item->igst_amount,2) }}</td>
-          <td colspan="2">{{ round($item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount,2) }}</td>
+          <td colspan="3"><?php echo e($item->hsn_sac); ?></td>
+          <td colspan="3"><?php echo e($item->taxable_amount); ?></td>
+          <td colspan="2"><?php echo e($cs_gst_percent); ?></td>
+          <td colspan="2"><?php echo e(round($item->cgst_amount,2)); ?></td>
+          <td colspan="2"><?php echo e($st_gst_percent); ?></td>
+          <td colspan="2"><?php echo e(round($item->sgst_utgst_amount,2)); ?></td>
+          <td colspan="2"><?php echo e($igst_percent); ?></td>
+          <td colspan="2"><?php echo e(round($item->igst_amount,2)); ?></td>
+          <td colspan="2"><?php echo e(round($item->cgst_amount+$item->sgst_utgst_amount+$item->igst_amount,2)); ?></td>
         </tr>
-        @endforeach
-        @endif
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
 
         <tr>
           <td colspan="3">Total</td>
-          <td colspan="3">{{ $taxable_amt }}</td>
+          <td colspan="3"><?php echo e($taxable_amt); ?></td>
           <td colspan="2"></td>
-          <td colspan="2">{{ round($csgst_amt,2) }}</td>
+          <td colspan="2"><?php echo e(round($csgst_amt,2)); ?></td>
           <td colspan="2"></td>
-          <td colspan="2">{{ round($sgst_amt,2) }}</td>
+          <td colspan="2"><?php echo e(round($sgst_amt,2)); ?></td>
           <td colspan="2"></td>
-          <td colspan="2">{{ round($igst_amt,2) }}</td>
-          <td colspan="2">{{ round($total_taxable_amt,2) }}</td>
+          <td colspan="2"><?php echo e(round($igst_amt,2)); ?></td>
+          <td colspan="2"><?php echo e(round($total_taxable_amt,2)); ?></td>
         </tr>
 
         <tr>
@@ -262,12 +264,29 @@ $company = Company::where('company_id',session('company_id'))->first();
         </tr>
 
         <tr>
+          <td colspan="10">
+            <b>Company's Bank details :</b><br />
+            Bank Name: <?php echo e($bank_details->bank_name); ?>
 
+            <br />
+            Branch Name : <?php echo e($bank_details->bank_branch); ?>
+
+            <br />
+            Bank IFSC Code : <?php echo e($bank_details->ifsc); ?>
+
+            <br />
+            Account Number : <?php echo e($bank_details->ac_number); ?>
+
+            <br />
+            Account holder's Name : <?php echo e($bank_details->acc_holdername); ?>
+
+          </td>
         </tr>
 
         <tr>
           <td colspan="10">
-            For : {{$company->name}}
+            For : <?php echo e($company->name); ?>
+
             <br /><br /><br />
             Authorised Signatory
           </td>
@@ -275,6 +294,6 @@ $company = Company::where('company_id',session('company_id'))->first();
       </table>
         </div>
 
-@if($download)
+<?php if($download): ?>
     <style>@page{body{color:#000;} table{width:100%;border:1px solid #000;border-collapse:collapse;} table tr td,table tr th{border:1px solid #000;text-align:left;font-size:12px;padding:4px;}table tr th p, table tr td p,table tr td h2,table tr th h2{margin-bottom:0px;padding-bottom:0px;padding-top:0px;margin-top:0px;}.invoice_items tr th, .invoice_items tr td{padding:4px;}.no-border,.no-border tr td,.no-border tr th{border:none !important;}</style>
-@endif
+<?php endif; ?><?php /**PATH /var/www/html/3psap/resources/views/backend/arinvoice/invoice_format.blade.php ENDPATH**/ ?>
