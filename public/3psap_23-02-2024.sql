@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.4deb1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 22, 2024 at 06:10 PM
--- Server version: 8.0.33-0ubuntu0.22.10.2
--- PHP Version: 8.1.27
+-- Host: 127.0.0.1:3306
+-- Generation Time: Feb 23, 2024 at 01:34 PM
+-- Server version: 5.7.40
+-- PHP Version: 8.1.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,13 +27,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `academic_year`
 --
 
-CREATE TABLE `academic_year` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `academic_year`;
+CREATE TABLE IF NOT EXISTS `academic_year` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `year_string` varchar(100) DEFAULT NULL,
   `year_id` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `academic_year`
@@ -52,8 +54,9 @@ INSERT INTO `academic_year` (`id`, `year_string`, `year_id`, `created_at`, `upda
 -- Table structure for table `activity_log`
 --
 
-CREATE TABLE `activity_log` (
-  `activity_log_id` int NOT NULL,
+DROP TABLE IF EXISTS `activity_log`;
+CREATE TABLE IF NOT EXISTS `activity_log` (
+  `activity_log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(255) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   `session_id` text,
@@ -62,8 +65,9 @@ CREATE TABLE `activity_log` (
   `description` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` date DEFAULT NULL,
+  PRIMARY KEY (`activity_log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1455 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `activity_log`
@@ -1509,7 +1513,27 @@ INSERT INTO `activity_log` (`activity_log_id`, `user_id`, `user_name`, `session_
 (1431, '360', 'admin ', '05baKW4r7ffzk1CI73glwnJTYLXfnULso1RODbFm', 'A/R Invoice', 'A/R Invoice Updated', 'A/R Invoice Updated: Name=>AR-2023-24-16 Change=> ar_inv_no=\"345435\" trans_type=\"Regular\"', '2024-02-22 09:29:16', '2024-02-22 09:29:16', NULL),
 (1432, '360', 'admin ', '05baKW4r7ffzk1CI73glwnJTYLXfnULso1RODbFm', 'Products', 'Product Updated', 'Product Updated: Name=>68868186 Change=> ean_barcode=\"\" gst_id=\"1\"', '2024-02-22 10:12:13', '2024-02-22 10:12:13', NULL),
 (1433, '360', 'admin ', '05baKW4r7ffzk1CI73glwnJTYLXfnULso1RODbFm', 'Products', 'Product Updated', 'Product Updated: Name=>67345352 Change=> ean_barcode=\"\" gst_id=\"1\"', '2024-02-22 10:12:18', '2024-02-22 10:12:18', NULL),
-(1434, '360', 'admin ', '05baKW4r7ffzk1CI73glwnJTYLXfnULso1RODbFm', 'Products', 'Product Updated', 'Product Updated: Name=>67973110 Change=> ean_barcode=\"\" gst_id=\"1\"', '2024-02-22 10:12:26', '2024-02-22 10:12:26', NULL);
+(1434, '360', 'admin ', '05baKW4r7ffzk1CI73glwnJTYLXfnULso1RODbFm', 'Products', 'Product Updated', 'Product Updated: Name=>67973110 Change=> ean_barcode=\"\" gst_id=\"1\"', '2024-02-22 10:12:26', '2024-02-22 10:12:26', NULL),
+(1435, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:39:12', '2024-02-23 05:39:12', NULL),
+(1436, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:39:30', '2024-02-23 05:39:30', NULL),
+(1437, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:39:42', '2024-02-23 05:39:42', NULL),
+(1438, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:44:26', '2024-02-23 05:44:26', NULL),
+(1439, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:44:38', '2024-02-23 05:44:38', NULL),
+(1440, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 05:44:50', '2024-02-23 05:44:50', NULL),
+(1441, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:25:38', '2024-02-23 06:25:38', NULL),
+(1442, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:29:40', '2024-02-23 06:29:40', NULL),
+(1443, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:32:33', '2024-02-23 06:32:33', NULL),
+(1444, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:33:29', '2024-02-23 06:33:29', NULL),
+(1445, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:38:13', '2024-02-23 06:38:13', NULL),
+(1446, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:38:49', '2024-02-23 06:38:49', NULL),
+(1447, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:40:53', '2024-02-23 06:40:53', NULL),
+(1448, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:41:05', '2024-02-23 06:41:05', NULL),
+(1449, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Bussiness Partner Master', 'Bussiness Partner Deleted', 'Bussiness Partner Deleted', '2024-02-23 06:41:14', '2024-02-23 06:41:14', NULL),
+(1450, '75', 'super admin', 'lDGn0fGKL1dIGj35dE2UhCuY4HRbI09Q5zstoLnI', 'Products', 'Product Deleted', 'Product Deleted: 999999', '2024-02-23 06:42:29', '2024-02-23 06:42:29', NULL),
+(1451, '360', 'admin ', 'AomyVEadfnowjpfkadLA8Mb0S4lsBwzkncZc57KE', 'BeatCalender Master', 'BeatCalender Updated', 'BeatCalender Updated: Name=> Change=> beat_day=\"Friday\"', '2024-02-23 07:34:49', '2024-02-23 07:34:49', NULL),
+(1452, '360', 'admin ', 'RhrLiiA9AZSXdf8t96y4DPDib9PTz5vfNZlbrbPe', 'Bussiness Partner Master', 'Bussiness Partner Updated', 'Bussiness Partner Updated: Name=>Do & Dual Pvt Ltd Change=> residential_status=\"1\"', '2024-02-23 10:03:37', '2024-02-23 10:03:37', NULL),
+(1453, '360', 'admin ', 'RhrLiiA9AZSXdf8t96y4DPDib9PTz5vfNZlbrbPe', 'Bussiness Partner Master', 'Bussiness Partner Updated', 'Bussiness Partner Updated: Name=>Reliance Retail Limited Change=> beat_id=\"45\"', '2024-02-23 10:12:23', '2024-02-23 10:12:23', NULL),
+(1454, '360', 'admin ', 'RhrLiiA9AZSXdf8t96y4DPDib9PTz5vfNZlbrbPe', 'Bussiness Partner Master', 'Bussiness Partner Updated', 'Bussiness Partner Updated: Name=>Reliance Retail Limited Change=> sales_manager=\"347\" ase=\"348\" sales_officer=\"349\" salesman=\"359\"', '2024-02-23 10:13:10', '2024-02-23 10:13:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -1517,12 +1541,14 @@ INSERT INTO `activity_log` (`activity_log_id`, `user_id`, `user_name`, `session_
 -- Table structure for table `admin`
 --
 
-CREATE TABLE `admin` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -1537,28 +1563,30 @@ INSERT INTO `admin` (`id`, `username`, `password`, `created_at`) VALUES
 -- Table structure for table `admin_users`
 --
 
-CREATE TABLE `admin_users` (
-  `admin_user_id` int NOT NULL,
+DROP TABLE IF EXISTS `admin_users`;
+CREATE TABLE IF NOT EXISTS `admin_users` (
+  `admin_user_id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(100) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `mobile_no` varchar(50) DEFAULT NULL,
   `profile_pic` varchar(255) DEFAULT NULL,
-  `role_id` int DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `account_status` int DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `account_status` int(11) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
-  `location_id` int DEFAULT NULL,
-  `is_admin` int DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
+  `is_admin` int(11) DEFAULT NULL,
   `user_type` varchar(20) DEFAULT NULL,
   `role` varchar(100) DEFAULT NULL,
   `parent_users` varchar(220) DEFAULT NULL,
   `beat_id` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`admin_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin_users`
@@ -1595,7 +1623,11 @@ INSERT INTO `admin_users` (`admin_user_id`, `first_name`, `last_name`, `email`, 
 (357, 'Anubhav', '', NULL, NULL, NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '34', NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
 (358, 'Shishir', '', NULL, NULL, NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '35', '357', NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
 (359, 'Prathmesh', 'Chauhan', 'salesman@gmail.com', '$2y$10$S/cyEWcJLinaGY55Xo3Ybuv3/qi5QpEi7vX1zVb2xljMnEiTWmVHu', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '37', '349', '', '2024-02-21 09:18:32', '2024-02-21 11:19:45', NULL),
-(360, 'admin', NULL, 'admin@gmail.com', '$2y$10$Z9ZpSZdgs2FcB1BQK7suYei/q0DN.hdXG8/SUTEzZ5Iu4oFvF8k/y', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '33', '', '', '2024-02-21 09:21:20', '2024-02-21 09:24:54', NULL);
+(360, 'admin', NULL, 'admin@gmail.com', '$2y$10$Z9ZpSZdgs2FcB1BQK7suYei/q0DN.hdXG8/SUTEzZ5Iu4oFvF8k/y', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '33', '', '', '2024-02-21 09:21:20', '2024-02-21 09:24:54', NULL),
+(369, 'Abhijeet', 'patil', 'abhij@gmail.com', '$2y$10$Bc.kBe/TcEYKxdRAJXQGcOriajTLbTFLtEeM9kaWHkJ8v/18yGsh2', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '34', NULL, NULL, '2024-02-23 06:36:16', '2024-02-23 06:36:16', NULL),
+(370, 'Samarth', 'jain', 'samarth@gmail.com', '$2y$10$7a2b.KjPZEDGWLBO99lyr.Bu5/ticWS0qjzwzSnsCjiln.zepO.ty', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '35', '369', NULL, '2024-02-23 06:36:17', '2024-02-23 06:36:17', NULL),
+(371, 'Naresh', '', 'ns@gmail.com', '$2y$10$GI5/WYYJW32kHVSoqpXrveCia6pzU65wdPDYVlfIpCWeF62NBTwy6', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '40', '370', NULL, '2024-02-23 06:36:17', '2024-02-23 06:36:17', NULL),
+(372, 'Sahil', 'Shaikh', 'sahils@gmail.com', '$2y$10$qVOqm8FMTad9VI1UeUfpueHx8e5sx6DxfbXp8f8r.wlXF8CTl4ykS', NULL, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, '37', '371', NULL, '2024-02-23 06:36:17', '2024-02-23 06:36:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -1603,8 +1635,9 @@ INSERT INTO `admin_users` (`admin_user_id`, `first_name`, `last_name`, `email`, 
 -- Table structure for table `agent`
 --
 
-CREATE TABLE `agent` (
-  `agent_id` int NOT NULL,
+DROP TABLE IF EXISTS `agent`;
+CREATE TABLE IF NOT EXISTS `agent` (
+  `agent_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `contact_no` varchar(100) DEFAULT NULL,
@@ -1638,16 +1671,17 @@ INSERT INTO `agent` (`agent_id`, `name`, `email`, `contact_no`, `address`, `gst_
 -- Table structure for table `ap_invoice`
 --
 
-CREATE TABLE `ap_invoice` (
-  `goods_service_receipt_id` int NOT NULL,
-  `gr_id` int DEFAULT NULL,
-  `purchase_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ap_invoice`;
+CREATE TABLE IF NOT EXISTS `ap_invoice` (
+  `goods_service_receipt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gr_id` int(11) DEFAULT NULL,
+  `purchase_order_id` int(11) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `purchase_order_counter` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `purchase_order_counter` int(11) DEFAULT NULL,
   `vendor_ref_no` varchar(110) NOT NULL,
   `vendor_inv_no` varchar(100) DEFAULT NULL,
-  `ap_inv_no` int DEFAULT NULL,
+  `ap_inv_no` int(11) DEFAULT NULL,
   `trans_type` varchar(110) DEFAULT NULL,
   `place_of_supply` varchar(200) DEFAULT NULL,
   `total_down_payment` varchar(200) DEFAULT NULL,
@@ -1658,18 +1692,18 @@ CREATE TABLE `ap_invoice` (
   `receipt_type` varchar(255) DEFAULT NULL,
   `po_document` varchar(255) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
   `company_gstin` varchar(100) DEFAULT NULL,
   `ship_from` varchar(200) DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
   `status` varchar(200) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `t_down_pmnt` varchar(110) DEFAULT NULL,
@@ -1684,12 +1718,13 @@ CREATE TABLE `ap_invoice` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `is_bill_booking_done` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipt_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1698,18 +1733,20 @@ CREATE TABLE `ap_invoice` (
 -- Table structure for table `ap_invoice_batches`
 --
 
-CREATE TABLE `ap_invoice_batches` (
-  `goods_service_receipts_batches_id` int NOT NULL,
-  `goods_service_receipt_id` int DEFAULT NULL,
-  `goods_service_receipts_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ap_invoice_batches`;
+CREATE TABLE IF NOT EXISTS `ap_invoice_batches` (
+  `goods_service_receipts_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_service_receipt_id` int(11) DEFAULT NULL,
+  `goods_service_receipts_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipts_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ap_invoice_batches`
@@ -1740,11 +1777,12 @@ INSERT INTO `ap_invoice_batches` (`goods_service_receipts_batches_id`, `goods_se
 -- Table structure for table `ap_invoice_items`
 --
 
-CREATE TABLE `ap_invoice_items` (
-  `goods_service_receipts_item_id` int NOT NULL,
-  `goods_service_receipt_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
-  `purchase_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ap_invoice_items`;
+CREATE TABLE IF NOT EXISTS `ap_invoice_items` (
+  `goods_service_receipts_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_service_receipt_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `purchase_order_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
@@ -1754,7 +1792,7 @@ CREATE TABLE `ap_invoice_items` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -1763,10 +1801,11 @@ CREATE TABLE `ap_invoice_items` (
   `igst_rate` varchar(50) DEFAULT NULL,
   `igst_amount` varchar(100) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipts_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1775,13 +1814,15 @@ CREATE TABLE `ap_invoice_items` (
 -- Table structure for table `area`
 --
 
-CREATE TABLE `area` (
-  `area_id` int NOT NULL,
+DROP TABLE IF EXISTS `area`;
+CREATE TABLE IF NOT EXISTS `area` (
+  `area_id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`area_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `area`
@@ -1805,13 +1846,14 @@ INSERT INTO `area` (`area_id`, `area_name`, `created_at`, `updated_at`, `deleted
 -- Table structure for table `ar_invoice`
 --
 
-CREATE TABLE `ar_invoice` (
-  `order_fulfillment_id` int NOT NULL,
-  `order_booking_id` int DEFAULT NULL,
-  `of_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ar_invoice`;
+CREATE TABLE IF NOT EXISTS `ar_invoice` (
+  `order_fulfillment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_id` int(11) DEFAULT NULL,
+  `of_id` int(11) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `order_booking_counter` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `order_booking_counter` int(11) DEFAULT NULL,
   `customer_ref_no` varchar(110) DEFAULT NULL,
   `customer_inv_no` varchar(100) DEFAULT NULL,
   `ar_inv_no` varchar(100) DEFAULT NULL,
@@ -1825,18 +1867,18 @@ CREATE TABLE `ar_invoice` (
   `receipt_type` varchar(255) DEFAULT NULL,
   `po_document` varchar(255) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
   `company_gstin` varchar(100) DEFAULT NULL,
   `ship_from` varchar(200) DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
   `status` varchar(200) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `t_down_pmnt` varchar(110) DEFAULT NULL,
@@ -1851,13 +1893,14 @@ CREATE TABLE `ar_invoice` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
-  `is_bill_booking_done` tinyint DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
+  `is_bill_booking_done` tinyint(4) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_fulfillment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ar_invoice`
@@ -1873,18 +1916,20 @@ INSERT INTO `ar_invoice` (`order_fulfillment_id`, `order_booking_id`, `of_id`, `
 -- Table structure for table `ar_invoice_batches`
 --
 
-CREATE TABLE `ar_invoice_batches` (
-  `ar_invoice_batches_id` int NOT NULL,
-  `order_fulfillment_id` int DEFAULT NULL,
-  `order_fulfillment_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ar_invoice_batches`;
+CREATE TABLE IF NOT EXISTS `ar_invoice_batches` (
+  `ar_invoice_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_fulfillment_id` int(11) DEFAULT NULL,
+  `order_fulfillment_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`ar_invoice_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ar_invoice_batches`
@@ -1916,11 +1961,12 @@ INSERT INTO `ar_invoice_batches` (`ar_invoice_batches_id`, `order_fulfillment_id
 -- Table structure for table `ar_invoice_items`
 --
 
-CREATE TABLE `ar_invoice_items` (
-  `order_fulfillment_item_id` int NOT NULL,
-  `order_fulfillment_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
-  `order_booking_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `ar_invoice_items`;
+CREATE TABLE IF NOT EXISTS `ar_invoice_items` (
+  `order_fulfillment_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_fulfillment_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `order_booking_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(110) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
@@ -1930,7 +1976,7 @@ CREATE TABLE `ar_invoice_items` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -1940,11 +1986,12 @@ CREATE TABLE `ar_invoice_items` (
   `igst_amount` varchar(100) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
   `batch_no` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_fulfillment_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ar_invoice_items`
@@ -1962,19 +2009,22 @@ INSERT INTO `ar_invoice_items` (`order_fulfillment_item_id`, `order_fulfillment_
 -- Table structure for table `backend_menubar`
 --
 
-CREATE TABLE `backend_menubar` (
-  `menu_id` int NOT NULL,
+DROP TABLE IF EXISTS `backend_menubar`;
+CREATE TABLE IF NOT EXISTS `backend_menubar` (
+  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_name` varchar(50) DEFAULT NULL,
   `menu_controller_name` varchar(50) DEFAULT NULL,
   `menu_action_name` varchar(50) DEFAULT NULL,
-  `has_submenu` tinyint DEFAULT '0',
+  `has_submenu` tinyint(4) DEFAULT '0',
   `menu_icon` varchar(200) DEFAULT NULL,
   `permissions` varchar(200) DEFAULT NULL,
-  `visibility` tinyint DEFAULT NULL,
-  `sort_order` int DEFAULT '0',
+  `visibility` tinyint(4) DEFAULT NULL,
+  `sort_order` int(11) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`menu_id`),
+  KEY `menu_id` (`menu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `backend_menubar`
@@ -2011,20 +2061,25 @@ INSERT INTO `backend_menubar` (`menu_id`, `menu_name`, `menu_controller_name`, `
 -- Table structure for table `backend_submenubar`
 --
 
-CREATE TABLE `backend_submenubar` (
-  `submenu_id` int NOT NULL,
+DROP TABLE IF EXISTS `backend_submenubar`;
+CREATE TABLE IF NOT EXISTS `backend_submenubar` (
+  `submenu_id` int(11) NOT NULL AUTO_INCREMENT,
   `submenu_name` varchar(50) DEFAULT NULL,
   `submenu_controller_name` varchar(50) DEFAULT NULL,
   `submenu_action_name` varchar(50) DEFAULT NULL,
-  `menu_id` int DEFAULT NULL,
+  `menu_id` int(11) DEFAULT NULL,
   `sub_parent_id` varchar(110) DEFAULT NULL,
   `has_sub_submenu` tinyint(1) DEFAULT NULL,
   `submenu_permissions` varchar(200) DEFAULT NULL,
-  `visibility` tinyint DEFAULT '1',
-  `sort_order` int DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT '1',
+  `sort_order` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`submenu_id`),
+  KEY `submenu_id` (`submenu_id`),
+  KEY `menu_id` (`menu_id`),
+  KEY `sub_parent_id` (`sub_parent_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `backend_submenubar`
@@ -2103,8 +2158,9 @@ INSERT INTO `backend_submenubar` (`submenu_id`, `submenu_name`, `submenu_control
 -- Table structure for table `banking_details`
 --
 
-CREATE TABLE `banking_details` (
-  `banking_details_id` int NOT NULL,
+DROP TABLE IF EXISTS `banking_details`;
+CREATE TABLE IF NOT EXISTS `banking_details` (
+  `banking_details_id` int(11) NOT NULL AUTO_INCREMENT,
   `bussiness_partner_id` varchar(200) DEFAULT NULL,
   `bank_name` varchar(200) DEFAULT NULL,
   `acc_holdername` varchar(200) DEFAULT NULL,
@@ -2114,8 +2170,9 @@ CREATE TABLE `banking_details` (
   `bank_address` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`banking_details_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `banking_details`
@@ -2123,7 +2180,23 @@ CREATE TABLE `banking_details` (
 
 INSERT INTO `banking_details` (`banking_details_id`, `bussiness_partner_id`, `bank_name`, `acc_holdername`, `bank_branch`, `ifsc`, `ac_number`, `bank_address`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '1', 'BOB', 'Hemraj Naidu', 'station bob', 'BOBDFSAF5454', '653698745214', 'Hyderabad Metro Station', '2024-02-21 10:03:59', '2024-02-21 10:03:59', NULL),
-(2, '44', 'Maharashtra Bank', 'Naresh Dhumal', 'Andheri Branch', 'MAHASDGSDG654', '6589415246514', 'Andheri', '2024-02-22 06:57:20', '2024-02-22 06:57:20', NULL);
+(2, '44', 'Maharashtra Bank', 'Naresh Dhumal', 'Andheri Branch', 'MAHASDGSDG654', '6589415246514', 'Andheri', '2024-02-22 06:57:20', '2024-02-22 06:57:20', NULL),
+(3, '45', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(4, '46', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:37:29', '2024-02-23 05:39:12', '2024-02-23 05:39:12'),
+(5, '47', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(6, '48', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(7, '49', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(8, '50', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(9, '51', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(10, '52', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(11, '53', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(12, '54', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(13, '55', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(14, '56', 'Axis Bank', 'Reliance Retail Limited', 'MUMBAI', 'AXIS0000657', '12100000901234', 'Test Address', '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(15, '57', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(16, '58', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(17, '59', 'BoB', 'Hemraj Naidu', 'Kalyan BoB', 'BOBJHJK54', '69746545465514', 'Khadakpada, Kalyan', '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(18, '9', 'BOB', 'Manas Jadhav', 'Mumbra BOB', 'BOBAJDAGHD7656', '6127482384632', 'Mumbra, Station', '2024-02-23 10:12:23', '2024-02-23 10:12:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -2131,26 +2204,28 @@ INSERT INTO `banking_details` (`banking_details_id`, `bussiness_partner_id`, `ba
 -- Table structure for table `banking_payment`
 --
 
-CREATE TABLE `banking_payment` (
-  `banking_payment_id` int NOT NULL,
+DROP TABLE IF EXISTS `banking_payment`;
+CREATE TABLE IF NOT EXISTS `banking_payment` (
+  `banking_payment_id` int(11) NOT NULL AUTO_INCREMENT,
   `transaction_type` varchar(110) DEFAULT NULL,
-  `vendor_id` int DEFAULT NULL,
+  `vendor_id` int(11) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
   `overdue_range` varchar(110) DEFAULT NULL,
   `payment_type` varchar(110) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `doc_no` varchar(50) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `bill_booking_item_ids` varchar(110) DEFAULT NULL,
   `net_total` varchar(50) DEFAULT NULL,
   `tax_total` varchar(50) DEFAULT NULL,
   `gorss_total` varchar(50) DEFAULT NULL,
-  `bank` int DEFAULT NULL,
+  `bank` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`banking_payment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `banking_payment`
@@ -2165,26 +2240,28 @@ INSERT INTO `banking_payment` (`banking_payment_id`, `transaction_type`, `vendor
 -- Table structure for table `banking_receipt`
 --
 
-CREATE TABLE `banking_receipt` (
-  `banking_receipt_id` int NOT NULL,
+DROP TABLE IF EXISTS `banking_receipt`;
+CREATE TABLE IF NOT EXISTS `banking_receipt` (
+  `banking_receipt_id` int(11) NOT NULL AUTO_INCREMENT,
   `transaction_type` varchar(110) DEFAULT NULL,
-  `vendor_id` int DEFAULT NULL,
+  `vendor_id` int(11) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
   `overdue_range` varchar(110) DEFAULT NULL,
   `payment_type` varchar(110) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `doc_no` varchar(50) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `bill_booking_item_ids` varchar(110) DEFAULT NULL,
   `net_total` varchar(50) DEFAULT NULL,
   `tax_total` varchar(50) DEFAULT NULL,
   `gorss_total` varchar(50) DEFAULT NULL,
-  `bank` int DEFAULT NULL,
+  `bank` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`banking_receipt_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `banking_receipt`
@@ -2199,13 +2276,15 @@ INSERT INTO `banking_receipt` (`banking_receipt_id`, `transaction_type`, `vendor
 -- Table structure for table `base_permissions`
 --
 
-CREATE TABLE `base_permissions` (
-  `base_permission_id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `base_permissions`;
+CREATE TABLE IF NOT EXISTS `base_permissions` (
+  `base_permission_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `base_permission_name` varchar(255) NOT NULL,
   `guard_name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`base_permission_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `base_permissions`
@@ -2224,16 +2303,18 @@ INSERT INTO `base_permissions` (`base_permission_id`, `base_permission_name`, `g
 -- Table structure for table `beat`
 --
 
-CREATE TABLE `beat` (
-  `beat_id` int NOT NULL,
-  `route_id` int NOT NULL,
-  `area_id` int NOT NULL,
+DROP TABLE IF EXISTS `beat`;
+CREATE TABLE IF NOT EXISTS `beat` (
+  `beat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `route_id` int(11) NOT NULL,
+  `area_id` int(11) NOT NULL,
   `beat_number` varchar(110) DEFAULT NULL,
   `beat_name` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`beat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `beat`
@@ -2255,14 +2336,15 @@ INSERT INTO `beat` (`beat_id`, `route_id`, `area_id`, `beat_number`, `beat_name`
 -- Table structure for table `beat_calender`
 --
 
-CREATE TABLE `beat_calender` (
-  `beat_cal_id` int NOT NULL,
+DROP TABLE IF EXISTS `beat_calender`;
+CREATE TABLE IF NOT EXISTS `beat_calender` (
+  `beat_cal_id` int(11) NOT NULL AUTO_INCREMENT,
   `salesman` varchar(110) DEFAULT NULL,
-  `area_id` int DEFAULT NULL,
-  `route_id` int DEFAULT NULL,
-  `beat_id` int DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
+  `route_id` int(11) DEFAULT NULL,
+  `beat_id` int(11) DEFAULT NULL,
   `outlet` varchar(110) DEFAULT NULL,
-  `sales_execu` int DEFAULT NULL,
+  `sales_execu` int(11) DEFAULT NULL,
   `ase` varchar(110) DEFAULT NULL,
   `asm` varchar(110) DEFAULT NULL,
   `beat_week` varchar(110) DEFAULT NULL,
@@ -2271,8 +2353,9 @@ CREATE TABLE `beat_calender` (
   `beat_year` varchar(110) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`beat_cal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `beat_calender`
@@ -2280,7 +2363,7 @@ CREATE TABLE `beat_calender` (
 
 INSERT INTO `beat_calender` (`beat_cal_id`, `salesman`, `area_id`, `route_id`, `beat_id`, `outlet`, `sales_execu`, `ase`, `asm`, `beat_week`, `beat_day`, `beat_month`, `beat_year`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, NULL, NULL, NULL, 47, NULL, NULL, NULL, NULL, 'Week 2', 'Wednesday', 'February', '2024', '2024-02-07 12:26:49', '2024-02-21 16:14:16', '2024-02-21 16:14:16'),
-(2, NULL, NULL, NULL, 45, NULL, NULL, NULL, NULL, 'Week 4', 'Thursday', 'February', '2024', '2024-02-22 12:23:48', '2024-02-22 12:23:48', NULL);
+(2, NULL, NULL, NULL, 45, NULL, NULL, NULL, NULL, 'Week 4', 'Friday', 'February', '2024', '2024-02-22 12:23:48', '2024-02-23 13:04:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -2288,13 +2371,14 @@ INSERT INTO `beat_calender` (`beat_cal_id`, `salesman`, `area_id`, `route_id`, `
 -- Table structure for table `beat_requirement`
 --
 
-CREATE TABLE `beat_requirement` (
-  `beat_requirement_id` int NOT NULL,
-  `outlet_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `beat_requirement`;
+CREATE TABLE IF NOT EXISTS `beat_requirement` (
+  `beat_requirement_id` int(11) NOT NULL AUTO_INCREMENT,
+  `outlet_id` int(11) DEFAULT NULL,
   `outlet_name` varchar(255) DEFAULT NULL,
   `address` text,
   `city` varchar(255) DEFAULT NULL,
-  `pin` int DEFAULT NULL,
+  `pin` int(11) DEFAULT NULL,
   `gst_no` varchar(255) DEFAULT NULL,
   `outlet` varchar(255) DEFAULT NULL,
   `area` varchar(255) DEFAULT NULL,
@@ -2307,8 +2391,9 @@ CREATE TABLE `beat_requirement` (
   `asm` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`beat_requirement_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -2316,9 +2401,10 @@ CREATE TABLE `beat_requirement` (
 -- Table structure for table `billoflading`
 --
 
-CREATE TABLE `billoflading` (
-  `billoflading_id` int NOT NULL,
-  `billoflading_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `billoflading`;
+CREATE TABLE IF NOT EXISTS `billoflading` (
+  `billoflading_id` int(11) NOT NULL,
+  `billoflading_counter` int(11) DEFAULT NULL,
   `import_rotation_no` varchar(100) DEFAULT NULL,
   `mv` varchar(100) DEFAULT NULL,
   `voy` varchar(100) DEFAULT NULL,
@@ -2327,7 +2413,7 @@ CREATE TABLE `billoflading` (
   `sailed_to` varchar(200) DEFAULT NULL,
   `eta_on` varchar(100) DEFAULT NULL,
   `bl_no` varchar(200) DEFAULT NULL,
-  `manifest_id` int DEFAULT NULL,
+  `manifest_id` int(11) DEFAULT NULL,
   `freight_payable_at` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -2349,9 +2435,10 @@ INSERT INTO `billoflading` (`billoflading_id`, `billoflading_counter`, `import_r
 -- Table structure for table `billoflading_items`
 --
 
-CREATE TABLE `billoflading_items` (
-  `billoflading_item_id` int NOT NULL,
-  `billoflading_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `billoflading_items`;
+CREATE TABLE IF NOT EXISTS `billoflading_items` (
+  `billoflading_item_id` int(11) NOT NULL,
+  `billoflading_id` int(11) DEFAULT NULL,
   `bl` varchar(100) DEFAULT NULL,
   `mark` varchar(100) DEFAULT NULL,
   `no_of_pkgs` varchar(100) DEFAULT NULL,
@@ -2382,22 +2469,24 @@ INSERT INTO `billoflading_items` (`billoflading_item_id`, `billoflading_id`, `bl
 -- Table structure for table `bill_booking`
 --
 
-CREATE TABLE `bill_booking` (
-  `bill_booking_id` int NOT NULL,
-  `vendor_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bill_booking`;
+CREATE TABLE IF NOT EXISTS `bill_booking` (
+  `bill_booking_id` int(11) NOT NULL AUTO_INCREMENT,
+  `vendor_id` int(11) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
   `invoice_ref_date` date DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `doc_no` varchar(110) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `type` varchar(50) NOT NULL DEFAULT 'Expense',
-  `is_bb_updated` tinyint NOT NULL DEFAULT '0',
+  `is_bb_updated` tinyint(4) NOT NULL DEFAULT '0',
   `status` varchar(50) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bill_booking_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bill_booking`
@@ -2413,9 +2502,10 @@ INSERT INTO `bill_booking` (`bill_booking_id`, `vendor_id`, `bill_date`, `invoic
 -- Table structure for table `bill_booking_items`
 --
 
-CREATE TABLE `bill_booking_items` (
-  `bill_booking_item_id` int NOT NULL,
-  `bill_booking_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bill_booking_items`;
+CREATE TABLE IF NOT EXISTS `bill_booking_items` (
+  `bill_booking_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_booking_id` int(11) DEFAULT NULL,
   `description` varchar(220) DEFAULT NULL,
   `invoice_ref_no` varchar(100) DEFAULT NULL,
   `expense_id` varchar(100) DEFAULT NULL,
@@ -2436,8 +2526,9 @@ CREATE TABLE `bill_booking_items` (
   `total_value` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`bill_booking_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `bill_booking_items`
@@ -2455,15 +2546,17 @@ INSERT INTO `bill_booking_items` (`bill_booking_item_id`, `bill_booking_id`, `de
 -- Table structure for table `bin_mangement`
 --
 
-CREATE TABLE `bin_mangement` (
-  `bin_id` int NOT NULL,
+DROP TABLE IF EXISTS `bin_mangement`;
+CREATE TABLE IF NOT EXISTS `bin_mangement` (
+  `bin_id` int(11) NOT NULL AUTO_INCREMENT,
   `bin_name` varchar(200) DEFAULT NULL,
   `bin_type` varchar(100) DEFAULT NULL,
   `warehouse_id` varchar(300) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`bin_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bin_mangement`
@@ -2481,25 +2574,27 @@ INSERT INTO `bin_mangement` (`bin_id`, `bin_name`, `bin_type`, `warehouse_id`, `
 -- Table structure for table `bin_transfer`
 --
 
-CREATE TABLE `bin_transfer` (
-  `id` int NOT NULL,
-  `from_warehouse` int DEFAULT NULL,
-  `from_bin` int DEFAULT NULL,
-  `to_warehouse` int DEFAULT NULL,
-  `to_bin` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bin_transfer`;
+CREATE TABLE IF NOT EXISTS `bin_transfer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `from_warehouse` int(11) DEFAULT NULL,
+  `from_bin` int(11) DEFAULT NULL,
+  `to_warehouse` int(11) DEFAULT NULL,
+  `to_bin` int(11) DEFAULT NULL,
   `sku` varchar(50) DEFAULT NULL,
   `batch` varchar(100) DEFAULT NULL,
   `item_code` varchar(50) DEFAULT NULL,
   `from_qty` varchar(50) DEFAULT NULL,
   `qty` varchar(50) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `remarks` varchar(210) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bin_transfer`
@@ -2516,13 +2611,15 @@ INSERT INTO `bin_transfer` (`id`, `from_warehouse`, `from_bin`, `to_warehouse`, 
 -- Table structure for table `bin_type`
 --
 
-CREATE TABLE `bin_type` (
-  `bin_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `bin_type`;
+CREATE TABLE IF NOT EXISTS `bin_type` (
+  `bin_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`bin_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bin_type`
@@ -2541,23 +2638,25 @@ INSERT INTO `bin_type` (`bin_type_id`, `name`, `created_at`, `updated_at`, `dele
 -- Table structure for table `bp_address`
 --
 
-CREATE TABLE `bp_address` (
-  `bp_address_id` int NOT NULL,
-  `bussiness_partner_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bp_address`;
+CREATE TABLE IF NOT EXISTS `bp_address` (
+  `bp_address_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bussiness_partner_id` int(11) DEFAULT NULL,
   `address_type` varchar(100) DEFAULT NULL,
   `bp_address_name` varchar(110) DEFAULT NULL,
   `building_no_name` varchar(255) DEFAULT NULL,
   `street_name` varchar(255) DEFAULT NULL,
   `landmark` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
-  `pin_code` int DEFAULT NULL,
+  `pin_code` int(11) DEFAULT NULL,
   `district` varchar(200) DEFAULT NULL,
   `state` varchar(200) DEFAULT NULL,
   `country` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`bp_address_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bp_address`
@@ -2580,8 +2679,8 @@ INSERT INTO `bp_address` (`bp_address_id`, `bussiness_partner_id`, `address_type
 (14, 7, 'Ship-To/ Ship-From', 'Khodiyar Agencies', 'Kanhaiya Agencies Private Limited', 'Sector 10', '', 'Tumkur', 572102, NULL, '9', '1', '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
 (15, 8, 'Bill-To/ Bill-From', 'HARISHIV ENTERPRISE LLP', 'H-7 BHUMI ESTATE,', 'NR SARKHEJ', '', 'Shivamoga', 577205, NULL, '5', '1', '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
 (16, 8, 'Ship-To/ Ship-From', 'Krishna Enterprises', 'Khodiyar Agencies', 'T.J. Road', '', 'Shivamoga', 577205, NULL, '9', '1', '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(17, 9, 'Bill-To/ Bill-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'Mumbai', 400080, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(18, 9, 'Ship-To/ Ship-From', 'Reliance Retail Limited (SK6C)', 'Wh No. 2 Uno Logistics Park', 'Village Kochariya Bavla', '', 'Mumbai', 400080, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(17, 9, 'Bill-To/ Bill-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', NULL, 'Mumbai', 400080, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-23 10:12:23', NULL),
+(18, 9, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'Wh No. 2 Uno Logistics Park', 'Village Kochariya Bavla', NULL, 'Mumbai', 400080, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-23 10:12:23', NULL),
 (19, 10, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'MUMBAI', 400001, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
 (20, 10, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '329', '12', '1', '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
 (21, 11, 'Bill-To/ Bill-From', 'Abhinandan Distributions', 'Ground Floor; Shop No 10; Plot No-316,', 'Anees Chambers; Lokmanya Tilak Marg; Crawford Market - Fort', '', 'Hyderabad', 500001, '9', '38', '1', '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
@@ -2601,7 +2700,39 @@ INSERT INTO `bp_address` (`bp_address_id`, `bussiness_partner_id`, `address_type
 (35, 43, 'Bill-To/ Bill-From', 'test', 'test', 'test', 'test', 'test', 400612, '344', '12', '1', '2024-02-22 06:42:43', '2024-02-22 06:42:43', NULL),
 (36, 43, 'Ship-To/ Ship-From', 'test', 'test', 'test', 'test', 'test', 400612, '344', '12', '1', '2024-02-22 06:42:43', '2024-02-22 06:42:43', NULL),
 (37, 44, 'Bill-To/ Bill-From', 'tilak naka', '402/kpari building', 'tilak naka', 'Andheri station', 'Andheri', 400614, '329', '12', '1', '2024-02-22 06:45:00', '2024-02-22 06:57:20', NULL),
-(38, 44, 'Ship-To/ Ship-From', 'tilak naka', '402/kpari building', 'tilak naka', 'Andheri station', 'Andheri', 400614, '329', '12', '1', '2024-02-22 06:45:00', '2024-02-22 06:57:20', NULL);
+(38, 44, 'Ship-To/ Ship-From', 'tilak naka', '402/kpari building', 'tilak naka', 'Andheri station', 'Andheri', 400614, '329', '12', '1', '2024-02-22 06:45:00', '2024-02-22 06:57:20', NULL),
+(39, 45, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(40, 45, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(41, 46, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:11', '2024-02-23 05:39:11'),
+(42, 46, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:11', '2024-02-23 05:39:11'),
+(43, 47, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(44, 47, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(45, 48, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(46, 48, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(47, 49, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(48, 49, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(49, 50, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(50, 50, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(51, 51, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(52, 51, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(53, 52, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(54, 52, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(55, 53, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(56, 53, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(57, 54, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(58, 54, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(59, 55, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(60, 55, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(61, 56, 'Bill-To/ Bill-From', 'Ravray Cosmetic', 'R.No.9, J S Bhatt Chawl No.1,', 'Bhatwadi, Ghatkopar (W)', '', 'Ghatkopar', 400001, '675', '12', '1', '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(62, 56, 'Ship-To/ Ship-From', 'Reliance Retail Limited', 'S No 472473474476, Vill Khumari', 'Tapovan Road', '', 'MUMBAI', 400001, '675', '12', '1', '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(63, 57, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(64, 57, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(65, 58, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(66, 58, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(67, 59, 'Bill-To/ Bill-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(68, 59, 'Ship-To/ Ship-From', 'Khadakpada, Kalyan', '310, Shreeji Solitaire', 'Khadakpada', '', 'Kalyan', 421301, '329', '12', '1', '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(69, 60, 'Bill-To/ Bill-From', 'test', 'st', 'test', '', 'test', 615, '178', '7', '1', '2024-02-23 13:05:31', '2024-02-23 13:05:31', NULL),
+(70, 60, 'Ship-To/ Ship-From', 'test', 'st', 'test', '', 'test', 615, '178', '7', '1', '2024-02-23 13:05:31', '2024-02-23 13:05:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -2609,9 +2740,10 @@ INSERT INTO `bp_address` (`bp_address_id`, `bussiness_partner_id`, `address_type
 -- Table structure for table `bp_contact_details`
 --
 
-CREATE TABLE `bp_contact_details` (
-  `contact_details_id` int NOT NULL,
-  `bussiness_partner_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bp_contact_details`;
+CREATE TABLE IF NOT EXISTS `bp_contact_details` (
+  `contact_details_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bussiness_partner_id` int(11) DEFAULT NULL,
   `contact_person` varchar(200) DEFAULT NULL,
   `type` varchar(50) DEFAULT NULL,
   `email_id` varchar(200) DEFAULT NULL,
@@ -2619,8 +2751,9 @@ CREATE TABLE `bp_contact_details` (
   `landline` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`contact_details_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bp_contact_details`
@@ -2640,7 +2773,41 @@ INSERT INTO `bp_contact_details` (`contact_details_id`, `bussiness_partner_id`, 
 (11, 1, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hem@gmail.com', '9136393964', NULL, '2024-02-21 10:03:27', '2024-02-21 10:04:19', '2024-02-21 10:04:19'),
 (12, 1, 'Hemraj Naidu', 'Ship-To/ Ship-From', 'hem@gmail.com', '9136393964', NULL, '2024-02-21 10:03:59', '2024-02-21 10:03:59', NULL),
 (13, 44, 'Naresh Dhumal', 'Bill-To/ Bill-From', 'naresd@gmail.com', '9136393964', NULL, '2024-02-22 06:57:20', '2024-02-22 06:57:20', NULL),
-(14, 44, 'Naresh Dhumal', 'Ship-To/ Ship-From', 'naresd@gmail.com', '9136393964', NULL, '2024-02-22 06:57:20', '2024-02-22 06:57:20', NULL);
+(14, 44, 'Naresh Dhumal', 'Bill-To/ Bill-From', 'naresd@gmail.com', '9136393964', NULL, '2024-02-22 06:57:20', '2024-02-23 10:03:37', NULL),
+(15, 45, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(16, 45, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(17, 46, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:37:29', '2024-02-23 05:39:12', '2024-02-23 05:39:12'),
+(18, 46, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:37:29', '2024-02-23 05:39:12', '2024-02-23 05:39:12'),
+(19, 47, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(20, 47, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(21, 48, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(22, 48, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(23, 49, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(24, 49, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(25, 50, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(26, 50, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(27, 51, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(28, 51, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(29, 52, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(30, 52, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(31, 53, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(32, 53, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(33, 54, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(34, 54, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(35, 55, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(36, 55, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(37, 56, 'Abhijeet', 'Bill-To/ Bill-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(38, 56, 'Abhijeet', 'Ship-To/ Ship-From', 'ali@vcentric.com', '902087654', '', '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(39, 57, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(40, 57, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(41, 58, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(42, 58, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(43, 59, 'Hemraj Naidu', 'Bill-To/ Bill-From', 'hemrajn@gmail.com', '9136343465', '', '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(44, 59, 'Test 1 contact', 'Ship-To/ Ship-From', 'test@gmail.com', '9999999999', '', '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(45, 44, 'Naresh Dhumal', 'Ship-To/ Ship-From', 'naresd@gmail.com', '9136393964', NULL, '2024-02-23 10:03:37', '2024-02-23 10:03:37', NULL),
+(46, 9, 'Manas Jadhav', 'Bill-To/ Bill-From', 'ajith.abraham@hp.com', '966749398', NULL, '2024-02-23 10:12:23', '2024-02-23 10:12:23', NULL),
+(47, 9, 'Manas Jadhav', 'Bill-To/ Bill-From', 'ajith.abraham@hp.com', '966749398', NULL, '2024-02-23 10:12:23', '2024-02-23 10:13:10', NULL),
+(48, 9, 'Manas Jadhav', 'Ship-To/ Ship-From', 'ajith.abraham@hp.com', '966749398', NULL, '2024-02-23 10:13:10', '2024-02-23 10:13:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -2648,13 +2815,15 @@ INSERT INTO `bp_contact_details` (`contact_details_id`, `bussiness_partner_id`, 
 -- Table structure for table `bp_organisation_type`
 --
 
-CREATE TABLE `bp_organisation_type` (
-  `bp_organisation_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `bp_organisation_type`;
+CREATE TABLE IF NOT EXISTS `bp_organisation_type` (
+  `bp_organisation_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `bp_organisation_type` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`bp_organisation_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bp_organisation_type`
@@ -2673,13 +2842,15 @@ INSERT INTO `bp_organisation_type` (`bp_organisation_type_id`, `bp_organisation_
 -- Table structure for table `brands`
 --
 
-CREATE TABLE `brands` (
-  `brand_id` int NOT NULL,
+DROP TABLE IF EXISTS `brands`;
+CREATE TABLE IF NOT EXISTS `brands` (
+  `brand_id` int(11) NOT NULL AUTO_INCREMENT,
   `brand_name` varchar(50) DEFAULT NULL,
   `brand_desc` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`brand_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `brands`
@@ -2699,15 +2870,17 @@ INSERT INTO `brands` (`brand_id`, `brand_name`, `brand_desc`, `created_at`, `upd
 -- Table structure for table `bspl_cateogry`
 --
 
-CREATE TABLE `bspl_cateogry` (
-  `bsplcat_id` int NOT NULL,
+DROP TABLE IF EXISTS `bspl_cateogry`;
+CREATE TABLE IF NOT EXISTS `bspl_cateogry` (
+  `bsplcat_id` int(11) NOT NULL AUTO_INCREMENT,
   `bspl_cat_name` varchar(110) NOT NULL,
-  `bsplheads_id` int DEFAULT NULL,
+  `bsplheads_id` int(11) DEFAULT NULL,
   `has_subcat` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bsplcat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bspl_cateogry`
@@ -2727,14 +2900,16 @@ INSERT INTO `bspl_cateogry` (`bsplcat_id`, `bspl_cat_name`, `bsplheads_id`, `has
 -- Table structure for table `bspl_heads`
 --
 
-CREATE TABLE `bspl_heads` (
-  `bsplheads_id` int NOT NULL,
+DROP TABLE IF EXISTS `bspl_heads`;
+CREATE TABLE IF NOT EXISTS `bspl_heads` (
+  `bsplheads_id` int(11) NOT NULL AUTO_INCREMENT,
   `bspl_heads_name` varchar(110) NOT NULL,
   `has_subcat` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bsplheads_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bspl_heads`
@@ -2752,15 +2927,17 @@ INSERT INTO `bspl_heads` (`bsplheads_id`, `bspl_heads_name`, `has_subcat`, `crea
 -- Table structure for table `bspl_sub_cateogry`
 --
 
-CREATE TABLE `bspl_sub_cateogry` (
-  `bsplsubcat_id` int NOT NULL,
-  `bsplcat_id` int DEFAULT NULL,
-  `bsplheads_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bspl_sub_cateogry`;
+CREATE TABLE IF NOT EXISTS `bspl_sub_cateogry` (
+  `bsplsubcat_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bsplcat_id` int(11) DEFAULT NULL,
+  `bsplheads_id` int(11) DEFAULT NULL,
   `bspl_subcat_name` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bsplsubcat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bspl_sub_cateogry`
@@ -2781,14 +2958,16 @@ INSERT INTO `bspl_sub_cateogry` (`bsplsubcat_id`, `bsplcat_id`, `bsplheads_id`, 
 -- Table structure for table `bspl_type`
 --
 
-CREATE TABLE `bspl_type` (
-  `bsplstype_id` int NOT NULL,
-  `bsplsubcat_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `bspl_type`;
+CREATE TABLE IF NOT EXISTS `bspl_type` (
+  `bsplstype_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bsplsubcat_id` int(11) DEFAULT NULL,
   `bspl_type_name` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bsplstype_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bspl_type`
@@ -2807,13 +2986,15 @@ INSERT INTO `bspl_type` (`bsplstype_id`, `bsplsubcat_id`, `bspl_type_name`, `cre
 -- Table structure for table `business_partner_category`
 --
 
-CREATE TABLE `business_partner_category` (
-  `business_partner_category_id` int NOT NULL,
+DROP TABLE IF EXISTS `business_partner_category`;
+CREATE TABLE IF NOT EXISTS `business_partner_category` (
+  `business_partner_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `business_partner_category_name` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` varchar(50) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`business_partner_category_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `business_partner_category`
@@ -2831,58 +3012,79 @@ INSERT INTO `business_partner_category` (`business_partner_category_id`, `busine
 -- Table structure for table `business_partner_master`
 --
 
-CREATE TABLE `business_partner_master` (
-  `business_partner_id` int NOT NULL,
+DROP TABLE IF EXISTS `business_partner_master`;
+CREATE TABLE IF NOT EXISTS `business_partner_master` (
+  `business_partner_id` int(11) NOT NULL AUTO_INCREMENT,
   `business_partner_type` varchar(200) DEFAULT NULL,
   `residential_status` varchar(100) DEFAULT NULL,
   `bp_name` varchar(255) DEFAULT NULL,
-  `bp_organisation_type` int DEFAULT NULL,
+  `bp_organisation_type` int(11) DEFAULT NULL,
   `bp_category` varchar(100) DEFAULT NULL,
   `bp_group` varchar(200) DEFAULT NULL,
   `sales_manager` varchar(255) DEFAULT NULL,
-  `ase` int DEFAULT NULL,
+  `ase` int(11) DEFAULT NULL,
   `sales_officer` varchar(255) DEFAULT NULL,
   `salesman` varchar(255) DEFAULT NULL,
-  `payment_terms_id` int DEFAULT NULL,
+  `payment_terms_id` int(11) DEFAULT NULL,
   `credit_limit` text,
   `gst_details` varchar(100) DEFAULT NULL,
   `gst_reg_type` varchar(110) DEFAULT NULL,
-  `rcm_app` int DEFAULT NULL,
-  `msme_reg` int DEFAULT NULL,
+  `rcm_app` int(11) DEFAULT NULL,
+  `msme_reg` int(11) DEFAULT NULL,
   `pricing_profile` varchar(255) DEFAULT NULL,
   `shelf_life` varchar(255) DEFAULT NULL,
   `area_id` varchar(110) DEFAULT NULL,
   `route_id` varchar(110) DEFAULT NULL,
   `beat_id` varchar(110) DEFAULT NULL,
-  `is_converted` tinyint NOT NULL DEFAULT '1',
+  `is_converted` tinyint(4) NOT NULL DEFAULT '1',
+  `latitude` varchar(110) DEFAULT NULL,
+  `longitude` varchar(110) DEFAULT NULL,
+  `outlet_image` longtext,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`business_partner_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `business_partner_master`
 --
 
-INSERT INTO `business_partner_master` (`business_partner_id`, `business_partner_type`, `residential_status`, `bp_name`, `bp_organisation_type`, `bp_category`, `bp_group`, `sales_manager`, `ase`, `sales_officer`, `salesman`, `payment_terms_id`, `credit_limit`, `gst_details`, `gst_reg_type`, `rcm_app`, `msme_reg`, `pricing_profile`, `shelf_life`, `area_id`, `route_id`, `beat_id`, `is_converted`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '3', '1', 'Mahavir Marketing', 1, '2', 'Test Group', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 0, 1, '6', NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:49', '2024-02-21 09:59:01', NULL),
-(2, '3', '1', 'Sawan Agencies', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27ADPPV6482R1Z4', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:49', '2024-02-21 09:06:49', NULL),
-(3, '3', '1', 'Parashar Distributors', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '23GWRPS5550Q1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:49', '2024-02-21 09:06:49', NULL),
-(4, '3', '2', 'Unilever Asia Private Limited', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '', NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(5, '3', '1', 'RAMA VISION LIMITED', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27CJQPM1319B1ZC', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(6, '3', '1', 'Sawariya Futureworks Limited', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '30AFOPC7223E1ZZ', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(7, '3', '1', 'Unilever India Eports', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AAICK3287C1ZH', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(8, '3', '1', 'HARISHIV ENTERPRISE LLP', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AAIFK2053R1ZU', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
-(9, '1', '1', 'Reliance Retail Limited', 6, '3', 'NMT', '331', 332, '333', '334', 8, NULL, '27AABCR1718E1ZP', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(10, '1', '1', 'Ravray Cosmetic', 1, '3', 'NMT', '335', 336, '333', '337', 8, NULL, '27AHPPB5058D1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(11, '1', '1', 'Abhinandan Distributions', 1, '3', 'NMT', '338', 339, '333', '340', 8, NULL, '27ADPPV6482R1Z4', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(12, '1', '1', 'Akshat Enterprises', 7, '3', 'General Stores', '341', 342, '333', '343', 8, NULL, '23GWRPS5550Q1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(13, '1', '1', 'B. R. Agencies', 1, '4', 'General Stores', '344', 345, '333', '346', 8, NULL, '24AHMPG7519F1ZD', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(14, '1', '1', 'Bombay Store Trading', 1, '4', 'General Stores', '347', 348, '349', '350', 8, NULL, '27CKGPP2709F1Z5', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(15, '1', '1', 'Hasti Enterprise', 1, '4', 'General Stores', '351', 352, '349', '353', 8, NULL, '27CJQPM1319B1ZC', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(16, '1', '1', 'Icon International', 7, '4', 'General Stores', '354', 355, '349', '356', 8, NULL, '30AFOPC7223E1ZZ', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(17, '1', '1', 'Kalash Agency', 7, '4', 'Chemist', '357', 358, '349', '359', 8, NULL, '27AASFK4577E1ZU', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
-(44, '1', NULL, 'Do & Dual Pvt Ltd', 7, '4', 'Test Group', '347', 348, '349', '359', 1, NULL, 'DFGSDFG654654', NULL, 1, 1, '7', NULL, '48', '70', '45', 1, '2024-02-22 06:45:00', '2024-02-22 06:57:20', NULL);
+INSERT INTO `business_partner_master` (`business_partner_id`, `business_partner_type`, `residential_status`, `bp_name`, `bp_organisation_type`, `bp_category`, `bp_group`, `sales_manager`, `ase`, `sales_officer`, `salesman`, `payment_terms_id`, `credit_limit`, `gst_details`, `gst_reg_type`, `rcm_app`, `msme_reg`, `pricing_profile`, `shelf_life`, `area_id`, `route_id`, `beat_id`, `is_converted`, `latitude`, `longitude`, `outlet_image`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '3', '1', 'Mahavir Marketing', 1, '2', 'Test Group', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 0, 1, '6', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:49', '2024-02-21 09:59:01', NULL),
+(2, '3', '1', 'Sawan Agencies', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27ADPPV6482R1Z4', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:49', '2024-02-21 09:06:49', NULL),
+(3, '3', '1', 'Parashar Distributors', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '23GWRPS5550Q1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:49', '2024-02-21 09:06:49', NULL),
+(4, '3', '2', 'Unilever Asia Private Limited', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '', NULL, 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
+(5, '3', '1', 'RAMA VISION LIMITED', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27CJQPM1319B1ZC', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
+(6, '3', '1', 'Sawariya Futureworks Limited', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '30AFOPC7223E1ZZ', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
+(7, '3', '1', 'Unilever India Eports', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AAICK3287C1ZH', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
+(8, '3', '1', 'HARISHIV ENTERPRISE LLP', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AAIFK2053R1ZU', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:06:50', '2024-02-21 09:06:50', NULL),
+(9, '1', '1', 'Reliance Retail Limited', 6, '3', 'NMT', '347', 348, '349', '359', 8, NULL, '27AABCR1718E1ZP', '2', 0, 1, NULL, NULL, NULL, NULL, '45', 1, '19.1569259', '73.0287094', NULL, '2024-02-21 09:18:32', '2024-02-23 10:13:10', NULL),
+(10, '1', '1', 'Ravray Cosmetic', 1, '3', 'NMT', '335', 336, '333', '337', 8, NULL, '27AHPPB5058D1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(11, '1', '1', 'Abhinandan Distributions', 1, '3', 'NMT', '338', 339, '333', '340', 8, NULL, '27ADPPV6482R1Z4', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(12, '1', '1', 'Akshat Enterprises', 7, '3', 'General Stores', '341', 342, '333', '343', 8, NULL, '23GWRPS5550Q1ZF', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(13, '1', '1', 'B. R. Agencies', 1, '4', 'General Stores', '344', 345, '333', '346', 8, NULL, '24AHMPG7519F1ZD', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(14, '1', '1', 'Bombay Store Trading', 1, '4', 'General Stores', '347', 348, '349', '350', 8, NULL, '27CKGPP2709F1Z5', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(15, '1', '1', 'Hasti Enterprise', 1, '4', 'General Stores', '351', 352, '349', '353', 8, NULL, '27CJQPM1319B1ZC', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(16, '1', '1', 'Icon International', 7, '4', 'General Stores', '354', 355, '349', '356', 8, NULL, '30AFOPC7223E1ZZ', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(17, '1', '1', 'Kalash Agency', 7, '4', 'Chemist', '357', 358, '349', '359', 8, NULL, '27AASFK4577E1ZU', '2', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-21 09:18:32', '2024-02-21 09:18:32', NULL),
+(44, '1', '1', 'Do & Dual Pvt Ltd', 7, '4', 'Test Group', '347', 348, '349', '359', 1, NULL, 'DFGSDFG654654', NULL, 1, 1, '7', NULL, '48', '70', '45', 1, '37.4219983', '-122.084', '65d86dbb470c3_IMG_20240119_104222.jpg', '2024-02-22 06:45:00', '2024-02-23 10:03:37', NULL),
+(45, '3', '1', 'test 1 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:37:29', '2024-02-23 05:39:42', '2024-02-23 05:39:42'),
+(46, '3', '1', 'test 2 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:37:29', '2024-02-23 05:39:11', '2024-02-23 05:39:11'),
+(47, '3', '1', 'test 3 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:37:29', '2024-02-23 05:39:30', '2024-02-23 05:39:30'),
+(48, '3', '1', 'test 1 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '6', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:40:06', '2024-02-23 05:44:50', '2024-02-23 05:44:50'),
+(49, '3', '1', 'test 2 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:40:06', '2024-02-23 05:44:26', '2024-02-23 05:44:26'),
+(50, '3', '1', 'test 3 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '6', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 05:40:06', '2024-02-23 05:44:38', '2024-02-23 05:44:38'),
+(51, '1', '1', 'test customer 1', 1, '3', 'NMT', '', NULL, '363', '364', 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '7', NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:23:06', '2024-02-23 06:29:40', '2024-02-23 06:29:40'),
+(52, '1', '1', 'test customer 2', 1, '3', 'NMT', '', NULL, '363', NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:23:06', '2024-02-23 06:25:38', '2024-02-23 06:25:38'),
+(53, '1', '1', 'test customer 1', 1, '3', 'NMT', '365', 366, '367', '368', 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '7', NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:30:10', '2024-02-23 06:33:29', '2024-02-23 06:33:29'),
+(54, '1', '1', 'test customer 2', 1, '3', 'NMT', '', NULL, '367', NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:30:10', '2024-02-23 06:32:33', '2024-02-23 06:32:33'),
+(55, '1', '1', 'test customer 1', 1, '3', 'NMT', '369', 370, '371', '372', 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '7', NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:36:17', '2024-02-23 06:38:49', '2024-02-23 06:38:49'),
+(56, '1', '1', 'test customer 2', 1, '3', 'NMT', '', NULL, '371', NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, '45', 1, NULL, NULL, NULL, '2024-02-23 06:36:17', '2024-02-23 06:38:13', '2024-02-23 06:38:13'),
+(57, '3', '1', 'test 1 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '6', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 06:39:02', '2024-02-23 06:41:14', '2024-02-23 06:41:14'),
+(58, '3', '1', 'test 2 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 06:39:02', '2024-02-23 06:40:53', '2024-02-23 06:40:53'),
+(59, '3', '1', 'test 3 vendor', 1, '2', '', NULL, NULL, NULL, NULL, 8, NULL, '27AHPPB5058D1ZF', '2', 1, 1, '6', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, '2024-02-23 06:39:02', '2024-02-23 06:41:05', '2024-02-23 06:41:05'),
+(60, '1', NULL, 'ttest', NULL, NULL, NULL, NULL, NULL, NULL, '359', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '48', '70', '45', 0, '19.1569259', '73.0287094', NULL, '2024-02-23 13:05:31', '2024-02-23 13:08:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -2890,13 +3092,15 @@ INSERT INTO `business_partner_master` (`business_partner_id`, `business_partner_
 -- Table structure for table `bussiness_master_type`
 --
 
-CREATE TABLE `bussiness_master_type` (
-  `bussiness_master_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `bussiness_master_type`;
+CREATE TABLE IF NOT EXISTS `bussiness_master_type` (
+  `bussiness_master_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `bussiness_master_type` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`bussiness_master_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bussiness_master_type`
@@ -2912,21 +3116,23 @@ INSERT INTO `bussiness_master_type` (`bussiness_master_type_id`, `bussiness_mast
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
-  `category_id` int NOT NULL,
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(100) NOT NULL,
   `category_description` text,
   `category_slug` varchar(200) DEFAULT NULL,
   `category_banner_image` varchar(200) DEFAULT NULL,
-  `visibility` int DEFAULT NULL,
-  `has_subcategories` int DEFAULT NULL,
+  `visibility` int(11) DEFAULT NULL,
+  `has_subcategories` int(11) DEFAULT NULL,
   `text_color` varchar(300) DEFAULT NULL,
   `drop_down_menu_text_color` varchar(100) DEFAULT NULL,
   `drop_down_sub_category_class` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` varchar(50) DEFAULT NULL,
-  `updated_at` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updated_at` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `categories`
@@ -2959,14 +3165,16 @@ INSERT INTO `categories` (`category_id`, `category_name`, `category_description`
 -- Table structure for table `cities`
 --
 
-CREATE TABLE `cities` (
-  `city_id` int NOT NULL,
+DROP TABLE IF EXISTS `cities`;
+CREATE TABLE IF NOT EXISTS `cities` (
+  `city_id` int(11) NOT NULL AUTO_INCREMENT,
   `city_name` varchar(255) NOT NULL,
-  `state_id` int NOT NULL,
+  `state_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`city_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=676 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cities`
@@ -3630,7 +3838,8 @@ INSERT INTO `cities` (`city_id`, `city_name`, `state_id`, `created_at`, `updated
 (671, 'KARWAR', 9, '2024-02-21 08:12:41', '2024-02-21 08:12:41', NULL),
 (672, 'Dwarka', 25, '2024-02-21 08:12:41', '2024-02-21 08:12:41', NULL),
 (673, 'South West', 25, '2024-02-21 08:12:41', '2024-02-21 08:12:41', NULL),
-(674, 'Bhiwandi', 12, '2024-02-21 08:12:41', '2024-02-21 08:12:41', NULL);
+(674, 'Bhiwandi', 12, '2024-02-21 08:12:41', '2024-02-21 08:12:41', NULL),
+(675, 'Mumabi', 12, '2024-02-23 06:23:06', '2024-02-23 06:23:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -3638,13 +3847,15 @@ INSERT INTO `cities` (`city_id`, `city_name`, `state_id`, `created_at`, `updated
 -- Table structure for table `comments_orders`
 --
 
-CREATE TABLE `comments_orders` (
-  `id` int NOT NULL,
-  `customer_id` int NOT NULL,
+DROP TABLE IF EXISTS `comments_orders`;
+CREATE TABLE IF NOT EXISTS `comments_orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
   `comments` longtext,
   `date` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `comments_orders`
@@ -3671,8 +3882,9 @@ INSERT INTO `comments_orders` (`id`, `customer_id`, `comments`, `date`, `created
 -- Table structure for table `company`
 --
 
-CREATE TABLE `company` (
-  `company_id` int NOT NULL,
+DROP TABLE IF EXISTS `company`;
+CREATE TABLE IF NOT EXISTS `company` (
+  `company_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `mobile_no` varchar(100) DEFAULT NULL,
@@ -3703,16 +3915,17 @@ CREATE TABLE `company` (
   `district` varchar(300) DEFAULT NULL,
   `country` varchar(300) DEFAULT NULL,
   `pincode` varchar(20) DEFAULT NULL,
-  `batch_system` tinyint NOT NULL DEFAULT '0',
+  `batch_system` tinyint(4) NOT NULL DEFAULT '0',
   `db_type` varchar(110) DEFAULT NULL,
   `ay_type` varchar(50) DEFAULT NULL,
   `ac_start_date` varchar(110) DEFAULT NULL,
   `ac_end_date` varchar(110) DEFAULT NULL,
-  `is_backdated_date` tinyint NOT NULL DEFAULT '0',
+  `is_backdated_date` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `company`
@@ -3729,8 +3942,9 @@ INSERT INTO `company` (`company_id`, `name`, `email`, `mobile_no`, `address_line
 -- Table structure for table `consignee`
 --
 
-CREATE TABLE `consignee` (
-  `consignee_id` int NOT NULL,
+DROP TABLE IF EXISTS `consignee`;
+CREATE TABLE IF NOT EXISTS `consignee` (
+  `consignee_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `contact_no` varchar(100) DEFAULT NULL,
@@ -3764,13 +3978,15 @@ INSERT INTO `consignee` (`consignee_id`, `name`, `email`, `contact_no`, `address
 -- Table structure for table `country`
 --
 
-CREATE TABLE `country` (
-  `country_id` int NOT NULL,
+DROP TABLE IF EXISTS `country`;
+CREATE TABLE IF NOT EXISTS `country` (
+  `country_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(110) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`country_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `country`
@@ -3786,8 +4002,9 @@ INSERT INTO `country` (`country_id`, `name`, `created_at`, `updated_at`, `delete
 -- Table structure for table `customers`
 --
 
-CREATE TABLE `customers` (
-  `customer_id` int NOT NULL,
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE IF NOT EXISTS `customers` (
+  `customer_id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `contact_no` varchar(100) DEFAULT NULL,
@@ -3828,12 +4045,14 @@ INSERT INTO `customers` (`customer_id`, `name`, `email`, `contact_no`, `address`
 -- Table structure for table `daily_plans`
 --
 
-CREATE TABLE `daily_plans` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `beat_id` int NOT NULL,
-  `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+DROP TABLE IF EXISTS `daily_plans`;
+CREATE TABLE IF NOT EXISTS `daily_plans` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `beat_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -3841,16 +4060,18 @@ CREATE TABLE `daily_plans` (
 -- Table structure for table `days_plan`
 --
 
-CREATE TABLE `days_plan` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `beat_id` int NOT NULL,
+DROP TABLE IF EXISTS `days_plan`;
+CREATE TABLE IF NOT EXISTS `days_plan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `beat_id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `is_start` tinyint NOT NULL DEFAULT '0',
-  `is_skip` tinyint NOT NULL DEFAULT '0',
+  `is_start` tinyint(4) NOT NULL DEFAULT '0',
+  `is_skip` tinyint(4) NOT NULL DEFAULT '0',
   `skip_reason` varchar(220) DEFAULT NULL,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `days_plan`
@@ -3867,7 +4088,8 @@ INSERT INTO `days_plan` (`id`, `user_id`, `beat_id`, `date`, `is_start`, `is_ski
 (90, 143, 49, '2024-01-25', 1, 0, '', '2024-01-25 18:31:07'),
 (91, 143, 45, '2024-02-03', 1, 0, '', '2024-02-03 16:25:07'),
 (92, 153, 46, '2024-02-03', 1, 0, '', '2024-02-03 17:42:25'),
-(93, 359, 45, '2024-02-22', 1, 0, '', '2024-02-22 12:23:52');
+(93, 359, 45, '2024-02-22', 1, 0, '', '2024-02-22 12:23:52'),
+(94, 359, 45, '2024-02-23', 1, 0, '', '2024-02-23 13:04:54');
 
 -- --------------------------------------------------------
 
@@ -3875,10 +4097,12 @@ INSERT INTO `days_plan` (`id`, `user_id`, `beat_id`, `date`, `is_start`, `is_ski
 -- Table structure for table `deapartment`
 --
 
-CREATE TABLE `deapartment` (
-  `id` int NOT NULL,
-  `name` varchar(110) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+DROP TABLE IF EXISTS `deapartment`;
+CREATE TABLE IF NOT EXISTS `deapartment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(110) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `deapartment`
@@ -3901,11 +4125,13 @@ INSERT INTO `deapartment` (`id`, `name`) VALUES
 -- Table structure for table `def_bacth_no_counter`
 --
 
-CREATE TABLE `def_bacth_no_counter` (
-  `id` int NOT NULL,
-  `counter` int NOT NULL,
-  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `def_bacth_no_counter`;
+CREATE TABLE IF NOT EXISTS `def_bacth_no_counter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `counter` int(11) NOT NULL,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `def_bacth_no_counter`
@@ -3920,9 +4146,10 @@ INSERT INTO `def_bacth_no_counter` (`id`, `counter`, `updated`) VALUES
 -- Table structure for table `delivery_order`
 --
 
-CREATE TABLE `delivery_order` (
-  `delivery_order_id` int NOT NULL,
-  `delivery_order_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `delivery_order`;
+CREATE TABLE IF NOT EXISTS `delivery_order` (
+  `delivery_order_id` int(11) NOT NULL,
+  `delivery_order_counter` int(11) DEFAULT NULL,
   `delivery_date` date DEFAULT NULL,
   `delivery_authority` varchar(200) DEFAULT NULL,
   `am_eta` varchar(100) DEFAULT NULL,
@@ -3951,9 +4178,10 @@ INSERT INTO `delivery_order` (`delivery_order_id`, `delivery_order_counter`, `de
 -- Table structure for table `delivery_order_items`
 --
 
-CREATE TABLE `delivery_order_items` (
-  `delivery_order_item_id` int NOT NULL,
-  `delivery_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `delivery_order_items`;
+CREATE TABLE IF NOT EXISTS `delivery_order_items` (
+  `delivery_order_item_id` int(11) NOT NULL,
+  `delivery_order_id` int(11) DEFAULT NULL,
   `marks` varchar(100) DEFAULT NULL,
   `no_of_pkgs` varchar(100) DEFAULT NULL,
   `details` varchar(200) DEFAULT NULL,
@@ -3976,18 +4204,20 @@ INSERT INTO `delivery_order_items` (`delivery_order_item_id`, `delivery_order_id
 -- Table structure for table `expense`
 --
 
-CREATE TABLE `expense` (
-  `expense_id` int NOT NULL,
+DROP TABLE IF EXISTS `expense`;
+CREATE TABLE IF NOT EXISTS `expense` (
+  `expense_id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_name` varchar(110) DEFAULT NULL,
-  `bsplheads_id` int DEFAULT NULL,
-  `bsplcat_id` int DEFAULT NULL,
-  `bsplsubcat_id` int DEFAULT NULL,
-  `bsplstype_id` int DEFAULT NULL,
+  `bsplheads_id` int(11) DEFAULT NULL,
+  `bsplcat_id` int(11) DEFAULT NULL,
+  `bsplsubcat_id` int(11) DEFAULT NULL,
+  `bsplstype_id` int(11) DEFAULT NULL,
   `gl_code` varchar(110) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`expense_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `expense`
@@ -4006,15 +4236,17 @@ INSERT INTO `expense` (`expense_id`, `expense_name`, `bsplheads_id`, `bsplcat_id
 -- Table structure for table `expense_categories`
 --
 
-CREATE TABLE `expense_categories` (
-  `expense_category_id` int NOT NULL,
+DROP TABLE IF EXISTS `expense_categories`;
+CREATE TABLE IF NOT EXISTS `expense_categories` (
+  `expense_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_category_name` varchar(255) DEFAULT NULL,
-  `has_subexpensecategories` tinyint DEFAULT '1',
-  `visibility` tinyint DEFAULT '1',
+  `has_subexpensecategories` tinyint(4) DEFAULT '1',
+  `visibility` tinyint(4) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expense_category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `expense_categories`
@@ -4033,22 +4265,24 @@ INSERT INTO `expense_categories` (`expense_category_id`, `expense_category_name`
 -- Table structure for table `expense_master`
 --
 
-CREATE TABLE `expense_master` (
-  `expense_master_id` int NOT NULL,
-  `expense_category_id` int DEFAULT NULL,
-  `expense_sub_category_id` int DEFAULT NULL,
-  `expense_type_id` int DEFAULT NULL,
-  `expense_sub_type_id` int DEFAULT NULL,
-  `service_expense` int DEFAULT NULL,
-  `goods_expense` int DEFAULT NULL,
-  `rental_deposits_banking` int DEFAULT NULL,
-  `hr_admin` int DEFAULT NULL,
-  `Infra_stationary` int DEFAULT NULL,
+DROP TABLE IF EXISTS `expense_master`;
+CREATE TABLE IF NOT EXISTS `expense_master` (
+  `expense_master_id` int(11) NOT NULL AUTO_INCREMENT,
+  `expense_category_id` int(11) DEFAULT NULL,
+  `expense_sub_category_id` int(11) DEFAULT NULL,
+  `expense_type_id` int(11) DEFAULT NULL,
+  `expense_sub_type_id` int(11) DEFAULT NULL,
+  `service_expense` int(11) DEFAULT NULL,
+  `goods_expense` int(11) DEFAULT NULL,
+  `rental_deposits_banking` int(11) DEFAULT NULL,
+  `hr_admin` int(11) DEFAULT NULL,
+  `Infra_stationary` int(11) DEFAULT NULL,
   `miscellaneous` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expense_master_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4056,15 +4290,17 @@ CREATE TABLE `expense_master` (
 -- Table structure for table `expense_subcategories`
 --
 
-CREATE TABLE `expense_subcategories` (
-  `expense_subcategory_id` int NOT NULL,
+DROP TABLE IF EXISTS `expense_subcategories`;
+CREATE TABLE IF NOT EXISTS `expense_subcategories` (
+  `expense_subcategory_id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_subcategory_name` varchar(255) DEFAULT NULL,
-  `expense_category_id` int DEFAULT NULL,
-  `visibility` tinyint DEFAULT '1',
+  `expense_category_id` int(11) DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expense_subcategory_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `expense_subcategories`
@@ -4082,13 +4318,15 @@ INSERT INTO `expense_subcategories` (`expense_subcategory_id`, `expense_subcateg
 -- Table structure for table `expense_sub_type`
 --
 
-CREATE TABLE `expense_sub_type` (
-  `expense_sub_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `expense_sub_type`;
+CREATE TABLE IF NOT EXISTS `expense_sub_type` (
+  `expense_sub_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_sub_type` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expense_sub_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4096,13 +4334,15 @@ CREATE TABLE `expense_sub_type` (
 -- Table structure for table `expense_types`
 --
 
-CREATE TABLE `expense_types` (
-  `expense_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `expense_types`;
+CREATE TABLE IF NOT EXISTS `expense_types` (
+  `expense_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_type_name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expense_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `expense_types`
@@ -4119,15 +4359,16 @@ INSERT INTO `expense_types` (`expense_type_id`, `expense_type_name`, `created_at
 -- Table structure for table `failed_jobs`
 --
 
-CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(151) NOT NULL,
   `connection` text NOT NULL,
   `queue` text NOT NULL,
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4135,16 +4376,18 @@ CREATE TABLE `failed_jobs` (
 -- Table structure for table `financials_master`
 --
 
-CREATE TABLE `financials_master` (
-  `financials_id` int NOT NULL,
-  `gl_particulars` int NOT NULL,
-  `sub_group` int DEFAULT NULL,
-  `particulars` int DEFAULT NULL,
-  `gl_code` int DEFAULT NULL,
+DROP TABLE IF EXISTS `financials_master`;
+CREATE TABLE IF NOT EXISTS `financials_master` (
+  `financials_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gl_particulars` int(11) NOT NULL,
+  `sub_group` int(11) DEFAULT NULL,
+  `particulars` int(11) DEFAULT NULL,
+  `gl_code` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`financials_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4152,28 +4395,30 @@ CREATE TABLE `financials_master` (
 -- Table structure for table `financial_year`
 --
 
-CREATE TABLE `financial_year` (
-  `financial_year_id` int NOT NULL,
+DROP TABLE IF EXISTS `financial_year`;
+CREATE TABLE IF NOT EXISTS `financial_year` (
+  `financial_year_id` int(11) NOT NULL AUTO_INCREMENT,
   `year` varchar(50) DEFAULT NULL,
-  `billoflading_counter` int DEFAULT '0',
-  `proforma_counter` int DEFAULT '0',
-  `delivery_order_counter` int DEFAULT '0',
-  `gatepass_counter` int DEFAULT '0',
-  `manifest_counter` int DEFAULT '0',
-  `job_counter` int DEFAULT '0',
-  `purchase_order_counter` int DEFAULT '0',
-  `goods_servie_receipt_counter` int DEFAULT '0',
-  `ap_invoice_counter` int NOT NULL DEFAULT '0',
-  `bill_booking_counter` int NOT NULL DEFAULT '0',
-  `banking_payment_counter` int NOT NULL DEFAULT '0',
-  `order_booking_counter` int DEFAULT NULL,
-  `order_fulfilment_counter` int DEFAULT NULL,
-  `ar_invoice_counter` int DEFAULT NULL,
-  `active` int DEFAULT NULL,
+  `billoflading_counter` int(11) DEFAULT '0',
+  `proforma_counter` int(11) DEFAULT '0',
+  `delivery_order_counter` int(11) DEFAULT '0',
+  `gatepass_counter` int(11) DEFAULT '0',
+  `manifest_counter` int(11) DEFAULT '0',
+  `job_counter` int(11) DEFAULT '0',
+  `purchase_order_counter` int(11) DEFAULT '0',
+  `goods_servie_receipt_counter` int(11) DEFAULT '0',
+  `ap_invoice_counter` int(11) NOT NULL DEFAULT '0',
+  `bill_booking_counter` int(11) NOT NULL DEFAULT '0',
+  `banking_payment_counter` int(11) NOT NULL DEFAULT '0',
+  `order_booking_counter` int(11) DEFAULT NULL,
+  `order_fulfilment_counter` int(11) DEFAULT NULL,
+  `ar_invoice_counter` int(11) DEFAULT NULL,
+  `active` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`financial_year_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `financial_year`
@@ -4189,9 +4434,10 @@ INSERT INTO `financial_year` (`financial_year_id`, `year`, `billoflading_counter
 -- Table structure for table `gate_pass`
 --
 
-CREATE TABLE `gate_pass` (
-  `gate_pass_id` int NOT NULL,
-  `gate_pass_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `gate_pass`;
+CREATE TABLE IF NOT EXISTS `gate_pass` (
+  `gate_pass_id` int(11) NOT NULL,
+  `gate_pass_counter` int(11) DEFAULT NULL,
   `lorry_no` varchar(100) DEFAULT NULL,
   `dated` date DEFAULT NULL,
   `ex_mv` varchar(100) DEFAULT NULL,
@@ -4216,9 +4462,10 @@ INSERT INTO `gate_pass` (`gate_pass_id`, `gate_pass_counter`, `lorry_no`, `dated
 -- Table structure for table `gate_pass_items`
 --
 
-CREATE TABLE `gate_pass_items` (
-  `gate_pass_item_id` int NOT NULL,
-  `gate_pass_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `gate_pass_items`;
+CREATE TABLE IF NOT EXISTS `gate_pass_items` (
+  `gate_pass_item_id` int(11) NOT NULL,
+  `gate_pass_id` int(11) DEFAULT NULL,
   `marks` varchar(100) DEFAULT NULL,
   `no_of_pkgs` varchar(100) DEFAULT NULL,
   `description_of_goods` varchar(200) DEFAULT NULL,
@@ -4240,13 +4487,16 @@ INSERT INTO `gate_pass_items` (`gate_pass_item_id`, `gate_pass_id`, `marks`, `no
 -- Table structure for table `glcodes`
 --
 
-CREATE TABLE `glcodes` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `glcodes`;
+CREATE TABLE IF NOT EXISTS `glcodes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `gl_code` varchar(50) DEFAULT NULL,
   `gl_name` varchar(300) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gl_code` (`gl_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `glcodes`
@@ -4262,13 +4512,15 @@ INSERT INTO `glcodes` (`id`, `gl_code`, `gl_name`, `created_at`, `updated_at`) V
 -- Table structure for table `gl_code`
 --
 
-CREATE TABLE `gl_code` (
-  `gl_code_de` int NOT NULL,
+DROP TABLE IF EXISTS `gl_code`;
+CREATE TABLE IF NOT EXISTS `gl_code` (
+  `gl_code_de` int(11) NOT NULL AUTO_INCREMENT,
   `gl_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`gl_code_de`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4276,13 +4528,15 @@ CREATE TABLE `gl_code` (
 -- Table structure for table `gl_master`
 --
 
-CREATE TABLE `gl_master` (
-  `gl_id` int NOT NULL,
+DROP TABLE IF EXISTS `gl_master`;
+CREATE TABLE IF NOT EXISTS `gl_master` (
+  `gl_id` int(11) NOT NULL AUTO_INCREMENT,
   `gl_particulars` varchar(110) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`gl_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `gl_master`
@@ -4298,13 +4552,15 @@ INSERT INTO `gl_master` (`gl_id`, `gl_particulars`, `created_at`, `updated_at`, 
 -- Table structure for table `gl_particulars`
 --
 
-CREATE TABLE `gl_particulars` (
-  `gl_particulars_id` int NOT NULL,
+DROP TABLE IF EXISTS `gl_particulars`;
+CREATE TABLE IF NOT EXISTS `gl_particulars` (
+  `gl_particulars_id` int(11) NOT NULL AUTO_INCREMENT,
   `gl_particulars` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`gl_particulars_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4312,13 +4568,15 @@ CREATE TABLE `gl_particulars` (
 -- Table structure for table `goods_expense`
 --
 
-CREATE TABLE `goods_expense` (
-  `goods_expense_id` int NOT NULL,
+DROP TABLE IF EXISTS `goods_expense`;
+CREATE TABLE IF NOT EXISTS `goods_expense` (
+  `goods_expense_id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_expense` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_expense_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4326,12 +4584,13 @@ CREATE TABLE `goods_expense` (
 -- Table structure for table `goods_issue`
 --
 
-CREATE TABLE `goods_issue` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `goods_issue`;
+CREATE TABLE IF NOT EXISTS `goods_issue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(110) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
   `hsn_sac` varchar(100) DEFAULT NULL,
   `qty` varchar(100) DEFAULT NULL,
@@ -4339,7 +4598,7 @@ CREATE TABLE `goods_issue` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -4351,13 +4610,14 @@ CREATE TABLE `goods_issue` (
   `batch_no` varchar(110) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
   `expiry_date` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `discount` varchar(50) DEFAULT NULL,
   `remarks` varchar(220) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `goods_issue`
@@ -4372,12 +4632,13 @@ INSERT INTO `goods_issue` (`id`, `item_name`, `item_code`, `fy_year`, `company_i
 -- Table structure for table `goods_receipt`
 --
 
-CREATE TABLE `goods_receipt` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `goods_receipt`;
+CREATE TABLE IF NOT EXISTS `goods_receipt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(110) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
   `hsn_sac` varchar(100) DEFAULT NULL,
   `qty` varchar(100) DEFAULT NULL,
@@ -4385,7 +4646,7 @@ CREATE TABLE `goods_receipt` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -4397,13 +4658,14 @@ CREATE TABLE `goods_receipt` (
   `batch_no` varchar(110) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
   `expiry_date` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `discount` varchar(50) DEFAULT NULL,
   `remarks` varchar(220) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `goods_receipt`
@@ -4418,12 +4680,13 @@ INSERT INTO `goods_receipt` (`id`, `item_name`, `item_code`, `fy_year`, `company
 -- Table structure for table `goods_service_receipts`
 --
 
-CREATE TABLE `goods_service_receipts` (
-  `goods_service_receipt_id` int NOT NULL,
-  `purchase_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `goods_service_receipts`;
+CREATE TABLE IF NOT EXISTS `goods_service_receipts` (
+  `goods_service_receipt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` int(11) DEFAULT NULL,
   `fy_year` varchar(110) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `purchase_order_counter` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `purchase_order_counter` int(11) DEFAULT NULL,
   `vendor_ref_no` varchar(110) NOT NULL,
   `vendor_inv_no` varchar(100) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
@@ -4431,19 +4694,19 @@ CREATE TABLE `goods_service_receipts` (
   `receipt_type` varchar(255) DEFAULT NULL,
   `po_document` varchar(255) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
   `company_gstin` varchar(100) DEFAULT NULL,
   `place_of_supply` varchar(200) DEFAULT NULL,
   `ship_from` varchar(200) DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
   `status` varchar(200) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `amount_in_words` varchar(500) DEFAULT NULL,
@@ -4456,14 +4719,15 @@ CREATE TABLE `goods_service_receipts` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
-  `is_gr_done` tinyint NOT NULL DEFAULT '0',
-  `is_inventory_updated` tinyint NOT NULL DEFAULT '0',
+  `split_invoice` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
+  `is_gr_done` tinyint(4) NOT NULL DEFAULT '0',
+  `is_inventory_updated` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipt_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `goods_service_receipts`
@@ -4479,18 +4743,20 @@ INSERT INTO `goods_service_receipts` (`goods_service_receipt_id`, `purchase_orde
 -- Table structure for table `goods_service_receipts_batches`
 --
 
-CREATE TABLE `goods_service_receipts_batches` (
-  `goods_service_receipts_batches_id` int NOT NULL,
-  `goods_service_receipt_id` int DEFAULT NULL,
-  `goods_service_receipts_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `goods_service_receipts_batches`;
+CREATE TABLE IF NOT EXISTS `goods_service_receipts_batches` (
+  `goods_service_receipts_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_service_receipt_id` int(11) DEFAULT NULL,
+  `goods_service_receipts_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipts_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `goods_service_receipts_batches`
@@ -4512,11 +4778,12 @@ INSERT INTO `goods_service_receipts_batches` (`goods_service_receipts_batches_id
 -- Table structure for table `goods_service_receipts_items`
 --
 
-CREATE TABLE `goods_service_receipts_items` (
-  `goods_service_receipts_item_id` int NOT NULL,
-  `goods_service_receipt_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
-  `purchase_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `goods_service_receipts_items`;
+CREATE TABLE IF NOT EXISTS `goods_service_receipts_items` (
+  `goods_service_receipts_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_service_receipt_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `purchase_order_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(110) DEFAULT NULL,
   `sku` varchar(100) DEFAULT NULL,
@@ -4526,7 +4793,7 @@ CREATE TABLE `goods_service_receipts_items` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -4538,11 +4805,12 @@ CREATE TABLE `goods_service_receipts_items` (
   `batch_no` varchar(110) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
   `expiry_date` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`goods_service_receipts_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `goods_service_receipts_items`
@@ -4560,14 +4828,16 @@ INSERT INTO `goods_service_receipts_items` (`goods_service_receipts_item_id`, `g
 -- Table structure for table `gst`
 --
 
-CREATE TABLE `gst` (
-  `gst_id` int NOT NULL,
+DROP TABLE IF EXISTS `gst`;
+CREATE TABLE IF NOT EXISTS `gst` (
+  `gst_id` int(11) NOT NULL AUTO_INCREMENT,
   `gst_name` varchar(100) DEFAULT NULL,
-  `gst_percent` int DEFAULT NULL,
+  `gst_percent` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`gst_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gst`
@@ -4585,11 +4855,13 @@ INSERT INTO `gst` (`gst_id`, `gst_name`, `gst_percent`, `created_at`, `updated_a
 -- Table structure for table `gst_reg_type`
 --
 
-CREATE TABLE `gst_reg_type` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `gst_reg_type`;
+CREATE TABLE IF NOT EXISTS `gst_reg_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `gst_reg_type`
@@ -4605,13 +4877,15 @@ INSERT INTO `gst_reg_type` (`id`, `name`, `created_at`) VALUES
 -- Table structure for table `hr_admin`
 --
 
-CREATE TABLE `hr_admin` (
-  `hr_admin_id` int NOT NULL,
+DROP TABLE IF EXISTS `hr_admin`;
+CREATE TABLE IF NOT EXISTS `hr_admin` (
+  `hr_admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `hr_admin` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`hr_admin_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4619,13 +4893,15 @@ CREATE TABLE `hr_admin` (
 -- Table structure for table `hsncodes`
 --
 
-CREATE TABLE `hsncodes` (
-  `hsncode_id` int NOT NULL,
+DROP TABLE IF EXISTS `hsncodes`;
+CREATE TABLE IF NOT EXISTS `hsncodes` (
+  `hsncode_id` int(11) NOT NULL AUTO_INCREMENT,
   `hsncode_name` varchar(50) DEFAULT NULL,
   `hsncode_desc` varchar(300) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`hsncode_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `hsncodes`
@@ -4668,13 +4944,15 @@ INSERT INTO `hsncodes` (`hsncode_id`, `hsncode_name`, `hsncode_desc`, `created_a
 -- Table structure for table `infra_stationary`
 --
 
-CREATE TABLE `infra_stationary` (
-  `Infra_stationary_id` int NOT NULL,
+DROP TABLE IF EXISTS `infra_stationary`;
+CREATE TABLE IF NOT EXISTS `infra_stationary` (
+  `Infra_stationary_id` int(11) NOT NULL AUTO_INCREMENT,
   `Infra_stationary` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`Infra_stationary_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4682,10 +4960,11 @@ CREATE TABLE `infra_stationary` (
 -- Table structure for table `inventory`
 --
 
-CREATE TABLE `inventory` (
-  `id` int NOT NULL,
-  `warehouse_id` int NOT NULL,
-  `bin_id` int NOT NULL,
+DROP TABLE IF EXISTS `inventory`;
+CREATE TABLE IF NOT EXISTS `inventory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_id` int(11) NOT NULL,
+  `bin_id` int(11) NOT NULL,
   `batch_no` varchar(100) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
   `expiry_date` varchar(110) DEFAULT NULL,
@@ -4695,13 +4974,14 @@ CREATE TABLE `inventory` (
   `unit_price` varchar(50) DEFAULT NULL,
   `remarks` varchar(210) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `blocked_qty` varchar(50) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inventory`
@@ -4720,13 +5000,14 @@ INSERT INTO `inventory` (`id`, `warehouse_id`, `bin_id`, `batch_no`, `manufactur
 -- Table structure for table `invoice`
 --
 
-CREATE TABLE `invoice` (
-  `invoice_id` int NOT NULL,
-  `invoice_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `invoice`;
+CREATE TABLE IF NOT EXISTS `invoice` (
+  `invoice_id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_counter` int(11) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `job_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `job_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
@@ -4748,11 +5029,12 @@ CREATE TABLE `invoice` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`invoice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `invoice`
@@ -4784,9 +5066,10 @@ INSERT INTO `invoice` (`invoice_id`, `invoice_counter`, `bill_no`, `bill_date`, 
 -- Table structure for table `invoice_items`
 --
 
-CREATE TABLE `invoice_items` (
-  `invoice_item_id` int NOT NULL,
-  `invoice_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `invoice_items`;
+CREATE TABLE IF NOT EXISTS `invoice_items` (
+  `invoice_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `hsn_sac` varchar(100) DEFAULT NULL,
   `qty` varchar(100) DEFAULT NULL,
@@ -4800,8 +5083,9 @@ CREATE TABLE `invoice_items` (
   `total` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`invoice_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `invoice_items`
@@ -4827,12 +5111,14 @@ INSERT INTO `invoice_items` (`invoice_item_id`, `invoice_id`, `item_name`, `hsn_
 -- Table structure for table `item_types`
 --
 
-CREATE TABLE `item_types` (
-  `item_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `item_types`;
+CREATE TABLE IF NOT EXISTS `item_types` (
+  `item_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_type_name` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_types`
@@ -4851,18 +5137,19 @@ INSERT INTO `item_types` (`item_type_id`, `item_type_name`, `created_at`, `updat
 -- Table structure for table `job`
 --
 
-CREATE TABLE `job` (
-  `job_id` int NOT NULL,
+DROP TABLE IF EXISTS `job`;
+CREATE TABLE IF NOT EXISTS `job` (
+  `job_id` int(11) NOT NULL,
   `job_no` varchar(20) DEFAULT NULL,
-  `job_counter` int DEFAULT NULL,
+  `job_counter` int(11) DEFAULT NULL,
   `job_type` varchar(50) DEFAULT NULL,
   `job_date` date DEFAULT NULL,
   `financial_year` varchar(20) DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
-  `agent_id` int DEFAULT NULL,
+  `agent_id` int(11) DEFAULT NULL,
   `agent_name` varchar(200) DEFAULT NULL,
-  `consignee_id` int DEFAULT NULL,
+  `consignee_id` int(11) DEFAULT NULL,
   `consignee_name` varchar(200) DEFAULT NULL,
   `bill_to` varchar(20) DEFAULT NULL,
   `bill_to_name` varchar(200) DEFAULT NULL,
@@ -4920,8 +5207,9 @@ INSERT INTO `job` (`job_id`, `job_no`, `job_counter`, `job_type`, `job_date`, `f
 -- Table structure for table `job_types`
 --
 
-CREATE TABLE `job_types` (
-  `job_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `job_types`;
+CREATE TABLE IF NOT EXISTS `job_types` (
+  `job_type_id` int(11) NOT NULL,
   `job_type_name` varchar(100) DEFAULT NULL,
   `job_code` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -4942,15 +5230,17 @@ INSERT INTO `job_types` (`job_type_id`, `job_type_name`, `job_code`, `created_at
 -- Table structure for table `login_managements`
 --
 
-CREATE TABLE `login_managements` (
-  `login_management_id` int NOT NULL,
-  `login_management_login` int NOT NULL,
-  `login_management_facebook` int NOT NULL,
-  `login_management_google` int NOT NULL,
-  `login_management_signup` int NOT NULL,
+DROP TABLE IF EXISTS `login_managements`;
+CREATE TABLE IF NOT EXISTS `login_managements` (
+  `login_management_id` int(11) NOT NULL AUTO_INCREMENT,
+  `login_management_login` int(11) NOT NULL,
+  `login_management_facebook` int(11) NOT NULL,
+  `login_management_google` int(11) NOT NULL,
+  `login_management_signup` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`login_management_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `login_managements`
@@ -4965,9 +5255,10 @@ INSERT INTO `login_managements` (`login_management_id`, `login_management_login`
 -- Table structure for table `manifest`
 --
 
-CREATE TABLE `manifest` (
-  `manifest_id` int NOT NULL,
-  `manifest_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `manifest`;
+CREATE TABLE IF NOT EXISTS `manifest` (
+  `manifest_id` int(11) NOT NULL,
+  `manifest_counter` int(11) DEFAULT NULL,
   `import_rotation_no` varchar(100) DEFAULT NULL,
   `mv` varchar(100) DEFAULT NULL,
   `voy` varchar(100) DEFAULT NULL,
@@ -4975,7 +5266,7 @@ CREATE TABLE `manifest` (
   `sailed_from` varchar(100) DEFAULT NULL,
   `sailed_to` varchar(200) DEFAULT NULL,
   `eta_on` varchar(100) DEFAULT NULL,
-  `billoflading_id` int DEFAULT NULL,
+  `billoflading_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -4987,11 +5278,13 @@ CREATE TABLE `manifest` (
 -- Table structure for table `migrations`
 --
 
-CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) NOT NULL,
-  `batch` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4999,11 +5292,14 @@ CREATE TABLE `migrations` (
 -- Table structure for table `model_has_permissions`
 --
 
-CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `model_has_permissions`;
+CREATE TABLE IF NOT EXISTS `model_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(191) NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `model_id` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
+  KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -5011,11 +5307,14 @@ CREATE TABLE `model_has_permissions` (
 -- Table structure for table `model_has_roles`
 --
 
-CREATE TABLE `model_has_roles` (
-  `role_id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `model_has_roles`;
+CREATE TABLE IF NOT EXISTS `model_has_roles` (
+  `role_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(191) NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `model_id` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`role_id`,`model_id`,`model_type`),
+  KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `model_has_roles`
@@ -5050,10 +5349,12 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 -- Table structure for table `modules`
 --
 
-CREATE TABLE `modules` (
-  `id` int NOT NULL,
-  `name` varchar(110) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+DROP TABLE IF EXISTS `modules`;
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(110) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `modules`
@@ -5078,18 +5379,19 @@ INSERT INTO `modules` (`id`, `name`) VALUES
 -- Table structure for table `order_booking`
 --
 
-CREATE TABLE `order_booking` (
-  `order_booking_id` int NOT NULL,
-  `order_booking_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_booking`;
+CREATE TABLE IF NOT EXISTS `order_booking` (
+  `order_booking_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_counter` int(11) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `receipt_type` varchar(110) DEFAULT NULL,
   `customer_ref_no` varchar(110) DEFAULT NULL,
   `bill_to` varchar(110) DEFAULT NULL,
   `ship_from` varchar(110) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
@@ -5099,8 +5401,8 @@ CREATE TABLE `order_booking` (
   `posting_date` date DEFAULT NULL,
   `delivery_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `amount_in_words` varchar(500) DEFAULT NULL,
@@ -5113,14 +5415,15 @@ CREATE TABLE `order_booking` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `created_by` int DEFAULT NULL,
-  `from_app` tinyint NOT NULL DEFAULT '0',
-  `is_updated` tinyint NOT NULL DEFAULT '0',
+  `split_invoice` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `from_app` tinyint(4) NOT NULL DEFAULT '0',
+  `is_updated` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_booking_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_booking`
@@ -5135,18 +5438,20 @@ INSERT INTO `order_booking` (`order_booking_id`, `order_booking_counter`, `fy_ye
 -- Table structure for table `order_booking_batches`
 --
 
-CREATE TABLE `order_booking_batches` (
-  `order_booking_batches_id` int NOT NULL,
-  `order_booking_id` int DEFAULT NULL,
-  `order_booking_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_booking_batches`;
+CREATE TABLE IF NOT EXISTS `order_booking_batches` (
+  `order_booking_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_id` int(11) DEFAULT NULL,
+  `order_booking_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_booking_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `order_booking_batches`
@@ -5175,9 +5480,10 @@ INSERT INTO `order_booking_batches` (`order_booking_batches_id`, `order_booking_
 -- Table structure for table `order_booking_items`
 --
 
-CREATE TABLE `order_booking_items` (
-  `order_booking_item_id` int NOT NULL,
-  `order_booking_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_booking_items`;
+CREATE TABLE IF NOT EXISTS `order_booking_items` (
+  `order_booking_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
@@ -5193,14 +5499,15 @@ CREATE TABLE `order_booking_items` (
   `sgst_utgst_amount` varchar(100) DEFAULT NULL,
   `igst_rate` varchar(50) DEFAULT NULL,
   `igst_amount` varchar(100) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_booking_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_booking_items`
@@ -5216,9 +5523,10 @@ INSERT INTO `order_booking_items` (`order_booking_item_id`, `order_booking_id`, 
 -- Table structure for table `order_booking_items_temp`
 --
 
-CREATE TABLE `order_booking_items_temp` (
-  `order_booking_item_id` int NOT NULL,
-  `order_booking_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_booking_items_temp`;
+CREATE TABLE IF NOT EXISTS `order_booking_items_temp` (
+  `order_booking_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
@@ -5234,14 +5542,15 @@ CREATE TABLE `order_booking_items_temp` (
   `sgst_utgst_amount` varchar(100) DEFAULT NULL,
   `igst_rate` varchar(50) DEFAULT NULL,
   `igst_amount` varchar(100) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_booking_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -5249,18 +5558,19 @@ CREATE TABLE `order_booking_items_temp` (
 -- Table structure for table `order_booking_temp`
 --
 
-CREATE TABLE `order_booking_temp` (
-  `order_booking_id` int NOT NULL,
-  `order_booking_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_booking_temp`;
+CREATE TABLE IF NOT EXISTS `order_booking_temp` (
+  `order_booking_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_counter` int(11) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `receipt_type` varchar(110) DEFAULT NULL,
   `customer_ref_no` varchar(110) DEFAULT NULL,
   `bill_to` varchar(110) DEFAULT NULL,
   `ship_from` varchar(110) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
@@ -5270,8 +5580,8 @@ CREATE TABLE `order_booking_temp` (
   `posting_date` date DEFAULT NULL,
   `delivery_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `amount_in_words` varchar(500) DEFAULT NULL,
@@ -5284,13 +5594,14 @@ CREATE TABLE `order_booking_temp` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `created_by` int DEFAULT NULL,
-  `from_app` tinyint NOT NULL DEFAULT '0',
+  `split_invoice` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `from_app` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_booking_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -5298,12 +5609,13 @@ CREATE TABLE `order_booking_temp` (
 -- Table structure for table `order_fulfilment`
 --
 
-CREATE TABLE `order_fulfilment` (
-  `order_fulfillment_id` int NOT NULL,
-  `order_booking_id` int DEFAULT NULL,
-  `order_booking_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_fulfilment`;
+CREATE TABLE IF NOT EXISTS `order_fulfilment` (
+  `order_fulfillment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_booking_id` int(11) DEFAULT NULL,
+  `order_booking_counter` int(11) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `customer_ref_no` varchar(110) NOT NULL,
   `customer_inv_no` varchar(100) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
@@ -5311,19 +5623,19 @@ CREATE TABLE `order_fulfilment` (
   `receipt_type` varchar(255) DEFAULT NULL,
   `po_document` varchar(255) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
   `company_gstin` varchar(100) DEFAULT NULL,
   `place_of_supply` varchar(200) DEFAULT NULL,
   `ship_from` varchar(200) DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
   `status` varchar(200) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `amount_in_words` varchar(500) DEFAULT NULL,
@@ -5336,14 +5648,15 @@ CREATE TABLE `order_fulfilment` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `is_of_done` tinyint(1) NOT NULL DEFAULT '0',
-  `is_inventory_updated` tinyint NOT NULL DEFAULT '0',
+  `is_inventory_updated` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_fulfillment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_fulfilment`
@@ -5359,18 +5672,20 @@ INSERT INTO `order_fulfilment` (`order_fulfillment_id`, `order_booking_id`, `ord
 -- Table structure for table `order_fulfilment_batches`
 --
 
-CREATE TABLE `order_fulfilment_batches` (
-  `order_fulfilment_batches_id` int NOT NULL,
-  `order_fulfillment_id` int DEFAULT NULL,
-  `order_fulfillment_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_fulfilment_batches`;
+CREATE TABLE IF NOT EXISTS `order_fulfilment_batches` (
+  `order_fulfilment_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_fulfillment_id` int(11) DEFAULT NULL,
+  `order_fulfillment_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_fulfilment_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `order_fulfilment_batches`
@@ -5400,11 +5715,12 @@ INSERT INTO `order_fulfilment_batches` (`order_fulfilment_batches_id`, `order_fu
 -- Table structure for table `order_fulfilment_items`
 --
 
-CREATE TABLE `order_fulfilment_items` (
-  `order_fulfillment_item_id` int NOT NULL,
-  `order_fulfillment_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
-  `order_booking_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `order_fulfilment_items`;
+CREATE TABLE IF NOT EXISTS `order_fulfilment_items` (
+  `order_fulfillment_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_fulfillment_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
+  `order_booking_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
@@ -5416,7 +5732,7 @@ CREATE TABLE `order_fulfilment_items` (
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -5426,11 +5742,12 @@ CREATE TABLE `order_fulfilment_items` (
   `igst_amount` varchar(100) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
   `batch_no` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`order_fulfillment_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_fulfilment_items`
@@ -5448,8 +5765,9 @@ INSERT INTO `order_fulfilment_items` (`order_fulfillment_item_id`, `order_fulfil
 -- Table structure for table `outlet`
 --
 
-CREATE TABLE `outlet` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `outlet`;
+CREATE TABLE IF NOT EXISTS `outlet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `outlet_name` varchar(110) DEFAULT NULL,
   `building_no_name` varchar(210) DEFAULT NULL,
   `street_name` varchar(110) DEFAULT NULL,
@@ -5461,16 +5779,17 @@ CREATE TABLE `outlet` (
   `pin_code` varchar(110) DEFAULT NULL,
   `phone` varchar(110) DEFAULT NULL,
   `salesman` varchar(110) DEFAULT NULL,
-  `area_id` int DEFAULT NULL,
-  `route_id` int DEFAULT NULL,
-  `beat_id` int DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
+  `route_id` int(11) DEFAULT NULL,
+  `beat_id` int(11) DEFAULT NULL,
   `beat_day` varchar(110) DEFAULT NULL,
   `sales_execu` varchar(100) DEFAULT NULL,
   `ase` varchar(100) DEFAULT NULL,
   `asm` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -5479,18 +5798,20 @@ CREATE TABLE `outlet` (
 -- Table structure for table `outlet_selection`
 --
 
-CREATE TABLE `outlet_selection` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `beat_id` int NOT NULL,
-  `outlet_id` int NOT NULL,
+DROP TABLE IF EXISTS `outlet_selection`;
+CREATE TABLE IF NOT EXISTS `outlet_selection` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `beat_id` int(11) NOT NULL,
+  `outlet_id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `is_start` tinyint NOT NULL DEFAULT '0',
-  `is_skip` tinyint NOT NULL DEFAULT '0',
-  `is_submit` tinyint NOT NULL DEFAULT '0',
+  `is_start` tinyint(4) NOT NULL DEFAULT '0',
+  `is_skip` tinyint(4) NOT NULL DEFAULT '0',
+  `is_submit` tinyint(4) NOT NULL DEFAULT '0',
   `skip_reason` varchar(220) DEFAULT NULL,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `outlet_selection`
@@ -5511,7 +5832,9 @@ INSERT INTO `outlet_selection` (`id`, `user_id`, `beat_id`, `outlet_id`, `date`,
 (76, 143, 46, 162, '2024-01-25', 1, 0, 0, '', '2024-01-25 13:25:00'),
 (77, 143, 49, 165, '2024-01-25', 0, 0, 1, '', '2024-01-25 18:31:26'),
 (78, 153, 46, 216, '2024-02-03', 1, 0, 0, '', '2024-02-03 17:43:02'),
-(79, 359, 45, 44, '2024-02-22', 1, 0, 0, '', '2024-02-22 12:27:24');
+(79, 359, 45, 44, '2024-02-22', 1, 0, 0, '', '2024-02-22 12:27:24'),
+(80, 359, 45, 44, '2024-02-23', 1, 0, 0, '', '2024-02-23 15:34:47'),
+(81, 359, 45, 9, '2024-02-23', 1, 0, 0, '', '2024-02-23 15:44:04');
 
 -- --------------------------------------------------------
 
@@ -5519,15 +5842,17 @@ INSERT INTO `outlet_selection` (`id`, `user_id`, `beat_id`, `outlet_id`, `date`,
 -- Table structure for table `outstanding_pay`
 --
 
-CREATE TABLE `outstanding_pay` (
-  `id` int NOT NULL,
-  `customer_id` int NOT NULL,
+DROP TABLE IF EXISTS `outstanding_pay`;
+CREATE TABLE IF NOT EXISTS `outstanding_pay` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
   `amount` varchar(100) DEFAULT NULL,
   `payment_option` varchar(100) DEFAULT NULL,
   `cheque_image` longtext,
   `payment_date` date NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `outstanding_pay`
@@ -5552,14 +5877,15 @@ INSERT INTO `outstanding_pay` (`id`, `customer_id`, `amount`, `payment_option`, 
 -- Table structure for table `particulars`
 --
 
-CREATE TABLE `particulars` (
-  `particulars_id` int NOT NULL,
-  `gl_particulars_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `particulars`;
+CREATE TABLE IF NOT EXISTS `particulars` (
+  `particulars_id` int(11) NOT NULL,
+  `gl_particulars_id` int(11) DEFAULT NULL,
   `particulars` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -5567,13 +5893,15 @@ CREATE TABLE `particulars` (
 -- Table structure for table `payment_terms`
 --
 
-CREATE TABLE `payment_terms` (
-  `payment_terms_id` int NOT NULL,
+DROP TABLE IF EXISTS `payment_terms`;
+CREATE TABLE IF NOT EXISTS `payment_terms` (
+  `payment_terms_id` int(11) NOT NULL AUTO_INCREMENT,
   `term_type` varchar(200) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`payment_terms_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `payment_terms`
@@ -5592,18 +5920,20 @@ INSERT INTO `payment_terms` (`payment_terms_id`, `term_type`, `created_at`, `upd
 -- Table structure for table `permissions`
 --
 
-CREATE TABLE `permissions` (
-  `id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `guard_name` varchar(255) NOT NULL,
-  `base_permission_id` int DEFAULT NULL,
+  `base_permission_id` int(11) DEFAULT NULL,
   `base_permission_name` varchar(255) DEFAULT NULL,
-  `menu_id` int DEFAULT NULL,
-  `submenu_id` int DEFAULT NULL,
-  `is_sub` tinyint DEFAULT '0',
+  `menu_id` int(11) DEFAULT NULL,
+  `submenu_id` int(11) DEFAULT NULL,
+  `is_sub` tinyint(4) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `permissions`
@@ -6058,10 +6388,11 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `base_permission_id`, `ba
 -- Table structure for table `per_day_inventory`
 --
 
-CREATE TABLE `per_day_inventory` (
-  `id` int NOT NULL,
-  `warehouse_id` int NOT NULL,
-  `bin_id` int NOT NULL,
+DROP TABLE IF EXISTS `per_day_inventory`;
+CREATE TABLE IF NOT EXISTS `per_day_inventory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_id` int(11) NOT NULL,
+  `bin_id` int(11) NOT NULL,
   `batch_no` varchar(100) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
   `expiry_date` varchar(110) DEFAULT NULL,
@@ -6071,12 +6402,13 @@ CREATE TABLE `per_day_inventory` (
   `unit_price` varchar(50) DEFAULT NULL,
   `remarks` varchar(210) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `per_day_inventory`
@@ -6092,16 +6424,18 @@ INSERT INTO `per_day_inventory` (`id`, `warehouse_id`, `bin_id`, `batch_no`, `ma
 -- Table structure for table `pricing`
 --
 
-CREATE TABLE `pricing` (
-  `id` int NOT NULL,
-  `pricing_master_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `pricing`;
+CREATE TABLE IF NOT EXISTS `pricing` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pricing_master_id` int(11) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `selling_price` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pricing`
@@ -6113,7 +6447,11 @@ INSERT INTO `pricing` (`id`, `pricing_master_id`, `sku`, `item_code`, `selling_p
 (3, 6, '1253946', '67973110', '330', '2024-02-21 10:24:09', '2024-02-21 10:24:09', NULL),
 (4, 7, '1253936', '68868186', '220', '2024-02-21 10:26:57', '2024-02-21 10:26:57', NULL),
 (5, 7, '1253937', '67345352', '270', '2024-02-21 10:26:57', '2024-02-21 10:27:17', NULL),
-(6, 7, '1253946', '67973110', '550', '2024-02-21 10:26:57', '2024-02-21 10:26:57', NULL);
+(6, 7, '1253946', '67973110', '550', '2024-02-21 10:26:57', '2024-02-21 10:26:57', NULL),
+(7, 6, '1264063', '67973108', '120', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(8, 6, '1264048', '69559282', '110', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(9, 7, '1264063', '67973108', '210', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL),
+(10, 7, '1264048', '69559282', '200', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -6121,16 +6459,18 @@ INSERT INTO `pricing` (`id`, `pricing_master_id`, `sku`, `item_code`, `selling_p
 -- Table structure for table `pricing_log`
 --
 
-CREATE TABLE `pricing_log` (
-  `id` int NOT NULL,
-  `pricing_master_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `pricing_log`;
+CREATE TABLE IF NOT EXISTS `pricing_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pricing_master_id` int(11) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
   `item_code` varchar(100) DEFAULT NULL,
   `selling_price` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pricing_log`
@@ -6145,7 +6485,17 @@ INSERT INTO `pricing_log` (`id`, `pricing_master_id`, `sku`, `item_code`, `selli
 (6, 7, '1253946', '67973110', '550', '2024-02-21 10:26:57', '2024-02-21 10:26:57', NULL),
 (7, 7, '1253936', '68868186', '220', '2024-02-21 10:27:17', '2024-02-21 10:27:17', NULL),
 (8, 7, '1253937', '67345352', '270', '2024-02-21 10:27:17', '2024-02-21 10:27:17', NULL),
-(9, 7, '1253946', '67973110', '550', '2024-02-21 10:27:17', '2024-02-21 10:27:17', NULL);
+(9, 7, '1253946', '67973110', '550', '2024-02-21 10:27:17', '2024-02-21 10:27:17', NULL),
+(10, 6, '1253936', '68868186', '150', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(11, 6, '1253937', '67345352', '175', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(12, 6, '1253946', '67973110', '330', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(13, 6, '1264063', '67973108', '120', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(14, 6, '1264048', '69559282', '110', '2024-02-23 06:42:59', '2024-02-23 06:42:59', NULL),
+(15, 7, '1253936', '68868186', '220', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL),
+(16, 7, '1253937', '67345352', '270', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL),
+(17, 7, '1253946', '67973110', '550', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL),
+(18, 7, '1264063', '67973108', '210', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL),
+(19, 7, '1264048', '69559282', '200', '2024-02-23 06:43:36', '2024-02-23 06:43:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -6153,15 +6503,17 @@ INSERT INTO `pricing_log` (`id`, `pricing_master_id`, `sku`, `item_code`, `selli
 -- Table structure for table `pricing_master`
 --
 
-CREATE TABLE `pricing_master` (
-  `pricing_master_id` int NOT NULL,
+DROP TABLE IF EXISTS `pricing_master`;
+CREATE TABLE IF NOT EXISTS `pricing_master` (
+  `pricing_master_id` int(11) NOT NULL AUTO_INCREMENT,
   `pricing_type` varchar(50) DEFAULT NULL,
   `pricing_name` varchar(255) DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '1',
+  `status` tinyint(4) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pricing_master_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pricing_master`
@@ -6177,25 +6529,26 @@ INSERT INTO `pricing_master` (`pricing_master_id`, `pricing_type`, `pricing_name
 -- Table structure for table `products_revision`
 --
 
-CREATE TABLE `products_revision` (
-  `product_revision_id` int NOT NULL,
-  `product_item_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `products_revision`;
+CREATE TABLE IF NOT EXISTS `products_revision` (
+  `product_revision_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_item_id` int(11) DEFAULT NULL,
   `item_name` varchar(200) DEFAULT NULL,
-  `item_type_id` int DEFAULT NULL,
+  `item_type_id` int(11) DEFAULT NULL,
   `item_code` varchar(200) DEFAULT NULL,
   `item_description` text,
   `consumer_description` text,
-  `brand_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `sub_category_id` int DEFAULT NULL,
+  `brand_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `sub_category_id` int(11) DEFAULT NULL,
   `variant` varchar(200) DEFAULT NULL,
   `buom_pack_size` varchar(200) DEFAULT NULL,
-  `uom_id` int DEFAULT NULL,
+  `uom_id` int(11) DEFAULT NULL,
   `unit_case` varchar(255) DEFAULT NULL,
   `hsncode_id` varchar(110) DEFAULT NULL,
   `batch` varchar(50) DEFAULT NULL,
   `expiry_date` varchar(200) DEFAULT NULL,
-  `shelf_life_number` int DEFAULT NULL,
+  `shelf_life_number` int(11) DEFAULT NULL,
   `shelf_life` varchar(200) DEFAULT NULL,
   `sourcing` varchar(200) DEFAULT NULL,
   `case_pallet` varchar(200) DEFAULT NULL,
@@ -6207,24 +6560,25 @@ CREATE TABLE `products_revision` (
   `dimensions_height` varchar(200) DEFAULT NULL,
   `dimensions_net_weight` varchar(255) DEFAULT NULL,
   `dimensions_gross_weight` varchar(255) DEFAULT NULL,
-  `dimensions_length_uom_id` int DEFAULT NULL,
-  `dimensions_width_uom_id` int DEFAULT NULL,
-  `dimensions_height_uom_id` int DEFAULT NULL,
-  `dimensions_net_uom_id` int DEFAULT NULL,
-  `dimensions_gross_weight_uom_id` int DEFAULT NULL,
+  `dimensions_length_uom_id` int(11) DEFAULT NULL,
+  `dimensions_width_uom_id` int(11) DEFAULT NULL,
+  `dimensions_height_uom_id` int(11) DEFAULT NULL,
+  `dimensions_net_uom_id` int(11) DEFAULT NULL,
+  `dimensions_gross_weight_uom_id` int(11) DEFAULT NULL,
   `ean_barcode` varchar(255) DEFAULT NULL,
   `mrp` varchar(100) DEFAULT NULL,
-  `gst_id` int DEFAULT NULL,
-  `visibility` tinyint DEFAULT '1',
+  `gst_id` int(11) DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT '1',
   `product_thumb` text,
   `product_desc` text,
   `consumer_desc` text,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`product_revision_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `products_revision`
@@ -6262,7 +6616,8 @@ INSERT INTO `products_revision` (`product_revision_id`, `product_item_id`, `item
 (31, NULL, NULL, 5, '68360333', NULL, NULL, 5, 31, 48, '62', '4.8', 14, '24', '3401.11.90', NULL, NULL, 24, 'Month', 'US', '330', '5', NULL, '1', '0.19', '0.14', '0.23', '0.12', '0.13', 5, NULL, NULL, 4, NULL, '', '649', 11, 1, NULL, 'Dove Lip Balm Hydro 4.8 gms X 24', 'DOVE LIP CARE HYDRO 24X4.8G', NULL, '5314862', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL),
 (32, 2, NULL, 5, '68868186', NULL, NULL, 1, 25, 39, '36', '298', 14, '12', '3304.99.10', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.03', '0.22', '0.29', '3.58', '3.93', 5, NULL, NULL, 4, NULL, NULL, '316', 1, 1, NULL, 'Dove Body Polish Brown Sugar & Cocoa 298 gms X 12', 'DOVE BP BROWN SUGAR&COCOABTR 6X10.5OZ', NULL, '1253936', '2024-02-22 10:12:13', '2024-02-22 10:12:13', NULL),
 (33, 3, NULL, 5, '67345352', NULL, NULL, 1, 25, 39, '37', '621', 1, '4', '3304.99.30', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.24', '0.14', '0.14', '2.48', '2.73', 5, NULL, NULL, 4, NULL, NULL, '316', 1, 1, NULL, 'St. Ives Body Lotion Collagen Elastin 621 ml X 4', 'ST IVES LTN COLLAGEN ELASTIN 4X21OZ', NULL, '1253937', '2024-02-22 10:12:18', '2024-02-22 10:12:18', NULL),
-(34, 4, NULL, 5, '67973110', NULL, NULL, 1, 25, 39, '46', '400', 1, '12', '3304.99.30', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.24', '0.14', '0.14', '4.8', '5.28', 5, NULL, NULL, 4, NULL, NULL, '316', 1, 1, NULL, 'St. Ives Body Lotion Oatmeal 400 ml X 12', 'ST IVES BL S OATM Y SH BUT EXP 12X400ML', NULL, '1253946', '2024-02-22 10:12:26', '2024-02-22 10:12:26', NULL);
+(34, 4, NULL, 5, '67973110', NULL, NULL, 1, 25, 39, '46', '400', 1, '12', '3304.99.30', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.24', '0.14', '0.14', '4.8', '5.28', 5, NULL, NULL, 4, NULL, NULL, '316', 1, 1, NULL, 'St. Ives Body Lotion Oatmeal 400 ml X 12', 'ST IVES BL S OATM Y SH BUT EXP 12X400ML', NULL, '1253946', '2024-02-22 10:12:26', '2024-02-22 10:12:26', NULL),
+(35, NULL, NULL, 5, '999999', NULL, NULL, 1, 25, 39, '36', '298', 14, '12', '33049910', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.03', '0.22', '0.29', '3.58', '3.93', 5, NULL, NULL, 4, NULL, '', '316', 1, 1, NULL, 'test product', 'test product', NULL, '1253936', '2024-02-23 06:42:16', '2024-02-23 06:42:16', NULL);
 
 -- --------------------------------------------------------
 
@@ -6270,24 +6625,25 @@ INSERT INTO `products_revision` (`product_revision_id`, `product_item_id`, `item
 -- Table structure for table `product_item_sku_master`
 --
 
-CREATE TABLE `product_item_sku_master` (
-  `product_item_id` int NOT NULL,
+DROP TABLE IF EXISTS `product_item_sku_master`;
+CREATE TABLE IF NOT EXISTS `product_item_sku_master` (
+  `product_item_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(200) DEFAULT NULL,
-  `item_type_id` int DEFAULT NULL,
+  `item_type_id` int(11) DEFAULT NULL,
   `item_code` varchar(200) DEFAULT NULL,
   `item_description` text,
   `consumer_description` text,
-  `brand_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `sub_category_id` int DEFAULT NULL,
+  `brand_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `sub_category_id` int(11) DEFAULT NULL,
   `variant` varchar(200) DEFAULT NULL,
   `buom_pack_size` varchar(200) DEFAULT NULL,
-  `uom_id` int DEFAULT NULL,
+  `uom_id` int(11) DEFAULT NULL,
   `unit_case` varchar(255) DEFAULT NULL,
   `hsncode_id` varchar(100) DEFAULT NULL,
   `batch` varchar(50) DEFAULT NULL,
   `expiry_date` varchar(200) DEFAULT NULL,
-  `shelf_life_number` int DEFAULT NULL,
+  `shelf_life_number` int(11) DEFAULT NULL,
   `shelf_life` varchar(200) DEFAULT NULL,
   `sourcing` varchar(200) DEFAULT NULL,
   `case_pallet` varchar(200) DEFAULT NULL,
@@ -6299,15 +6655,15 @@ CREATE TABLE `product_item_sku_master` (
   `dimensions_height` varchar(200) DEFAULT NULL,
   `dimensions_net_weight` varchar(255) DEFAULT NULL,
   `dimensions_gross_weight` varchar(255) DEFAULT NULL,
-  `dimensions_length_uom_id` int DEFAULT NULL,
-  `dimensions_width_uom_id` int DEFAULT NULL,
-  `dimensions_height_uom_id` int DEFAULT NULL,
-  `dimensions_net_uom_id` int DEFAULT NULL,
-  `dimensions_gross_weight_uom_id` int DEFAULT NULL,
+  `dimensions_length_uom_id` int(11) DEFAULT NULL,
+  `dimensions_width_uom_id` int(11) DEFAULT NULL,
+  `dimensions_height_uom_id` int(11) DEFAULT NULL,
+  `dimensions_net_uom_id` int(11) DEFAULT NULL,
+  `dimensions_gross_weight_uom_id` int(11) DEFAULT NULL,
   `ean_barcode` varchar(255) DEFAULT NULL,
   `mrp` varchar(100) DEFAULT NULL,
-  `gst_id` int DEFAULT NULL,
-  `visibility` tinyint DEFAULT '1',
+  `gst_id` int(11) DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT '1',
   `product_thumb` text,
   `product_desc` text,
   `consumer_desc` text,
@@ -6315,8 +6671,9 @@ CREATE TABLE `product_item_sku_master` (
   `sku` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`product_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_item_sku_master`
@@ -6351,7 +6708,8 @@ INSERT INTO `product_item_sku_master` (`product_item_id`, `item_name`, `item_typ
 (27, NULL, 5, '69636660PO3', NULL, NULL, 4, 34, 52, '59', '125', 14, '24', '3401.11.90', NULL, NULL, 36, 'Month', 'Thailand', '330', '5', NULL, '1', '0.21', '0.15', '0.27', '3', '3.3', 5, NULL, NULL, 4, NULL, '', '459', 1, 1, NULL, 'Camay Soaps Chic Black 125 gm PO3 X 24', 'CAMAY CHIC 24X3X125G', NULL, '4345259', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL),
 (28, NULL, 5, '69636664PO3', NULL, NULL, 4, 34, 52, '60', '125', 14, '24', '3401.11.90', NULL, NULL, 36, 'Month', 'US', '330', '5', NULL, '1', '0.19', '0.14', '0.23', '3', '3.3', 5, NULL, NULL, 4, NULL, '', '459', 1, 1, NULL, 'Camay Soaps Classic Red 125 gm PO3 X 24', 'CAMAY CLASSIC 24X3X125G', NULL, '4345260', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL),
 (29, NULL, 5, '69636661PO3', NULL, NULL, 4, 34, 52, '61', '125', 14, '24', '3401.11.90', NULL, NULL, 36, 'Month', 'US', '330', '5', NULL, '1', '0.21', '0.15', '0.26', '3', '3.3', 5, NULL, NULL, 4, NULL, '', '459', 1, 1, NULL, 'Camay Soaps Natural White 125 gm PO3 X 24', 'CAMAY NATUREL 24X3X125G', NULL, '4345261', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL),
-(30, NULL, 5, '68360333', NULL, NULL, 5, 31, 48, '62', '4.8', 14, '24', '3401.11.90', NULL, NULL, 24, 'Month', 'US', '330', '5', NULL, '1', '0.19', '0.14', '0.23', '0.12', '0.13', 5, NULL, NULL, 4, NULL, '', '649', 1, 1, NULL, 'Dove Lip Balm Hydro 4.8 gms X 24', 'DOVE LIP CARE HYDRO 24X4.8G', NULL, '5314862', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL);
+(30, NULL, 5, '68360333', NULL, NULL, 5, 31, 48, '62', '4.8', 14, '24', '3401.11.90', NULL, NULL, 24, 'Month', 'US', '330', '5', NULL, '1', '0.19', '0.14', '0.23', '0.12', '0.13', 5, NULL, NULL, 4, NULL, '', '649', 1, 1, NULL, 'Dove Lip Balm Hydro 4.8 gms X 24', 'DOVE LIP CARE HYDRO 24X4.8G', NULL, '5314862', '2024-02-21 10:56:39', '2024-02-21 10:56:39', NULL),
+(31, NULL, 5, '999999', NULL, NULL, 1, 25, 39, '36', '298', 14, '12', '33049910', NULL, NULL, 24, 'Month', 'Turkey', '260', '6', NULL, '1', '0.03', '0.22', '0.29', '3.58', '3.93', 5, NULL, NULL, 4, NULL, '', '316', 1, 1, NULL, 'test product', 'test product', NULL, '1253936', '2024-02-23 06:42:16', '2024-02-23 06:42:29', '2024-02-23 06:42:29');
 
 -- --------------------------------------------------------
 
@@ -6359,16 +6717,18 @@ INSERT INTO `product_item_sku_master` (`product_item_id`, `item_name`, `item_typ
 -- Table structure for table `product_qty_storage`
 --
 
-CREATE TABLE `product_qty_storage` (
-  `product_qty_storage_id` int NOT NULL,
-  `product_item_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `product_qty_storage`;
+CREATE TABLE IF NOT EXISTS `product_qty_storage` (
+  `product_qty_storage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_item_id` int(11) DEFAULT NULL,
   `item_code` varchar(255) DEFAULT NULL,
-  `qty` int DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
   `storage_location_id` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`product_qty_storage_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_qty_storage`
@@ -6389,16 +6749,18 @@ INSERT INTO `product_qty_storage` (`product_qty_storage_id`, `product_item_id`, 
 -- Table structure for table `product_qty_storage_revision`
 --
 
-CREATE TABLE `product_qty_storage_revision` (
-  `product_qty_storage_id` int NOT NULL,
-  `product_item_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `product_qty_storage_revision`;
+CREATE TABLE IF NOT EXISTS `product_qty_storage_revision` (
+  `product_qty_storage_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_item_id` int(11) DEFAULT NULL,
   `item_code` varchar(255) DEFAULT NULL,
-  `qty` int DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
   `storage_location_id` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`product_qty_storage_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_qty_storage_revision`
@@ -6415,20 +6777,21 @@ INSERT INTO `product_qty_storage_revision` (`product_qty_storage_id`, `product_i
 -- Table structure for table `proforma`
 --
 
-CREATE TABLE `proforma` (
-  `proforma_id` int NOT NULL,
-  `proforma_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `proforma`;
+CREATE TABLE IF NOT EXISTS `proforma` (
+  `proforma_id` int(11) NOT NULL AUTO_INCREMENT,
+  `proforma_counter` int(11) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `job_id` int DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `job_id` int(11) DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `discount` varchar(110) DEFAULT NULL,
   `status` varchar(110) DEFAULT NULL,
   `posting_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
   `delivery_date` varchar(110) DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
-  `ship_from` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
+  `ship_from` int(11) DEFAULT NULL,
   `customer_ref_no` varchar(110) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
@@ -6451,11 +6814,12 @@ CREATE TABLE `proforma` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`proforma_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `proforma`
@@ -6473,13 +6837,14 @@ INSERT INTO `proforma` (`proforma_id`, `proforma_counter`, `bill_no`, `bill_date
 -- Table structure for table `proforma_items`
 --
 
-CREATE TABLE `proforma_items` (
-  `invoice_item_id` int NOT NULL,
-  `proforma_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `proforma_items`;
+CREATE TABLE IF NOT EXISTS `proforma_items` (
+  `invoice_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `proforma_id` int(11) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
   `hsn_sac` varchar(100) DEFAULT NULL,
   `qty` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `discount_item` varchar(110) DEFAULT NULL,
   `price_af_discount` varchar(110) DEFAULT NULL,
@@ -6494,8 +6859,9 @@ CREATE TABLE `proforma_items` (
   `total` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`invoice_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `proforma_items`
@@ -6514,17 +6880,18 @@ INSERT INTO `proforma_items` (`invoice_item_id`, `proforma_id`, `item_name`, `hs
 -- Table structure for table `purchase_order`
 --
 
-CREATE TABLE `purchase_order` (
-  `purchase_order_id` int NOT NULL,
-  `purchase_order_counter` int DEFAULT NULL,
+DROP TABLE IF EXISTS `purchase_order`;
+CREATE TABLE IF NOT EXISTS `purchase_order` (
+  `purchase_order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_order_counter` int(11) DEFAULT NULL,
   `series_no` varchar(100) DEFAULT NULL,
   `fy_year` varchar(110) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
   `receipt_type` varchar(110) DEFAULT NULL,
   `vendor_ref_no` varchar(110) DEFAULT NULL,
   `bill_no` varchar(100) DEFAULT NULL,
   `bill_date` date DEFAULT NULL,
-  `party_id` int DEFAULT NULL,
+  `party_id` int(11) DEFAULT NULL,
   `party_name` varchar(200) DEFAULT NULL,
   `party_details` text,
   `financial_year` varchar(20) DEFAULT NULL,
@@ -6534,8 +6901,8 @@ CREATE TABLE `purchase_order` (
   `posting_date` date DEFAULT NULL,
   `delivery_date` date DEFAULT NULL,
   `document_date` date DEFAULT NULL,
-  `contact_person` int DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `contact_person` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
   `bill_to_gst_no` varchar(100) DEFAULT NULL,
   `gst_rate` varchar(50) DEFAULT NULL,
   `amount_in_words` varchar(500) DEFAULT NULL,
@@ -6548,11 +6915,12 @@ CREATE TABLE `purchase_order` (
   `rounded_off` varchar(50) DEFAULT NULL,
   `grand_total` varchar(100) DEFAULT NULL,
   `remarks` varchar(600) DEFAULT NULL,
-  `split_invoice` int DEFAULT NULL,
+  `split_invoice` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`purchase_order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_order`
@@ -6567,18 +6935,20 @@ INSERT INTO `purchase_order` (`purchase_order_id`, `purchase_order_counter`, `se
 -- Table structure for table `purchase_order_batches`
 --
 
-CREATE TABLE `purchase_order_batches` (
-  `purchase_order_batches_id` int NOT NULL,
-  `purchase_order_id` int DEFAULT NULL,
-  `purchase_order_item_id` int DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `purchase_order_batches`;
+CREATE TABLE IF NOT EXISTS `purchase_order_batches` (
+  `purchase_order_batches_id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` int(11) DEFAULT NULL,
+  `purchase_order_item_id` int(11) DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
   `manufacturing_date` varchar(255) DEFAULT NULL,
   `expiry_date` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`purchase_order_batches_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `purchase_order_batches`
@@ -6616,9 +6986,10 @@ INSERT INTO `purchase_order_batches` (`purchase_order_batches_id`, `purchase_ord
 -- Table structure for table `purchase_order_items`
 --
 
-CREATE TABLE `purchase_order_items` (
-  `purchase_order_item_id` int NOT NULL,
-  `purchase_order_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `purchase_order_items`;
+CREATE TABLE IF NOT EXISTS `purchase_order_items` (
+  `purchase_order_item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_order_id` int(11) DEFAULT NULL,
   `item_code` varchar(110) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
   `item_name` varchar(1000) DEFAULT NULL,
@@ -6627,7 +6998,7 @@ CREATE TABLE `purchase_order_items` (
   `discount_item` varchar(110) DEFAULT NULL,
   `price_af_discount` varchar(110) DEFAULT NULL,
   `gross_total` varchar(110) DEFAULT NULL,
-  `storage_location_id` int DEFAULT NULL,
+  `storage_location_id` int(11) DEFAULT NULL,
   `taxable_amount` varchar(100) DEFAULT NULL,
   `cgst_rate` varchar(50) DEFAULT NULL,
   `cgst_amount` varchar(100) DEFAULT NULL,
@@ -6636,12 +7007,13 @@ CREATE TABLE `purchase_order_items` (
   `igst_rate` varchar(50) DEFAULT NULL,
   `igst_amount` varchar(100) DEFAULT NULL,
   `total` varchar(100) DEFAULT NULL,
-  `gst_rate` int DEFAULT NULL,
+  `gst_rate` int(11) DEFAULT NULL,
   `gst_amount` varchar(110) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`purchase_order_item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_order_items`
@@ -6657,13 +7029,15 @@ INSERT INTO `purchase_order_items` (`purchase_order_item_id`, `purchase_order_id
 -- Table structure for table `rental_deposits_banking`
 --
 
-CREATE TABLE `rental_deposits_banking` (
-  `rental_deposits_banking_id` int NOT NULL,
+DROP TABLE IF EXISTS `rental_deposits_banking`;
+CREATE TABLE IF NOT EXISTS `rental_deposits_banking` (
+  `rental_deposits_banking_id` int(11) NOT NULL AUTO_INCREMENT,
   `rental_deposits_banking` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`rental_deposits_banking_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -6671,11 +7045,13 @@ CREATE TABLE `rental_deposits_banking` (
 -- Table structure for table `residential_status`
 --
 
-CREATE TABLE `residential_status` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `residential_status`;
+CREATE TABLE IF NOT EXISTS `residential_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `residential_status`
@@ -6691,14 +7067,15 @@ INSERT INTO `residential_status` (`id`, `name`, `created_at`) VALUES
 -- Table structure for table `retailer_master`
 --
 
-CREATE TABLE `retailer_master` (
-  `retailer_master_id` int NOT NULL,
+DROP TABLE IF EXISTS `retailer_master`;
+CREATE TABLE IF NOT EXISTS `retailer_master` (
+  `retailer_master_id` int(11) NOT NULL AUTO_INCREMENT,
   `business_partner_type` varchar(200) DEFAULT NULL,
   `bp_code` varchar(100) DEFAULT NULL,
   `bp_name` varchar(255) DEFAULT NULL,
-  `address` int DEFAULT NULL,
-  `contact_details` int DEFAULT NULL,
-  `bp_organisation_type` int DEFAULT NULL,
+  `address` int(11) DEFAULT NULL,
+  `contact_details` int(11) DEFAULT NULL,
+  `bp_organisation_type` int(11) DEFAULT NULL,
   `bp_category` varchar(200) DEFAULT NULL,
   `bp_group` varchar(200) DEFAULT NULL,
   `regional_sales_manager` varchar(255) DEFAULT NULL,
@@ -6706,15 +7083,16 @@ CREATE TABLE `retailer_master` (
   `area_sales_exec` varchar(255) DEFAULT NULL,
   `sales_officer` varchar(255) DEFAULT NULL,
   `salesman` varchar(255) DEFAULT NULL,
-  `payment_terms` int DEFAULT NULL,
-  `credit_limit` int DEFAULT NULL,
-  `gst_details` int DEFAULT NULL,
-  `banking_details` int DEFAULT NULL,
-  `beat_master` int DEFAULT NULL,
+  `payment_terms` int(11) DEFAULT NULL,
+  `credit_limit` int(11) DEFAULT NULL,
+  `gst_details` int(11) DEFAULT NULL,
+  `banking_details` int(11) DEFAULT NULL,
+  `beat_master` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`retailer_master_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -6722,20 +7100,22 @@ CREATE TABLE `retailer_master` (
 -- Table structure for table `roles`
 --
 
-CREATE TABLE `roles` (
-  `id` bigint UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `department_id` int DEFAULT NULL,
+  `department_id` int(11) DEFAULT NULL,
   `parent_roles` varchar(220) DEFAULT NULL,
   `guard_name` varchar(255) NOT NULL,
   `menu_ids` varchar(300) DEFAULT NULL,
   `submenu_ids` varchar(300) DEFAULT NULL,
-  `is_sub` tinyint DEFAULT NULL,
+  `is_sub` tinyint(4) DEFAULT NULL,
   `readonly` varchar(50) DEFAULT NULL,
   `readwrite` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `roles`
@@ -6755,13 +7135,16 @@ INSERT INTO `roles` (`id`, `name`, `department_id`, `parent_roles`, `guard_name`
 -- Table structure for table `role_has_permissions`
 --
 
-CREATE TABLE `role_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED NOT NULL,
-  `menu_id` bigint DEFAULT NULL,
-  `submenu_id` bigint DEFAULT NULL,
-  `is_sub` tinyint DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+DROP TABLE IF EXISTS `role_has_permissions`;
+CREATE TABLE IF NOT EXISTS `role_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `menu_id` bigint(20) DEFAULT NULL,
+  `submenu_id` bigint(20) DEFAULT NULL,
+  `is_sub` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`permission_id`,`role_id`),
+  KEY `role_has_permissions_role_id_foreign` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `role_has_permissions`
@@ -7102,14 +7485,16 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`, `menu_id`, `subm
 -- Table structure for table `route`
 --
 
-CREATE TABLE `route` (
-  `route_id` int NOT NULL,
-  `area_id` int NOT NULL,
+DROP TABLE IF EXISTS `route`;
+CREATE TABLE IF NOT EXISTS `route` (
+  `route_id` int(11) NOT NULL AUTO_INCREMENT,
+  `area_id` int(11) NOT NULL,
   `route_name` varchar(110) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`route_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `route`
@@ -7136,14 +7521,16 @@ INSERT INTO `route` (`route_id`, `area_id`, `route_name`, `created_at`, `updated
 -- Table structure for table `series_master`
 --
 
-CREATE TABLE `series_master` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `series_master`;
+CREATE TABLE IF NOT EXISTS `series_master` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `series_number` varchar(110) DEFAULT NULL,
   `module` varchar(110) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `series_master`
@@ -7168,13 +7555,15 @@ INSERT INTO `series_master` (`id`, `series_number`, `module`, `created_at`, `upd
 -- Table structure for table `service_expense`
 --
 
-CREATE TABLE `service_expense` (
-  `service_expense_id` int NOT NULL,
+DROP TABLE IF EXISTS `service_expense`;
+CREATE TABLE IF NOT EXISTS `service_expense` (
+  `service_expense_id` int(11) NOT NULL AUTO_INCREMENT,
   `service_expense` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`service_expense_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -7182,15 +7571,17 @@ CREATE TABLE `service_expense` (
 -- Table structure for table `soh_app`
 --
 
-CREATE TABLE `soh_app` (
-  `id` int NOT NULL,
-  `customer_id` int NOT NULL,
+DROP TABLE IF EXISTS `soh_app`;
+CREATE TABLE IF NOT EXISTS `soh_app` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
   `quantity` varchar(50) NOT NULL,
   `item_desc` varchar(220) DEFAULT NULL,
   `sku` varchar(110) DEFAULT NULL,
   `date` date NOT NULL,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `soh_app`
@@ -7214,14 +7605,16 @@ INSERT INTO `soh_app` (`id`, `customer_id`, `quantity`, `item_desc`, `sku`, `dat
 -- Table structure for table `states`
 --
 
-CREATE TABLE `states` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `states`;
+CREATE TABLE IF NOT EXISTS `states` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
-  `country_id` int DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `states`
@@ -7275,8 +7668,9 @@ INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`, `d
 -- Table structure for table `storage_locations`
 --
 
-CREATE TABLE `storage_locations` (
-  `storage_location_id` int NOT NULL,
+DROP TABLE IF EXISTS `storage_locations`;
+CREATE TABLE IF NOT EXISTS `storage_locations` (
+  `storage_location_id` int(11) NOT NULL AUTO_INCREMENT,
   `storage_location_name` varchar(200) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   `address` varchar(300) DEFAULT NULL,
@@ -7284,11 +7678,12 @@ CREATE TABLE `storage_locations` (
   `country` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
-  `warehouse_address` int DEFAULT NULL,
+  `warehouse_address` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`storage_location_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `storage_locations`
@@ -7304,18 +7699,20 @@ INSERT INTO `storage_locations` (`storage_location_id`, `storage_location_name`,
 -- Table structure for table `subcategories`
 --
 
-CREATE TABLE `subcategories` (
-  `subcategory_id` int NOT NULL,
-  `category_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `subcategories`;
+CREATE TABLE IF NOT EXISTS `subcategories` (
+  `subcategory_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) DEFAULT NULL,
   `subcategory_name` varchar(100) NOT NULL,
   `subcategory_description` text,
-  `has_sub_subcategories` tinyint DEFAULT '0',
+  `has_sub_subcategories` tinyint(4) DEFAULT '0',
   `sub_category_slug` varchar(200) DEFAULT NULL,
-  `visibility` tinyint DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` varchar(50) DEFAULT NULL,
-  `deleted_at` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`subcategory_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `subcategories`
@@ -7354,14 +7751,16 @@ INSERT INTO `subcategories` (`subcategory_id`, `category_id`, `subcategory_name`
 -- Table structure for table `sub_group`
 --
 
-CREATE TABLE `sub_group` (
-  `sub_group_id` int NOT NULL,
-  `gl_particulars_id` int DEFAULT NULL,
+DROP TABLE IF EXISTS `sub_group`;
+CREATE TABLE IF NOT EXISTS `sub_group` (
+  `sub_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gl_particulars_id` int(11) DEFAULT NULL,
   `sub_group` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`sub_group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -7369,10 +7768,11 @@ CREATE TABLE `sub_group` (
 -- Table structure for table `traffic source`
 --
 
-CREATE TABLE `traffic source` (
-  `trafficsource_id` int NOT NULL,
+DROP TABLE IF EXISTS `traffic source`;
+CREATE TABLE IF NOT EXISTS `traffic source` (
+  `trafficsource_id` int(11) NOT NULL AUTO_INCREMENT,
   `traffic_source` varchar(255) DEFAULT NULL,
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `REMOTE_ADDR` varchar(255) DEFAULT NULL,
   `HTTP_USER_AGENT` varchar(255) DEFAULT NULL,
@@ -7381,8 +7781,9 @@ CREATE TABLE `traffic source` (
   `browser` varchar(255) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`trafficsource_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=508 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `traffic source`
@@ -7887,7 +8288,17 @@ INSERT INTO `traffic source` (`trafficsource_id`, `traffic_source`, `id`, `email
 (494, 'email', 360, 'admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0', 'Ubuntu', 'desktop', 'Firefox', '2024-02-22 04:28:36', '2024-02-22 04:28:36', NULL),
 (495, 'email', 359, 'salesman@gmail.com', '192.168.0.117', 'Dart/3.2 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-22 09:13:47', '2024-02-22 09:13:47', NULL),
 (496, 'email', 75, 'superadmin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0', 'Ubuntu', 'desktop', 'Firefox', '2024-02-22 09:27:46', '2024-02-22 09:27:46', NULL),
-(497, 'email', 360, 'admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0', 'Ubuntu', 'desktop', 'Firefox', '2024-02-22 09:28:14', '2024-02-22 09:28:14', NULL);
+(497, 'email', 360, 'admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0', 'Ubuntu', 'desktop', 'Firefox', '2024-02-22 09:28:14', '2024-02-22 09:28:14', NULL),
+(498, 'email', 75, 'superadmin@gmail.com', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0', 'Windows 10', 'desktop', 'Opera', '2024-02-23 04:18:12', '2024-02-23 04:18:12', NULL),
+(499, 'email', 372, 'sahils@gmail.com', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0', 'Windows 10', 'desktop', 'Opera', '2024-02-23 06:46:23', '2024-02-23 06:46:23', NULL),
+(500, 'email', 360, 'admin@gmail.com', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0', 'Windows 10', 'desktop', 'Opera', '2024-02-23 06:46:33', '2024-02-23 06:46:33', NULL),
+(501, 'email', 359, 'salesman@gmail.com', '192.168.0.103', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0', 'Windows 10', 'desktop', 'Microsoft Edge', '2024-02-23 07:34:26', '2024-02-23 07:34:26', NULL),
+(502, 'email', 359, 'salesman@gmail.com', '192.168.0.103', 'Dart/3.1 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-23 09:59:54', '2024-02-23 09:59:54', NULL),
+(503, 'email', 360, 'admin@gmail.com', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0', 'Windows 10', 'desktop', 'Opera', '2024-02-23 10:03:12', '2024-02-23 10:03:12', NULL),
+(504, 'email', 359, 'salesman@gmail.com', '192.168.0.103', 'Dart/3.1 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-23 12:02:31', '2024-02-23 12:02:31', NULL),
+(505, 'email', 359, 'salesman@gmail.com', '192.168.0.101', 'Dart/3.1 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-23 12:30:51', '2024-02-23 12:30:51', NULL),
+(506, 'email', 359, 'salesman@gmail.com', '192.168.0.103', 'Dart/3.1 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-23 12:54:10', '2024-02-23 12:54:10', NULL),
+(507, 'email', 359, 'salesman@gmail.com', '192.168.0.103', 'Dart/3.1 (dart:io)', 'Unknown OS Platform', 'desktop', 'Unknow Browser', '2024-02-23 13:27:43', '2024-02-23 13:27:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -7895,10 +8306,11 @@ INSERT INTO `traffic source` (`trafficsource_id`, `traffic_source`, `id`, `email
 -- Table structure for table `transaction`
 --
 
-CREATE TABLE `transaction` (
-  `id` int NOT NULL,
-  `warehouse_id` int NOT NULL,
-  `bin_id` int NOT NULL,
+DROP TABLE IF EXISTS `transaction`;
+CREATE TABLE IF NOT EXISTS `transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouse_id` int(11) NOT NULL,
+  `bin_id` int(11) NOT NULL,
   `transaction_type` varchar(50) DEFAULT NULL,
   `batch_no` varchar(100) DEFAULT NULL,
   `manufacturing_date` varchar(110) DEFAULT NULL,
@@ -7910,12 +8322,13 @@ CREATE TABLE `transaction` (
   `final_qty` varchar(50) DEFAULT NULL,
   `unit_price` varchar(50) DEFAULT NULL,
   `fy_year` varchar(50) DEFAULT NULL,
-  `company_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `transaction`
@@ -7975,13 +8388,15 @@ INSERT INTO `transaction` (`id`, `warehouse_id`, `bin_id`, `transaction_type`, `
 -- Table structure for table `uoms`
 --
 
-CREATE TABLE `uoms` (
-  `uom_id` int NOT NULL,
+DROP TABLE IF EXISTS `uoms`;
+CREATE TABLE IF NOT EXISTS `uoms` (
+  `uom_id` int(11) NOT NULL AUTO_INCREMENT,
   `uom_name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`uom_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `uoms`
@@ -8010,18 +8425,20 @@ INSERT INTO `uoms` (`uom_id`, `uom_name`, `created_at`, `updated_at`, `deleted_a
 -- Table structure for table `uom_group`
 --
 
-CREATE TABLE `uom_group` (
-  `uom_group_id` int NOT NULL,
-  `product_item_id` int DEFAULT NULL,
-  `at_qty` int DEFAULT NULL,
-  `at_uom` int DEFAULT NULL,
-  `base_qty` int DEFAULT NULL,
-  `base_uom` int DEFAULT NULL,
-  `is_active` int DEFAULT NULL,
+DROP TABLE IF EXISTS `uom_group`;
+CREATE TABLE IF NOT EXISTS `uom_group` (
+  `uom_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_item_id` int(11) DEFAULT NULL,
+  `at_qty` int(11) DEFAULT NULL,
+  `at_uom` int(11) DEFAULT NULL,
+  `base_qty` int(11) DEFAULT NULL,
+  `base_uom` int(11) DEFAULT NULL,
+  `is_active` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`uom_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `uom_group`
@@ -8127,13 +8544,15 @@ INSERT INTO `uom_group` (`uom_group_id`, `product_item_id`, `at_qty`, `at_uom`, 
 -- Table structure for table `uom_types`
 --
 
-CREATE TABLE `uom_types` (
-  `uom_type_id` int NOT NULL,
+DROP TABLE IF EXISTS `uom_types`;
+CREATE TABLE IF NOT EXISTS `uom_types` (
+  `uom_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `uom_type` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `deleted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`uom_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `uom_types`
@@ -8149,18 +8568,19 @@ INSERT INTO `uom_types` (`uom_type_id`, `uom_type`, `created_at`, `updated_at`, 
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `user_id` int NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(60) DEFAULT NULL,
   `fullname` varchar(100) DEFAULT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `profile_pic` varchar(200) DEFAULT NULL,
-  `role_id` int DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
   `authKey` varchar(100) DEFAULT NULL,
-  `master_admin` tinyint DEFAULT NULL,
-  `location_admin` tinyint DEFAULT NULL,
-  `show_dashboard` tinyint DEFAULT '0',
+  `master_admin` tinyint(4) DEFAULT NULL,
+  `location_admin` tinyint(4) DEFAULT NULL,
+  `show_dashboard` tinyint(4) DEFAULT '0',
   `staff_designation` varchar(100) DEFAULT NULL,
   `staff_qualification` varchar(100) DEFAULT NULL,
   `staff_address` varchar(500) DEFAULT NULL,
@@ -8178,8 +8598,9 @@ CREATE TABLE `users` (
   `password_text` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -8373,13 +8794,15 @@ INSERT INTO `users` (`user_id`, `email`, `fullname`, `username`, `password`, `pr
 -- Table structure for table `variant`
 --
 
-CREATE TABLE `variant` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `variant`;
+CREATE TABLE IF NOT EXISTS `variant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `variant_desc` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `variant`
@@ -8430,14 +8853,16 @@ INSERT INTO `variant` (`id`, `name`, `variant_desc`, `created_at`, `updated_at`)
 -- Table structure for table `visibility_app`
 --
 
-CREATE TABLE `visibility_app` (
-  `id` int NOT NULL,
-  `customer_id` int NOT NULL,
+DROP TABLE IF EXISTS `visibility_app`;
+CREATE TABLE IF NOT EXISTS `visibility_app` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
   `rental_type` varchar(100) DEFAULT NULL,
   `visibility_image` longtext,
   `date` date NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `visibility_app`
@@ -8461,1511 +8886,15 @@ INSERT INTO `visibility_app` (`id`, `customer_id`, `rental_type`, `visibility_im
 -- Table structure for table `warehouse`
 --
 
-CREATE TABLE `warehouse` (
-  `warehouse_id` int NOT NULL,
+DROP TABLE IF EXISTS `warehouse`;
+CREATE TABLE IF NOT EXISTS `warehouse` (
+  `warehouse_id` int(11) NOT NULL AUTO_INCREMENT,
   `warehouse_name` varchar(150) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` varchar(50) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 ;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `academic_year`
---
-ALTER TABLE `academic_year`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `activity_log`
---
-ALTER TABLE `activity_log`
-  ADD PRIMARY KEY (`activity_log_id`);
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `admin_users`
---
-ALTER TABLE `admin_users`
-  ADD PRIMARY KEY (`admin_user_id`);
-
---
--- Indexes for table `ap_invoice`
---
-ALTER TABLE `ap_invoice`
-  ADD PRIMARY KEY (`goods_service_receipt_id`);
-
---
--- Indexes for table `ap_invoice_batches`
---
-ALTER TABLE `ap_invoice_batches`
-  ADD PRIMARY KEY (`goods_service_receipts_batches_id`);
-
---
--- Indexes for table `ap_invoice_items`
---
-ALTER TABLE `ap_invoice_items`
-  ADD PRIMARY KEY (`goods_service_receipts_item_id`);
-
---
--- Indexes for table `area`
---
-ALTER TABLE `area`
-  ADD PRIMARY KEY (`area_id`);
-
---
--- Indexes for table `ar_invoice`
---
-ALTER TABLE `ar_invoice`
-  ADD PRIMARY KEY (`order_fulfillment_id`);
-
---
--- Indexes for table `ar_invoice_batches`
---
-ALTER TABLE `ar_invoice_batches`
-  ADD PRIMARY KEY (`ar_invoice_batches_id`);
-
---
--- Indexes for table `ar_invoice_items`
---
-ALTER TABLE `ar_invoice_items`
-  ADD PRIMARY KEY (`order_fulfillment_item_id`);
-
---
--- Indexes for table `backend_menubar`
---
-ALTER TABLE `backend_menubar`
-  ADD PRIMARY KEY (`menu_id`),
-  ADD KEY `menu_id` (`menu_id`);
-
---
--- Indexes for table `backend_submenubar`
---
-ALTER TABLE `backend_submenubar`
-  ADD PRIMARY KEY (`submenu_id`),
-  ADD KEY `submenu_id` (`submenu_id`),
-  ADD KEY `menu_id` (`menu_id`),
-  ADD KEY `sub_parent_id` (`sub_parent_id`);
-
---
--- Indexes for table `banking_details`
---
-ALTER TABLE `banking_details`
-  ADD PRIMARY KEY (`banking_details_id`);
-
---
--- Indexes for table `banking_payment`
---
-ALTER TABLE `banking_payment`
-  ADD PRIMARY KEY (`banking_payment_id`);
-
---
--- Indexes for table `banking_receipt`
---
-ALTER TABLE `banking_receipt`
-  ADD PRIMARY KEY (`banking_receipt_id`);
-
---
--- Indexes for table `base_permissions`
---
-ALTER TABLE `base_permissions`
-  ADD PRIMARY KEY (`base_permission_id`);
-
---
--- Indexes for table `beat`
---
-ALTER TABLE `beat`
-  ADD PRIMARY KEY (`beat_id`);
-
---
--- Indexes for table `beat_calender`
---
-ALTER TABLE `beat_calender`
-  ADD PRIMARY KEY (`beat_cal_id`);
-
---
--- Indexes for table `beat_requirement`
---
-ALTER TABLE `beat_requirement`
-  ADD PRIMARY KEY (`beat_requirement_id`);
-
---
--- Indexes for table `bill_booking`
---
-ALTER TABLE `bill_booking`
-  ADD PRIMARY KEY (`bill_booking_id`);
-
---
--- Indexes for table `bill_booking_items`
---
-ALTER TABLE `bill_booking_items`
-  ADD PRIMARY KEY (`bill_booking_item_id`);
-
---
--- Indexes for table `bin_mangement`
---
-ALTER TABLE `bin_mangement`
-  ADD PRIMARY KEY (`bin_id`);
-
---
--- Indexes for table `bin_transfer`
---
-ALTER TABLE `bin_transfer`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `bin_type`
---
-ALTER TABLE `bin_type`
-  ADD PRIMARY KEY (`bin_type_id`);
-
---
--- Indexes for table `bp_address`
---
-ALTER TABLE `bp_address`
-  ADD PRIMARY KEY (`bp_address_id`);
-
---
--- Indexes for table `bp_contact_details`
---
-ALTER TABLE `bp_contact_details`
-  ADD PRIMARY KEY (`contact_details_id`);
-
---
--- Indexes for table `bp_organisation_type`
---
-ALTER TABLE `bp_organisation_type`
-  ADD PRIMARY KEY (`bp_organisation_type_id`);
-
---
--- Indexes for table `brands`
---
-ALTER TABLE `brands`
-  ADD PRIMARY KEY (`brand_id`);
-
---
--- Indexes for table `bspl_cateogry`
---
-ALTER TABLE `bspl_cateogry`
-  ADD PRIMARY KEY (`bsplcat_id`);
-
---
--- Indexes for table `bspl_heads`
---
-ALTER TABLE `bspl_heads`
-  ADD PRIMARY KEY (`bsplheads_id`);
-
---
--- Indexes for table `bspl_sub_cateogry`
---
-ALTER TABLE `bspl_sub_cateogry`
-  ADD PRIMARY KEY (`bsplsubcat_id`);
-
---
--- Indexes for table `bspl_type`
---
-ALTER TABLE `bspl_type`
-  ADD PRIMARY KEY (`bsplstype_id`);
-
---
--- Indexes for table `business_partner_category`
---
-ALTER TABLE `business_partner_category`
-  ADD PRIMARY KEY (`business_partner_category_id`);
-
---
--- Indexes for table `business_partner_master`
---
-ALTER TABLE `business_partner_master`
-  ADD PRIMARY KEY (`business_partner_id`);
-
---
--- Indexes for table `bussiness_master_type`
---
-ALTER TABLE `bussiness_master_type`
-  ADD PRIMARY KEY (`bussiness_master_type_id`);
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`category_id`);
-
---
--- Indexes for table `cities`
---
-ALTER TABLE `cities`
-  ADD PRIMARY KEY (`city_id`);
-
---
--- Indexes for table `comments_orders`
---
-ALTER TABLE `comments_orders`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `company`
---
-ALTER TABLE `company`
-  ADD PRIMARY KEY (`company_id`);
-
---
--- Indexes for table `country`
---
-ALTER TABLE `country`
-  ADD PRIMARY KEY (`country_id`);
-
---
--- Indexes for table `daily_plans`
---
-ALTER TABLE `daily_plans`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `days_plan`
---
-ALTER TABLE `days_plan`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `deapartment`
---
-ALTER TABLE `deapartment`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `def_bacth_no_counter`
---
-ALTER TABLE `def_bacth_no_counter`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `expense`
---
-ALTER TABLE `expense`
-  ADD PRIMARY KEY (`expense_id`);
-
---
--- Indexes for table `expense_categories`
---
-ALTER TABLE `expense_categories`
-  ADD PRIMARY KEY (`expense_category_id`);
-
---
--- Indexes for table `expense_master`
---
-ALTER TABLE `expense_master`
-  ADD PRIMARY KEY (`expense_master_id`);
-
---
--- Indexes for table `expense_subcategories`
---
-ALTER TABLE `expense_subcategories`
-  ADD PRIMARY KEY (`expense_subcategory_id`);
-
---
--- Indexes for table `expense_sub_type`
---
-ALTER TABLE `expense_sub_type`
-  ADD PRIMARY KEY (`expense_sub_type_id`);
-
---
--- Indexes for table `expense_types`
---
-ALTER TABLE `expense_types`
-  ADD PRIMARY KEY (`expense_type_id`);
-
---
--- Indexes for table `financials_master`
---
-ALTER TABLE `financials_master`
-  ADD PRIMARY KEY (`financials_id`);
-
---
--- Indexes for table `financial_year`
---
-ALTER TABLE `financial_year`
-  ADD PRIMARY KEY (`financial_year_id`);
-
---
--- Indexes for table `glcodes`
---
-ALTER TABLE `glcodes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `gl_code` (`gl_code`);
-
---
--- Indexes for table `gl_code`
---
-ALTER TABLE `gl_code`
-  ADD PRIMARY KEY (`gl_code_de`);
-
---
--- Indexes for table `gl_master`
---
-ALTER TABLE `gl_master`
-  ADD PRIMARY KEY (`gl_id`);
-
---
--- Indexes for table `gl_particulars`
---
-ALTER TABLE `gl_particulars`
-  ADD PRIMARY KEY (`gl_particulars_id`);
-
---
--- Indexes for table `goods_expense`
---
-ALTER TABLE `goods_expense`
-  ADD PRIMARY KEY (`goods_expense_id`);
-
---
--- Indexes for table `goods_issue`
---
-ALTER TABLE `goods_issue`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `goods_receipt`
---
-ALTER TABLE `goods_receipt`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `goods_service_receipts`
---
-ALTER TABLE `goods_service_receipts`
-  ADD PRIMARY KEY (`goods_service_receipt_id`);
-
---
--- Indexes for table `goods_service_receipts_batches`
---
-ALTER TABLE `goods_service_receipts_batches`
-  ADD PRIMARY KEY (`goods_service_receipts_batches_id`);
-
---
--- Indexes for table `goods_service_receipts_items`
---
-ALTER TABLE `goods_service_receipts_items`
-  ADD PRIMARY KEY (`goods_service_receipts_item_id`);
-
---
--- Indexes for table `gst`
---
-ALTER TABLE `gst`
-  ADD PRIMARY KEY (`gst_id`);
-
---
--- Indexes for table `gst_reg_type`
---
-ALTER TABLE `gst_reg_type`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `hr_admin`
---
-ALTER TABLE `hr_admin`
-  ADD PRIMARY KEY (`hr_admin_id`);
-
---
--- Indexes for table `hsncodes`
---
-ALTER TABLE `hsncodes`
-  ADD PRIMARY KEY (`hsncode_id`);
-
---
--- Indexes for table `infra_stationary`
---
-ALTER TABLE `infra_stationary`
-  ADD PRIMARY KEY (`Infra_stationary_id`);
-
---
--- Indexes for table `inventory`
---
-ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `invoice`
---
-ALTER TABLE `invoice`
-  ADD PRIMARY KEY (`invoice_id`);
-
---
--- Indexes for table `invoice_items`
---
-ALTER TABLE `invoice_items`
-  ADD PRIMARY KEY (`invoice_item_id`);
-
---
--- Indexes for table `item_types`
---
-ALTER TABLE `item_types`
-  ADD PRIMARY KEY (`item_type_id`);
-
---
--- Indexes for table `login_managements`
---
-ALTER TABLE `login_managements`
-  ADD PRIMARY KEY (`login_management_id`);
-
---
--- Indexes for table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `model_has_permissions`
---
-ALTER TABLE `model_has_permissions`
-  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
-  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
-
---
--- Indexes for table `model_has_roles`
---
-ALTER TABLE `model_has_roles`
-  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
-  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
-
---
--- Indexes for table `modules`
---
-ALTER TABLE `modules`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `order_booking`
---
-ALTER TABLE `order_booking`
-  ADD PRIMARY KEY (`order_booking_id`);
-
---
--- Indexes for table `order_booking_batches`
---
-ALTER TABLE `order_booking_batches`
-  ADD PRIMARY KEY (`order_booking_batches_id`);
-
---
--- Indexes for table `order_booking_items`
---
-ALTER TABLE `order_booking_items`
-  ADD PRIMARY KEY (`order_booking_item_id`);
-
---
--- Indexes for table `order_booking_items_temp`
---
-ALTER TABLE `order_booking_items_temp`
-  ADD PRIMARY KEY (`order_booking_item_id`);
-
---
--- Indexes for table `order_booking_temp`
---
-ALTER TABLE `order_booking_temp`
-  ADD PRIMARY KEY (`order_booking_id`);
-
---
--- Indexes for table `order_fulfilment`
---
-ALTER TABLE `order_fulfilment`
-  ADD PRIMARY KEY (`order_fulfillment_id`);
-
---
--- Indexes for table `order_fulfilment_batches`
---
-ALTER TABLE `order_fulfilment_batches`
-  ADD PRIMARY KEY (`order_fulfilment_batches_id`);
-
---
--- Indexes for table `order_fulfilment_items`
---
-ALTER TABLE `order_fulfilment_items`
-  ADD PRIMARY KEY (`order_fulfillment_item_id`);
-
---
--- Indexes for table `outlet`
---
-ALTER TABLE `outlet`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `outlet_selection`
---
-ALTER TABLE `outlet_selection`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `outstanding_pay`
---
-ALTER TABLE `outstanding_pay`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `payment_terms`
---
-ALTER TABLE `payment_terms`
-  ADD PRIMARY KEY (`payment_terms_id`);
-
---
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `per_day_inventory`
---
-ALTER TABLE `per_day_inventory`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pricing`
---
-ALTER TABLE `pricing`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pricing_log`
---
-ALTER TABLE `pricing_log`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pricing_master`
---
-ALTER TABLE `pricing_master`
-  ADD PRIMARY KEY (`pricing_master_id`);
-
---
--- Indexes for table `products_revision`
---
-ALTER TABLE `products_revision`
-  ADD PRIMARY KEY (`product_revision_id`);
-
---
--- Indexes for table `product_item_sku_master`
---
-ALTER TABLE `product_item_sku_master`
-  ADD PRIMARY KEY (`product_item_id`);
-
---
--- Indexes for table `product_qty_storage`
---
-ALTER TABLE `product_qty_storage`
-  ADD PRIMARY KEY (`product_qty_storage_id`);
-
---
--- Indexes for table `product_qty_storage_revision`
---
-ALTER TABLE `product_qty_storage_revision`
-  ADD PRIMARY KEY (`product_qty_storage_id`);
-
---
--- Indexes for table `proforma`
---
-ALTER TABLE `proforma`
-  ADD PRIMARY KEY (`proforma_id`);
-
---
--- Indexes for table `proforma_items`
---
-ALTER TABLE `proforma_items`
-  ADD PRIMARY KEY (`invoice_item_id`);
-
---
--- Indexes for table `purchase_order`
---
-ALTER TABLE `purchase_order`
-  ADD PRIMARY KEY (`purchase_order_id`);
-
---
--- Indexes for table `purchase_order_batches`
---
-ALTER TABLE `purchase_order_batches`
-  ADD PRIMARY KEY (`purchase_order_batches_id`);
-
---
--- Indexes for table `purchase_order_items`
---
-ALTER TABLE `purchase_order_items`
-  ADD PRIMARY KEY (`purchase_order_item_id`);
-
---
--- Indexes for table `rental_deposits_banking`
---
-ALTER TABLE `rental_deposits_banking`
-  ADD PRIMARY KEY (`rental_deposits_banking_id`);
-
---
--- Indexes for table `residential_status`
---
-ALTER TABLE `residential_status`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `retailer_master`
---
-ALTER TABLE `retailer_master`
-  ADD PRIMARY KEY (`retailer_master_id`);
-
---
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `role_has_permissions`
---
-ALTER TABLE `role_has_permissions`
-  ADD PRIMARY KEY (`permission_id`,`role_id`),
-  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
-
---
--- Indexes for table `route`
---
-ALTER TABLE `route`
-  ADD PRIMARY KEY (`route_id`);
-
---
--- Indexes for table `series_master`
---
-ALTER TABLE `series_master`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `service_expense`
---
-ALTER TABLE `service_expense`
-  ADD PRIMARY KEY (`service_expense_id`);
-
---
--- Indexes for table `soh_app`
---
-ALTER TABLE `soh_app`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `states`
---
-ALTER TABLE `states`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `storage_locations`
---
-ALTER TABLE `storage_locations`
-  ADD PRIMARY KEY (`storage_location_id`);
-
---
--- Indexes for table `subcategories`
---
-ALTER TABLE `subcategories`
-  ADD PRIMARY KEY (`subcategory_id`);
-
---
--- Indexes for table `sub_group`
---
-ALTER TABLE `sub_group`
-  ADD PRIMARY KEY (`sub_group_id`);
-
---
--- Indexes for table `traffic source`
---
-ALTER TABLE `traffic source`
-  ADD PRIMARY KEY (`trafficsource_id`);
-
---
--- Indexes for table `transaction`
---
-ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `uoms`
---
-ALTER TABLE `uoms`
-  ADD PRIMARY KEY (`uom_id`);
-
---
--- Indexes for table `uom_group`
---
-ALTER TABLE `uom_group`
-  ADD PRIMARY KEY (`uom_group_id`);
-
---
--- Indexes for table `uom_types`
---
-ALTER TABLE `uom_types`
-  ADD PRIMARY KEY (`uom_type_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- Indexes for table `variant`
---
-ALTER TABLE `variant`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `visibility_app`
---
-ALTER TABLE `visibility_app`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `warehouse`
---
-ALTER TABLE `warehouse`
-  ADD PRIMARY KEY (`warehouse_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `academic_year`
---
-ALTER TABLE `academic_year`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `activity_log`
---
-ALTER TABLE `activity_log`
-  MODIFY `activity_log_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1435;
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `admin_users`
---
-ALTER TABLE `admin_users`
-  MODIFY `admin_user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=361;
-
---
--- AUTO_INCREMENT for table `ap_invoice`
---
-ALTER TABLE `ap_invoice`
-  MODIFY `goods_service_receipt_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ap_invoice_batches`
---
-ALTER TABLE `ap_invoice_batches`
-  MODIFY `goods_service_receipts_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
---
--- AUTO_INCREMENT for table `ap_invoice_items`
---
-ALTER TABLE `ap_invoice_items`
-  MODIFY `goods_service_receipts_item_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `area`
---
-ALTER TABLE `area`
-  MODIFY `area_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
-
---
--- AUTO_INCREMENT for table `ar_invoice`
---
-ALTER TABLE `ar_invoice`
-  MODIFY `order_fulfillment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `ar_invoice_batches`
---
-ALTER TABLE `ar_invoice_batches`
-  MODIFY `ar_invoice_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `ar_invoice_items`
---
-ALTER TABLE `ar_invoice_items`
-  MODIFY `order_fulfillment_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `backend_menubar`
---
-ALTER TABLE `backend_menubar`
-  MODIFY `menu_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
-
---
--- AUTO_INCREMENT for table `backend_submenubar`
---
-ALTER TABLE `backend_submenubar`
-  MODIFY `submenu_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
-
---
--- AUTO_INCREMENT for table `banking_details`
---
-ALTER TABLE `banking_details`
-  MODIFY `banking_details_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `banking_payment`
---
-ALTER TABLE `banking_payment`
-  MODIFY `banking_payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `banking_receipt`
---
-ALTER TABLE `banking_receipt`
-  MODIFY `banking_receipt_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `base_permissions`
---
-ALTER TABLE `base_permissions`
-  MODIFY `base_permission_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `beat`
---
-ALTER TABLE `beat`
-  MODIFY `beat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT for table `beat_calender`
---
-ALTER TABLE `beat_calender`
-  MODIFY `beat_cal_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `beat_requirement`
---
-ALTER TABLE `beat_requirement`
-  MODIFY `beat_requirement_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `bill_booking`
---
-ALTER TABLE `bill_booking`
-  MODIFY `bill_booking_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `bill_booking_items`
---
-ALTER TABLE `bill_booking_items`
-  MODIFY `bill_booking_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `bin_mangement`
---
-ALTER TABLE `bin_mangement`
-  MODIFY `bin_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `bin_transfer`
---
-ALTER TABLE `bin_transfer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `bin_type`
---
-ALTER TABLE `bin_type`
-  MODIFY `bin_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `bp_address`
---
-ALTER TABLE `bp_address`
-  MODIFY `bp_address_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
-
---
--- AUTO_INCREMENT for table `bp_contact_details`
---
-ALTER TABLE `bp_contact_details`
-  MODIFY `contact_details_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `bp_organisation_type`
---
-ALTER TABLE `bp_organisation_type`
-  MODIFY `bp_organisation_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `brands`
---
-ALTER TABLE `brands`
-  MODIFY `brand_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `bspl_cateogry`
---
-ALTER TABLE `bspl_cateogry`
-  MODIFY `bsplcat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
-
---
--- AUTO_INCREMENT for table `bspl_heads`
---
-ALTER TABLE `bspl_heads`
-  MODIFY `bsplheads_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `bspl_sub_cateogry`
---
-ALTER TABLE `bspl_sub_cateogry`
-  MODIFY `bsplsubcat_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT for table `bspl_type`
---
-ALTER TABLE `bspl_type`
-  MODIFY `bsplstype_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `business_partner_category`
---
-ALTER TABLE `business_partner_category`
-  MODIFY `business_partner_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `business_partner_master`
---
-ALTER TABLE `business_partner_master`
-  MODIFY `business_partner_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
-
---
--- AUTO_INCREMENT for table `bussiness_master_type`
---
-ALTER TABLE `bussiness_master_type`
-  MODIFY `bussiness_master_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
---
--- AUTO_INCREMENT for table `cities`
---
-ALTER TABLE `cities`
-  MODIFY `city_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=675;
-
---
--- AUTO_INCREMENT for table `comments_orders`
---
-ALTER TABLE `comments_orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `company`
---
-ALTER TABLE `company`
-  MODIFY `company_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `country`
---
-ALTER TABLE `country`
-  MODIFY `country_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `daily_plans`
---
-ALTER TABLE `daily_plans`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `days_plan`
---
-ALTER TABLE `days_plan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
-
---
--- AUTO_INCREMENT for table `deapartment`
---
-ALTER TABLE `deapartment`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `def_bacth_no_counter`
---
-ALTER TABLE `def_bacth_no_counter`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `expense`
---
-ALTER TABLE `expense`
-  MODIFY `expense_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `expense_categories`
---
-ALTER TABLE `expense_categories`
-  MODIFY `expense_category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `expense_master`
---
-ALTER TABLE `expense_master`
-  MODIFY `expense_master_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `expense_subcategories`
---
-ALTER TABLE `expense_subcategories`
-  MODIFY `expense_subcategory_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `expense_sub_type`
---
-ALTER TABLE `expense_sub_type`
-  MODIFY `expense_sub_type_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `expense_types`
---
-ALTER TABLE `expense_types`
-  MODIFY `expense_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `financials_master`
---
-ALTER TABLE `financials_master`
-  MODIFY `financials_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `financial_year`
---
-ALTER TABLE `financial_year`
-  MODIFY `financial_year_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `glcodes`
---
-ALTER TABLE `glcodes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `gl_code`
---
-ALTER TABLE `gl_code`
-  MODIFY `gl_code_de` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `gl_master`
---
-ALTER TABLE `gl_master`
-  MODIFY `gl_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `gl_particulars`
---
-ALTER TABLE `gl_particulars`
-  MODIFY `gl_particulars_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `goods_expense`
---
-ALTER TABLE `goods_expense`
-  MODIFY `goods_expense_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `goods_issue`
---
-ALTER TABLE `goods_issue`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `goods_receipt`
---
-ALTER TABLE `goods_receipt`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `goods_service_receipts`
---
-ALTER TABLE `goods_service_receipts`
-  MODIFY `goods_service_receipt_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `goods_service_receipts_batches`
---
-ALTER TABLE `goods_service_receipts_batches`
-  MODIFY `goods_service_receipts_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
-
---
--- AUTO_INCREMENT for table `goods_service_receipts_items`
---
-ALTER TABLE `goods_service_receipts_items`
-  MODIFY `goods_service_receipts_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `gst`
---
-ALTER TABLE `gst`
-  MODIFY `gst_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `gst_reg_type`
---
-ALTER TABLE `gst_reg_type`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `hr_admin`
---
-ALTER TABLE `hr_admin`
-  MODIFY `hr_admin_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `hsncodes`
---
-ALTER TABLE `hsncodes`
-  MODIFY `hsncode_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `infra_stationary`
---
-ALTER TABLE `infra_stationary`
-  MODIFY `Infra_stationary_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `inventory`
---
-ALTER TABLE `inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `invoice`
---
-ALTER TABLE `invoice`
-  MODIFY `invoice_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `invoice_items`
---
-ALTER TABLE `invoice_items`
-  MODIFY `invoice_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `item_types`
---
-ALTER TABLE `item_types`
-  MODIFY `item_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `login_managements`
---
-ALTER TABLE `login_managements`
-  MODIFY `login_management_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `modules`
---
-ALTER TABLE `modules`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `order_booking`
---
-ALTER TABLE `order_booking`
-  MODIFY `order_booking_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `order_booking_batches`
---
-ALTER TABLE `order_booking_batches`
-  MODIFY `order_booking_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `order_booking_items`
---
-ALTER TABLE `order_booking_items`
-  MODIFY `order_booking_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `order_booking_items_temp`
---
-ALTER TABLE `order_booking_items_temp`
-  MODIFY `order_booking_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `order_booking_temp`
---
-ALTER TABLE `order_booking_temp`
-  MODIFY `order_booking_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `order_fulfilment`
---
-ALTER TABLE `order_fulfilment`
-  MODIFY `order_fulfillment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `order_fulfilment_batches`
---
-ALTER TABLE `order_fulfilment_batches`
-  MODIFY `order_fulfilment_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT for table `order_fulfilment_items`
---
-ALTER TABLE `order_fulfilment_items`
-  MODIFY `order_fulfillment_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `outlet`
---
-ALTER TABLE `outlet`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `outlet_selection`
---
-ALTER TABLE `outlet_selection`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
-
---
--- AUTO_INCREMENT for table `outstanding_pay`
---
-ALTER TABLE `outstanding_pay`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
-
---
--- AUTO_INCREMENT for table `payment_terms`
---
-ALTER TABLE `payment_terms`
-  MODIFY `payment_terms_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=524;
-
---
--- AUTO_INCREMENT for table `per_day_inventory`
---
-ALTER TABLE `per_day_inventory`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `pricing`
---
-ALTER TABLE `pricing`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `pricing_log`
---
-ALTER TABLE `pricing_log`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `pricing_master`
---
-ALTER TABLE `pricing_master`
-  MODIFY `pricing_master_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `products_revision`
---
-ALTER TABLE `products_revision`
-  MODIFY `product_revision_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
---
--- AUTO_INCREMENT for table `product_item_sku_master`
---
-ALTER TABLE `product_item_sku_master`
-  MODIFY `product_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
--- AUTO_INCREMENT for table `product_qty_storage`
---
-ALTER TABLE `product_qty_storage`
-  MODIFY `product_qty_storage_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
-
---
--- AUTO_INCREMENT for table `product_qty_storage_revision`
---
-ALTER TABLE `product_qty_storage_revision`
-  MODIFY `product_qty_storage_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `proforma`
---
-ALTER TABLE `proforma`
-  MODIFY `proforma_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `proforma_items`
---
-ALTER TABLE `proforma_items`
-  MODIFY `invoice_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- AUTO_INCREMENT for table `purchase_order`
---
-ALTER TABLE `purchase_order`
-  MODIFY `purchase_order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `purchase_order_batches`
---
-ALTER TABLE `purchase_order_batches`
-  MODIFY `purchase_order_batches_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
-
---
--- AUTO_INCREMENT for table `purchase_order_items`
---
-ALTER TABLE `purchase_order_items`
-  MODIFY `purchase_order_item_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `rental_deposits_banking`
---
-ALTER TABLE `rental_deposits_banking`
-  MODIFY `rental_deposits_banking_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `residential_status`
---
-ALTER TABLE `residential_status`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `retailer_master`
---
-ALTER TABLE `retailer_master`
-  MODIFY `retailer_master_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
---
--- AUTO_INCREMENT for table `route`
---
-ALTER TABLE `route`
-  MODIFY `route_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
-
---
--- AUTO_INCREMENT for table `series_master`
---
-ALTER TABLE `series_master`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `service_expense`
---
-ALTER TABLE `service_expense`
-  MODIFY `service_expense_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `soh_app`
---
-ALTER TABLE `soh_app`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `states`
---
-ALTER TABLE `states`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
-
---
--- AUTO_INCREMENT for table `storage_locations`
---
-ALTER TABLE `storage_locations`
-  MODIFY `storage_location_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `subcategories`
---
-ALTER TABLE `subcategories`
-  MODIFY `subcategory_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT for table `sub_group`
---
-ALTER TABLE `sub_group`
-  MODIFY `sub_group_id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `traffic source`
---
-ALTER TABLE `traffic source`
-  MODIFY `trafficsource_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=498;
-
---
--- AUTO_INCREMENT for table `transaction`
---
-ALTER TABLE `transaction`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT for table `uoms`
---
-ALTER TABLE `uoms`
-  MODIFY `uom_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `uom_group`
---
-ALTER TABLE `uom_group`
-  MODIFY `uom_group_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
-
---
--- AUTO_INCREMENT for table `uom_types`
---
-ALTER TABLE `uom_types`
-  MODIFY `uom_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
-
---
--- AUTO_INCREMENT for table `variant`
---
-ALTER TABLE `variant`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
-
---
--- AUTO_INCREMENT for table `visibility_app`
---
-ALTER TABLE `visibility_app`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `warehouse`
---
-ALTER TABLE `warehouse`
-  MODIFY `warehouse_id` int NOT NULL AUTO_INCREMENT;
+  `deleted_at` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`warehouse_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Constraints for dumped tables

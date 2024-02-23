@@ -1008,8 +1008,8 @@ class ApiController extends Controller
     // Extract data from the $postedData array
     $customer_id = (int) $postedData['outlet_id'];
     $beat_id = (int) $postedData['beat_id'];
-    $latitude = $postedData['latitude'];
-    $longitude = $postedData['longitude'];
+    // $latitude = $postedData['latitude'];
+    // $longitude = $postedData['longitude'];
     $outlet_image = [];
 
     if ($request->hasFile('outlet_images')) {
@@ -1033,13 +1033,12 @@ class ApiController extends Controller
       $outlet_image[] = $filename;
     }
 
-
-    $inserted = DB::table('visibility_app')
-      ->where('user_id', $customer_id)
+    $inserted = DB::table('business_partner_master')
+      ->where('business_partner_id', $customer_id)
       ->where('beat_id', $beat_id)
       ->update([
-        'latitude' => $latitude,
-        'longitude' => $longitude,
+        // 'latitude' => $latitude,
+        // 'longitude' => $longitude,
         'outlet_image' => implode(",", $outlet_image),
       ]);
 

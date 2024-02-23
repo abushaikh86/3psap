@@ -193,133 +193,91 @@ if (!function_exists('amount_in_words')) {
         }
     }
 
-    // usama_16-02-2024- fetch id with name or create new for excel
-    if (!function_exists('getOrCreateId')) {
-        function getOrCreateId($model, $fieldName, $excelValue, $primaryKeyName, $extra_id = null,$not_exact=null)
+    // usama_23-02-2024- fetch id with name or create new for excel
+    //moreData is to fetch first name last name and onlyUpdate for to return only primary key if data exists
+    //parentData for entriest parent user id while creating user
+    if (!function_exists('getOrCreateIdUnified')) {
+        function getOrCreateIdUnified($modelOrTable, $fieldName, $excelValue, $primaryKeyName, $extra_id = null, $moreData = null,$parentData=null,$onlyUpdate=null)
         {
-            //St.Ives
             $value = trim(addslashes($excelValue));
-            if(!empty($not_exact)){
-                $record = $model::where($fieldName,$value)->first();
-            }else{
-                $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
-            }
+            $isModel = is_string($modelOrTable) && class_exists($modelOrTable);
 
-            if (!empty($value)) {
-                if (!$record) {
-                    // Record doesn't exist, create a new one
-                    $newRecord = new $model([$fieldName => $value]);
-                    if ($model == 'App\Models\backend\Gst' && !empty($extra_id)) {
-                        $newRecord->gst_percent = $extra_id;
-                    }
-                    if ($model == 'App\Models\backend\State' && !empty($extra_id)) {
-                        $newRecord->country_id = $extra_id;
-                    }
-                    if ($model == 'App\Models\backend\City' && !empty($extra_id)) {
-                        $newRecord->state_id = $extra_id;
-                    }
-                    // dd($newRecord);
+            if ($isModel) {
+                // Using Eloquent model
+                // $record = $not_exact
+                //     ? $modelOrTable::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first()
+                //     : $modelOrTable::where($fieldName, $value)->first();
+                $record = $modelOrTable::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
+                if (!empty($value)) {
+                    if (!$record && empty($onlyUpdate)) {
+                        // Record doesn't exist, create a new one
+                        $newRecord = new $modelOrTable([$fieldName => $value]);
 
-                    $newRecord->save();
+                        if ($modelOrTable == 'App\Models\backend\Gst' && !empty($extra_id)) {
+                            $newRecord->gst_percent = $extra_id;
+                        }
 
-                    // Return the new ID
-                    return $newRecord->$primaryKeyName;
+                        if ($modelOrTable == 'App\Models\backend\State' && !empty($extra_id)) {
+                            $newRecord->country_id = $extra_id;
+                        }
+
+                        if ($modelOrTable == 'App\Models\backend\City' && !empty($extra_id)) {
+                            $newRecord->state_id = $extra_id;
+                        }
+
+                        if ($modelOrTable == 'App\Models\backend\Pricings' && !empty($extra_id)) {
+                            $newRecord->pricing_type = $extra_id;
+                        }
+
+                        if ($modelOrTable == 'App\Models\backend\AdminUsers' && !empty($extra_id)) {
+                            $role = Role::where('department_id', $extra_id)->first();
+                            $newRecord->role = $role->id;
+
+                            if(!empty($parentData)){
+                                $newRecord->parent_users = $parentData;
+                            }
+                            if (!empty($moreData)) {
+                                $fullName = explode(" ", trim(addslashes($moreData)));
+                                $fName = $fullName[0];
+                                $lName = $fullName[1] ?? '';
+                                $newRecord->first_name = $fName;
+                                $newRecord->last_name = $lName;
+                            }
+
+                            $newRecord->account_status = 1;
+                            $newRecord->company_id = Company::first()->company_id;
+                            $newRecord->password = "Pass@123";
+                        }
+
+                        $newRecord->save();
+
+                        // Return the new ID
+                        return $newRecord->$primaryKeyName;
+                    }
+
+                    // Record exists, return its ID
+                    return $record->$primaryKeyName;
                 }
+            } else {
+                // Using database table
+                $record = DB::table($modelOrTable)->where($fieldName, $value)->first();
 
-                // Record exists, return its ID
-                return $record->$primaryKeyName;
-            }
-        }
-    }
+                if (!empty($value)) {
+                    if (!$record) {
+                        // Record doesn't exist, create a new one
+                        $newRecordData = [
+                            $fieldName => $value,
+                        ];
 
-    if (!function_exists('getId')) {
-        function getId($model, $fieldName, $excelValue, $primaryKeyName)
-        {
-            //St.Ives
-            $value = trim(addslashes($excelValue));
-            $record = $model::whereRaw('LOWER(' . $fieldName . ') LIKE ?', [strtolower($value)])->first();
+                        $newRecordId = DB::table($modelOrTable)->insertGetId($newRecordData);
 
-            if (!empty($value)) {
-                return $record->$primaryKeyName;
-            }else{
-                return null;
-            }
-        }
-    }
-
-    if (!function_exists('getIdDB')) {
-        function getIdDB($tableName, $fieldName, $excelValue, $primaryKeyName)
-        {
-            //St.Ives
-            $value = trim(addslashes($excelValue));
-            $record = DB::table($tableName)->where($fieldName, $value)->first();
-
-            if (!empty($value)) {
-                return $record->$primaryKeyName;
-            }else{
-                return null;
-            }
-        }
-    }
-
-    // usama_19-02-2024-for creating or updating multiple fields
-    if (!function_exists('getOrCreateIdModelWise')) {
-        function getOrCreateIdModelWise($model, $firstName, $lastName, $excelValue, $primaryKeyName, $dep_id, $extra_id = null)
-        {
-            $value = explode(" ", trim(addslashes($excelValue))); // usama shaikh
-            $fName = $value[0];
-            $lName = $value[1]??'';
-            $conditions = empty($lName) ? [$firstName => $fName] : [$firstName => $fName, $lastName => $lName];
-            $record = $model::where($conditions)->first();
-
-            $role = Role::where('department_id', $dep_id)->first();
-            $company = Company::first();
-
-            if (!empty($value)) {
-                if (!$record) {
-                    // Record doesn't exist, create a new one
-                    $newRecord = new $model([$firstName => $fName, $lastName => $lName, 'role' => $role->id]);
-
-                    if (!empty($extra_id)) {
-                        $newRecord->parent_users = $extra_id;
+                        // Return the new ID
+                        return $newRecordId;
                     }
-                    $newRecord->account_status = 1;
-                    $newRecord->company_id = $company->company_id;
 
-                    $newRecord->save();
-
-                    // Return the new ID
-                    return $newRecord->$primaryKeyName;
+                    // Record exists, return its ID
+                    return $record->$primaryKeyName;
                 }
-
-                // Record exists, return its ID
-                return $record->$primaryKeyName;
-            }
-        }
-    }
-
-    // usama_16-02-2024- fetch id with name or create new for excel
-    if (!function_exists('getOrCreateIdUsingDB')) {
-        function getOrCreateIdUsingDB($tableName, $fieldName, $excelValue, $primaryKeyName)
-        {
-            $value = trim(addslashes($excelValue));
-            $record = DB::table($tableName)->where($fieldName, $value)->first();
-
-            if (!empty($value)) {
-                if (!$record) {
-                    // Record doesn't exist, create a new one
-                    $newRecordData = [
-                        $fieldName => $value,
-                    ];
-
-                    $newRecordId = DB::table($tableName)->insertGetId($newRecordData);
-
-                    // Return the new ID
-                    return $newRecordId;
-                }
-
-                // Record exists, return its ID
-                return $record->$primaryKeyName;
             }
         }
     }
