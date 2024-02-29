@@ -31,7 +31,7 @@ class BussinessPartnerMaster extends Authenticatable
      *
      * @var array
      */
-    protected  $fillable =  ['business_partner_id','ase','latitude','longitude', 'business_partner_type', 'residential_status', 'gst_reg_type', 'rcm_app', 'msme_reg', 'bp_code', 'bp_name', 'bp_organisation_type', 'bp_category', 'bp_group', 'sales_manager', 'sales_officer', 'salesman', 'payment_terms_id', 'credit_limit', 'gst_details', 'pricing_profile', 'shelf_life', 'area_id', 'route_id', 'beat_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected  $fillable =  ['business_partner_id','ase','latitude','longitude', 'business_partner_type', 'residential_status', 'gst_reg_type', 'rcm_app', 'msme_reg', 'bp_code', 'bp_name', 'bp_organisation_type', 'bp_category', 'bp_group', 'sales_manager', 'sales_officer', 'salesman', 'payment_terms_id', 'credit_limit', 'gst_details', 'pricing_profile', 'shelf_life', 'area_id', 'route_id', 'beat_id', 'created_at', 'updated_at', 'deleted_at','company_id'];
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 

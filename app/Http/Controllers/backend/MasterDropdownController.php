@@ -292,7 +292,7 @@ class MasterDropdownController extends Controller
     public function getSalesmen(Request $request)
     {
         $salesOfficerId = $request->input('id');
-        $salesmen = AdminUsers::where(['account_status'=>1,'parent_users' => $salesOfficerId])->pluck('first_name', 'admin_user_id');
+        $salesmen = AdminUsers::where(['account_status'=>1,'role'=>37])->pluck('first_name', 'admin_user_id');//,'parent_users' => $salesOfficerId
 
         return response()->json($salesmen);
     }

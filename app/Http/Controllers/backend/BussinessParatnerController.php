@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\backend\Company;
 
 class BussinessParatnerController extends Controller
 {
@@ -51,9 +52,11 @@ class BussinessParatnerController extends Controller
 
         if ($request->ajax()) {
             $bussinesspartner = BussinessPartnerMaster::with('get_org_type', 'get_category', 'paymentterms', 'get_partner_type_name')
-                ->where('is_converted', 1)->get();
-
-            // dd($purchaseorder);
+                ->where('is_converted', 1)->when(Auth()->guard('admin')->user()->role == 41, function ($query) {
+                    return $query->where('company_id',Auth()->guard('admin')->user()->company_id);
+                })->orderBy('business_partner_id','desc')->get();
+                
+            // dd($bussinesspartner);
 
             return DataTables::of($bussinesspartner)
                 ->addIndexColumn()
@@ -390,7 +393,8 @@ class BussinessParatnerController extends Controller
 
         //fetch asm
         $salesman_manager_ids = Role::where('department_id', 5)->pluck('id')->toArray();
-        $sales_manager = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');
+        // dd($salesman_manager_ids);
+        $sales_manager = AdminUsers::where('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');//('company_id', session('company_id'))->whereIn//27-02-2024
         //fetch ase
         $ase_ids = Role::where('department_id', 4)->pluck('id')->toArray();
         $ase = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
@@ -412,8 +416,8 @@ class BussinessParatnerController extends Controller
         $bpOrgType = BussinessPartnerOrganizationType::pluck('bp_organisation_type', 'bp_organisation_type_id');
         $termPayment = TermPayment::pluck('term_type', 'payment_terms_id');
         $business_partner_category = BusinessPartnerCategory::pluck("business_partner_category_name", "business_partner_category_id");
-
-        return view('backend.bussinesspartner.create', compact('area_data', 'ase', 'sales_officer', 'salesman', 'route_data', 'pricing_data', 'beat_data', 'bussinesstype', 'sales_manager', 'bpOrgType', 'termPayment', 'business_partner_category'));
+        $company = Company::pluck('name', 'company_id');//28-02-2024//for distributor tagging
+        return view('backend.bussinesspartner.create', compact('area_data', 'ase', 'sales_officer', 'salesman', 'route_data', 'pricing_data', 'beat_data', 'bussinesstype', 'sales_manager', 'bpOrgType', 'termPayment', 'business_partner_category','company'));
     }
 
 

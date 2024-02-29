@@ -98,14 +98,24 @@ use Spatie\Permission\Models\Role;
                                     </div>
                                 </div>
 
+                                <!-- zones //27-02-2024 -->
+                                <div class="col-md-6 col-12 zone_drp">
+                                    <div class="form-group">
+                                        {{ Form::label('zone_id', 'Zone *') }}
+                                        {{ Form::select('zone_id', $zones, null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Zone',
+                                        'required' => true,
+                                        ]) }}
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
-                                        {{ Form::label('company_id', 'Company *') }}
+                                        {{ Form::label('company_id', 'Distributor Company *') }}
                                         {{ Form::select('company_id', $company, null, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Select
-                                        Company',
-                                        'required' => true,
+                                        'placeholder' => 'Select Distributor Company',
                                         ]) }}
                                     </div>
                                 </div>
@@ -115,45 +125,56 @@ use Spatie\Permission\Models\Role;
                                     </div>
                                 </div>
 
-                                </div>
-                                <div class="col md-12">
-                                    {{ Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1']) }}
-                                    <button type="reset" class="btn btn-dark mr-1 mb-1">Reset</button>
-                                </div>
                             </div>
-                            {{ Form::close() }}
+                            <div class="col md-12">
+                                {{ Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1']) }}
+                                <button type="reset" class="btn btn-dark mr-1 mb-1">Reset</button>
+                            </div>
                         </div>
+                        {{ Form::close() }}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
 
 <script>
-    $('#role_id').on('change', function() {
+    $(document).ready(function() {
+        $('.company_drp').hide(); //show company only for salesman, distributor
+        $('#role_id').on('change', function() {
             var role_id = $(this).val();
             if (role_id == 17) {
                 $('.company_drp').remove();
+                $('.zone_drp').hide();
+            }
+            $('.company_drp').hide(); //show company only for salesman, distributor // 28-02-2024
+            if (role_id == 37 || role_id == 41) {
+                $('.company_drp').show();
+                // $('.zone_drp').remove();
+            }
+            
+            if (role_id != 37 ) {
+                $.ajax({
+                    url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
+                    method: 'GET',
+                    data: {
+                        role_id: role_id
+                    },
+                    success: function(response) {
+                        // Handle the response from the server
+                        $('#parentRolesContainer').html(response);
+                    },
+                    error: function(error) {
+                        // Handle errors
+                        console.error(error);
+                    }
+                });
             }
 
-            $.ajax({
-                url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
-                method: 'GET',
-                data: {
-                    role_id: role_id
-                },
-                success: function(response) {
-                    // Handle the response from the server
-                    $('#parentRolesContainer').html(response);
-                },
-                error: function(error) {
-                    // Handle errors
-                    console.error(error);
-                }
-            });
-
         });
+    });
 </script>
 
 @endsection

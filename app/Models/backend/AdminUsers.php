@@ -29,7 +29,7 @@ class AdminUsers extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['admin_user_id', 'first_name', 'last_name', 'email','beat_id', 'password', 'mobile_no', 'profile_pic', 'role_id', 'company_id', 'account_status', 'remember_token', 'location_id', 'is_admin', 'user_type', 'role', 'parent_users', 'status'];
+    protected $fillable = ['admin_user_id', 'first_name', 'last_name', 'email','beat_id', 'password', 'mobile_no', 'profile_pic', 'role_id', 'company_id', 'account_status', 'remember_token', 'location_id', 'is_admin', 'user_type', 'role', 'parent_users', 'status','zone_id'];
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 

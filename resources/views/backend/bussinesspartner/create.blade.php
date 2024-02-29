@@ -8,6 +8,7 @@
 
     $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->first())->first();
     $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
+    //dd($ase_dep);
     $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
     $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
 @endphp
@@ -239,6 +240,17 @@
                                             {{ Form::select('msme_reg', ['1' => 'Yes', '0' => 'No'], null, ['class' => 'form-control']) }}
                                         </div>
                                     </div>
+                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                    @if(Auth()->guard('admin')->user()->role != 41)
+                                    <div class="col-md-6 col-12 company_drp">
+                                        <div class="form-group">
+                                            {{ Form::label('company_id', 'Distributor Company *') }}
+                                            {{ Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor Company',]) }}
+                                        </div>
+                                    </div>
+                                    @else 
+                                        {{ Form::hidden('company_id',Auth()->guard('admin')->user()->company_id)}}
+                                    @endif
 
                                     <hr>
 
@@ -1230,7 +1242,10 @@
 
                 // fetch ase data in sales officer modal
                 fetchmodaldropdown('{{ route('admin.getAse') }}','{{ $ase_dep->role ?? '' }}',
-                    selectedValue,'#ase_salesoff',$('#sales_manager').val())
+                    selectedValue,'#ase_salesoff',$('#sales_manager').val());
+
+                new DynamicDropdown('{{ route('admin.getSalesmen') }}',
+                $(this).val(), '#salesman');
             });
 
             // fetch ase data in sales officer modal and show default selected
@@ -1272,19 +1287,19 @@
 
             // for ase
             new MasterHandler('#ase', '#add_ase_modal', '#submit_ase',
-                '{{ url('admin/master/store_users') }}', {{ $ase_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', {{ $ase_dep->role ?? '0' }},
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesManager_ase');
 
             // for sales officer
             new MasterHandler('#sales_officer', '#add_sales_officer_modal', '#submit_sales_officer',
-                '{{ url('admin/master/store_users') }}', {{ $sales_officer_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', {{ $sales_officer_dep->role ?? '0' }},
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#ase_salesoff');
 
             // for salesman
             new MasterHandler('#salesman', '#add_salesman_modal', '#submit_salesman',
-                '{{ url('admin/master/store_users') }}', {{ $salesman_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', {{ $salesman_dep->role ?? '0' }},
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesOfficer');
 

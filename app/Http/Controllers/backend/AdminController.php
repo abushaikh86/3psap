@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash as FacadesHash;
 use Session;
 
 use Spatie\Permission\Models\Role;
+use App\Models\backend\Zones;
 
 
 class AdminController extends Controller
@@ -42,7 +43,13 @@ class AdminController extends Controller
     public function showusers()
     {
         //  dd('welcoome');
-        $adminusers = AdminUsers::where('admin_user_id', '!=', Auth()->guard('admin')->user()->admin_user_id)->orderBy('admin_user_id', 'DESC')->get();
+        //to get only distributor users 
+        $is_distributor = Auth()->guard('admin')->user()->role; //distributor
+        if ($is_distributor == 41) {
+            $adminusers = AdminUsers::where('company_id',Auth()->guard('admin')->user()->company_id)->orderBy('admin_user_id', 'DESC')->get();//where('admin_user_id', '!=', Auth()->guard('admin')->user()->admin_user_id)->
+        } else {            
+            $adminusers = AdminUsers::where('admin_user_id', '!=', Auth()->guard('admin')->user()->admin_user_id)->orderBy('admin_user_id', 'DESC')->get();
+        }
         // dd($adminusers);
         return view('backend.admin.index', compact('adminusers'));
     }
@@ -57,8 +64,9 @@ class AdminController extends Controller
         }
         // dd($role);
         $company = Company::pluck('name', 'company_id');
+        $zones = Zones::pluck('zone_name', 'zone_id');
 
-        return view('backend.admin.create', compact('role', 'company'));
+        return view('backend.admin.create', compact('role', 'company','zones'));
     }
 
     public function get_parent_roles()
@@ -138,8 +146,9 @@ class AdminController extends Controller
         }
 
         $company = Company::pluck('name', 'company_id');
+        $zones = Zones::pluck('zone_name', 'zone_id');
 
-        return view('backend.admin.edit', compact('userdata', 'role', 'company'));
+        return view('backend.admin.edit', compact('userdata', 'role', 'company','zones'));
     }
     public function update(Request $request)
     {

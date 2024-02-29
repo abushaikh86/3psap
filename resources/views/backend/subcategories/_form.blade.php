@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-12 col-12">
       <div class="form-group">
-        {{ Form::label('subcategory_name', 'Sub Category Name *') }}
-        {{ Form::text('subcategory_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Sub Category Name', 'required' => true]) }}
+        {{ Form::label('subcategory_name', 'Format Name *') }}
+        {{ Form::text('subcategory_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Format Name', 'required' => true]) }}
       </div>
     </div>
     {{-- <div class="col-md-12 col-12">
       <div class="form-group">
-        {{ Form::label('subcategory_description', 'Sub Category Description *') }}
-        {{ Form::text('subcategory_description', null, ['class' => 'form-control', 'placeholder' => 'Enter Sub Category Description', 'required' => true]) }}
+        {{ Form::label('subcategory_description', 'Format Description *') }}
+        {{ Form::text('subcategory_description', null, ['class' => 'form-control', 'placeholder' => 'Enter Format Description', 'required' => true]) }}
       </div>
     </div> --}}
     {{-- <div class="col-md-6 col-12">

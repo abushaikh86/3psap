@@ -7,6 +7,7 @@
 
     $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->first())->first();
     $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
+    //dd($ase_dep);
     $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
     $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
 ?>
@@ -275,6 +276,20 @@
 
                                         </div>
                                     </div>
+                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                    <?php if(Auth()->guard('admin')->user()->role != 41): ?>
+                                    <div class="col-md-6 col-12 company_drp">
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('company_id', 'Distributor Company *')); ?>
+
+                                            <?php echo e(Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor Company',])); ?>
+
+                                        </div>
+                                    </div>
+                                    <?php else: ?> 
+                                        <?php echo e(Form::hidden('company_id',Auth()->guard('admin')->user()->company_id)); ?>
+
+                                    <?php endif; ?>
 
                                     <hr>
 
@@ -1380,7 +1395,10 @@
 
                 // fetch ase data in sales officer modal
                 fetchmodaldropdown('<?php echo e(route('admin.getAse')); ?>','<?php echo e($ase_dep->role ?? ''); ?>',
-                    selectedValue,'#ase_salesoff',$('#sales_manager').val())
+                    selectedValue,'#ase_salesoff',$('#sales_manager').val());
+
+                new DynamicDropdown('<?php echo e(route('admin.getSalesmen')); ?>',
+                $(this).val(), '#salesman');
             });
 
             // fetch ase data in sales officer modal and show default selected
@@ -1422,19 +1440,19 @@
 
             // for ase
             new MasterHandler('#ase', '#add_ase_modal', '#submit_ase',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($ase_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($ase_dep->role ?? '0'); ?>,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesManager_ase');
 
             // for sales officer
             new MasterHandler('#sales_officer', '#add_sales_officer_modal', '#submit_sales_officer',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_officer_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_officer_dep->role ?? '0'); ?>,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#ase_salesoff');
 
             // for salesman
             new MasterHandler('#salesman', '#add_salesman_modal', '#submit_salesman',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($salesman_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($salesman_dep->role ?? '0'); ?>,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesOfficer');
 

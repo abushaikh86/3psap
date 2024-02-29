@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'Company')
+@section('title', 'Distributor')
 
 @section('content')
     <div class="app-content content">
@@ -9,13 +9,13 @@
                 <div class="content-header-left col-md-6 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Company</h5>
+                            <h5 class="content-header-title float-left pr-1 mb-0">Distributor</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
                                                 class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item active">Company
+                                    <li class="breadcrumb-item active">Distributor
                                     </li>
                                 </ol>
                             </div>
@@ -42,7 +42,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Company</h4>
+                                <h4 class="card-title">Distributor</h4>
                             </div>
                             <div class="card-content">
                                 <div class="card-body card-dashboard">

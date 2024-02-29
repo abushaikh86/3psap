@@ -66,6 +66,7 @@ use App\Http\Controllers\backend\OutletController;
 use App\Http\Controllers\backend\CountryController;
 use App\Http\Controllers\backend\StateController;
 use App\Http\Controllers\backend\CityController;
+use App\Http\Controllers\backend\ZonesController;//27-02-2024
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -821,5 +822,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/productshistory/show/{id}', [ProductshistoryController::class, 'show'])->name('admin.productshistory.show');
 
         Route::get('/trafficsource', [TrafficsourceController::class, 'index'])->name('admin.trafficsource');
+
+        // admin.zones //27-02-2024
+        Route::get('/zones', [ZonesController::class, 'index'])->name('admin.zones');
+        Route::get('/zones/create', [ZonesController::class, 'create'])->name('admin.zones.create');
+        Route::post('/zones/store', [ZonesController::class, 'store'])->name('admin.zones.store');
+        Route::get('/zones/delete/{id}', [ZonesController::class, 'destroyZones'])->name('admin.zones.delete');
+        Route::get('/zones/edit/{id}', [ZonesController::class, 'edit'])->name('admin.zones.edit');
+        Route::post('/zones/update', [ZonesController::class, 'update'])->name('admin.zones.update');
     });
 });

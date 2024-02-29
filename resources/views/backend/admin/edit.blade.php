@@ -94,6 +94,18 @@ use App\Models\backend\Beat;
                                     </div>
                                 </div>
 
+                                <!-- zones //27-02-2024 -->
+                                <div class="col-md-6 col-12 zone_drp">
+                                    <div class="form-group">
+                                        {{ Form::label('zone_id', 'Zone *') }}
+                                        {{ Form::select('zone_id', $zones, $userdata->zone_id, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Zone',
+                                        'required' => true,
+                                        ]) }}
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
                                         {{ Form::label('company_id', 'Company *') }}
@@ -192,11 +204,16 @@ use App\Models\backend\Beat;
 <script>
     function get_parent_roles(role_id) {
 
-
+            
             if (role_id == 17) {
                 $('.company_drp').remove();
+                $('.zone_drp').remove();
             }
-
+            $('.company_drp').hide(); //show company only for salesman, distributor // 28-02-2024
+            if (role_id == 37 || role_id == 41) {
+                $('.company_drp').show();
+                // $('.zone_drp').remove();
+            }
             $.ajax({
                 url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
                 method: 'GET',
@@ -218,9 +235,9 @@ use App\Models\backend\Beat;
 
         $(document).ready(function() {
             var role_id = {{ $userdata->role ?? '' }};
+            $('.company_drp').hide(); //show company only for salesman, distributor
 
             get_parent_roles(role_id);
-
         });
 
         $('#role_id').on('change', function() {

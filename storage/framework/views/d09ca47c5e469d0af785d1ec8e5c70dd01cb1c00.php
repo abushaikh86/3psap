@@ -98,131 +98,149 @@ $backend_menubar = BackendMenubar::Where(['visibility'=>1])->orderBy('sort_order
                             {
                           ?>
                               <div class="col-md-12 col-12">
-                          <?php
-                              if($menu->has_submenu == 1)
-                              {
-                                $backend_menu_permission = explode(',',$role->menu_ids);
-                                $backend_submenu_permission = explode(',',$role->submenu_ids);
-                                $backend_submenubar = BackendSubMenubar::Where(['menu_id'=>$menu->menu_id])->get();
-                                if($backend_submenubar)
-                                {
-                          ?>
-                                  <!-- <h4 class="card-title"><?php echo e($menu->menu_name); ?></h4> -->
-                                  <h4 class="card-title">
-                                    <div class="checkbox checkbox-primary">
-                                      <?php echo e(Form::checkbox('menu_id[]', $menu->menu_id, in_array($menu->menu_id,$backend_menu_permission), ['id'=>'menu['.$menu->menu_id.']'])); ?>
-
-                                      <?php echo e(Form::label('menu['.$menu->menu_id.']', $menu->menu_name)); ?>
-
-                                    </div>
-                                  </h4>
-                          <?php
-                                    foreach($backend_submenubar as $submenu)
-                                    {
-                          ?>
-                                      <div class="col-md-6 col-12">
-                                        <!-- <h5 class=""><?php echo e($submenu->submenu_name); ?></h5> -->
-                                        <h3 class="card-title">
-                                          <div class="checkbox checkbox-primary">
-                                            <?php echo e(Form::checkbox('submenu_id[]', $submenu->submenu_id, in_array($submenu->submenu_id,$backend_submenu_permission), ['id'=>'submenu['.$menu->menu_id.']['.$submenu->submenu_id.']'])); ?>
-
-                                            <?php echo e(Form::label('submenu['.$menu->menu_id.']['.$submenu->submenu_id.']', $submenu->submenu_name)); ?>
-
-                                          </div>
-                                        </h3>
-                                        <div class="col-md-12 col-12 mt-2 menu_permissions">
-                                          <ul class="list-unstyled mb-0">
-                                            <?php
-                                              $backend_permission = explode(',',$submenu->submenu_permissions);
-                                              $permissions = Permission::where('menu_id',$menu->menu_id)->where('submenu_id',$submenu->submenu_id)->get();
-                                              $permissions = collect($permissions)->mapWithKeys(function ($item, $key) {
-                                                  return [$item['base_permission_id'] => ['id'=>$item['id'],'name'=>$item['name']]];
-                                                });
-                                              //dd($permissions);
-                                            ?>
-                                            <?php $__currentLoopData = $backend_permission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php if(isset($permissions[$permission])): ?>
-                                            <li class="d-inline-block mr-2 mb-1">
-                                              <fieldset>
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="card " style="background-color: #babfc73d !important;">
+                                    <?php
+                                        if($menu->has_submenu == 1)
+                                        {
+                                          $backend_menu_permission = explode(',',$role->menu_ids);
+                                          $backend_submenu_permission = explode(',',$role->submenu_ids);
+                                          $backend_submenubar = BackendSubMenubar::Where(['menu_id'=>$menu->menu_id])->get();
+                                          if($backend_submenubar)
+                                          {
+                                    ?>
+                                            <!-- <h4 class="card-title"><?php echo e($menu->menu_name); ?></h4> -->
+                                            <div class="card-header " style="background-color: #babfc73d !important;">
+                                              <h4 class="card-title">
                                                 <div class="checkbox checkbox-primary">
-                                                  <?php
-                                                  $class='';
-                                                  if($permission == '7'){
-                                                    $class = 'viewonly';
-                                                  }
-                                                  ?>
+                                                  <?php echo e(Form::checkbox('menu_id[]', $menu->menu_id, in_array($menu->menu_id,$backend_menu_permission), ['id'=>'menu['.$menu->menu_id.']'])); ?>
 
-                                                  <?php echo e(Form::checkbox('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['id'], in_array($permissions[$permission]['id'],$has_permissions), ['id'=>'permissions['.$permissions[$permission]['id'].']','class'=>$class])); ?>
-
-                                                  <?php echo e(Form::label('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['name'])); ?>
+                                                  <?php echo e(Form::label('menu['.$menu->menu_id.']', $menu->menu_name)); ?>
 
                                                 </div>
-                                              </fieldset>
-                                            </li>
-                                            <?php endif; ?>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                          </ul>
+                                              </h4>
+                                            </div>
+                                            <div class="card-body">
+                                              <div class="row">
+                                    <?php
+                                              foreach($backend_submenubar as $submenu)
+                                              {
+                                    ?>
+                                                <div class="col-md-6 col-12">
+                                                  <div class="card-group">
+                                                    <div class="card">
+                                                      <div class="card-body">
+                                                        <!-- <h5 class=""><?php echo e($submenu->submenu_name); ?></h5> -->
+                                                        <h3 class="card-title">
+                                                          <div class="checkbox checkbox-primary">
+                                                            <?php echo e(Form::checkbox('submenu_id[]', $submenu->submenu_id, in_array($submenu->submenu_id,$backend_submenu_permission), ['id'=>'submenu['.$menu->menu_id.']['.$submenu->submenu_id.']'])); ?>
+
+                                                            <?php echo e(Form::label('submenu['.$menu->menu_id.']['.$submenu->submenu_id.']', $submenu->submenu_name)); ?>
+
+                                                          </div>
+                                                        </h3>
+                                                        <div class="col-md-12 col-12 mt-2 menu_permissions">
+                                                          <ul class="list-unstyled mb-0">
+                                                            <?php
+                                                              $backend_permission = explode(',',$submenu->submenu_permissions);
+                                                              $permissions = Permission::where('menu_id',$menu->menu_id)->where('submenu_id',$submenu->submenu_id)->get();
+                                                              $permissions = collect($permissions)->mapWithKeys(function ($item, $key) {
+                                                                  return [$item['base_permission_id'] => ['id'=>$item['id'],'name'=>$item['name']]];
+                                                                });
+                                                              //dd($permissions);
+                                                            ?>
+                                                            <?php $__currentLoopData = $backend_permission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php if(isset($permissions[$permission])): ?>
+                                                            <li class="d-inline-block mr-2 mb-1">
+                                                              <fieldset>
+                                                                <div class="checkbox checkbox-primary">
+                                                                  <?php
+                                                                  $class='';
+                                                                  if($permission == '7'){
+                                                                    $class = 'viewonly';
+                                                                  }
+                                                                  ?>
+
+                                                                  <?php echo e(Form::checkbox('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['id'], in_array($permissions[$permission]['id'],$has_permissions), ['id'=>'permissions['.$permissions[$permission]['id'].']','class'=>$class])); ?>
+
+                                                                  <?php echo e(Form::label('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['name'])); ?>
+
+                                                                </div>
+                                                              </fieldset>
+                                                            </li>
+                                                            <?php endif; ?>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                    <?php
+
+                                              }
+                                              echo "</div>
+                                              </div>";
+                                          }
+                                        }
+                                        else
+                                        {
+                                          $backend_menu_permission = explode(',',$role->menu_ids);
+                                    ?>
+
+                                          <h4 class="card-title">
+                                            <div class="checkbox checkbox-primary">
+                                              <?php echo e(Form::checkbox('menu_id[]', $menu->menu_id, in_array($menu->menu_id,$backend_menu_permission), ['id'=>'menu['.$menu->menu_id.']'])); ?>
+
+                                              <?php echo e(Form::label('menu['.$menu->menu_id.']', $menu->menu_name)); ?>
+
+                                            </div>
+                                          </h4>
+                                          <div class="col-md-6 col-12 mt-2 menu_permissions">
+                                            <ul class="list-unstyled mb-0">
+                                              <?php
+                                                $backend_permission = explode(',',$menu->permissions);
+                                                $permissions = Permission::where('menu_id',$menu->menu_id)->get();
+                                                $permissions = collect($permissions)->mapWithKeys(function ($item, $key) {
+                                                    return [$item['base_permission_id'] => ['id'=>$item['id'],'name'=>$item['name']]];
+                                                  });
+                                                //dd($permissions);
+                                              ?>
+                                              <?php $__currentLoopData = $backend_permission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                                              <?php if(isset($permissions[$permission])): ?>
+                                              <li class="d-inline-block mr-2 mb-1">
+                                                <fieldset>
+                                                  <div class="checkbox checkbox-primary">
+                                                    <?php
+                                                            $class='';
+                                                            if($permission == '7'){
+                                                              $class = 'viewonly';
+                                                            }
+                                                            ?>
+
+                                                    <?php echo e(Form::checkbox('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['id'], in_array($permissions[$permission]['id'],$has_permissions), ['id'=>'permissions['.$permissions[$permission]['id'].']','class'=>$class])); ?>
+
+                                                    <?php echo e(Form::label('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['name'])); ?>
+
+                                                  </div>
+                                                </fieldset>
+                                              </li>
+                                              <?php endif; ?>
+                                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </ul>
+                                          </div>
+                                    <?php
+                                        }
+                                    ?>
+                                          </div>
                                         </div>
                                       </div>
-                          <?php
-
-                                    }
-                                }
-                              }
-                              else
-                              {
-                                $backend_menu_permission = explode(',',$role->menu_ids);
-                          ?>
-
-                                <h4 class="card-title">
-                                  <div class="checkbox checkbox-primary">
-                                    <?php echo e(Form::checkbox('menu_id[]', $menu->menu_id, in_array($menu->menu_id,$backend_menu_permission), ['id'=>'menu['.$menu->menu_id.']'])); ?>
-
-                                    <?php echo e(Form::label('menu['.$menu->menu_id.']', $menu->menu_name)); ?>
-
-                                  </div>
-                                </h4>
-                                <div class="col-md-6 col-12 mt-2 menu_permissions">
-                                  <ul class="list-unstyled mb-0">
+                                    </div>
                                     <?php
-                                      $backend_permission = explode(',',$menu->permissions);
-                                      $permissions = Permission::where('menu_id',$menu->menu_id)->get();
-                                      $permissions = collect($permissions)->mapWithKeys(function ($item, $key) {
-                                          return [$item['base_permission_id'] => ['id'=>$item['id'],'name'=>$item['name']]];
-                                        });
-                                      //dd($permissions);
+                                      }
                                     ?>
-                                    <?php $__currentLoopData = $backend_permission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
-                                    <?php if(isset($permissions[$permission])): ?>
-                                    <li class="d-inline-block mr-2 mb-1">
-                                      <fieldset>
-                                        <div class="checkbox checkbox-primary">
-                                          <?php
-                                                  $class='';
-                                                  if($permission == '7'){
-                                                    $class = 'viewonly';
-                                                  }
-                                                  ?>
-
-                                          <?php echo e(Form::checkbox('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['id'], in_array($permissions[$permission]['id'],$has_permissions), ['id'=>'permissions['.$permissions[$permission]['id'].']','class'=>$class])); ?>
-
-                                          <?php echo e(Form::label('permissions['.$permissions[$permission]['id'].']', $permissions[$permission]['name'])); ?>
-
-                                        </div>
-                                      </fieldset>
-                                    </li>
-                                    <?php endif; ?>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                  </ul>
-                                </div>
-                          <?php
-                              }
-                          ?>
-                                </div>
-                          <?php
-                            }
-                          ?>
 
 
 

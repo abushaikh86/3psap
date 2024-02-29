@@ -108,10 +108,10 @@
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('sub_category_id', 'Sub Category ', ['class' => ''])); ?>
+                                        <?php echo e(Form::label('sub_category_id', 'Format', ['class' => ''])); ?>
 
                                         <?php echo e(Form::select('sub_category_id', $sub_categories, null, ['class' => 'select2
-                                        form-control subcategory', 'placeholder' => 'Please Select Sub Category'])); ?>
+                                        form-control subcategory', 'placeholder' => 'Please Select Format'])); ?>
 
                                     </div>
                                 </div>
@@ -472,7 +472,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Add Sub Category</h4>
+                <h4 class="modal-title" id="myModalLabel1">Add Format</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

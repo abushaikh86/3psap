@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col-md-12 col-12">
       <div class="form-group">
-        <?php echo e(Form::label('subcategory_name', 'Sub Category Name *')); ?>
+        <?php echo e(Form::label('subcategory_name', 'Format Name *')); ?>
 
-        <?php echo e(Form::text('subcategory_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Sub Category Name', 'required' => true])); ?>
+        <?php echo e(Form::text('subcategory_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Format Name', 'required' => true])); ?>
 
       </div>
     </div>

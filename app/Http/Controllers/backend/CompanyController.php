@@ -93,7 +93,21 @@ class CompanyController extends Controller
         $log = ['module' => 'Company Master', 'action' => 'Company Updated', 'description' => 'Company Updated: Name=>' . $model->name];
         captureActivityupdate($new_changes, $log);
       }
+      $distributor_check = AdminUsers::where('email',$model->email)->first();
+      //to create distributor in admin users if not exists 27-02-2024
+      if(!$distributor_check){
+        $create_distributor = new AdminUsers();
+        $create_distributor->first_name = $model->name;
+        $create_distributor->email = $model->email;
+        $create_distributor->mobile_no = $model->mobile_no;
+        $create_distributor->role = 41;//distributor role id
+        $create_distributor->company_id = $model->company_id;
+        $create_distributor->account_status = 1;
+        $create_distributor->password = 123456;
 
+        $create_distributor->save();
+        $create_distributor->assignRole(41);//distributor role id//28-02-2024
+      }
       Session::flash('message', 'Company Added Successfully!');
       Session::flash('status', 'success');
     } else {
@@ -180,6 +194,22 @@ class CompanyController extends Controller
         $signature = $company->signature;
       }
       Company::where('company_id', $company->company_id)->update(['logo' => $logo, 'signature' => $signature]);
+      //create distributor user profile if not exits//28-02-2024
+      $distributor_check = AdminUsers::where('email',$company->email)->first();
+      //to create distributor in admin users if not exists 27-02-2024
+      if(!$distributor_check){
+        $create_distributor = new AdminUsers();
+        $create_distributor->first_name = $company->name;
+        $create_distributor->email = $company->email;
+        $create_distributor->mobile_no = $company->mobile_no;
+        $create_distributor->role = 41;//distributor role id
+        $create_distributor->company_id = $company->company_id;
+        $create_distributor->account_status = 1;
+        $create_distributor->password = 123456;
+
+        $create_distributor->save();
+        $create_distributor->assignRole(41);//distributor role id//28-02-2024
+      }
       Session::flash('success', 'Company Updated Successfully!');
       Session::flash('status', 'success');
     } else {

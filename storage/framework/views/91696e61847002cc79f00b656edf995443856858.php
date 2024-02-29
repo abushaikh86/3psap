@@ -44,6 +44,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
+                                            <th></th>
 
                                         </tr>
                                     </thead>

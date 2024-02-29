@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'Create Company')
+@section('title', 'Create Distributor')
 @php
 use App\Models\backend\Country;
 @endphp
@@ -14,7 +14,7 @@ use App\Models\backend\Country;
       <div class="content-header-left col-12 mb-2 mt-1">
         <div class="row breadcrumbs-top">
           <div class="col-12">
-            <h5 class="content-header-title float-left pr-1 mb-0">Create Company</h5>
+            <h5 class="content-header-title float-left pr-1 mb-0">Create Distributor</h5>
             <div class="breadcrumb-wrapper col-12">
               <ol class="breadcrumb p-0 mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt"></i></a>
@@ -34,7 +34,7 @@ use App\Models\backend\Country;
             <div class="card-header">
               <a href="{{ route('admin.company') }}" class="btn btn-outline-secondary float-right"><i
                   class="bx bx-arrow-back"></i><span class="align-middle ml-25">Back</span></a>
-              <h4 class="card-title">Create Company</h4>
+              <h4 class="card-title">Create Distributor</h4>
             </div>
             <div class="card-content">
               <div class="card-body">
@@ -45,24 +45,24 @@ use App\Models\backend\Country;
                     <div class="row">
                       <div class="col-md-12 col-12">
                         <div class="form-group">
-                          {{ Form::label('name', 'Company Name *') }}
-                          {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter Company Name',
+                          {{ Form::label('name', 'Distributor Name *') }}
+                          {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Enter Distributor Name',
                           'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-6 col-12">
                         <div class="form-group">
-                          {{ Form::label('email', 'Company Email *') }}
+                          {{ Form::label('email', 'Distributor Email *') }}
                           {{ Form::text('email', null, ['class' => 'form-control',
-                          'placeholder' => 'Enter Company Email',
+                          'placeholder' => 'Enter Distributor Email',
                           'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-6 col-12">
                         <div class="form-group">
-                          {{ Form::label('mobile_no', 'Company Phone Number *') }}
+                          {{ Form::label('mobile_no', 'Distributor Phone Number *') }}
                           {{ Form::text('mobile_no', null, ['class' => 'form-control',
-                          'placeholder' => 'Enter Company Phone Number', 'required' => true]) }}
+                          'placeholder' => 'Enter Distributor Phone Number', 'required' => true]) }}
                         </div>
                       </div>
                       <div class="col-md-12 col-12">
@@ -141,7 +141,7 @@ use App\Models\backend\Country;
 
                       <div class="col-md-6 col-12">
                         <div class="form-group">
-                          {{ Form::label('batch_system', 'Does This Company Follow Batch System?
+                          {{ Form::label('batch_system', 'Does This Distributor Follow Batch System?
                           *') }}
                           {{ Form::select('batch_system', ['1' => 'Yes', '0' => 'No'], null,
                           ['class' => 'form-control',
