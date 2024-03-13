@@ -42,7 +42,7 @@ $role_id = Role::where(['department_id'=>10])->first();
             <div class="card-content">
               <div class="card-body">
                 <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                <form method="POST" action="<?php echo e(route('admin.company.store')); ?>" class="form">
+                <form method="POST" action="<?php echo e(route('admin.company.store')); ?>" class="form" enctype="multipart/form-data">
                   <?php echo e(csrf_field()); ?>
 
                   <div class="form-body">
@@ -205,12 +205,11 @@ $role_id = Role::where(['department_id'=>10])->first();
 
                       <div class="col-md-6 col-12">
                         <div class="form-group">
-                          <?php echo e(Form::label('ay_type', 'Academic Year Type *')); ?>
+                          <?php echo e(Form::label('ay_type', 'Financial Year*')); ?>
 
                           <?php echo e(Form::select('ay_type', ['fi_year' => 'Financial Year (1st April-31st
                           March)', 'cal_year' => 'Calender Year'],
-                          null, ['class' => 'form-control', 'placeholder' => 'Select Academic Year
-                          Type', 'required' => true])); ?>
+                          null, ['class' => 'form-control', 'required' => true])); ?>
 
                         </div>
                       </div>
@@ -232,6 +231,19 @@ $role_id = Role::where(['department_id'=>10])->first();
 
                         </div>
                       </div>
+
+                      <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <?php echo e(Form::label('company_logo', 'Distributor Logo')); ?>
+
+                            <div class="custom-file">
+                                <?php echo e(Form::file('company_logo', ['class' => 'custom-file-input', 'id' =>
+                                'company_logo'])); ?>
+
+                                <label class="custom-file-label" for="company_logo">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
 
 
 

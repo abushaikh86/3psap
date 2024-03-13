@@ -4,10 +4,12 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\backend\ArInvoice;
+use App\Models\backend\ArInvoiceItems;
 use App\Models\backend\BinManagement;
 use App\Models\backend\Bintype;
 use App\Models\backend\BussinessPartnerMaster;
-use App\Models\backend\GoodsIssue;
+use App\Models\backend\ReturnInvoice;
 use App\Models\backend\Gst;
 use App\Models\backend\Inventory;
 use App\Models\backend\PerDayInventory;
@@ -19,7 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-class GoodsissueController extends Controller
+class ReturnInvoiceController extends Controller
 {
     public function __construct()
     {
@@ -32,32 +34,47 @@ class GoodsissueController extends Controller
      */
     public function index()
     {
-        $data =  GoodsIssue::when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
+        $data =  ReturnInvoice::when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
             return $query->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')]);
         })->get();
-        return view('backend.inventoryrectification.goodsissue', compact('data'));
+        return view('backend.returninvoice.goodsreceipt', compact('data'));
+    }
+
+
+    public function inv_data($id)
+    {
+       
+        $inv_data = ArInvoice::where('ar_inv_no',$id)->first();
+        $inv_items = ArInvoiceItems::where('order_fulfillment_id',$inv_data->order_fulfillment_id)->get();
+ 
+        return json_encode($inv_items);
     }
 
     public function create()
     {
         $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id')->all();
         $gst = Gst::pluck('gst_name', 'gst_id');
-        return view('backend.inventoryrectification.goodsissue_create', compact('storage_locations', 'gst'));
-    }
+        $invocies = ArInvoice::when((session('company_id') != 0 && session('fy_year')), function ($query) {
+            $query->where([
+                'company_id' => session('company_id'),
+                'fy_year' => session('fy_year'),
+            ]);
+        })->pluck('ar_inv_no','ar_inv_no');
 
+        // dd($invocies);
+        return view('backend.returninvoice.goodsreceipt_create', compact('invocies','storage_locations', 'gst'));
+    }
 
     public function update(Request $request)
     {
         // dd($request->all());
-
         $filteredItems = $request->old_invoice_items;
         // save data in inventory
         foreach ($filteredItems as $row) {
 
-
-            $modal = new GoodsIssue();
+            $modal = new ReturnInvoice();
             $modal->fill($row);
-            $modal->discount = $request->discount;
+            $modal->inv_no = $request->inv_no;
             $modal->remarks = $request->remarks;
             $modal->fy_year = session('fy_year');
             $modal->company_id = session('company_id');
@@ -138,7 +155,6 @@ class GoodsissueController extends Controller
                     ->first();
 
 
-
                 $inventory = Inventory::where(['batch_no' => $batch_no])->where('manufacturing_date', '!=', null)
                     ->orWhere('expiry_date', '!=', null)
                     ->first();
@@ -149,7 +165,7 @@ class GoodsissueController extends Controller
                     'batch_no' => $batch_no,
                     'item_code' => $row['item_code'],
                     'sku' => $product->sku,
-                    'qty' => optional($inventoryExist)->qty - $row['qty'],
+                    'qty' => optional($inventoryExist)->qty + $row['qty'],
                     'unit_price' => $row['taxable_amount'],
                     'remarks' => $request->remarks,
                     'fy_year' => session('fy_year'),
@@ -187,14 +203,13 @@ class GoodsissueController extends Controller
                 $transactionHistory = new Transaction();
                 $transactionHistory->transaction_type =  $series_no;
                 $transactionHistory->qty =  $base_quantity;
-                $transactionHistory->updated_qty = - ($row['qty']);
-                $transactionHistory->final_qty = $base_quantity - $row['qty'];
+                $transactionHistory->updated_qty = $row['qty'];
+                $transactionHistory->final_qty = $base_quantity + $row['qty'];
                 $transactionHistory->sku = $product->sku;
                 $transactionHistory->fill($transactionData);
                 $transactionHistory->save();
             }
         }
-
-        return redirect()->route('admin.goodsissue')->with(['success' => 'Inventory Updated Successfully']);
+        return redirect()->route('admin.returninvoice')->with(['success' => 'Inventory Updated Successfully']);
     }
 }

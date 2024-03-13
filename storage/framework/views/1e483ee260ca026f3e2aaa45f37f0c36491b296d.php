@@ -50,6 +50,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Logo</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th>Mobile Number</th>
@@ -64,6 +65,14 @@
                                                     <?php $__currentLoopData = $company; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <tr>
                                                             <td><?php echo e($srno); ?></td>
+                                                            <td>
+                                                                <?php if(!empty($row->company_logo)): ?>
+                                                                <a href="<?php echo e(asset('public/backend-assets/images/')); ?>/<?php echo e($row->company_logo); ?>"
+                                                                    target="_blank"><img class="card-img-top img-fluid mb-1"
+                                                                        src="<?php echo e(asset('public/backend-assets/images/')); ?>/<?php echo e($row->company_logo); ?>"
+                                                                        alt="Distributor Logo" style="width:50px"></a>
+                                                                <?php endif; ?>
+                                                            </td>
                                                             <td><?php echo e($row->name ?? ''); ?></td>
                                                             <td><?php echo e($row->email); ?></td>
                                                             <td><?php echo e($row->mobile_no); ?></td>
@@ -109,6 +118,9 @@
                                                             </td>
 
                                                         </tr>
+                                                        <?php
+                                                            $srno++;
+                                                        ?>
                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 <?php endif; ?>
                                             </tbody>

@@ -60,8 +60,12 @@ class ArinvoiceController extends Controller
         $GLOBALS['breadcrumb'] = [['name' => 'A/R Invoice', 'route' => ""]];
         // $apinvoice = ArInvoice::with('get_partyname')->get();
         if ($request->ajax()) {
-            $apinvoice = ArInvoice::where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
-
+            if (session('company_id') != 0 && session('fy_year') != 0) {
+                $order_book_ids = OrderBooking::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
+                $apinvoice = ArInvoice::whereIn('order_booking_id',$order_book_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            } else {
+                $apinvoice = ArInvoice::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            }
             return DataTables::of($apinvoice)
                 ->addIndexColumn()
                 ->addColumn('action', function ($apinvoice) {
@@ -338,10 +342,6 @@ class ArinvoiceController extends Controller
                 return view('backend.arinvoice.edit', compact('model', 'gst', 'party', 'financial_year', 'order_booking_counter', 'fyear', 'storage_locations', 'purchaseorder'));
             }
         }
-
-
-
-       
     }
 
     /**
@@ -378,7 +378,7 @@ class ArinvoiceController extends Controller
             //update Goods service Receipts
             if ($goodsservicereceipt->save()) {
 
-            
+
 
 
                 //save initial data
@@ -438,9 +438,19 @@ class ArinvoiceController extends Controller
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
                                 'batch_no' => $batch_no,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
-                            ])->first();
+                                // 'fy_year' => $goodsservicereceipt->fy_year,
+                                // 'company_id' => $goodsservicereceipt->company_id,
+                            ])
+                                ->when(
+                                    session('company_id') != 0 && session('fy_year') != 0,
+                                    function ($query) {
+                                        return $query->where([
+                                            'fy_year' => session('fy_year'),
+                                            'company_id' => session('company_id'),
+                                        ]);
+                                    }
+                                )
+                                ->first();
 
                             if (empty($inventoryExist)) {
                                 return redirect()->back()->with('error', 'Selected batch is not found in this warehouse');
@@ -451,9 +461,18 @@ class ArinvoiceController extends Controller
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
                                 'batch_no' => $batch_no,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
+                                // 'fy_year' => $goodsservicereceipt->fy_year,
+                                // 'company_id' => $goodsservicereceipt->company_id,
                             ])
+                                ->when(
+                                    session('company_id') != 0 && session('fy_year') != 0,
+                                    function ($query) {
+                                        return $query->where([
+                                            'fy_year' => session('fy_year'),
+                                            'company_id' => session('company_id'),
+                                        ]);
+                                    }
+                                )
                                 ->whereDate('created_at', Carbon::today())
                                 ->first();
 
@@ -471,8 +490,8 @@ class ArinvoiceController extends Controller
                                 'sku' => $product->sku,
                                 'qty' => $inventoryExist->qty - $row['qty'],
                                 'blocked_qty' => 0,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
+                                // 'fy_year' => $goodsservicereceipt->fy_year,
+                                // 'company_id' => $goodsservicereceipt->company_id,
                                 'user_id' => Auth()->guard('admin')->user()->admin_user_id,
                                 // 'unit_price' => $row['taxable_amount'],
                                 'manufacturing_date' => $row['manufacturing_date'] ?? optional($inventory)->manufacturing_date ?? '',
@@ -660,7 +679,7 @@ class ArinvoiceController extends Controller
         }
 
 
-      
+
 
 
         if ($goodsservicereceipt->getChanges()) {
@@ -714,7 +733,10 @@ class ArinvoiceController extends Controller
 
     public function partydetails($business_partner_id)
     {
-        $comapny_data = Company::first();
+        $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
+        $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
+    
+        // $comapny_data = Company::first();
         $business_partner_detail = "";
         $bill_to_state = "";
         $business_partner_state = $comapny_data->state;

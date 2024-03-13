@@ -63,9 +63,13 @@ class OrderfulfilmentController extends Controller
         // $goodsservicereceipts = OrderFulfilment::with('get_partyname')->get();
 
         if ($request->ajax()) {
-            $purchaseorder = OrderFulfilment::where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
-            // dd($purchaseorder);
 
+            if (session('company_id') != 0 && session('fy_year') != 0) {
+                $order_book_ids = OrderBooking::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
+                $purchaseorder = OrderFulfilment::whereIn('order_booking_id',$order_book_ids)->where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            } else {
+                $purchaseorder = OrderFulfilment::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            }
             return DataTables::of($purchaseorder)
                 ->addIndexColumn()
                 ->addColumn('action', function ($purchaseorder) {
@@ -335,8 +339,6 @@ class OrderfulfilmentController extends Controller
                 return view('backend.orderfulfilment.edit', compact('model', 'gst', 'party', 'financial_year', 'order_booking_counter', 'fyear', 'storage_locations', 'purchaseorder'));
             }
         }
-
-
     }
 
     /**
@@ -433,9 +435,21 @@ class OrderfulfilmentController extends Controller
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
-                            ])->first();
+
+                            ])
+                                ->when(
+                                    session('company_id') != 0 && session('fy_year') != 0,
+                                    function ($query) {
+                                        return $query->where([
+                                            'fy_year' => session('fy_year'),
+                                            'company_id' => session('company_id'),
+                                        ]);
+                                    }
+                                )
+                                ->first();
+
+
+                            // dd($inventoryExist, $goodsservicereceipt);
                             $inventoryExist->blocked_qty = $row['qty'];
                             $inventoryExist->save();
                         }
@@ -726,7 +740,7 @@ class OrderfulfilmentController extends Controller
             captureActivityupdate($new_changes, $log);
         }
 
-  
+
         return redirect()->route('admin.orderfulfilment')->with('success', 'Details has Been Updated');
     }     //end of function
 
@@ -743,7 +757,7 @@ class OrderfulfilmentController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
-        $bp_master = BussinessPartnerMaster::where('business_partner_id',$existing_data->party_id)->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $existing_data->party_id)->first();
         $Financialyear = get_fy_year($bp_master->company_id);
         // set counter
         $financial_year = Financialyear::where(['year' => $Financialyear])->first();
@@ -795,8 +809,19 @@ class OrderfulfilmentController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
+
+
+        $roles = Role::pluck('name', 'id')->all();
+        $greceipt = OrderFulfilment::where('order_fulfillment_id', $id)->first();
+        // dd($purchaseorder->toArray());
+        $apinvoice = ArInvoice::where('customer_inv_no', $greceipt->customer_inv_no)->first();
+        // $apinvoice = ArInvoice::where('order_fulfillment_id', $id)->first();
+        // dd($goods_receipt_exist->toArray());
+
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $greceipt->party_id)->first();
+        $Financialyear = get_fy_year($bp_master->company_id);
         // set counter
-        $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+        $financial_year = Financialyear::where(['year' => $Financialyear])->first();
         $ar_invoice_counter = 0;
         if ($financial_year) {
             $ar_invoice_counter = $financial_year->ar_invoice_counter + 1;
@@ -805,12 +830,6 @@ class OrderfulfilmentController extends Controller
         $financial_year->ar_invoice_counter = $ar_invoice_counter;
         $financial_year->save();
 
-        $roles = Role::pluck('name', 'id')->all();
-        $greceipt = OrderFulfilment::where('order_fulfillment_id', $id)->first();
-        // dd($purchaseorder->toArray());
-        $apinvoice = ArInvoice::where('customer_inv_no', $greceipt->customer_inv_no)->first();
-        // $apinvoice = ArInvoice::where('order_fulfillment_id', $id)->first();
-        // dd($goods_receipt_exist->toArray());
         if (!isset($apinvoice)) {
             $goods_receipt = new ArInvoice();
             //$party = BussinessPartnerMaster::where('business_partner_id',$purchaseorder->party_id)->first();
@@ -821,8 +840,6 @@ class OrderfulfilmentController extends Controller
             $goods_receipt->fill($properties);
             $goods_receipt->of_id = $id;
             $goods_receipt->bill_no = $bill_no;
-            $goods_receipt->fy_year  = session('fy_year');
-            $goods_receipt->company_id  = session('company_id');
             if ($goods_receipt->save()) {
                 $purchaseorder_items = OrderFulfilmentItems::where('order_fulfillment_id', $id)->get();
                 if ($purchaseorder_items) {
@@ -875,9 +892,10 @@ class OrderfulfilmentController extends Controller
             // Session::flash('error', 'A/R Invoice already exists!');
             // Session::flash('status', 'error');
             // return redirect('admin/orderfulfilment');
-            $ar_id = Arinvoice::where(['order_fulfillment_id' => $id])->first();
+            $ar_id = Arinvoice::where(['of_id' => $id])->first();
+            // dd($ar_id);
             if (!empty($ar_id)) {
-                return redirect('admin/arinvoice/edit/' . $ar_id->of_id);
+                return redirect('admin/arinvoice/edit/' . $ar_id->order_fulfillment_id);
             } else {
                 Session::flash('error', 'A/R Invoice already exists!');
                 return redirect('admin/orderfulfilment');
@@ -923,8 +941,11 @@ class OrderfulfilmentController extends Controller
 
 
     public function partydetails($business_partner_id)
-    {
-        $comapny_data = Company::first();
+    {  
+        $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
+        $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
+    
+        // $comapny_data = Company::first();
         $business_partner_detail = "";
         $bill_to_state = "";
         $business_partner_state = $comapny_data->state;

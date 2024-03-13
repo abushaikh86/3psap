@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\backend\AdminController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\backend\PricingsController;
 use App\Http\Controllers\backend\ExpensecategoriesController;
 use App\Http\Controllers\backend\ExpensesubcategoriesController;
 use App\Http\Controllers\backend\ExpensesController;
+use App\Http\Controllers\backend\ReturnInvoiceController;
 use App\Http\Controllers\backend\UomsController;
 use App\Http\Controllers\backend\HsncodesController;
 use App\Http\Controllers\backend\InvoiceController;
@@ -122,10 +124,17 @@ Route::get('/dump-autoload', function () {
     return '<h1>Dumped Autoload</h1>';
 });
 
+// usama_13-02-2024 fetch project name dynamic and default red to admin
+$url = Request::url(); // Get the current URL
+$segments = explode('/', parse_url($url, PHP_URL_PATH)); // Split the URL by slashes
+$projectName = $segments[1];
+
+Route::redirect('/', '/'.$projectName.'/admin');
+
 // Route::get('/', 'HomeController@index');
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 Route::prefix('admin')->group(function () {
@@ -665,9 +674,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/arinvoice/download/{id}', [ArinvoiceController::class, 'download'])->name('admin.arinvoice.download');
         Route::resource('admin/arinvoice', 'ArinvoiceController');
 
-
-
-
+        // usama_13-03-2024 return invoice
+        Route::get('/returninvoice', [ReturnInvoiceController::class, 'index'])->name('admin.returninvoice');
+        Route::get('/returninvoice/index', [ReturnInvoiceController::class, 'index']);
+        Route::get('/returninvoice/create', [ReturnInvoiceController::class, 'create'])->name('admin.returninvoice.create');
+        Route::post('/returninvoice/update', [ReturnInvoiceController::class, 'update'])->name('admin.returninvoice.update');
+        Route::get('/returninvoice/inv_data/{id}', [ReturnInvoiceController::class, 'inv_data'])->name('admin.returninvoice.inv_data');
+        Route::resource('admin/returninvoice', 'ReturnInvoiceController');
 
         Route::get('/proforma', [ProformaController::class, 'index'])->name('admin.proforma');
         Route::get('/proforma/create', [ProformaController::class, 'create'])->name('admin.proforma.create');

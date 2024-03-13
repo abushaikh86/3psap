@@ -188,7 +188,7 @@ class ProductsController extends Controller
         // dd($request->all());
         $request->validate([
             // 'item_type_id' => 'required',
-            // 'item_code' => 'required',
+            'item_code' => 'required|unique:product_item_sku_master,item_code',
             // 'brand_id' => 'required',
             // 'category_id' => 'required',
             // 'sub_category_id' => 'required',

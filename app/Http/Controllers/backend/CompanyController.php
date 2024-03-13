@@ -89,6 +89,15 @@ class CompanyController extends Controller
     $company->parent_users =$parent_users; 
     if ($company->fill($request->all())->save()) {
    
+      if (!empty($request->company_logo)) {
+        $imageName = time() . '.' . $request->company_logo->extension();
+        if (!file_exists(public_path('backend-assets/images'))) {
+            mkdir(public_path('backend-assets/images'), 0777);
+        }
+        $request->company_logo->move(public_path('backend-assets/images'), $imageName);
+        $company->company_logo = $imageName;
+    }
+    
       $model = Company::where('company_id', $company->company_id)->first();
 
       if ($model->getChanges()) {
@@ -198,6 +207,17 @@ class CompanyController extends Controller
       $parent_users = implode(',', $request->parent_users);
     }
     $company->parent_users =$parent_users;  
+
+    // dd($request->all());
+    if (!empty($request->company_logo)) {
+      $imageName = time() . '.' . $request->company_logo->extension();
+      if (!file_exists(public_path('backend-assets/images'))) {
+          mkdir(public_path('backend-assets/images'), 0777);
+      }
+      $request->company_logo->move(public_path('backend-assets/images'), $imageName);
+      $company->company_logo = $imageName;
+  }
+
     if ($company->update($request->all())) {
       $logo = Company::upload_logo($request);
       $signature = Company::upload_signature($request);

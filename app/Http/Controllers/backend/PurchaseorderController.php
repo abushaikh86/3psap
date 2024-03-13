@@ -50,9 +50,9 @@ class PurchaseorderController extends Controller
         $GLOBALS['breadcrumb'] = [['name' => 'PurchaseOrder', 'route' => ""]];
 
         if ($request->ajax()) {
-            if(session('company_id') != 0 && session('fy_year')!=0){
-                $purchaseorder = PurchaseOrder::where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
-            }else{
+            if (session('company_id') != 0 && session('fy_year') != 0) {
+                $purchaseorder = PurchaseOrder::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id,'status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            } else {
                 $purchaseorder = PurchaseOrder::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
             // dd($purchaseorder);
@@ -108,7 +108,11 @@ class PurchaseorderController extends Controller
 
         $roles = Role::pluck('name', 'id')->all();
         $gsts = Gst::pluck('gst_name', 'gst_id')->all();
-        $party = BussinessPartnerMaster::with('getpartnertype')->get();
+        $party = BussinessPartnerMaster::when(session('company_id') != 0, function ($query) {
+            return $query->where('company_id', session('company_id'));
+        })
+            ->with('getpartnertype')
+            ->get();
 
         // $contac_data = BussinessPartnerContactDetails::get('contact_details_id','contact_person');
 
@@ -119,19 +123,20 @@ class PurchaseorderController extends Controller
         })->mapWithKeys(function ($item) {
             return [$item['business_partner_id'] => $item['bp_name']];
         });
+        // dd($party);
 
 
         // $lastPoRecord = PurchaseOrder::latest('purchase_order_id')->first();
         // $lastPoRecordId = $lastPoRecord->purchase_order_id;
-        if(session('fy_year') != 0){
-        $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
-        if (!$financial_year) {
-            Session::flash('message', 'Financial Year Not Active!');
-            Session::flash('status', 'error');
-            return redirect()->back();
+        if (session('fy_year') != 0) {
+            $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+            if (!$financial_year) {
+                Session::flash('message', 'Financial Year Not Active!');
+                Session::flash('status', 'error');
+                return redirect()->back();
+            }
         }
-        }
-        $latestPoRecordNumber=0;
+        $latestPoRecordNumber = 0;
         $moduleName = "Purchase Order";
         $series_no = get_series_number($moduleName);
         $purchase_order_counter = 1;
@@ -143,7 +148,7 @@ class PurchaseorderController extends Controller
 
         $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id')->all();
         $gst = Gst::pluck('gst_name', 'gst_id');
-        return view('backend.purchaseorder.create', compact('roles', 'gst', 'series_no','storage_locations', 'party', 'gsts','latestPoRecordNumber'));
+        return view('backend.purchaseorder.create', compact('roles', 'gst', 'series_no', 'storage_locations', 'party', 'gsts', 'latestPoRecordNumber'));
     }
 
 
@@ -185,7 +190,7 @@ class PurchaseorderController extends Controller
                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
             }
 
-            $bp_master = BussinessPartnerMaster::where('business_partner_id',$purchaseorder->party_id)->first();
+            $bp_master = BussinessPartnerMaster::where('business_partner_id', $purchaseorder->party_id)->first();
             $Financialyear = get_fy_year($bp_master->company_id);
             $financial_year = Financialyear::where(['year' => $Financialyear])->first();
             $goods_servie_receipt_counter = 0;
@@ -283,13 +288,15 @@ class PurchaseorderController extends Controller
         ]);
 
         // usama_12-03-2024-fetch fy_year first
-        $bp_master = BussinessPartnerMaster::where('business_partner_id',$request->party_id)->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $request->party_id)->first();
         $Financialyear = get_fy_year($bp_master->company_id);
         // dd($request->all());
         $purchaseorder = new PurchaseOrder();
         $purchaseorder->fill($request->all());
         $purchaseorder->fy_year = $Financialyear;
         $purchaseorder->company_id = $bp_master->company_id;
+        $purchaseorder->created_by = Auth()->guard('admin')->user()->admin_user_id;
+
 
         if ($purchaseorder->save()) {
             // dd($purchaseorder->toArray());
@@ -422,7 +429,9 @@ class PurchaseorderController extends Controller
 
         $roles = Role::pluck('name', 'id')->all();
         $gsts = Gst::pluck('gst_name', 'gst_id')->all();
-        $party = BussinessPartnerMaster::with('getpartnertype')->get();
+        $party = BussinessPartnerMaster::when(session('company_id') != 0, function ($query) {
+            return $query->where('company_id', session('company_id'));
+        })->with('getpartnertype')->get();
 
         // $contac_data = BussinessPartnerContactDetails::get('contact_details_id','contact_person');
 
@@ -736,7 +745,7 @@ class PurchaseorderController extends Controller
         $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
 
         // $comapny_data = Company::first(); //old
-        $comapny_data = Company::where('company_id',$business_partner->company_id)->first();
+        $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
         $business_partner_detail = "";
         $bill_to_state = "";
         $business_partner_state = $comapny_data->state;

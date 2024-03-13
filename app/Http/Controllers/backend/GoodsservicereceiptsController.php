@@ -56,7 +56,8 @@ class GoodsservicereceiptsController extends Controller
 
         if ($request->ajax()) {
             if(session('company_id') != 0 && session('fy_year')!=0){
-            $goodsservicereceipts = GoodsServiceReceipts::where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            $po_ids = PurchaseOrder::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('purchase_order_id');
+            $goodsservicereceipts = GoodsServiceReceipts::whereIn('purchase_order_id',$po_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }else{
             $goodsservicereceipts = GoodsServiceReceipts::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
@@ -955,8 +956,10 @@ class GoodsservicereceiptsController extends Controller
 
     public function partydetails($business_partner_id)
     {
+        $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
+
         // $comapny_data = Company::first();
-        $comapny_data = Company::where('company_id', Session::get('company_id'))->first();
+        $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
         $business_partner_detail = "";
         $bill_to_state = "";
         $business_partner_state = $comapny_data->state;

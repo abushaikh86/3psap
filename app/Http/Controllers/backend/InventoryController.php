@@ -31,18 +31,22 @@ class InventoryController extends Controller
         $bin_data = BinManagement::pluck('bin_type', 'bin_id');
         $bin_type = Bintype::whereIn('bin_type_id', $bin_data)->pluck('name', 'bin_type_id');
 
-        // dd($bin_type);
+        // dd(session('fy_year'));
         if ($request->ajax()) {
             $data = Inventory::with('get_warehouse', 'get_bin.get_bin', 'get_unit_price.brand', 'get_unit_price.category', 'get_unit_price.sub_category', 'get_unit_price.variants')
-                ->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')])
+                ->when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
+                    return $query->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')]);
+                })
                 ->orderBy('updated_at', 'desc')
                 ->get();
 
             if ($request->filled('from_date') && $request->filled('to_date')) {
                 $data = Inventory::with('get_warehouse', 'get_bin.get_bin', 'get_unit_price.brand', 'get_unit_price.category', 'get_unit_price.sub_category', 'get_unit_price.variants')
-                ->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')])
-                ->where('qty','!=',0)
-                ->whereBetween('created_at', [$request->from_date, $request->to_date])->orderBy('id', 'desc')->get();
+                    ->when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
+                        return $query->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')]);
+                    })
+                    ->where('qty', '!=', 0)
+                    ->whereBetween('created_at', [$request->from_date, $request->to_date])->orderBy('id', 'desc')->get();
             }
 
             return DataTables::of($data)

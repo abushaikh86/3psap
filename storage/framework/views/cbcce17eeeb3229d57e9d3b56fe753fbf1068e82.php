@@ -401,17 +401,27 @@ use App\Models\backend\Inventory;
                                                                 <?php
                                                                 $get_total_qty =
                                                                 Inventory::where([
-                                                                'fy_year' => session('fy_year'),
-                                                                'company_id' => session('company_id'),
                                                                 'warehouse_id' => $items->storage_location_id,
                                                                 'sku' => $items->sku,
-                                                                ])->sum('qty') -
+                                                                ])
+                                                                ->when((session('fy_year') != 0 && session('company_id') !=0),function($query){
+                                                                    $query->where([
+                                                                        'fy_year' => session('fy_year'),
+                                                                        'company_id' => session('company_id'),
+                                                                    ]);
+                                                                })
+                                                                ->sum('qty') -
                                                                 Inventory::where([
-                                                                'fy_year' => session('fy_year'),
-                                                                'company_id' => session('company_id'),
                                                                 'warehouse_id' => $items->storage_location_id,
                                                                 'sku' => $items->sku,
-                                                                ])->sum('blocked_qty');
+                                                                ]) 
+                                                                ->when((session('fy_year') != 0 && session('company_id') !=0),function($query){
+                                                                    $query->where([
+                                                                        'fy_year' => session('fy_year'),
+                                                                        'company_id' => session('company_id'),
+                                                                    ]);
+                                                                })
+                                                                ->sum('blocked_qty');
                                                                 // dd($get_total_qty);
                                                                 ?>
                                                                 
@@ -739,11 +749,16 @@ use App\Models\backend\Inventory;
                                                                     ?>
                                                                     <?php if($company->batch_system): ?>
                                                                     <?php
-                                                                    $batch_data = Inventory::where(['fy_year' =>
-                                                                    session('fy_year'), 'company_id' =>
-                                                                    session('company_id'), 'warehouse_id' =>
-                                                                    $items->storage_location_id, 'sku' =>
-                                                                    $items->sku])->pluck('batch_no', 'batch_no');
+                                                                    $batch_data = Inventory::where([
+                                                                            'warehouse_id' => $items->storage_location_id,
+                                                                            'sku' => $items->sku,
+                                                                        ])->when(session('fy_year') != 0 && session('company_id') != 0, function ($query) {
+                                                                            $query->where([
+                                                                                'fy_year' => session('fy_year'),
+                                                                                'company_id' => session('company_id'),
+                                                                            ]);
+                                                                        })->pluck('batch_no', 'batch_no');
+
                                                                     ?>
                                                                     <td style="width: 80px;">
                                                                         <?php echo e(Form::select('old_invoice_items[' .

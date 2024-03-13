@@ -37,7 +37,12 @@ class ReportsController extends Controller
             $fromDate = Carbon::parse($request->from_date)->startOfDay();
             $toDate = Carbon::parse($request->to_date)->endOfDay();
 
-            $data = Transaction::where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')])->whereBetween('created_at', [$fromDate, $toDate])->orderBy('created_at', 'desc')->get();
+            $data = Transaction::whereBetween('created_at', [$fromDate, $toDate])
+                ->when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
+                    return $query->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')]);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
         $company_data = Company::first();
@@ -53,12 +58,14 @@ class ReportsController extends Controller
         $currentYear = session('fy_year');
 
         $data = GoodsServiceReceiptsItems::with('get_goodservice_receipt')
-            ->whereHas('get_goodservice_receipt', function ($query) use ($companyId, $currentYear) {
-                $query->where('company_id', $companyId)
-                    ->where('fy_year', $currentYear);
+            ->when(session('company_id') != 0 && session('fy_year') != 0, function ($query) use ($companyId, $currentYear) {
+                return $query->whereHas('get_goodservice_receipt', function ($query) use ($companyId, $currentYear) {
+                    $query->where('company_id', $companyId)->where('fy_year', $currentYear);
+                });
             })
             ->orderBy('created_at', 'desc')
             ->get();
+
         // dd($companyId,$currentYear);
 
         if ($request->filled('from_date') && $request->filled('to_date')) {
@@ -66,9 +73,10 @@ class ReportsController extends Controller
             $toDate = Carbon::parse($request->to_date)->endOfDay();
 
             $data = GoodsServiceReceiptsItems::with('get_goodservice_receipt')
-                ->whereHas('get_goodservice_receipt', function ($query) use ($companyId, $currentYear) {
-                    $query->where('company_id', $companyId)
-                        ->where('fy_year', $currentYear);
+                ->when(session('company_id') != 0 && session('fy_year') != 0, function ($query) use ($companyId, $currentYear) {
+                    return $query->whereHas('get_goodservice_receipt', function ($query) use ($companyId, $currentYear) {
+                        $query->where('company_id', $companyId)->where('fy_year', $currentYear);
+                    });
                 })
                 ->whereBetween('created_at', [$fromDate, $toDate])
                 ->orderBy('created_at', 'desc')

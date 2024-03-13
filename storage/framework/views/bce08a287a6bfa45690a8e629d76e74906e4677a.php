@@ -1,8 +1,7 @@
-@extends('backend.layouts.app')
-@section('title', 'Bin Transfer')
+<?php $__env->startSection('title', 'Bin Transfer'); ?>
 
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -11,7 +10,7 @@
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item active">Bin Transfer</li>
                     </ol>
@@ -20,7 +19,7 @@
         </div>
         <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                <a href="{{ route('admin.stockmanagement.bin_transfer_history') }}" class="btn btn-secondary">Bin Transfer
+                <a href="<?php echo e(route('admin.stockmanagement.bin_transfer_history')); ?>" class="btn btn-secondary">Bin Transfer
                     Histroy</a>
             </div>
         </div>
@@ -34,26 +33,12 @@
                         <div class="card-body">
                             <div class="content-header row">
 
-                                @include('backend.includes.errors')
-                                {{ Form::open(['url' => 'admin/stockmanagement/update', 'class' => 'w-100']) }}
+                                <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <?php echo e(Form::open(['url' => 'admin/stockmanagement/update', 'class' => 'w-100'])); ?>
+
 
                                 <div class="form-body">
-                                    {{-- 
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            {{ Form::label('warehouse_id', 'Warehouse *') }}
-                                                            {{ Form::select('warehouse_id', $storage_locations, null, ['class' => 'form-control select2', 'placeholder' => 'Select Warehouse', 'required' => true]) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div> --}}
+                                    
 
                                     <div class="row">
 
@@ -71,32 +56,41 @@
                                                         <thead class="bg-light" style="font-size:10px;">
                                                             <tr>
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('from_warehouse', 'From Warehouse') }}
+                                                                    <?php echo e(Form::label('from_warehouse', 'From Warehouse')); ?>
+
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('from_bin', 'From Bin') }}
+                                                                    <?php echo e(Form::label('from_bin', 'From Bin')); ?>
+
                                                                 </td>
 
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('to_warehouse', 'To Warehouse') }}
+                                                                    <?php echo e(Form::label('to_warehouse', 'To Warehouse')); ?>
+
                                                                 </td>
 
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('to_bin', 'To Bin') }}
+                                                                    <?php echo e(Form::label('to_bin', 'To Bin')); ?>
+
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('sku', 'Base Pack') }}
+                                                                    <?php echo e(Form::label('sku', 'Base Pack')); ?>
+
                                                                 </td>
-                                                                <td class="adjust_col">{{ Form::label('batch', 'Batch') }}
+                                                                <td class="adjust_col"><?php echo e(Form::label('batch', 'Batch')); ?>
+
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('item_code', 'Item Code') }}
+                                                                    <?php echo e(Form::label('item_code', 'Item Code')); ?>
+
                                                                 </td>
                                                                 <td style="width:100px;">
-                                                                    {{ Form::label('from_qty', 'Available Quantity') }}
+                                                                    <?php echo e(Form::label('from_qty', 'Available Quantity')); ?>
+
                                                                 </td>
                                                                 <td style="width:100px;">
-                                                                    {{ Form::label('qty', 'Quantity') }}
+                                                                    <?php echo e(Form::label('qty', 'Quantity')); ?>
+
                                                                 </td>
                                                                 <td style="width:50px;"></td>
 
@@ -110,28 +104,37 @@
 
 
                                                                 <td>
-                                                                    {{ Form::select('from_warehouse', $storage_locations, null, ['class' => 'form-control from_warehouse', 'placeholder' => 'Select Warehouse', 'required' => true]) }}
-                                                                </td>
-                                                                <td>{{ Form::select('from_bin', [], null, ['class' => 'form-control from_bin', 'required' => true]) }}
-                                                                </td>
-                                                                <td>
-                                                                    {{ Form::select('to_warehouse', $storage_locations, null, ['class' => 'form-control to_warehouse', 'placeholder' => 'Select Warehouse', 'required' => true]) }}
+                                                                    <?php echo e(Form::select('from_warehouse', $storage_locations, null, ['class' => 'form-control from_warehouse', 'placeholder' => 'Select Warehouse', 'required' => true])); ?>
 
                                                                 </td>
-                                                                <td>{{ Form::select('to_bin', [], null, ['class' => 'form-control to_bin', 'required' => true]) }}
+                                                                <td><?php echo e(Form::select('from_bin', [], null, ['class' => 'form-control from_bin', 'required' => true])); ?>
+
                                                                 </td>
                                                                 <td>
-                                                                    {{ Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true]) }}
+                                                                    <?php echo e(Form::select('to_warehouse', $storage_locations, null, ['class' => 'form-control to_warehouse', 'placeholder' => 'Select Warehouse', 'required' => true])); ?>
+
+
+                                                                </td>
+                                                                <td><?php echo e(Form::select('to_bin', [], null, ['class' => 'form-control to_bin', 'required' => true])); ?>
+
                                                                 </td>
                                                                 <td>
-                                                                    {{ Form::select('batch', [], null, ['class' => 'form-control  batch', 'data-name' => 'batch', 'required' => true]) }}
+                                                                    <?php echo e(Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true])); ?>
+
                                                                 </td>
-                                                                <td>{{ Form::number('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code', 'required' => true]) }}
+                                                                <td>
+                                                                    <?php echo e(Form::select('batch', [], null, ['class' => 'form-control  batch', 'data-name' => 'batch', 'required' => true])); ?>
+
+                                                                </td>
+                                                                <td><?php echo e(Form::number('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code', 'required' => true])); ?>
+
                                                                 </td>
 
-                                                                <td>{{ Form::number('from_qty', 0, ['class' => 'form-control  from_qty', 'data-name' => 'from_qty', 'readonly' => true]) }}
+                                                                <td><?php echo e(Form::number('from_qty', 0, ['class' => 'form-control  from_qty', 'data-name' => 'from_qty', 'readonly' => true])); ?>
+
                                                                 </td>
-                                                                <td>{{ Form::number('qty', null, ['class' => 'form-control  qty', 'data-name' => 'qty', 'required' => true]) }}
+                                                                <td><?php echo e(Form::number('qty', null, ['class' => 'form-control  qty', 'data-name' => 'qty', 'required' => true])); ?>
+
                                                                 </td>
 
                                                                 <td><button type='button'
@@ -162,8 +165,10 @@
 
                                         <div class="col-md-3 col-sm-3">
                                             <div class="form-group">
-                                                {{ Form::label('remarks', 'Remarks') }}
-                                                {{ Form::textarea('remarks', null, ['class' => 'form-control remarks', 'placeholder' => 'Remarks', 'style' => 'height:100px;']) }}
+                                                <?php echo e(Form::label('remarks', 'Remarks')); ?>
+
+                                                <?php echo e(Form::textarea('remarks', null, ['class' => 'form-control remarks', 'placeholder' => 'Remarks', 'style' => 'height:100px;'])); ?>
+
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
@@ -173,10 +178,12 @@
 
 
                                     <div class="col-sm-12 d-flex justify-content-center">
-                                        {{ Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1']) }}
+                                        <?php echo e(Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1'])); ?>
+
                                         <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
                                     </div>
-                                    {{ Form::close() }}
+                                    <?php echo e(Form::close()); ?>
+
                                 </div>
                             </div>
 
@@ -191,7 +198,7 @@
 
 
 
-    @include('backend.autocomplete_typeahead_script')
+    <?php echo $__env->make('backend.autocomplete_typeahead_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
     <script>
@@ -211,7 +218,7 @@
 
                 // Make an AJAX request to get bins for 'from_warehouse'
                 $.ajax({
-                    url: '{{ route('admin.stockmanagement.get_available_qty') }}',
+                    url: '<?php echo e(route('admin.stockmanagement.get_available_qty')); ?>',
                     type: 'GET',
                     data: {
                         warehouse_id: from_warehouse_id,
@@ -241,7 +248,7 @@
 
                 // Make an AJAX request to get bins for 'from_warehouse'
                 $.ajax({
-                    url: '{{ route('admin.stockmanagement.get_batches') }}',
+                    url: '<?php echo e(route('admin.stockmanagement.get_batches')); ?>',
                     type: 'GET',
                     data: {
                         sku: sku
@@ -266,7 +273,7 @@
 
                 // Make an AJAX request to get bins for 'from_warehouse'
                 $.ajax({
-                    url: '{{ route('admin.stockmanagement.get_bins') }}',
+                    url: '<?php echo e(route('admin.stockmanagement.get_bins')); ?>',
                     type: 'GET',
                     data: {
                         from_warehouse_id: fromWarehouseId
@@ -288,7 +295,7 @@
 
                 // Make an AJAX request to get bins for 'to_warehouse'
                 $.ajax({
-                    url: '{{ route('admin.stockmanagement.get_bins') }}',
+                    url: '<?php echo e(route('admin.stockmanagement.get_bins')); ?>',
                     type: 'GET',
                     data: {
                         to_warehouse_id: toWarehouseId
@@ -392,4 +399,6 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/stockmanagement/index.blade.php ENDPATH**/ ?>

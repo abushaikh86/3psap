@@ -278,7 +278,7 @@
                                         use App\Models\backend\Company;
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         ?>
-                                        <?php if($company->is_backdated_date): ?>
+                                        <?php if(isset($company) && $company->is_backdated_date): ?>
                                         <div class="form-group">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
 

@@ -51,6 +51,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Logo</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th>Mobile Number</th>
@@ -65,6 +66,14 @@
                                                     @foreach ($company as $row)
                                                         <tr>
                                                             <td>{{ $srno }}</td>
+                                                            <td>
+                                                                @if (!empty($row->company_logo))
+                                                                <a href="{{ asset('public/backend-assets/images/') }}/{{ $row->company_logo }}"
+                                                                    target="_blank"><img class="card-img-top img-fluid mb-1"
+                                                                        src="{{ asset('public/backend-assets/images/') }}/{{ $row->company_logo }}"
+                                                                        alt="Distributor Logo" style="width:50px"></a>
+                                                                @endif
+                                                            </td>
                                                             <td>{{ $row->name ?? '' }}</td>
                                                             <td>{{ $row->email }}</td>
                                                             <td>{{ $row->mobile_no }}</td>
@@ -107,6 +116,9 @@
                                                             </td>
 
                                                         </tr>
+                                                        @php
+                                                            $srno++;
+                                                        @endphp
                                                     @endforeach
                                                 @endif
                                             </tbody>

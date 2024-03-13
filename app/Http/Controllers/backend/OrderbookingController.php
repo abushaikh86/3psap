@@ -54,10 +54,10 @@ class OrderbookingController extends Controller
 
     if ($request->ajax()) {
 
-      if(session('company_id') != 0 && session('fy_year')!=0){
-      $purchaseorder = OrderBooking::where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
-      }else{
-      $purchaseorder = OrderBooking::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+      if (session('company_id') != 0 && session('fy_year') != 0) {
+        $purchaseorder = OrderBooking::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id,'status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
+      } else {
+        $purchaseorder = OrderBooking::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
       }
 
       return DataTables::of($purchaseorder)
@@ -105,7 +105,9 @@ class OrderbookingController extends Controller
 
     $roles = Role::pluck('name', 'id')->all();
     $gsts = Gst::pluck('gst_name', 'gst_id')->all();
-    $party = BussinessPartnerMaster::get();
+    $party = BussinessPartnerMaster::when(session('company_id') != 0, function ($query) {
+      return $query->where('company_id', session('company_id'));
+    })->get();
 
     // $contac_data = BussinessPartnerContactDetails::get('contact_details_id','contact_person');
 
@@ -118,29 +120,29 @@ class OrderbookingController extends Controller
     });
 
 
-    if(session('fy_year') != 0){
-    $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
-    if (!$financial_year) {
-      Session::flash('message', 'Financial Year Not Active!');
-      Session::flash('status', 'error');
-      return redirect()->back();
-    }
+    if (session('fy_year') != 0) {
+      $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+      if (!$financial_year) {
+        Session::flash('message', 'Financial Year Not Active!');
+        Session::flash('status', 'error');
+        return redirect()->back();
+      }
     }
 
     $moduleName = "ORDER BOOKING";
-    $latestSoRecordNumber=0;
+    $latestSoRecordNumber = 0;
     $series_no = get_series_number($moduleName);
     $order_booking_counter = 1;
     $fyear = "";
     if (isset($financial_year)) {
-        $order_booking_counter = $financial_year->order_booking_counter + 1;
-        $latestSoRecordNumber = $series_no . '-' . $financial_year->year . "-" . $order_booking_counter;
+      $order_booking_counter = $financial_year->order_booking_counter + 1;
+      $latestSoRecordNumber = $series_no . '-' . $financial_year->year . "-" . $order_booking_counter;
     }
 
 
     $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id')->all();
     $gst = Gst::pluck('gst_name', 'gst_id');
-    return view('backend.orderbooking.create', compact('roles', 'gst','series_no', 'storage_locations', 'party', 'order_booking_counter', 'fyear', 'gsts','latestSoRecordNumber'));
+    return view('backend.orderbooking.create', compact('roles', 'gst', 'series_no', 'storage_locations', 'party', 'order_booking_counter', 'fyear', 'gsts', 'latestSoRecordNumber'));
   }
 
 
@@ -182,7 +184,7 @@ class OrderbookingController extends Controller
         return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
       }
 
-      $bp_master = BussinessPartnerMaster::where('business_partner_id',$purchaseorder->party_id)->first();
+      $bp_master = BussinessPartnerMaster::where('business_partner_id', $purchaseorder->party_id)->first();
       $Financialyear = get_fy_year($bp_master->company_id);
       $financial_year = Financialyear::where(['year' => $Financialyear])->first();
       $order_fulfilment_counter = 0;
@@ -277,7 +279,7 @@ class OrderbookingController extends Controller
       'contact_person' => 'required',
     ]);
     // dd($request->all());
-    $bp_master = BussinessPartnerMaster::where('business_partner_id',$request->party_id)->first();
+    $bp_master = BussinessPartnerMaster::where('business_partner_id', $request->party_id)->first();
     $Financialyear = get_fy_year($bp_master->company_id);
     $purchaseorder = new OrderBooking();
     $purchaseorder->fill($request->all());
@@ -414,7 +416,9 @@ class OrderbookingController extends Controller
 
     $roles = Role::pluck('name', 'id')->all();
     $gsts = Gst::pluck('gst_name', 'gst_id')->all();
-    $party = BussinessPartnerMaster::with('getpartnertype')->get();
+    $party = BussinessPartnerMaster::when(session('company_id') != 0, function ($query) {
+      return $query->where('company_id', session('company_id'));
+    })->with('getpartnertype')->get();
 
     // $contac_data = BussinessPartnerContactDetails::get('contact_details_id','contact_person');
 
@@ -705,7 +709,10 @@ class OrderbookingController extends Controller
 
   public function partydetails($business_partner_id)
   {
-    $comapny_data = Company::first();
+    $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
+    $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
+
+    // $comapny_data = Company::first();
     $business_partner_detail = "";
     $bill_to_state = "";
     $business_partner_state = $comapny_data->state;

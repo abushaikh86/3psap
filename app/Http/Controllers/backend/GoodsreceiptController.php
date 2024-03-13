@@ -32,7 +32,9 @@ class GoodsreceiptController extends Controller
      */
     public function index()
     {
-        $data =  GoodsReceipt::get();
+        $data =  GoodsReceipt::when(session('company_id') != 0 && session('fy_year') != 0, function ($query) {
+            return $query->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')]);
+        })->get();
         return view('backend.inventoryrectification.goodsreceipt', compact('data'));
     }
 
@@ -68,9 +70,18 @@ class GoodsreceiptController extends Controller
                     'warehouse_id' => $row['storage_location_id'],
                     'bin_id' => $good_bin->bin_id,
                     'sku' => $row['sku'],
-                    'fy_year' => session('fy_year'),
-                    'company_id' => session('company_id'),
-                ])->first();
+                ])
+                    ->when(
+                        session('company_id') != 0 && session('fy_year') != 0,
+                        function ($query) {
+                            return $query->where([
+                                'fy_year' => session('fy_year'),
+                                'company_id' => session('company_id'),
+                            ]);
+                        }
+                    )
+                    ->first();
+
 
                 if (!empty($sk_inventory_available)) {
                     $batch_no = $sk_inventory_available->sku;
@@ -92,20 +103,37 @@ class GoodsreceiptController extends Controller
                     'bin_id' => $good_bin->bin_id,
                     'sku' => $product->sku,
                     'batch_no' => $batch_no,
-                    'fy_year' => session('fy_year'),
-                    'company_id' => session('company_id'),
-                ])->first();
+                ])
+                    ->when(
+                        session('company_id') != 0 && session('fy_year') != 0,
+                        function ($query) {
+                            return $query->where([
+                                'fy_year' => session('fy_year'),
+                                'company_id' => session('company_id'),
+                            ]);
+                        }
+                    )
+                    ->first();
+
 
                 $perday_inventoryExist = Inventory::where([
                     'warehouse_id' => $row['storage_location_id'],
                     'bin_id' => $good_bin->bin_id,
                     'sku' => $product->sku,
                     'batch_no' => $batch_no,
-                    'fy_year' => session('fy_year'),
-                    'company_id' => session('company_id'),
                 ])
+                    ->when(
+                        session('company_id') != 0 && session('fy_year') != 0,
+                        function ($query) {
+                            return $query->where([
+                                'fy_year' => session('fy_year'),
+                                'company_id' => session('company_id'),
+                            ]);
+                        }
+                    )
                     ->whereDate('created_at', Carbon::today())
                     ->first();
+
 
                 $inventory = Inventory::where(['batch_no' => $batch_no])->where('manufacturing_date', '!=', null)
                     ->orWhere('expiry_date', '!=', null)

@@ -2,7 +2,7 @@
 use Carbon\Carbon;
 use App\Models\backend\Company;
 
-$company = Company::where('company_id',session('company_id'))->first();
+$company = Company::where('company_id',$goodsservicereceipts->company_id)->first();
 ?>
 <?php
 // dd($invoice->gst_rate);

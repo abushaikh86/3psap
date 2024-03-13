@@ -49,6 +49,7 @@ $role_id = Role::where(['department_id'=>10])->first();
                                 'method' => 'POST',
                                 'url' => ['admin/company/update'],
                                 'class' => 'form',
+                                'enctype' => 'multipart/form-data',
                                 ]) !!}
                                 <div class="form-body">
                                     <div class="row">
@@ -184,11 +185,10 @@ $role_id = Role::where(['department_id'=>10])->first();
 
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
-                                                {{ Form::label('ay_type', 'Academic Year Type *') }}
+                                                {{ Form::label('ay_type', 'Financial Year Type *') }}
                                                 {{ Form::select('ay_type', ['fi_year' => 'Financial Year (1st April-31st
                                                 March)', 'cal_year' => 'Calender Year'],
-                                                null, ['class' => 'form-control', 'placeholder' => 'Select Academic Year
-                                                Type', 'required' => true]) }}
+                                                null, ['class' => 'form-control', 'required' => true]) }}
                                             </div>
                                         </div>
 
@@ -208,6 +208,16 @@ $role_id = Role::where(['department_id'=>10])->first();
                                             </div>
                                         </div>
 
+                                        <div class="col-md-12 col-12">
+                                            <div class="form-group">
+                                                {{ Form::label('company_logo', 'Distributor Logo') }}
+                                                <div class="custom-file">
+                                                    {{ Form::file('company_logo', ['class' => 'custom-file-input', 'id' =>
+                                                    'company_logo']) }}
+                                                    <label class="custom-file-label" for="company_logo">Choose file</label>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="col-12 d-flex justify-content-start">
                                             {{ Form::submit('Update', ['class' => 'btn btn-primary mr-1 mb-1']) }}
@@ -267,7 +277,9 @@ $(document).ready(function() {
             },
             success: function(response) {
                 // Handle the response from the server
-                $('#parentRolesContainer').html(response);
+                if(response){
+                    $('#parentRolesContainer').html(response);
+                }
             },
             error: function(error) {
                 // Handle errors

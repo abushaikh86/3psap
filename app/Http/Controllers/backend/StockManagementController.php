@@ -46,7 +46,11 @@ class StockManagementController extends Controller
 
   public function bin_transfer_history()
   {
-    $data = BinTransfer::where(['fy_year'=>session('fy_year'),'company_id'=>session('company_id')])->orderby('created_at', 'desc')->get();
+    if (session('company_id') != 0 && session('fy_year') != 0) {
+      $data = BinTransfer::where(['fy_year' => session('fy_year'), 'company_id' => session('company_id')])->orderby('created_at', 'desc')->get();
+    } else {
+      $data = BinTransfer::orderby('created_at', 'desc')->get();
+    }
     return view('backend.stockmanagement.bin_history', compact('data'));
   }
   public function update(Request $request)
@@ -80,24 +84,49 @@ class StockManagementController extends Controller
         // Update 'from' inventory
         // dd($item,$from_binData);
         if (!empty($from_inventory = Inventory::where([
-          'warehouse_id' => $item['from_warehouse'], 'bin_id' => $from_binData->bin_id, 'sku' => $item['sku'],'item_code'=>$item['item_code'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
-          'company_id' => session('company_id')
-        ])->first())) {
+          'warehouse_id' => $item['from_warehouse'],
+          'bin_id' => $from_binData->bin_id,
+          'sku' => $item['sku'],
+          'item_code' => $item['item_code'],
+          'batch_no' => $item['batch'],
+        ])
+          // ->when(
+          //   session('company_id') != 0 && session('fy_year') != 0,
+          //   function ($query) {
+          //     return $query->where([
+          //       'fy_year' => session('fy_year'),
+          //       'company_id' => session('company_id'),
+          //     ]);
+          //   }
+          // )
+          ->first())) {
           // dd($from_inventory,$item);
           $this->updateInventory($from_inventory, $item['from_qty'], -$item['qty'], $item, $from_binData->bin_id, $request->remarks);
         }
 
         // Update 'to' inventory
         if (!empty($to_inventory = Inventory::where([
-          'warehouse_id' => $item['to_warehouse'], 'bin_id' => $to_binData->bin_id, 'sku' => $item['sku'],'item_code'=>$item['item_code'], 'batch_no' => $item['batch'], 'fy_year' => session('fy_year'),
-          'company_id' => session('company_id')
-        ])->first())) {
+          'warehouse_id' => $item['to_warehouse'],
+          'bin_id' => $to_binData->bin_id,
+          'sku' => $item['sku'],
+          'item_code' => $item['item_code'],
+          'batch_no' => $item['batch'],
+        ])
+          // ->when(
+          //   session('company_id') != 0 && session('fy_year') != 0,
+          //   function ($query) {
+          //     return $query->where([
+          //       'fy_year' => session('fy_year'),
+          //       'company_id' => session('company_id'),
+          //     ]);
+          //   }
+          // )
+          ->first())) {
           $this->updateInventory($to_inventory, $to_inventory->qty, $item['qty'], $item, $to_binData->bin_id, $request->remarks);
         } else {
           // Create new inventory if 'to' inventory doesn't exist
           $this->createNewInventory($item, $to_binData->bin_id, $request->remarks);
         }
-
       }
     }
     return redirect()->back()->with(['success' => 'Data Transfer Successfully']);
@@ -108,8 +137,8 @@ class StockManagementController extends Controller
   private function updateInventory($inventory, $qty, $changeQty, $item, $binId, $remarks)
   {
 
-    $inventory->fy_year = session('fy_year');
-    $inventory->company_id = session('company_id');
+    // $inventory->fy_year = session('fy_year');
+    // $inventory->company_id = session('company_id');
     $inventory->user_id = Auth()->guard('admin')->user()->admin_user_id;
     $inventory->remarks = $remarks;
     $inventory->qty = $qty + $changeQty;
@@ -219,7 +248,7 @@ class StockManagementController extends Controller
 
 
     $binData = BinManagement::where(['bin_type' => $from_bin_id, 'warehouse_id' => $warehouse_id])->first();
-    $data = Inventory::where(['warehouse_id' => $warehouse_id,'item_code'=>$item_code, 'bin_id' => $binData->bin_id,'sku'=>$sku, 'batch_no' => $batch_no])->first();
+    $data = Inventory::where(['warehouse_id' => $warehouse_id, 'item_code' => $item_code, 'bin_id' => $binData->bin_id, 'sku' => $sku, 'batch_no' => $batch_no])->first();
 
     // dd($data);
 
