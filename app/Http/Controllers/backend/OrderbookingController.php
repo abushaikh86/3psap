@@ -53,8 +53,12 @@ class OrderbookingController extends Controller
     $GLOBALS['breadcrumb'] = [['name' => 'Sales Order', 'route' => ""]];
 
     if ($request->ajax()) {
+
+      if(session('company_id') != 0 && session('fy_year')!=0){
       $purchaseorder = OrderBooking::where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
-      // dd($purchaseorder);
+      }else{
+      $purchaseorder = OrderBooking::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+      }
 
       return DataTables::of($purchaseorder)
         ->addIndexColumn()
@@ -114,24 +118,29 @@ class OrderbookingController extends Controller
     });
 
 
-    // dd($party->toArray());
-
-    $financial_year = Financialyear::where('active', 1)->first();
+    if(session('fy_year') != 0){
+    $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
     if (!$financial_year) {
       Session::flash('message', 'Financial Year Not Active!');
       Session::flash('status', 'error');
       return redirect()->back();
     }
-    // dd($financial_year->toArray());
+    }
+
+    $moduleName = "ORDER BOOKING";
+    $latestSoRecordNumber=0;
+    $series_no = get_series_number($moduleName);
     $order_booking_counter = 1;
     $fyear = "";
-    if ($financial_year) {
-      $order_booking_counter = $financial_year->order_booking_counter + 1;
-      $fyear = $financial_year->year;
+    if (isset($financial_year)) {
+        $order_booking_counter = $financial_year->order_booking_counter + 1;
+        $latestSoRecordNumber = $series_no . '-' . $financial_year->year . "-" . $order_booking_counter;
     }
+
+
     $storage_locations = StorageLocations::pluck('storage_location_name', 'storage_location_id')->all();
     $gst = Gst::pluck('gst_name', 'gst_id');
-    return view('backend.orderbooking.create', compact('roles', 'gst', 'storage_locations', 'party', 'order_booking_counter', 'fyear', 'gsts'));
+    return view('backend.orderbooking.create', compact('roles', 'gst','series_no', 'storage_locations', 'party', 'order_booking_counter', 'fyear', 'gsts','latestSoRecordNumber'));
   }
 
 
@@ -173,14 +182,14 @@ class OrderbookingController extends Controller
         return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
       }
 
-      $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+      $bp_master = BussinessPartnerMaster::where('business_partner_id',$purchaseorder->party_id)->first();
+      $Financialyear = get_fy_year($bp_master->company_id);
+      $financial_year = Financialyear::where(['year' => $Financialyear])->first();
       $order_fulfilment_counter = 0;
       if ($financial_year) {
         $order_fulfilment_counter = $financial_year->order_fulfilment_counter + 1;
       }
       $bill_no = $series_no . '-' . $financial_year->year . "-" . $order_fulfilment_counter;
-      $goods_receipt->fy_year  = session('fy_year');
-      $goods_receipt->company_id  = session('company_id');
 
       $goods_receipt->bill_no  = $bill_no;
       $financial_year->order_fulfilment_counter = $order_fulfilment_counter;
@@ -225,7 +234,7 @@ class OrderbookingController extends Controller
       captureActivity($log);
 
 
-      Session::flash('message', 'Order Fulfillment Created Successfully!');
+      // Session::flash('message', 'Order Fulfillment Created Successfully!');
       Session::flash('status', 'success');
       //   return redirect('admin/purchaseorder');
       return redirect()->route('admin.orderfulfilment.edit', [$goods_receipt->order_fulfillment_id]);
@@ -268,10 +277,12 @@ class OrderbookingController extends Controller
       'contact_person' => 'required',
     ]);
     // dd($request->all());
+    $bp_master = BussinessPartnerMaster::where('business_partner_id',$request->party_id)->first();
+    $Financialyear = get_fy_year($bp_master->company_id);
     $purchaseorder = new OrderBooking();
     $purchaseorder->fill($request->all());
-    $purchaseorder->fy_year = session('fy_year');
-    $purchaseorder->company_id = session('company_id');
+    $purchaseorder->fy_year = $Financialyear;
+    $purchaseorder->company_id = $bp_master->company_id;
     $purchaseorder->created_by = Auth()->guard('admin')->user()->admin_user_id;
 
     if ($purchaseorder->save()) {
@@ -346,7 +357,7 @@ class OrderbookingController extends Controller
       }
 
       // set counter
-      $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+      $financial_year = Financialyear::where(['year' => $Financialyear])->first();
       $order_booking_counter = 0;
       if ($financial_year) {
         $order_booking_counter = $financial_year->order_booking_counter + 1;

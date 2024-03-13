@@ -197,7 +197,7 @@ if (!function_exists('amount_in_words')) {
     //moreData is to fetch first name last name and onlyUpdate for to return only primary key if data exists
     //parentData for entriest parent user id while creating user
     if (!function_exists('getOrCreateIdUnified')) {
-        function getOrCreateIdUnified($modelOrTable, $fieldName, $excelValue, $primaryKeyName, $extra_id = null, $moreData = null,$parentData=null,$onlyUpdate=null)
+        function getOrCreateIdUnified($modelOrTable, $fieldName, $excelValue, $primaryKeyName, $extra_id = null, $moreData = null, $parentData = null, $onlyUpdate = null)
         {
             $value = trim(addslashes($excelValue));
             $isModel = is_string($modelOrTable) && class_exists($modelOrTable);
@@ -233,7 +233,7 @@ if (!function_exists('amount_in_words')) {
                             $role = Role::where('department_id', $extra_id)->first();
                             $newRecord->role = $role->id;
 
-                            if(!empty($parentData)){
+                            if (!empty($parentData)) {
                                 $newRecord->parent_users = $parentData;
                             }
                             if (!empty($moreData)) {
@@ -279,6 +279,30 @@ if (!function_exists('amount_in_words')) {
                     return $record->$primaryKeyName;
                 }
             }
+        }
+    }
+
+    // usama_12-03-2024-to fetch fy_year from company
+    if (!function_exists('get_fy_year')) {
+        function get_fy_year($company_id)
+        {
+            $company = Company::where('company_id', $company_id)->first();
+
+            if ($company->ay_type == 'fi_year') {
+                $currentDate = Carbon::now();
+                $startOfYear = Carbon::create($currentDate->year, 4, 1);
+                $endOfYear = Carbon::create($currentDate->year + 1, 3, 31);
+
+                if ($currentDate->between($startOfYear, $endOfYear)) {
+                    $Financialyear = $currentDate->year . '-' . substr(($currentDate->year + 1), -2);
+                } else {
+                    $Financialyear = ($currentDate->year - 1) . '-' . substr($currentDate->year, -2);
+                }
+            } elseif ($company->ay_type == 'cal_year') {
+                $Financialyear = Carbon::now()->year;
+            }
+
+            return $Financialyear;
         }
     }
 }

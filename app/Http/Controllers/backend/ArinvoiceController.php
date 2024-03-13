@@ -259,7 +259,7 @@ class ArinvoiceController extends Controller
             if ($financial_year) {
                 $purchase_order_counter = $financial_year->purchase_order_counter + 1;
             }
-            $bill_no = "3PSAP/" . $financial_year->year . "/" . $purchase_order_counter;
+            $bill_no = "EUREKA/" . $financial_year->year . "/" . $purchase_order_counter;
 
             $customer = BussinessPartnerMaster::where('business_partner_id', $goodsservicereceipts->party_id)->first();
             // $party_name = "";

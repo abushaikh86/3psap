@@ -258,7 +258,7 @@ class OrderfulfilmentController extends Controller
             if ($financial_year) {
                 $purchase_order_counter = $financial_year->purchase_order_counter + 1;
             }
-            $bill_no = "3PSAP/" . $financial_year->year . "/" . $purchase_order_counter;
+            $bill_no = "EUREKA/" . $financial_year->year . "/" . $purchase_order_counter;
 
             $customer = BussinessPartnerMaster::where('business_partner_id', $goodsservicereceipts->party_id)->first();
             $party_name = "";
@@ -743,8 +743,10 @@ class OrderfulfilmentController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
+        $bp_master = BussinessPartnerMaster::where('business_partner_id',$existing_data->party_id)->first();
+        $Financialyear = get_fy_year($bp_master->company_id);
         // set counter
-        $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+        $financial_year = Financialyear::where(['year' => $Financialyear])->first();
         $order_fulfilment_counter = 0;
         if ($financial_year) {
             $order_fulfilment_counter = $financial_year->order_fulfilment_counter + 1;
@@ -759,7 +761,7 @@ class OrderfulfilmentController extends Controller
         unset($existing_data['order_fulfillment_id']);
         $goodsservicereceipt->fill($existing_data);
         $goodsservicereceipt->bill_no = $bill_no;
-        $goodsservicereceipt->fy_year  = session('fy_year');
+        $goodsservicereceipt->fy_year  = $Financialyear;
         $goodsservicereceipt->order_booking_id = $id;
         $goodsservicereceipt->customer_inv_no = '';
 

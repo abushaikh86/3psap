@@ -57,7 +57,7 @@ $user = Auth()
                 <div class="mr-auto"></div>
 
                 @php
-
+                if(session('fy_year') != 0){
                 $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
 
                 // If the financial year does not exist, create a new entry and deactivate other financial years
@@ -68,6 +68,7 @@ $user = Auth()
                 $financial_year->year = session('fy_year');
                 $financial_year->active = 1;
                 $financial_year->save();
+                }
                 }
 
                 @endphp

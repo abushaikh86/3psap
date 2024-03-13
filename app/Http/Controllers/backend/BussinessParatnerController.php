@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\backend\AdminUsers;
 use App\Models\backend\Area;
 use App\Models\backend\Beat;
+use App\Models\backend\Bpgroup;
 use App\Models\backend\InternalUser;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -145,193 +146,197 @@ class BussinessParatnerController extends Controller
                             'bp_name' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
                             'bp_organisation_type' => getOrCreateIdUnified(BussinessPartnerOrganizationType::class, 'bp_organisation_type', $sheet->getCell('C' . $row)->getValue(), 'bp_organisation_type_id'),
                             'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id',null,null,null,1),
-                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id'),
-                            'bp_group' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
-                            'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('G' . $row)->getValue(), 'payment_terms_id'),
-                            'gst_details' => trim(addslashes($sheet->getCell('H' . $row)->getValue())),
-                            'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('I' . $row)->getValue(), 'id'),
-                            'rcm_app' => (int) trim(addslashes($sheet->getCell('J' . $row)->getValue() == 'Yes' ? 1 : 0)),
-                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('K' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
-                            'msme_reg' => (int) trim(addslashes($sheet->getCell('L' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                            'bp_channel' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('E' . $row)->getValue(), 'id'),
+                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('F' . $row)->getValue(), 'business_partner_category_id'),
+                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id'),
+                            'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('H' . $row)->getValue(), 'payment_terms_id'),
+                            'gst_details' => trim(addslashes($sheet->getCell('I' . $row)->getValue())),
+                            'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('J' . $row)->getValue(), 'id'),
+                            'rcm_app' => (int) trim(addslashes($sheet->getCell('K' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('L' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
+                            'msme_reg' => (int) trim(addslashes($sheet->getCell('M' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                            'company_id' => getOrCreateIdUnified(Company::class, 'name', $sheet->getCell('N' . $row)->getValue(), 'company_id'),
                         ];
 
                         //to enter dependent data in database
-                        $country = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('Q' . $row)->getValue(), 'country_id');
-                        $state = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('R' . $row)->getValue(), 'id', $country);
+                        $country = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('S' . $row)->getValue(), 'country_id');
+                        $state = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('T' . $row)->getValue(), 'id', $country);
                         //bill-address
-                        if (!empty($sheet->getCell('M' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('O' . $row)->getValue())) {
                             $bill_add = [
                                 'address_type' => 'Bill-To/ Bill-From',
-                                'bp_address_name' => trim(addslashes($sheet->getCell('M' . $row)->getValue())),
-                                'building_no_name' => trim(addslashes($sheet->getCell('N' . $row)->getValue())),
-                                'street_name' => trim(addslashes($sheet->getCell('O' . $row)->getValue())),
-                                'landmark' => trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                                'bp_address_name' => trim(addslashes($sheet->getCell('O' . $row)->getValue())),
+                                'building_no_name' => trim(addslashes($sheet->getCell('P' . $row)->getValue())),
+                                'street_name' => trim(addslashes($sheet->getCell('Q' . $row)->getValue())),
+                                'landmark' => trim(addslashes($sheet->getCell('R' . $row)->getValue())),
                                 'country' => $country,
                                 'state' => !empty($country) ? $state : null,
-                                'district' => !empty($state) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('S' . $row)->getValue(), 'city_id', $state) : null,
-                                'city' => trim(addslashes($sheet->getCell('T' . $row)->getValue())),
-                                'pin_code' => (int) trim(addslashes($sheet->getCell('U' . $row)->getValue())),
+                                'district' => !empty($state) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('U' . $row)->getValue(), 'city_id', $state) : null,
+                                'city' => trim(addslashes($sheet->getCell('V' . $row)->getValue())),
+                                'pin_code' => (int) trim(addslashes($sheet->getCell('W' . $row)->getValue())),
                             ];
                         }
 
                         //to enter dependent data in database
-                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('Z' . $row)->getValue(), 'country_id');
-                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AA' . $row)->getValue(), 'id', $country);
+                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AB' . $row)->getValue(), 'country_id');
+                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AC' . $row)->getValue(), 'id', $country);
                         //ship-address
-                        if (!empty($sheet->getCell('V' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('X' . $row)->getValue())) {
                             $ship_add = [
                                 'address_type' => 'Ship-To/ Ship-From',
-                                'bp_address_name' => trim(addslashes($sheet->getCell('V' . $row)->getValue())),
-                                'building_no_name' => trim(addslashes($sheet->getCell('W' . $row)->getValue())),
-                                'street_name' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
-                                'landmark' => trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
+                                'bp_address_name' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
+                                'building_no_name' => trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
+                                'street_name' => trim(addslashes($sheet->getCell('Z' . $row)->getValue())),
+                                'landmark' => trim(addslashes($sheet->getCell('AA' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AB' . $row)->getValue(), 'city_id',$state1) : null,
-                                'city' => trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
-                                'pin_code' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
+                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AD' . $row)->getValue(), 'city_id',$state1) : null,
+                                'city' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
+                                'pin_code' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AE' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AG' . $row)->getValue())) {
                             // contact-data bill
                             $contact_details_bill = [
                                 'type' => 'Bill-To/ Bill-From',
-                                'contact_person' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
-                                'email_id' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
-                                'mobile_no' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
-                                'landline' => trim(addslashes($sheet->getCell('AH' . $row)->getValue())),
+                                'contact_person' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AH' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AI' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AK' . $row)->getValue())) {
                             // contact-data ship
                             $contact_details_ship = [
                                 'type' => 'Ship-To/ Ship-From',
-                                'contact_person' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
-                                'email_id' => trim(addslashes($sheet->getCell('AJ' . $row)->getValue())),
-                                'mobile_no' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
-                                'landline' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
+                                'contact_person' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AM' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AO' . $row)->getValue())) {
                             // bank-data
                             $bank_details = [
-                                'acc_holdername' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
-                                'bank_name' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
-                                'bank_branch' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
-                                'ifsc' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
-                                'ac_number' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
-                                'bank_address' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
+                                'acc_holdername' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
+                                'bank_name' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                                'bank_branch' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
+                                'ifsc' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
+                                'ac_number' => trim(addslashes($sheet->getCell('AS' . $row)->getValue())),
+                                'bank_address' => trim(addslashes($sheet->getCell('AT' . $row)->getValue())),
                             ];
                         }
                     } else if ($request->import_type  == 'cus') {
 
                         $asm_email = '';
-                        if (!empty($sheet->getCell('H' . $row)->getValue()) && !empty($sheet->getCell('G' . $row)->getValue())) {
-                            $asm_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('H' . $row)->getValue(), 'admin_user_id', 5,$sheet->getCell('G' . $row)->getValue());
+                        if (!empty($sheet->getCell('I' . $row)->getValue()) && !empty($sheet->getCell('H' . $row)->getValue())) {
+                            $asm_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('I' . $row)->getValue(), 'admin_user_id', 5,$sheet->getCell('H' . $row)->getValue());
                             $ase_email = '';
-                            if (!empty($sheet->getCell('J' . $row)->getValue()) && !empty($sheet->getCell('I' . $row)->getValue())) {
-                                $ase_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('J' . $row)->getValue(), 'admin_user_id', 4,$sheet->getCell('I' . $row)->getValue(), $asm_email);
+                            if (!empty($sheet->getCell('K' . $row)->getValue()) && !empty($sheet->getCell('J' . $row)->getValue())) {
+                                $ase_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('K' . $row)->getValue(), 'admin_user_id', 4,$sheet->getCell('J' . $row)->getValue(), $asm_email);
 
                                 $sales_officer_email = '';
-                                if (!empty($sheet->getCell('L' . $row)->getValue()) && !empty($sheet->getCell('K' . $row)->getValue())) {
-                                    $sales_officer_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('L' . $row)->getValue(), 'admin_user_id', 6,$sheet->getCell('K' . $row)->getValue(),$ase_email);
+                                if (!empty($sheet->getCell('M' . $row)->getValue()) && !empty($sheet->getCell('L' . $row)->getValue())) {
+                                    $sales_officer_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('M' . $row)->getValue(), 'admin_user_id', 6,$sheet->getCell('L' . $row)->getValue(),$ase_email);
                                 }
                             }
                         }
-                        // dd(getId('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id'));
+                        // dd($sheet->getCell('H' . $row)->getValue(),$asm_email);
                         $data = [
                             'business_partner_type' => getOrCreateIdUnified(BussinessMasterType::class, 'bussiness_master_type', $sheet->getCell('A' . $row)->getValue(), 'bussiness_master_type_id'),
                             'bp_name' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
                             'bp_organisation_type' => getOrCreateIdUnified(BussinessPartnerOrganizationType::class, 'bp_organisation_type', $sheet->getCell('C' . $row)->getValue(), 'bp_organisation_type_id'),
                             'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id',null,null,null,1),
-                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id'),
-                            'bp_group' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
+                            'bp_channel' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('E' . $row)->getValue(), 'id'),
+                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('F' . $row)->getValue(), 'business_partner_category_id'),
+                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id'),
                             'sales_manager' => $asm_email,
                             'ase' => !empty($asm_email) ? $ase_email : null,
                             'sales_officer' => !empty($ase_email) ? $sales_officer_email : null,
-                            'salesman' => !empty($sales_officer_email && $sheet->getCell('M' . $row)->getValue()) ? getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('N' . $row)->getValue(), 'admin_user_id', 8, $sheet->getCell('M' . $row)->getValue(),$sales_officer_email) : null,
-                            'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('O' . $row)->getValue(), 'payment_terms_id'),
-                            'gst_details' => trim(addslashes($sheet->getCell('P' . $row)->getValue())),
-                            'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('Q' . $row)->getValue(), 'id'),
-                            'rcm_app' => (int) trim(addslashes($sheet->getCell('R' . $row)->getValue() == 'Yes' ? 1 : 0)),
-                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('S' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
-                            'msme_reg' => (int) trim(addslashes($sheet->getCell('T' . $row)->getValue() == 'Yes' ? 1 : 0)),
-                            'beat_id' => getOrCreateIdUnified(Beat::class, 'beat_name', $sheet->getCell('BA' . $row)->getValue(), 'beat_id',null,null,null,1),
+                            'salesman' => !empty($sales_officer_email && $sheet->getCell('N' . $row)->getValue()) ? getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('O' . $row)->getValue(), 'admin_user_id', 8, $sheet->getCell('N' . $row)->getValue(),$sales_officer_email) : null,
+                            'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('P' . $row)->getValue(), 'payment_terms_id'),
+                            'gst_details' => trim(addslashes($sheet->getCell('Q' . $row)->getValue())),
+                            'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('R' . $row)->getValue(), 'id'),
+                            'rcm_app' => (int) trim(addslashes($sheet->getCell('S' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('T' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
+                            'msme_reg' => (int) trim(addslashes($sheet->getCell('U' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                            'company_id' => getOrCreateIdUnified(Company::class, 'name', $sheet->getCell('V' . $row)->getValue(), 'company_id'),
+                            'beat_id' => getOrCreateIdUnified(Beat::class, 'beat_name', $sheet->getCell('BC' . $row)->getValue(), 'beat_id',null,null,null,1),
                         ];
 
                         // dd($data);
                         //to enter dependent data in database
-                        $country = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('Y' . $row)->getValue(), 'country_id');
-                        $state = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('Z' . $row)->getValue(), 'id', $country);
+                        $country = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AA' . $row)->getValue(), 'country_id');
+                        $state = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AB' . $row)->getValue(), 'id', $country);
                         //bill-address
-                        if (!empty($sheet->getCell('Q' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('W' . $row)->getValue())) {
                             $bill_add = [
                                 'address_type' => 'Bill-To/ Bill-From',
-                                'bp_address_name' => trim(addslashes($sheet->getCell('U' . $row)->getValue())),
-                                'building_no_name' => trim(addslashes($sheet->getCell('V' . $row)->getValue())),
-                                'street_name' => trim(addslashes($sheet->getCell('W' . $row)->getValue())),
-                                'landmark' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
+                                'bp_address_name' => trim(addslashes($sheet->getCell('W' . $row)->getValue())),
+                                'building_no_name' => trim(addslashes($sheet->getCell('X' . $row)->getValue())),
+                                'street_name' => trim(addslashes($sheet->getCell('Y' . $row)->getValue())),
+                                'landmark' => trim(addslashes($sheet->getCell('Z' . $row)->getValue())),
                                 'country' => $country,
                                 'state' => !empty($country) ? $state : null,
-                                'district' => !empty($state) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AA' . $row)->getValue(), 'city_id', $state) : null,
-                                'city' => trim(addslashes($sheet->getCell('AB' . $row)->getValue())),
-                                'pin_code' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue())),
+                                'district' => !empty($state) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AC' . $row)->getValue(), 'city_id', $state) : null,
+                                'city' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
+                                'pin_code' => (int) trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
                             ];
                         }
 
                         //to enter dependent data in database
-                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AH' . $row)->getValue(), 'country_id',1);
-                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AI' . $row)->getValue(), 'id', $country,1);
+                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AJ' . $row)->getValue(), 'country_id',1);
+                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AK' . $row)->getValue(), 'id', $country,1);
                         //ship-address
-                        if (!empty($sheet->getCell('Z' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AF' . $row)->getValue())) {
                             $ship_add = [
                                 'address_type' => 'Ship-To/ Ship-From',
-                                'bp_address_name' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
-                                'building_no_name' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
-                                'street_name' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
-                                'landmark' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
+                                'bp_address_name' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
+                                'building_no_name' => trim(addslashes($sheet->getCell('AG' . $row)->getValue())),
+                                'street_name' => trim(addslashes($sheet->getCell('AH' . $row)->getValue())),
+                                'landmark' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AJ' . $row)->getValue(), 'city_id',1) : null,
-                                'city' => trim(addslashes($sheet->getCell('AK' . $row)->getValue())),
-                                'pin_code' => trim(addslashes($sheet->getCell('AL' . $row)->getValue())),
+                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AL' . $row)->getValue(), 'city_id',1) : null,
+                                'city' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
+                                'pin_code' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AI' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AO' . $row)->getValue())) {
                             // contact-data bill
                             $contact_details_bill = [
                                 'type' => 'Bill-To/ Bill-From',
-                                'contact_person' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
-                                'email_id' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
-                                'mobile_no' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
-                                'landline' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                                'contact_person' => trim(addslashes($sheet->getCell('AO' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AP' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AM' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AS' . $row)->getValue())) {
                             // contact-data ship
                             $contact_details_ship = [
                                 'type' => 'Ship-To/ Ship-From',
-                                'contact_person' => trim(addslashes($sheet->getCell('AQ' . $row)->getValue())),
-                                'email_id' => trim(addslashes($sheet->getCell('AR' . $row)->getValue())),
-                                'mobile_no' => trim(addslashes($sheet->getCell('AS' . $row)->getValue())),
-                                'landline' => trim(addslashes($sheet->getCell('AT' . $row)->getValue())),
+                                'contact_person' => trim(addslashes($sheet->getCell('AS' . $row)->getValue())),
+                                'email_id' => trim(addslashes($sheet->getCell('AT' . $row)->getValue())),
+                                'mobile_no' => trim(addslashes($sheet->getCell('AU' . $row)->getValue())),
+                                'landline' => trim(addslashes($sheet->getCell('AV' . $row)->getValue())),
                             ];
                         }
 
-                        if (!empty($sheet->getCell('AM' . $row)->getValue())) {
+                        if (!empty($sheet->getCell('AW' . $row)->getValue())) {
                             // bank-data
                             $bank_details = [
-                                'acc_holdername' => trim(addslashes($sheet->getCell('AU' . $row)->getValue())),
-                                'bank_name' => trim(addslashes($sheet->getCell('AV' . $row)->getValue())),
-                                'bank_branch' => trim(addslashes($sheet->getCell('AW' . $row)->getValue())),
-                                'ifsc' => trim(addslashes($sheet->getCell('AX' . $row)->getValue())),
-                                'ac_number' => trim(addslashes($sheet->getCell('AY' . $row)->getValue())),
-                                'bank_address' => trim(addslashes($sheet->getCell('AZ' . $row)->getValue())),
+                                'acc_holdername' => trim(addslashes($sheet->getCell('AW' . $row)->getValue())),
+                                'bank_name' => trim(addslashes($sheet->getCell('AX' . $row)->getValue())),
+                                'bank_branch' => trim(addslashes($sheet->getCell('AY' . $row)->getValue())),
+                                'ifsc' => trim(addslashes($sheet->getCell('AZ' . $row)->getValue())),
+                                'ac_number' => trim(addslashes($sheet->getCell('BA' . $row)->getValue())),
+                                'bank_address' => trim(addslashes($sheet->getCell('BB' . $row)->getValue())),
                             ];
                         }
                     }
@@ -345,6 +350,7 @@ class BussinessParatnerController extends Controller
                     // } else {
                     $pricings = new BussinessPartnerMaster();
                     $pricings->fill($data);
+                    $pricings->company_id = $request->company_id;
                     // }
                     $pricings->save();
 
@@ -397,15 +403,15 @@ class BussinessParatnerController extends Controller
         $sales_manager = AdminUsers::where('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');//('company_id', session('company_id'))->whereIn//27-02-2024
         //fetch ase
         $ase_ids = Role::where('department_id', 4)->pluck('id')->toArray();
-        $ase = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
+        $ase = AdminUsers::whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
 
         //fetch sales officers
         $sales_officer_ids = Role::where('department_id', 6)->pluck('id')->toArray();
-        $sales_officer = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $sales_officer_ids)->get()->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::whereIn('role', $sales_officer_ids)->get()->pluck('first_name', 'admin_user_id');
 
         //fetch salesman
         $salesman_ids = Role::where('department_id', 8)->pluck('id')->toArray();
-        $salesman = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $salesman_ids)->get()->pluck('first_name', 'admin_user_id');
+        $salesman = AdminUsers::whereIn('role', $salesman_ids)->get()->pluck('first_name', 'admin_user_id');
 
         $area_data = Area::pluck('area_name', 'area_id');
         $route_data = Route::pluck('route_name', 'route_id');
@@ -573,19 +579,20 @@ class BussinessParatnerController extends Controller
 
         //fetch asm
         $salesman_manager_ids = Role::where('department_id', 5)->pluck('id')->toArray();
-        $sales_manager = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');
+        $sales_manager = AdminUsers::whereIn('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');
 
+        // dd($sales_manager);
         //fetch ase
         $ase_ids = Role::where('department_id', 4)->pluck('id')->toArray();
-        $ase = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
+        $ase = AdminUsers::whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
 
         //fetch sales officers
         $sales_officer_ids = Role::where('department_id', 6)->pluck('id')->toArray();
-        $sales_officer = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $sales_officer_ids)->get()->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::whereIn('role', $sales_officer_ids)->get()->pluck('first_name', 'admin_user_id');
 
         //fetch salesman
         $salesman_ids = Role::where('department_id', 8)->pluck('id')->toArray();
-        $salesman = AdminUsers::where('company_id', session('company_id'))->whereIn('role', $salesman_ids)->get()->pluck('first_name', 'admin_user_id');
+        $salesman = AdminUsers::whereIn('role', $salesman_ids)->get()->pluck('first_name', 'admin_user_id');
 
         $officer_users = [];
         $ase_users = [];
@@ -595,9 +602,10 @@ class BussinessParatnerController extends Controller
             $ase_users = AdminUsers::where(['admin_user_id' => $officer_users->parent_users])->first();
             $asm_users = AdminUsers::where(['admin_user_id' => $ase_users->parent_users])->first();
         }
+        $company = Company::pluck('name', 'company_id');//28-02-2024//for distributor tagging
 
 
-        return view('backend.bussinesspartner.edit', compact('officer_users', 'ase_users', 'asm_users', 'sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
+        return view('backend.bussinesspartner.edit', compact('officer_users','company', 'ase_users', 'asm_users', 'sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
     }
 
     public function update(Request $request, $id = null)
@@ -669,17 +677,19 @@ class BussinessParatnerController extends Controller
 
                 //for contact
                 if ($data['type'] == 'Bill-To/ Bill-From') {
-                    $address = BussinessPartnerContactDetails::firstOrNew(
+                    $address = BussinessPartnerContactDetails::where(
                         ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id]
-                    );
+                    )->first();
+                    if(isset($address)){
                     $address->fill($full_data);
                     $address->save();
+                    }
                 }
 
                 if ($data['type1'] == 'Ship-To/ Ship-From') {
-                    $address1 = BussinessPartnerContactDetails::firstOrNew(
+                    $address1 = BussinessPartnerContactDetails::where(
                         ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id]
-                    );
+                    )->first();
                     $arr_data = [
                         'type' => $data['type1'],
                         'bussiness_partner_id' => $bid,
@@ -689,8 +699,10 @@ class BussinessParatnerController extends Controller
                         'landline'  => $data['landline1'],
                     ];
 
+                    if(isset($address1)){
                     $address1->fill($arr_data);
                     $address1->save();
+                    }
                 }
 
 

@@ -63,7 +63,7 @@
                             method: 'GET',
                             data: {
                                 customer_id: customer_id,
-                                'item_code': item.name,
+                                'item_code': item.item_code,
                                 'sku': sku
                             },
                             success: function(response) {

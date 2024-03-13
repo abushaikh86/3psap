@@ -55,8 +55,11 @@ class GoodsservicereceiptsController extends Controller
         $GLOBALS['breadcrumb'] = [['name' => 'GoodsServiceReceipts', 'route' => ""]];
 
         if ($request->ajax()) {
+            if(session('company_id') != 0 && session('fy_year')!=0){
             $goodsservicereceipts = GoodsServiceReceipts::where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
-
+            }else{
+            $goodsservicereceipts = GoodsServiceReceipts::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            }
             // dd($purchaseorder);
 
             return DataTables::of($goodsservicereceipts)
@@ -69,13 +72,13 @@ class GoodsservicereceiptsController extends Controller
                         $actionBtn .= '<a href="' . route('admin.goodsservicereceipts.view', ['id' => $goodsservicereceipts->goods_service_receipt_id]) . '"
                     class="btn btn-sm btn-primary" title="View"><i class="feather icon-eye"></i></a> ';
                     }
-                    if (request()->user()->can('Clone Goods Receipt PO')) {
-                        if ($goodsservicereceipts->is_inventory_updated && empty($ap_inv_data->ap_inv_no)) {
-                            $actionBtn .= '<a href="' . route('admin.goodsservicereceipts.createapinvoice', ['id' => $goodsservicereceipts->goods_service_receipt_id]) . '
-                     " class="btn btn-sm btn-info" title="Create A/P Invoice"   >
-                     <i class="feather icon-plus"></i></a> ';
-                        }
-                    }
+                    // if (request()->user()->can('Clone Goods Receipt PO')) {
+                    //     if ($goodsservicereceipts->is_inventory_updated && empty($ap_inv_data->ap_inv_no)) {
+                    //         $actionBtn .= '<a href="' . route('admin.goodsservicereceipts.createapinvoice', ['id' => $goodsservicereceipts->goods_service_receipt_id]) . '
+                    //  " class="btn btn-sm btn-info" title="Create A/P Invoice"   >
+                    //  <i class="feather icon-plus"></i></a> ';
+                    //     }
+                    // }
                     if (request()->user()->can('Update Goods Receipt PO')) {
                         // dd("yes");
                         if (!$goodsservicereceipts->is_inventory_updated) {
@@ -247,7 +250,7 @@ class GoodsservicereceiptsController extends Controller
             if ($financial_year) {
                 $purchase_order_counter = $financial_year->purchase_order_counter + 1;
             }
-            $bill_no = "3PSAP/" . $financial_year->year . "/" . $purchase_order_counter;
+            $bill_no = "EUREKA/" . $financial_year->year . "/" . $purchase_order_counter;
 
             $customer = BussinessPartnerMaster::where('business_partner_id', $goodsservicereceipts->party_id)->first();
             $party_name = "";
@@ -369,9 +372,6 @@ class GoodsservicereceiptsController extends Controller
             //update Goods service Receipts
             if ($goodsservicereceipt->update()) {
 
-
-
-
                 //save initial data
                 $sub_total = $cgst_total = $sgst_utgst_total = $igst_total = $gst_grand_total = $grand_total = 0;
                 $gst_rate = 0;
@@ -439,8 +439,8 @@ class GoodsservicereceiptsController extends Controller
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
                                 'batch_no' => $batch_no,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                             ])->first();
 
                             $perday_inventoryExist = PerDayInventory::where([
@@ -448,8 +448,8 @@ class GoodsservicereceiptsController extends Controller
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
                                 'batch_no' => $batch_no,
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                             ])
                                 ->whereDate('created_at', Carbon::today())
                                 ->first();
@@ -467,8 +467,8 @@ class GoodsservicereceiptsController extends Controller
                                 'item_code' => $row['item_code'],
                                 'sku' => $product->sku,
                                 'qty' => optional($inventoryExist)->qty + $row['qty'],
-                                'fy_year' => session('fy_year'),
-                                'company_id' => session('company_id'),
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                                 'user_id' => Auth()->guard('admin')->user()->admin_user_id,
                                 'unit_price' => $row['taxable_amount'],
                                 'manufacturing_date' => $row['manufacturing_date'] ?? optional($inventory)->manufacturing_date ?? '',
@@ -765,8 +765,10 @@ class GoodsservicereceiptsController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
+        $bp_master = BussinessPartnerMaster::where('business_partner_id',$existing_data->party_id)->first();
+        $Financialyear = get_fy_year($bp_master->company_id);
         // set counter
-        $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+        $financial_year = Financialyear::where(['year' => $Financialyear])->first();
         $goods_servie_receipt_counter = 0;
         if ($financial_year) {
             $goods_servie_receipt_counter = $financial_year->goods_servie_receipt_counter + 1;
@@ -780,7 +782,7 @@ class GoodsservicereceiptsController extends Controller
         $goodsservicereceipt = new GoodsServiceReceipts();
         $goodsservicereceipt->fill($existing_data);
         $goodsservicereceipt->bill_no = $bill_no;
-        $goodsservicereceipt->fy_year  = session('fy_year');
+        $goodsservicereceipt->fy_year  = $Financialyear;
         $goodsservicereceipt->purchase_order_id = $id;
         $goodsservicereceipt->vendor_inv_no = '';
 
@@ -814,8 +816,18 @@ class GoodsservicereceiptsController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
+
+
+        $roles = Role::pluck('name', 'id')->all();
+        $greceipt = GoodsServiceReceipts::where('goods_service_receipt_id', $id)->first();
+        // dd($purchaseorder->toArray());
+        $apinvoice = Apinvoice::where('vendor_inv_no', $greceipt->vendor_inv_no)->first();
+        // dd($goods_receipt_exist->toArray());
+
         // set counter
-        $financial_year = Financialyear::where(['year' => session('fy_year')])->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_id',$greceipt->party_id)->first();
+        $Financialyear = get_fy_year($bp_master->company_id);
+        $financial_year = Financialyear::where(['year' => $Financialyear])->first();
         $ap_invoice_counter = 0;
         if ($financial_year) {
             $ap_invoice_counter = $financial_year->ap_invoice_counter + 1;
@@ -824,11 +836,6 @@ class GoodsservicereceiptsController extends Controller
         $financial_year->ap_invoice_counter = $ap_invoice_counter;
         $financial_year->save();
 
-        $roles = Role::pluck('name', 'id')->all();
-        $greceipt = GoodsServiceReceipts::where('goods_service_receipt_id', $id)->first();
-        // dd($purchaseorder->toArray());
-        $apinvoice = Apinvoice::where('vendor_inv_no', $greceipt->vendor_inv_no)->first();
-        // dd($goods_receipt_exist->toArray());
         if (!isset($apinvoice)) {
             $goods_receipt = new Apinvoice();
             //$party = BussinessPartnerMaster::where('business_partner_id',$purchaseorder->party_id)->first();
@@ -839,8 +846,6 @@ class GoodsservicereceiptsController extends Controller
             $goods_receipt->fill($properties);
             $goods_receipt->gr_id = $id;
             $goods_receipt->bill_no = $bill_no;
-            $goods_receipt->fy_year  = session('fy_year');
-            $goods_receipt->company_id  = session('company_id');
             // dd($goods_receipt);
             if ($goods_receipt->save()) {
                 $purchaseorder_items = GoodsServiceReceiptsItems::where('goods_service_receipt_id', $id)->get();
@@ -860,9 +865,10 @@ class GoodsservicereceiptsController extends Controller
 
                         if ($inserted) {
                             $gst_rate = $goods_receipt_items->gst_rate;
+                            // dd($gst_rate);
                             if (!empty($gst_rate)) {
                                 $get_data = Gst::where('gst_id', $gst_rate)->first();
-                                $gst_rate = $get_data->gst_percent;
+                                $gst_rate = isset($get_data->gst_percent)?$get_data->gst_percent:18;
                             }
                             Apinvoice::where('purchase_order_id', $goods_receipt_items->goods_service_receipt_id)->update(['gst_rate' => $gst_rate]);
 

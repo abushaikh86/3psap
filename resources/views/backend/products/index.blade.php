@@ -81,9 +81,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Image</th>
-                                        <th>Item Type</th>
+                                        <!-- <th>Item Type</th> -->
                                         <th>Item Code</th>
                                         <th>Base Pack</th>
+                                        <th>Description</th>
                                         <th>Brand</th>
                                         <th>Category</th>
         
@@ -105,10 +106,11 @@
                                             @endif
                                         </td>
                                         </td>
-                                        <td>{{ isset($product->item_type) ? $product->item_type->item_type_name : '' }}
-                                        </td>
+                                        <!-- <td>{{ isset($product->item_type) ? $product->item_type->item_type_name : '' }}
+                                        </td> -->
                                         <td>{{ $product->item_code }}</td>
                                         <td>{{ $product->sku }}</td>
+                                        <td>{{ $product->item_description }}</td>
                                         <td>{{ isset($product->brand) ? $product->brand->brand_name : '' }}
                                         </td>
                                         <td>{{ isset($product->category) ? $product->category->category_name : '' }}

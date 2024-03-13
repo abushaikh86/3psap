@@ -12,6 +12,7 @@ use App\Models\backend\Area;
 use App\Models\backend\Beat;
 use App\Models\backend\BillBooking;
 use App\Models\backend\BillBookingItems;
+use App\Models\backend\Bpgroup;
 use App\Models\backend\BusinessPartnerCategory;
 use App\Models\backend\BussinessPartnerMaster;
 use App\Models\backend\Categories;
@@ -57,7 +58,25 @@ class MasterDropdownController extends Controller
         foreach ($data as $key => $val) {
             $data_options .= '<option value="' . $key . '">' . $val . '</option>';
         }
-        return ['flag' => 'success', 'message' => 'New Business Partner Category Added!', 'data' => $data_options];
+        return ['flag' => 'success', 'message' => 'New Business Partner Channel Added!', 'data' => $data_options];
+    }
+
+    public function store_group(Request $request)
+    {
+
+        // dd($request->all());
+        $model = new Bpgroup();
+        $model->name = $request->data_name[0];
+        $model->save();
+        // $model->fill($request->all());
+
+        $data = Bpgroup::orderBy('created_at', 'desc')->pluck('name', 'id');
+        // $brands->put('add_brand','Add Brand +');
+        $data_options = "";
+        foreach ($data as $key => $val) {
+            $data_options .= '<option value="' . $key . '">' . $val . '</option>';
+        }
+        return ['flag' => 'success', 'message' => 'New Business Partner Group Added!', 'data' => $data_options];
     }
 
     public function store_users(Request $request)
@@ -75,8 +94,7 @@ class MasterDropdownController extends Controller
         $model->role = $request->role;
         $model->save();
 
-        $data = AdminUsers::orderBy('created_at', 'desc')->
-        where(['parent_users'=>$request->data_name[3],'role'=> $request->role])->pluck('first_name', 'admin_user_id');
+        $data = AdminUsers::orderBy('created_at', 'desc')->where(['parent_users' => $request->data_name[3], 'role' => $request->role])->pluck('first_name', 'admin_user_id');
         $data_options = "";
         foreach ($data as $key => $val) {
             $data_options .= '<option value="' . $key . '">' . $val . '</option>';
@@ -264,11 +282,11 @@ class MasterDropdownController extends Controller
     }
 
 
-    
+
     public function getAsm(Request $request)
     {
         $role = $request->input('id');
-        $sales_managers = AdminUsers::where(['account_status'=>1,'role'=>$role])->pluck('first_name', 'admin_user_id');
+        $sales_managers = AdminUsers::where(['account_status' => 1, 'role' => $role])->pluck('first_name', 'admin_user_id');
         return response()->json($sales_managers);
     }
 
@@ -276,7 +294,7 @@ class MasterDropdownController extends Controller
     public function getAse(Request $request)
     {
         $salesManagerId = $request->input('id');
-        $sales_officer = AdminUsers::where(['account_status'=>1,'parent_users' => $salesManagerId])->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::where(['account_status' => 1, 'parent_users' => $salesManagerId])->pluck('first_name', 'admin_user_id');
 
         return response()->json($sales_officer);
     }
@@ -284,7 +302,7 @@ class MasterDropdownController extends Controller
     public function getSalesOfficers(Request $request)
     {
         $aseId = $request->input('id');
-        $sales_officer = AdminUsers::where(['account_status'=>1,'parent_users' => $aseId])->pluck('first_name', 'admin_user_id');
+        $sales_officer = AdminUsers::where(['account_status' => 1, 'parent_users' => $aseId])->pluck('first_name', 'admin_user_id');
 
         return response()->json($sales_officer);
     }
@@ -292,7 +310,7 @@ class MasterDropdownController extends Controller
     public function getSalesmen(Request $request)
     {
         $salesOfficerId = $request->input('id');
-        $salesmen = AdminUsers::where(['account_status'=>1,'role'=>37])->pluck('first_name', 'admin_user_id');//,'parent_users' => $salesOfficerId
+        $salesmen = AdminUsers::where(['account_status' => 1, 'role' => 37])->pluck('first_name', 'admin_user_id'); //,'parent_users' => $salesOfficerId
 
         return response()->json($salesmen);
     }
@@ -301,7 +319,7 @@ class MasterDropdownController extends Controller
     public function getPricing(Request $request)
     {
         $pricing_type = $request->input('id');
-        $pricing = Pricings::where(['pricing_type'=>$pricing_type,'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        $pricing = Pricings::where(['pricing_type' => $pricing_type, 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
         return response()->json($pricing);
     }
 
@@ -344,6 +362,7 @@ class MasterDropdownController extends Controller
     {
 
         $series_number = $request->id;
+        $party_id = $request->party_id;
         $exploded = explode('-', $series_number);
         $module = $exploded[0];
 
@@ -352,14 +371,23 @@ class MasterDropdownController extends Controller
         $modules = DB::table('modules')->pluck('name', 'id')->toArray();
         $moduleName = DB::table('modules')->where('id', $data->module)->value('name');
 
-        $fy_year = Financialyear::where(['year' => session('fy_year'), 'active' => 1])->first();
+        if (!empty($party_id)) {
+            $bp = BussinessPartnerMaster::where('business_partner_id', $party_id)->first();
+            $Financialyear = get_fy_year($bp->company_id);
+            // dd($Financialyear);
+            $fy_year = Financialyear::where(['year' => $Financialyear])->first();
+        } else {
+            $fy_year = Financialyear::where(['year' => session('fy_year')])->first();
+        }
 
         if ($moduleName == $modules[1]) {
-            $doc_number = $series_number . '-' . $fy_year->purchase_order_counter;
+            $doc_number = $series_number . '-' .  $fy_year->year . '-' . $fy_year->purchase_order_counter;
         } else if ($moduleName == $modules[2]) {
-            $doc_number = $series_number . '-' .  $fy_year->goods_servie_receipt_counter;
+            $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->goods_servie_receipt_counter;
         } else if ($moduleName == $modules[3]) {
-            $doc_number = $series_number . '-' .  $fy_year->ap_invoice_counter;
+            $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->ap_invoice_counter;
+        }else if($moduleName == $modules[9]){
+            $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->order_booking_counter;
         }
 
 
@@ -429,7 +457,7 @@ class MasterDropdownController extends Controller
             $pricing_data = PricingItem::where([
                 'pricing_master_id' => $data->pricing_profile,
                 'item_code' => $item_code, 'sku' => $sku
-            ])->first();
+                ])->first();
             if (!empty($pricing_data)) {
                 return $pricing_data->selling_price;
             } else {

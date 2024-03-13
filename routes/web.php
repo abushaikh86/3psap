@@ -67,6 +67,7 @@ use App\Http\Controllers\backend\CountryController;
 use App\Http\Controllers\backend\StateController;
 use App\Http\Controllers\backend\CityController;
 use App\Http\Controllers\backend\ZonesController;//27-02-2024
+use App\Http\Controllers\backend\BpgroupController;//11-03-2024
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -366,6 +367,7 @@ Route::prefix('admin')->group(function () {
 
         // usama 29-08-2023
         Route::post('/master/store_category/', [MasterDropdownController::class, 'store_category'])->name('admin.bp_category');
+        Route::post('/master/store_group/', [MasterDropdownController::class, 'store_group'])->name('admin.store_group');
         Route::post('/master/store_users/', [MasterDropdownController::class, 'store_users'])->name('admin.store_users');
         Route::post('/master/store_area/', [MasterDropdownController::class, 'store_area'])->name('admin.store_area');
         Route::post('/master/store_route/', [MasterDropdownController::class, 'store_route'])->name('admin.store_route');
@@ -830,5 +832,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/zones/delete/{id}', [ZonesController::class, 'destroyZones'])->name('admin.zones.delete');
         Route::get('/zones/edit/{id}', [ZonesController::class, 'edit'])->name('admin.zones.edit');
         Route::post('/zones/update', [ZonesController::class, 'update'])->name('admin.zones.update');
+
+        //admin.bpgroup -usama_11-03-2024
+        Route::get('/bpgroup', [BpgroupController::class, 'index'])->name('admin.bpgroup');
+        Route::get('/bpgroup/create', [BpgroupController::class, 'create'])->name('admin.bpgroup.create');
+        Route::post('/bpgroup/store', [BpgroupController::class, 'store'])->name('admin.bpgroup.store');
+        Route::get('/bpgroup/delete/{id}', [BpgroupController::class, 'destroybpgroup'])->name('admin.bpgroup.delete');
+        Route::get('/bpgroup/edit/{id}', [BpgroupController::class, 'edit'])->name('admin.bpgroup.edit');
+        Route::post('/bpgroup/update', [BpgroupController::class, 'update'])->name('admin.bpgroup.update');
     });
 });

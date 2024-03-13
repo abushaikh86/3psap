@@ -83,7 +83,10 @@ class CompanyController extends Controller
       return redirect()->back()->withErrors($validator)->withInput();
     }
     $company = new Company();
-
+    if (!empty($request->parent_users)) {
+      $parent_users = implode(',', $request->parent_users);
+    }
+    $company->parent_users =$parent_users; 
     if ($company->fill($request->all())->save()) {
    
       $model = Company::where('company_id', $company->company_id)->first();
@@ -96,6 +99,11 @@ class CompanyController extends Controller
       $distributor_check = AdminUsers::where('email',$model->email)->first();
       //to create distributor in admin users if not exists 27-02-2024
       if(!$distributor_check){
+        // fetch master user
+        if (!empty($request->parent_users)) {
+          $parent_users = implode(',', $request->parent_users);
+        }
+
         $create_distributor = new AdminUsers();
         $create_distributor->first_name = $model->name;
         $create_distributor->email = $model->email;
@@ -103,6 +111,8 @@ class CompanyController extends Controller
         $create_distributor->role = 41;//distributor role id
         $create_distributor->company_id = $model->company_id;
         $create_distributor->account_status = 1;
+        $create_distributor->parent_users = $parent_users ?? '';
+        $create_distributor->zone_id = $request->zone_id ?? '';
         $create_distributor->password = 123456;
 
         $create_distributor->save();
@@ -184,6 +194,10 @@ class CompanyController extends Controller
     }
 
     $company = Company::findOrFail($id);
+    if (!empty($request->parent_users)) {
+      $parent_users = implode(',', $request->parent_users);
+    }
+    $company->parent_users =$parent_users;  
     if ($company->update($request->all())) {
       $logo = Company::upload_logo($request);
       $signature = Company::upload_signature($request);
@@ -196,8 +210,15 @@ class CompanyController extends Controller
       Company::where('company_id', $company->company_id)->update(['logo' => $logo, 'signature' => $signature]);
       //create distributor user profile if not exits//28-02-2024
       $distributor_check = AdminUsers::where('email',$company->email)->first();
+      // dd($company);
+
       //to create distributor in admin users if not exists 27-02-2024
       if(!$distributor_check){
+        // fetch master user
+        if (!empty($request->parent_users)) {
+          $parent_users = implode(',', $request->parent_users);
+        }
+          
         $create_distributor = new AdminUsers();
         $create_distributor->first_name = $company->name;
         $create_distributor->email = $company->email;
@@ -205,6 +226,8 @@ class CompanyController extends Controller
         $create_distributor->role = 41;//distributor role id
         $create_distributor->company_id = $company->company_id;
         $create_distributor->account_status = 1;
+        $create_distributor->parent_users = $parent_users ?? '';
+        $create_distributor->zone_id = $request->zone_id ?? '';
         $create_distributor->password = 123456;
 
         $create_distributor->save();

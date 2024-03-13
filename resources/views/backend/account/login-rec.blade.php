@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-md-6" style="border-left: 2px solid var(--secondary)">
                             <div class="d-flex flex-column justify-content-center h-100 p-2">
-                            <h3 class="heading mb-3">3PSAP Panel</h3>
+                            <h3 class="heading mb-3">EUREKA Panel</h3>
                             <form method="POST" action="{{ route('admin.login.submit') }}">
                                 @csrf
                                 <div class="form-group mb-2">

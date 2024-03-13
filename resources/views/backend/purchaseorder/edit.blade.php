@@ -117,6 +117,20 @@
                                                             class="form-control" required></select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ Form::label('po_temp_no', 'PO Order Number')
+                                                        }}
+                                                        {{ Form::text('po_temp_no', $model->bill_no, [
+                                                        'class' => 'form-control
+                                                        po_temp_no',
+                                                        'placeholder' => 'PO Number',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label('vendor_ref_no', 'Vendor PO Refrence Number *')
@@ -166,7 +180,7 @@
                                         use App\Models\backend\Company;
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', null, ['class' => 'form-control ', 'placeholder'

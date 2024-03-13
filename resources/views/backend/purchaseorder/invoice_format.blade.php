@@ -2,7 +2,7 @@
 use Carbon\Carbon;
 use App\Models\backend\Company;
 
-$company = Company::where('company_id',session('company_id'))->first();
+$company = Company::where('company_id',$purchaseorder->company_id)->first();
 // dd($company);
 @endphp
 @php

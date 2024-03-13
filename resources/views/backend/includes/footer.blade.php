@@ -90,14 +90,14 @@
                     $("#state1").val($("#state").val());
                     $("#state1").trigger("change");
                 }
-            }, 200);
+            }, 500);
 
             setTimeout(() => {
                 if ($("#district").val() != '') {
                     $("#district1").val($("#district").val());
                     $("#district1").trigger("change");
                 }
-            }, 400);
+            }, 1000);
 
         }
     });

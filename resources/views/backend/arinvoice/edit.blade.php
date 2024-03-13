@@ -128,6 +128,22 @@
                                                             class="form-control readonly" required></select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ Form::label(
+                                                        'ar_temp_no',
+                                                        'AR Invoice No',
+                                                        ) }}
+                                                        {{ Form::text('ar_temp_no', $model->bill_no, [
+                                                        'class' => 'form-control
+                                                        ar_temp_no readonly',
+                                                        'placeholder' => 'AR Invoice No',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label('customer_ref_no', 'Customer Refrence Number *')

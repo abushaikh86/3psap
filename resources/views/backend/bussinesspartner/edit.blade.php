@@ -5,6 +5,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\backend\Beat;
 use App\Models\backend\AdminUsers;
 use App\Models\backend\Country;
+use App\Models\backend\Bpgroup;
 
 $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->first())->first();
 $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
@@ -120,25 +121,36 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        {{ Form::label('bp_category', 'Business Partner Category *') }}
-                                        {{ Form::select('bp_category', $business_partner_category, $model->bp_category,
+                                        {{ Form::label('bp_channel', 'Business Partner Channel *') }}
+                                        {{ Form::select('bp_channel', $business_partner_category, $model->bp_channel,
                                         [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'Business Partner
-                                        Category',
+                                        'placeholder' => 'Business Partner Channel',
                                         'required' => true,
                                         ]) }}
+                                    </div>
+                                </div>
 
-
+                                <div class="col-md-6 col-12">
+                                    <div class="form-label-group">
+                                        {{ Form::label('bp_category', 'Business Partner Category *') }}
+                                        {{ Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), $model->bp_category,
+                                        [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Business Partner Category',
+                                        'required' => true,
+                                        ]) }}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
                                         {{ Form::label('bp_group', 'Business Partner group *') }}
-                                        {{ Form::text('bp_group', $model->bp_group, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Business Partner Group',
+                                        {{ Form::select('bp_group', 
+                                        Bpgroup::pluck('name','id'),
+                                        $model->bp_group, [
+                                        'class' => 'form-control select2',
+                                        'placeholder' => 'Select Business Partner Group',
                                         'required' => true,
                                         ]) }}
                                     </div>
@@ -272,6 +284,19 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         ]) }}
                                     </div>
                                 </div>
+
+                                  <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                  @if(Auth()->guard('admin')->user()->role != 41)
+                                  <div class="col-md-6 col-12 company_drp">
+                                      <div class="form-group">
+                                          {{ Form::label('company_id', 'Distributor *') }}
+                                          {{ Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',]) }}
+                                      </div>
+                                  </div>
+                                  @else 
+                                      {{ Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')}}
+                                  @endif
+                                  <hr>
 
                                  {{-- Address Details --}}
 
@@ -734,7 +759,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Add Business Partner Category</h4>
+                <h4 class="modal-title" id="myModalLabel1">Add Business Partner Channel</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -743,11 +768,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 <div class="row">
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            {{ Form::label('bp_category', 'Add Category *') }}
-                            {{ Form::text('bp_category', null, [
+                            {{ Form::label('bp_channel', 'Add Channel *') }}
+                            {{ Form::text('bp_channel', null, [
                             'class' => 'form-control',
                             'id' => 'bp_category_modal',
-                            'placeholder' => 'Business Partner Category',
+                            'placeholder' => 'Business Partner Channel',
                             'required' => true,
                             ]) }}
                         </div>
@@ -762,6 +787,41 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
         </div>
     </div>
 </div>
+
+    {{-- for group --}}
+    <div class="modal fade text-left" id="add_bp_group_modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1">Add Business Partner Group</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                {{ Form::label('bp_group', 'Add Group *') }}
+                                {{ Form::text('bp_group', null, [
+                                    'class' => 'form-control',
+                                    'id' => 'bp_group_modal',
+                                    'placeholder' => 'Business Partner Group',
+                                    'required' => true,
+                                ]) }}
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-start">
+                            <button type="submit" class="btn btn-primary mr-1 mb-1" id="submit_bp_group">Submit</button>
+                            <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- area modal -->
 <div class="modal fade text-left " id="add_area_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
@@ -1397,9 +1457,11 @@ $(document).ready(function() {
             });
            
 
-            new MasterHandler('#bp_category', '#add_bp_cat_modal', '#submit_bp_cat',
+            new MasterHandler('#bp_channel', '#add_bp_cat_modal', '#submit_bp_cat',
                 '{{ url('admin/master/store_category') }}', '', '#bp_category_modal');
 
+            new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
+                '{{ url('admin/master/store_group') }}', '', '#bp_group_modal');
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
                 '{{ url('admin/master/store_users') }}', {{ $sales_manager_dep->role ?? '' }},

@@ -135,6 +135,17 @@
                                                             class="form-control" required></select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 col-sm-12 d-none doc_no">
+                                                    <div class="form-group">
+                                                        {{ Form::label('temp_sales_order_no', 'Sales Order No') }}
+                                                        {{ Form::text('temp_sales_order_no', $latestSoRecordNumber, [
+                                                        'class' => 'form-control
+                                                        temp_sales_order_no',
+                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label('customer_ref_no', 'Customer OB Refrence Number
@@ -203,7 +214,7 @@
                                         use App\Models\backend\Company;
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', date('Y-m-d'), [
@@ -753,6 +764,30 @@
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+                // usama_12-03-2024-fetch company of party and then make doc number
+                $('.doc_no').removeClass('d-none');
+                $.ajax({
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-Token': '{{ csrf_token() }}',
+                    },
+                    url: '{{ route('admin.get_doc_number') }}',
+                    data: {
+                        id: '{{$series_no}}',
+                        party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        var matches = data.match(/(\d+)$/);
+                        var currentNumber = matches ? parseInt(matches[1], 10) : 0;
+                        var newNumber = currentNumber + 1;
+                        var newDocNumber = data.replace(/\d+$/, newNumber);
+                        $('#temp_sales_order_no').val(newDocNumber);
+
+                    }
+                });
+
                 var customer_id = $(this).val();
                 // alert(customer_id);
                 if (customer_id != '') {

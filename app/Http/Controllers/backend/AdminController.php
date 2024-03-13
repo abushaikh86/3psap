@@ -73,8 +73,10 @@ class AdminController extends Controller
     {
         $role_id = $_GET['role_id'];
         $admin_user_id = $_GET['admin_user_id'] ?? '';
+        $master_id = $_GET['master_id'] ?? '';
         $role = Role::where('id', $role_id)->first();
         $html = '';
+        
 
 
         if (!empty($role->parent_roles)) {
@@ -94,6 +96,9 @@ class AdminController extends Controller
                         if (!empty($current_user->parent_users)) {
                             $selectedUserIds = explode(",", $current_user->parent_users);
                         }
+                    }
+                    if (!empty($master_id)) {
+                        $selectedUserIds = explode(",",$master_id);
                     }
                     $selected = in_array($user->admin_user_id, $selectedUserIds) ? 'selected' : '';
                     $html .= "<option value='$user->admin_user_id' $selected>$user->first_name  $user->last_name</option>";

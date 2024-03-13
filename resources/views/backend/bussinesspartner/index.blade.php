@@ -1,5 +1,6 @@
 @php
     use App\Models\backend\BusinessPartnerCategory;
+    use App\Models\backend\Company;
     $categories = BusinessPartnerCategory::pluck('business_partner_category_name');
 @endphp
 @extends('backend.layouts.app')
@@ -88,6 +89,11 @@
                         </select>
                     </div>
 
+                    <div class="form-group ">
+                        <label for="company_id">Select Distributor *</label>
+                        {{ Form::select('company_id',Company::pluck('name','company_id'),null, ['class' => 'form-control', 'placeholder' => 'Select Distributor', 'required' => true]) }}
+                    </div>
+
                     <div class="form-group mb-3">
                         {{ Form::label('file', 'Select File') }}
                         <input type="file" name="file" class="form-control">
@@ -131,7 +137,7 @@
                                             {{-- <th>Partner Code</th> --}}
                                             <th>Partner Name</th>
                                             <th>Organization Type</th>
-                                            <th>Category</th>
+                                            <th>Channel</th>
                                             <th>Group</th>
                                             <th>Payment Terms</th>
                                             <th>credit Limit</th>

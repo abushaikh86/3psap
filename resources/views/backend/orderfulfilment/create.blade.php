@@ -45,7 +45,7 @@
 
                                         <div class="col-sm-3">
                                             {{ Form::label('bill_no', 'Goods/Service Receipt No') }}
-                                            <h4>3PSAP/{{ $fyear }}/{{ $purchase_order_counter }}</h4>
+                                            <h4>EUREKA/{{ $fyear }}/{{ $purchase_order_counter }}</h4>
                                         </div>
                                         <div class="col-md-3 col-sm-12">
                                             <div class="form-group">

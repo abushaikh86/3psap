@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'Goods Service Receipts')
+@section('title', 'Goods/Service Receipts')
 
 
 
@@ -30,14 +30,14 @@
 @section('content')
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title">Goods Service Receipts</h3>
+        <h3 class="content-header-title">Goods/Service Receipts</h3>
         <div class="row breadcrumbs-top">
             <div class="breadcrumb-wrapper col-12">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item active">Goods Service Receipts</li>
+                    <li class="breadcrumb-item active">Goods/Service Receipts</li>
                 </ol>
             </div>
         </div>
@@ -70,7 +70,7 @@
                                             </div>
                                         </th>
                                         {{-- <th></th> --}}
-                                        <th>GOODS SERVICE RECEIPT No
+                                        <th>GOODS/SERVICE RECEIPT No
                                             <div class="my-1">
                                                 <input type="text" id="purchase_order_no">
                                             </div>
@@ -87,7 +87,7 @@
                                             </div>
                                         </th>
 
-                                        <th>Goods Service Receipts To
+                                        <th>Goods/Service Receipts To
                                             <div class="my-1">
                                                 <input type="text" id="purchase_order_to">
                                             </div>
@@ -202,7 +202,7 @@
                                 }
                             },
                             title: function() {
-                                var pageTitle = 'GOODS SERVICES RECEIPTS';
+                                var pageTitle = 'GOODS/SERVICES RECEIPTS';
                                 return pageTitle
                             }
                         },
@@ -216,7 +216,7 @@
                                 }
                             },
                             title: function() {
-                                var pageTitle = 'GOODS SERVICES RECEIPTS';
+                                var pageTitle = 'GOODS/SERVICES RECEIPTS';
                                 return pageTitle
                             }
                         },

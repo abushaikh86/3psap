@@ -92,20 +92,24 @@ class AccountController extends Controller
         } elseif ($company->ay_type == 'cal_year') {
           $Financialyear = Carbon::now()->year;
         }
-      } else {
-        $currentDate = Carbon::now();
-        $startOfYear = Carbon::create($currentDate->year, 4, 1);
-        $endOfYear = Carbon::create($currentDate->year + 1, 3, 31);
 
-        if ($currentDate->between($startOfYear, $endOfYear)) {
-          $Financialyear = $currentDate->year . '-' . ($currentDate->year + 1);
-        } else {
-          $Financialyear = ($currentDate->year - 1) . '-' . $currentDate->year;
-        }
+        Session::put('company_id', $company_id);
+        Session::put('fy_year', $Financialyear);
+      } else {
+        // $currentDate = Carbon::now();
+        // $startOfYear = Carbon::create($currentDate->year, 4, 1);
+        // $endOfYear = Carbon::create($currentDate->year + 1, 3, 31);
+
+        // if ($currentDate->between($startOfYear, $endOfYear)) {
+        //   $Financialyear = $currentDate->year . '-' . ($currentDate->year + 1);
+        // } else {
+        //   $Financialyear = ($currentDate->year - 1) . '-' . $currentDate->year;
+        // }
+        Session::put('company_id', 0);
+        Session::put('fy_year', 0);
       }
 
-      Session::put('company_id', $company_id ?? '');
-      Session::put('fy_year', $Financialyear);
+
 
       return redirect()->intended(route('admin.dashboard'));
     } else {

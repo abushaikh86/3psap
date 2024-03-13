@@ -14,7 +14,7 @@ class Company extends Model
 
 
   protected $fillable = [
-    'name', 'email', 'mobile_no', 'pincode', 'state', 'country','batch_system',
+    'name', 'email', 'mobile_no', 'pincode', 'state', 'country','batch_system','zone_id',
     'address', 'gstno', 'bankdetail', 'address_line1','db_type','ay_type',
     'address_line2', 'landmark', 'city', 'district','ac_start_date','ac_end_date','is_backdated_date'
   ];

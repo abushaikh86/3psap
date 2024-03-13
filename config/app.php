@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/3psap'),
+    'url' => env('APP_URL', 'http://localhost/EUREKA'),
 
     'asset_url' => env('ASSET_URL', null),
 

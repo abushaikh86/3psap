@@ -135,6 +135,20 @@ use App\Models\backend\Inventory;
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label(
+                                                        'order_fullfilment_temp_no',
+                                                        'Order Fulfilment No',
+                                                        ) }}
+                                                        {{ Form::text('order_fullfilment_temp_no', $model->bill_no, [
+                                                        'class' => 'form-control
+                                                        order_fullfilment_temp_no readonly',
+                                                        'placeholder' => 'Order Fulfilment No',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ Form::label(
                                                         'customer_ref_no',
                                                         'Customer OB Refrence Number
                                                         *',
@@ -218,7 +232,7 @@ use App\Models\backend\Inventory;
 
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', null, ['class' => 'form-control ', 'placeholder'

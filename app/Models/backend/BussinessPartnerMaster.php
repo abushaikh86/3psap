@@ -31,7 +31,7 @@ class BussinessPartnerMaster extends Authenticatable
      *
      * @var array
      */
-    protected  $fillable =  ['business_partner_id','ase','latitude','longitude', 'business_partner_type', 'residential_status', 'gst_reg_type', 'rcm_app', 'msme_reg', 'bp_code', 'bp_name', 'bp_organisation_type', 'bp_category', 'bp_group', 'sales_manager', 'sales_officer', 'salesman', 'payment_terms_id', 'credit_limit', 'gst_details', 'pricing_profile', 'shelf_life', 'area_id', 'route_id', 'beat_id', 'created_at', 'updated_at', 'deleted_at','company_id'];
+    protected  $fillable =  ['business_partner_id','bp_channel','ase','latitude','longitude', 'business_partner_type', 'residential_status', 'gst_reg_type', 'rcm_app', 'msme_reg', 'bp_code', 'bp_name', 'bp_organisation_type', 'bp_category', 'bp_group', 'sales_manager', 'sales_officer', 'salesman', 'payment_terms_id', 'credit_limit', 'gst_details', 'pricing_profile', 'shelf_life', 'area_id', 'route_id', 'beat_id', 'created_at', 'updated_at', 'deleted_at','company_id'];
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 
@@ -68,11 +68,16 @@ class BussinessPartnerMaster extends Authenticatable
     }
     public function get_category()
     {
-        return $this->HasOne(BusinessPartnerCategory::class, 'business_partner_category_id', 'bp_category');
+        return $this->HasOne(BusinessPartnerCategory::class, 'business_partner_category_id', 'bp_channel');
     }
     public function getpartnertypecustomer()
     {
         return $this->HasOne(BussinessMasterType::class, 'bussiness_master_type_id', 'business_partner_type')
             ->where('bussiness_master_type', '=', 'customer');
+    }
+
+    public function get_company()
+    {
+        return $this->HasOne(Company::class, 'company_id', 'company_id');
     }
 }

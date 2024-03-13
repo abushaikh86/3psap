@@ -116,6 +116,17 @@
                                                             class="form-control" required></select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 col-sm-12 d-none doc_no">
+                                                    <div class="form-group">
+                                                        {{ Form::label('po_temp_no', 'PO Order Number')
+                                                        }}
+                                                        {{ Form::text('po_temp_no', null, [
+                                                        'class' => 'form-control po_temp_no',
+                                                        'placeholder' => 'PO Number',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label('vendor_ref_no', 'Vendor PO Refrence Number *')
@@ -165,7 +176,7 @@
                                         use App\Models\backend\Company;
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', date('Y-m-d'), [
@@ -719,6 +730,31 @@
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+                // usama_12-03-2024-fetch company of party and then make doc number
+                $('.doc_no').removeClass('d-none');
+                $.ajax({
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-Token': '{{ csrf_token() }}',
+                    },
+                    url: '{{ route('admin.get_doc_number') }}',
+                    data: {
+                        id: '{{$series_no}}',
+                                party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        var matches = data.match(/(\d+)$/);
+                        var currentNumber = matches ? parseInt(matches[1], 10) : 0;
+                        var newNumber = currentNumber + 1;
+                        var newDocNumber = data.replace(/\d+$/, newNumber);
+                        $('#po_temp_no').val(newDocNumber);
+
+                    }
+                });
+               
+
                 $(".gst_dropdown").val('');
                 $(".all_gst").val('');
                 var customer_id = $(this).val();

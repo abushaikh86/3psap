@@ -120,6 +120,19 @@
                                                             class="form-control" required></select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ Form::label('temp_sales_order_no', 'Sales Order No') }}
+                                                        {{ Form::text('temp_sales_order_no', $model->bill_no, [
+                                                        'class' => 'form-control
+                                                        temp_sales_order_no',
+                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        'disabled' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label(
@@ -192,7 +205,7 @@
                                         use App\Models\backend\Company;
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', null, ['class' => 'form-control ', 'placeholder'

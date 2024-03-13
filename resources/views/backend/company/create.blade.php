@@ -2,6 +2,10 @@
 @section('title', 'Create Distributor')
 @php
 use App\Models\backend\Country;
+use App\Models\backend\Zones;
+use Spatie\Permission\Models\Role;
+
+$role_id = Role::where(['department_id'=>10])->first();
 @endphp
 @section('content')
 @php
@@ -126,7 +130,7 @@ use App\Models\backend\Country;
                       <div class="col-md-6 col-12">
                         <div class="form-group">
                           {{ Form::label('pincode', 'Pin Code *') }}
-                          {{ Form::text('pincode', null, ['class' => 'form-control', 'placeholder' => 'Enter Pin Code',
+                          {{ Form::number('pincode', null, ['class' => 'form-control', 'placeholder' => 'Enter Pin Code',
                           'required' => true]) }}
                         </div>
                       </div>
@@ -179,6 +183,23 @@ use App\Models\backend\Country;
                         </div>
                       </div>
 
+                      <div class="col-md-6 col-12">
+                        <div id="parentRolesContainer">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 col-12 zone_drp">
+                        <div class="form-group">
+                            {{ Form::label('zone_id', 'Zone *') }}
+                            {{ Form::select('zone_id', Zones::pluck('zone_name','zone_id'), null, [
+                            'class' => 'form-control',
+                            'placeholder' => 'Select Zone',
+                            'required' => true,
+                            ]) }}
+                        </div>
+                      </div>
+
+
 
 
                       <div class="col-12 d-flex justify-content-start">
@@ -208,6 +229,22 @@ use App\Models\backend\Country;
      $('#state').change(function() {
          new DynamicDropdown('{{ route('admin.getCities') }}',
              $(this).val(), '#district', null);
+     });
+
+     $.ajax({
+            url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
+            method: 'GET',
+            data: {
+                role_id: {{$role_id->id}}
+            },
+            success: function(response) {
+                // Handle the response from the server
+                $('#parentRolesContainer').html(response);
+            },
+            error: function(error) {
+                // Handle errors
+                console.error(error);
+            }
      });
   });
 </script>

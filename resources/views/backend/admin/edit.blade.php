@@ -84,7 +84,7 @@ use App\Models\backend\Beat;
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
                                         {{ Form::label('role_id', 'Role *') }}
-                                        <select name="role" id="role" class='form-control'>
+                                        <select name="role" id="role_id" class='form-control'>
                                             @foreach ($role as $value)
                                             <option value="{{ $value['id'] }}" @if ($value['id']==$userdata->role)
                                                 selected @endif>
@@ -108,10 +108,10 @@ use App\Models\backend\Beat;
 
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
-                                        {{ Form::label('company_id', 'Company *') }}
+                                        {{ Form::label('company_id', 'Distributor *') }}
                                         {{ Form::select('company_id', $company, $userdata->company_id, [
                                         'class' => 'form-control',
-                                        'placeholder' => 'Select Company',
+                                        'placeholder' => 'Select Distributor',
                                         'required' => true,
                                         ]) }}
 
@@ -204,7 +204,6 @@ use App\Models\backend\Beat;
 <script>
     function get_parent_roles(role_id) {
 
-            
             if (role_id == 17) {
                 $('.company_drp').remove();
                 $('.zone_drp').remove();

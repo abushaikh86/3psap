@@ -2,6 +2,11 @@
 @section('title', 'Update Distributor')
 @php
     use App\Models\backend\Country;
+    use App\Models\backend\Zones;
+    use Spatie\Permission\Models\Role;
+
+$role_id = Role::where(['department_id'=>10])->first();
+
 @endphp
 @section('content')
 @php
@@ -187,8 +192,21 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-6 col-12">
+                                            <div id="parentRolesContainer">
+                                            </div>
+                                        </div>
 
-
+                                        <div class="col-md-6 col-12 zone_drp">
+                                            <div class="form-group">
+                                                {{ Form::label('zone_id', 'Zone *') }}
+                                                {{ Form::select('zone_id', Zones::pluck('zone_name','zone_id'), null, [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Select Zone',
+                                                'required' => true,
+                                                ]) }}
+                                            </div>
+                                        </div>
 
 
                                         <div class="col-12 d-flex justify-content-start">
@@ -209,7 +227,6 @@
 
 <script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
-<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
 <script>
 $(document).ready(function() {
@@ -240,6 +257,23 @@ $(document).ready(function() {
    new DynamicDropdown('{{ route('admin.getCities') }}', 
    $(this).val(), '#district',null);
    });
+
+    $.ajax({
+            url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
+            method: 'GET',
+            data: {
+                role_id: {{$role_id->id}},
+                master_id: {!! $company->parent_users ? $company->parent_users : 'null' !!}
+            },
+            success: function(response) {
+                // Handle the response from the server
+                $('#parentRolesContainer').html(response);
+            },
+            error: function(error) {
+                // Handle errors
+                console.error(error);
+            }
+     });
 
 });
 </script>

@@ -140,6 +140,17 @@ use App\Models\backend\Products;
                                                         ]) }}
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        {{ Form::label('gr_temp_no', 'GOODS SERVICE RECEIPT No')
+                                                        }}
+                                                        {{ Form::text('gr_temp_no', $model->bill_no, [
+                                                        'class' => 'form-control gr_temp_no readonly',
+                                                        'placeholder' => 'Vendor PO Refrence Number',
+                                                        'required' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -200,7 +211,7 @@ use App\Models\backend\Products;
 
                                         $company = Company::where('company_id', session('company_id'))->first();
                                         @endphp
-                                        @if ($company->is_backdated_date)
+                                        @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', null, ['class' => 'form-control ', 'placeholder'
@@ -633,6 +644,9 @@ use App\Models\backend\Products;
                                                                                         </div>
 
                                                                                     </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button" class="btn btn-primary closemodal">Ok</button>
+                                                                                    </div>
 
                                                                                 </div>
                                                                             </div>
@@ -949,7 +963,9 @@ use App\Models\backend\Products;
                 $('#party_code').val($(this).val()).trigger('change.select2');
             });
 
-
+            $('.closemodal').click(function() {
+                $('.modal').modal('hide');
+            });
 
         });
 

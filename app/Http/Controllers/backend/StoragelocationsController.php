@@ -38,9 +38,9 @@ class StoragelocationsController extends Controller
   public function create()
   {
     $products = Products::pluck('consumer_description', 'product_item_id');
-    $company = Company::orderby('company_id', 'desc')->first();
+    $company = Company::orderby('company_id', 'desc')->pluck('company_id');
 
-    $company_ship_add = BussinessPartnerAddress::where(['bussiness_partner_id' => $company->company_id, 'address_type' => 'Ship-To/ Ship-From'])->pluck('bp_address_name', 'bp_address_id');
+    $company_ship_add = BussinessPartnerAddress::whereIn('bussiness_partner_id',$company)->where(['address_type' => 'Ship-To/ Ship-From'])->pluck('bp_address_name', 'bp_address_id');
     // dd($company_ship_add->toArray());
     return view('backend.storagelocations.create', compact('products','company_ship_add'));
     // exit;
@@ -95,9 +95,9 @@ class StoragelocationsController extends Controller
     // dd($storagelocations);
     $products = Products::pluck('consumer_description', 'product_item_id');
 
-    $company = Company::orderby('company_id', 'desc')->first();
+    $company = Company::orderby('company_id', 'desc')->pluck('company_id');
 
-    $company_ship_add = BussinessPartnerAddress::where(['bussiness_partner_id' => $company->company_id, 'address_type' => 'Ship-To/ Ship-From'])->pluck('bp_address_name', 'bp_address_id');
+    $company_ship_add = BussinessPartnerAddress::whereIn('bussiness_partner_id',$company)->where(['address_type' => 'Ship-To/ Ship-From'])->pluck('bp_address_name', 'bp_address_id');
 
     return view('backend.storagelocations.edit', compact('storagelocations', 'products','company_ship_add'));
     // return view('backend.storagelocations.edit')->with('role', $role);
