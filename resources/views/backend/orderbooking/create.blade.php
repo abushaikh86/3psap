@@ -3,6 +3,13 @@
 
 
 @section('content')
+@php
+use App\Models\backend\BussinessPartnerMaster;
+use App\Models\backend\Company;
+
+$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
+$company = Company::where('company_id',$bp_master->company_id)->first();
+@endphp
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -210,10 +217,7 @@
                                         </div>
 
 
-                                        @php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        @endphp
+                                       
                                         @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
@@ -465,7 +469,6 @@
                                                                                 'class' => 'form-control item_name
                                                                                 typeahead',
                                                                                 'autocomplete' => 'off',
-                                                                                'required' => true,
                                                                                 'oninput' => 'validateInput(this)',
                                                                                 ]) }}
                                                                             </td>
@@ -475,7 +478,6 @@
                                                                                 'class' => 'form-control
                                                                                 hsn_sac readonly',
                                                                                 'data-name' => 'hsn_sac',
-                                                                                'required' => true,
                                                                                 ]) }}
                                                                             </td>
                                                                             <td> {{ Form::number('qty',

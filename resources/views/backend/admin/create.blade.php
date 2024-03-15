@@ -145,6 +145,7 @@ use Spatie\Permission\Models\Role;
         $('.company_drp').hide(); //show company only for salesman, distributor
         $('#role_id').on('change', function() {
             var role_id = $(this).val();
+            // alert(role_id);
             if (role_id == 17) {
                 $('.company_drp').remove();
                 $('.zone_drp').hide();
@@ -155,7 +156,7 @@ use Spatie\Permission\Models\Role;
                 // $('.zone_drp').remove();
             }
             
-            if (role_id != 37 ) {
+            // if (role_id != 37 ) {
                 $.ajax({
                     url: "{{ route('admin.get_parent_roles') }}", // Replace with your actual endpoint
                     method: 'GET',
@@ -171,7 +172,7 @@ use Spatie\Permission\Models\Role;
                         console.error(error);
                     }
                 });
-            }
+            // }
 
         });
     });

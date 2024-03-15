@@ -1,17 +1,17 @@
 @extends('backend.layouts.app')
-@section('title', 'Returns')
+@section('title', 'Sales Returns / Credit Notes')
 
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Returns</h3>
+            <h3 class="content-header-title">Sales Returns / Credit Notes</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Returns</li>
+                        <li class="breadcrumb-item active">Sales Returns / Credit Notes</li>
                     </ol>
                 </div>
             </div>
@@ -20,7 +20,7 @@
             <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
                     <a class="btn btn-outline-primary" href="{{ route('admin.returninvoice.create') }}">
-                        Add Returns
+                        Add Sales Return / Credit Note
                     </a>
 
                 </div>
@@ -32,7 +32,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Goods Receipt</h4>
+                        <h4 class="card-title">Sales Returns / Credit Notes</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body card-dashboard">

@@ -79,6 +79,7 @@ input[type=number] {
 .readonly {
 	background-color: #eee !important;
 	pointer-events: none !important;
+	user-select: none !important; 
 }
 
 /* ------------------------------------------- */

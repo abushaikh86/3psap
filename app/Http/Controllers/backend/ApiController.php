@@ -179,11 +179,25 @@ class ApiController extends Controller
     $outlets = count(Outlet::get());
     $order_bookings = count(OrderBooking::get());
     // return response()->json($details);
+    $items = OrderBookingItems::pluck('item_code');
+    $formats = [];
+    $maxItems = 5;
+    foreach ($items as $row) {
+      $product = Products::where('item_code', $row)->first();
+      if ($product) {
+        $formats[] = $product->sub_category->subcategory_name;
+        if (count($formats) >= $maxItems) {
+          break;
+        }
+      }
+    }
 
     $outlets_data = Outlet::get();
     $result_data['outlets'] = $outlets;
     $result_data['order_bookings'] = $order_bookings;
     $result_data['outlets_data'] = $outlets_data;
+    $result_data['formats'] = $formats;
+
     return json_encode($result_data);
   }
 
@@ -498,6 +512,7 @@ class ApiController extends Controller
   }
 
 
+
   public function update_order_temp()
   {
 
@@ -637,6 +652,7 @@ class ApiController extends Controller
     $postedData = json_decode($request->input('posted_data'), true);
 
     try {
+      // dd($postedData);
       // Extract data from the $postedData array
       $outlet_id = $postedData['outlet_id'];
       $company_id = $postedData['company_id'];
@@ -644,6 +660,7 @@ class ApiController extends Controller
       $total = $postedData['total'];
 
       $outlet = BussinessPartnerMaster::where('business_partner_id', $outlet_id)->first();
+      $outlet_addresss = BussinessPartnerAddress::where(['address_type' => 'Bill-To/ Bill-From', 'bussiness_partner_id' => $outlet_id])->first();
       $company = Company::where('company_id', $company_id)->first();
 
       $gst_percentage = 0;
@@ -661,7 +678,7 @@ class ApiController extends Controller
       $cgst_rate = 0;
       $igst_rate = 0;
       $sgst_utgst_rate = 0;
-      if ($outlet->state == $company->state) {
+      if ($outlet_addresss->state == $company->state) {
         $gst_percentage = $gst_percentage / 2;
         $cgst_rate = $gst_percentage;
         $sgst_utgst_rate = $gst_percentage;
@@ -725,6 +742,7 @@ class ApiController extends Controller
       $total = $postedData['total'];
 
       $outlet = BussinessPartnerMaster::where('business_partner_id', $outlet_id)->first();
+      $outlet_addresss = BussinessPartnerAddress::where(['address_type' => 'Bill-To/ Bill-From', 'bussiness_partner_id' => $outlet_id])->first();
       $company = Company::where('company_id', $company_id)->first();
 
       $gst_percentage = 0;
@@ -742,7 +760,7 @@ class ApiController extends Controller
       $cgst_rate = 0;
       $igst_rate = 0;
       $sgst_utgst_rate = 0;
-      if ($outlet->state == $company->state) {
+      if ($outlet_addresss->state == $company->state) {
         $gst_percentage = $gst_percentage / 2;
         $cgst_rate = $gst_percentage;
         $sgst_utgst_rate = $gst_percentage;

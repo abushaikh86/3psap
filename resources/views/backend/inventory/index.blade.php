@@ -43,6 +43,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Doc Number</th>
                                             <th>Warehouse</th>
                                             <th>Bin</th>
                                             <th>Base Pack</th>
@@ -68,6 +69,7 @@
                                     <thead id="search_input">
                                         <tr>
                                             <th></th>
+                                            <th><input type="text" id="doc_no"></th>
                                             <th>
                                                 <select name="warehouse" id="warehouse"
                                                     class="btn btn-sm border border-dark dropdown-toggle" type="button"
@@ -178,6 +180,10 @@
                         name: 'DT_RowIndex'
                     },
                     {
+                        data: 'doc_no',
+                        name: 'doc_no'
+                    },
+                    {
                         data: 'warehouse_name',
                         name: 'get_warehouse.storage_location_name'
                     },
@@ -262,7 +268,7 @@
                             exportOptions: {
                                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                                     16,
-                                    17, 18, 19
+                                    17, 18, 19,20
                                 ],
                                 modifier: {
                                     page: 'all',
@@ -278,54 +284,58 @@
                 select: true,
             });
 
-            $('#warehouse').on('change', function() {
+            $('#doc_no').on('keyup', function() {
                 table.column(1).search(this.value).draw();
             });
 
-            $('#bin').on('change', function() {
+            $('#warehouse').on('change', function() {
                 table.column(2).search(this.value).draw();
             });
 
-            $('#sku').on('keyup', function() {
+            $('#bin').on('change', function() {
                 table.column(3).search(this.value).draw();
             });
 
-
-            $('#batch_no').on('keyup', function() {
+            $('#sku').on('keyup', function() {
                 table.column(4).search(this.value).draw();
             });
 
 
-            $('#ean_code').on('keyup', function() {
+            $('#batch_no').on('keyup', function() {
                 table.column(5).search(this.value).draw();
             });
 
-            $('#item_code').on('keyup', function() {
+
+            $('#ean_code').on('keyup', function() {
                 table.column(6).search(this.value).draw();
             });
-            $('#item_desc').on('keyup', function() {
+
+            $('#item_code').on('keyup', function() {
                 table.column(7).search(this.value).draw();
             });
-            $('#brand').on('keyup', function() {
+            $('#item_desc').on('keyup', function() {
                 table.column(8).search(this.value).draw();
             });
-            $('#cat').on('keyup', function() {
+            $('#brand').on('keyup', function() {
                 table.column(9).search(this.value).draw();
             });
-            $('#sub_cat').on('keyup', function() {
+            $('#cat').on('keyup', function() {
                 table.column(10).search(this.value).draw();
             });
-            $('#variant').on('keyup', function() {
+            $('#sub_cat').on('keyup', function() {
                 table.column(11).search(this.value).draw();
             });
-            $('#product').on('keyup', function() {
+            $('#variant').on('keyup', function() {
                 table.column(12).search(this.value).draw();
             });
-            $('#month').on('keyup', function() {
+            $('#product').on('keyup', function() {
                 table.column(13).search(this.value).draw();
             });
-            $('#quantity').on('keyup', function() {
+            $('#month').on('keyup', function() {
                 table.column(14).search(this.value).draw();
+            });
+            $('#quantity').on('keyup', function() {
+                table.column(15).search(this.value).draw();
             });
 
             $('#mfg_date', this).on('keyup change', function() {
@@ -333,7 +343,7 @@
                 var date = new Date(val);
                 var newDate = date.toString('dd-MM-yy');
                 // console.log(newDate);
-                table.column(15).search(this.value).draw();
+                table.column(16).search(this.value).draw();
 
             });
             $('#exp_date', this).on('keyup change', function() {
@@ -341,16 +351,16 @@
                 var date = new Date(val);
                 var newDate = date.toString('dd-MM-yy');
                 // console.log(newDate);
-                table.column(16).search(this.value).draw();
-            });
-            $('#days_to_expire').on('keyup', function() {
                 table.column(17).search(this.value).draw();
             });
-            $('#freshness').on('keyup', function() {
+            $('#days_to_expire').on('keyup', function() {
                 table.column(18).search(this.value).draw();
             });
-            $('#unit_price').on('keyup', function() {
+            $('#freshness').on('keyup', function() {
                 table.column(19).search(this.value).draw();
+            });
+            $('#unit_price').on('keyup', function() {
+                table.column(20).search(this.value).draw();
             });
 
 

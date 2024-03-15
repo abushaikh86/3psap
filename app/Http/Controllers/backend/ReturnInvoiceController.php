@@ -9,6 +9,7 @@ use App\Models\backend\ArInvoiceItems;
 use App\Models\backend\BinManagement;
 use App\Models\backend\Bintype;
 use App\Models\backend\BussinessPartnerMaster;
+use App\Models\backend\Financialyear;
 use App\Models\backend\ReturnInvoice;
 use App\Models\backend\Gst;
 use App\Models\backend\Inventory;
@@ -43,11 +44,13 @@ class ReturnInvoiceController extends Controller
 
     public function inv_data($id)
     {
-       
-        $inv_data = ArInvoice::where('ar_inv_no',$id)->first();
-        $inv_items = ArInvoiceItems::where('order_fulfillment_id',$inv_data->order_fulfillment_id)->get();
- 
-        return json_encode($inv_items);
+        $inv_data = ArInvoice::where('ar_inv_no', $id)->first();
+        $inv_items = ArInvoiceItems::where('order_fulfillment_id', $inv_data->order_fulfillment_id)->get();
+
+        $details['inv_data'] = $inv_data;
+        $details['inv_items'] = $inv_items;
+
+        return json_encode($details);
     }
 
     public function create()
@@ -59,26 +62,64 @@ class ReturnInvoiceController extends Controller
                 'company_id' => session('company_id'),
                 'fy_year' => session('fy_year'),
             ]);
-        })->pluck('ar_inv_no','ar_inv_no');
+        })->pluck('ar_inv_no', 'ar_inv_no');
 
-        // dd($invocies);
-        return view('backend.returninvoice.goodsreceipt_create', compact('invocies','storage_locations', 'gst'));
+        $parties = ArInvoice::when((session('company_id') != 0 && session('fy_year')), function ($query) {
+            $query->where([
+                'company_id' => session('company_id'),
+                'fy_year' => session('fy_year'),
+            ]);
+        })->pluck('party_id', 'party_id');
+
+        $bp_data = BussinessPartnerMaster::whereIn('business_partner_id', $parties)->pluck('bp_name', 'business_partner_id');
+
+        $moduleName = "Return Invoice";
+        $series_no = get_series_number($moduleName);
+        // dd($bp_data);
+        return view('backend.returninvoice.goodsreceipt_create', compact('series_no', 'bp_data', 'invocies', 'storage_locations', 'gst'));
     }
 
     public function update(Request $request)
     {
         // dd($request->all());
         $filteredItems = $request->old_invoice_items;
+
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $request->bp_id)->first();
+        $Financialyear = get_fy_year($bp_master->company_id);
         // save data in inventory
         foreach ($filteredItems as $row) {
 
-            $modal = new ReturnInvoice();
-            $modal->fill($row);
-            $modal->inv_no = $request->inv_no;
-            $modal->remarks = $request->remarks;
-            $modal->fy_year = session('fy_year');
-            $modal->company_id = session('company_id');
-            $modal->save();
+
+            //get current module and get module id from modules table
+
+            $routeName = Route::currentRouteName();
+            $moduleName = explode('.', $routeName)[1] ?? null;
+            $series_no = get_series_number($moduleName, $bp_master->company_id);
+            $transaction_type = get_transaction_type($moduleName, $bp_master->company_id);
+
+            if (empty($series_no)) {
+                return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
+            }
+            // set counter
+            $financial_year = Financialyear::where(['year' => $Financialyear])->first();
+            $invoice_return_counter = 0;
+            if ($financial_year) {
+                $invoice_return_counter = $financial_year->invoice_return_counter + 1;
+            }
+            $bill_no = $series_no . '-' . $financial_year->year . "-" . $invoice_return_counter;
+        }
+
+        $modal = new ReturnInvoice();
+        $modal->fill($row);
+        $modal->doc_no = $bill_no;
+        $modal->fy_year = $Financialyear;
+        $modal->company_id = $bp_master->company_id;
+        if ($modal->save()) {
+
+            //update counter
+            $financial_year->invoice_return_counter = $invoice_return_counter;
+            $financial_year->save();
+
 
             $good_bin_type_id = Bintype::where('name', 'Good')->first();
             $good_bin = BinManagement::where(['bin_type' => $good_bin_type_id->bin_type_id, 'warehouse_id' => $row['storage_location_id']])->first();
@@ -193,15 +234,13 @@ class ReturnInvoiceController extends Controller
                 $transactionData = $inventoryData;
                 unset($transactionData['qty']);
 
-                $routeName = Route::currentRouteName();
-                $moduleName = explode('.', $routeName)[1] ?? null;
-                $series_no = get_series_number($moduleName);
+
                 if (empty($series_no)) {
                     return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
                 }
 
                 $transactionHistory = new Transaction();
-                $transactionHistory->transaction_type =  $series_no;
+                $transactionHistory->transaction_type =  $transaction_type;
                 $transactionHistory->qty =  $base_quantity;
                 $transactionHistory->updated_qty = $row['qty'];
                 $transactionHistory->final_qty = $base_quantity + $row['qty'];

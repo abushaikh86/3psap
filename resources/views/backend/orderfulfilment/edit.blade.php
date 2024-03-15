@@ -5,6 +5,10 @@
 @php
 use App\Models\backend\Company;
 use App\Models\backend\Inventory;
+use App\Models\backend\BussinessPartnerMaster;
+
+$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
+$company = Company::where('company_id',$bp_master->company_id)->first();
 @endphp
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -228,10 +232,7 @@ use App\Models\backend\Inventory;
                                             ]) }}
                                         </div>
 
-                                        @php
-
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        @endphp
+                                    
                                         @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
@@ -354,8 +355,11 @@ use App\Models\backend\Inventory;
                                                                         Warehouse',
                                                                         ) }}
                                                                     </td>
+
+                                                                    @if ($company->batch_system)
                                                                     <td>{{ Form::label('bacth_id', 'Batch Details') }}
                                                                     </td>
+                                                                    @endif
 
 
                                                                 </tr>
@@ -468,6 +472,13 @@ use App\Models\backend\Inventory;
                                                                     ]) }}
 
                                                                     {{ Form::hidden('old_invoice_items[' . $loop->index
+                                                                    . '][sku]', $items->sku, [
+                                                                    'class' => 'form-control sku',
+                                                                    'data-name' => 'sku',
+                                                                    'data-group' => 'old_invoice_items',
+                                                                    ]) }}
+
+                                                                    {{ Form::hidden('old_invoice_items[' . $loop->index
                                                                     . '][gross_total]', $items->gross_total, [
                                                                     'class' => 'form-control
                                                                     gross_total',
@@ -496,7 +507,6 @@ use App\Models\backend\Inventory;
                                                                         'data-name' => 'item_name',
                                                                         'class' => 'form-control
                                                                         item_name typeahead',
-                                                                        'required' => true,
                                                                         'oninput' => 'validateInput(this)',
                                                                         ]) }}
                                                                     </td>
@@ -505,7 +515,6 @@ use App\Models\backend\Inventory;
                                                                         $loop->index . '][hsn_sac]', $items->hsn_sac, [
                                                                         'class' => 'form-control readonly',
                                                                         'data-name' => 'hsn_sac',
-                                                                        'required' => true,
                                                                         ]) }}
                                                                     </td>
                                                                     <td>
@@ -687,9 +696,7 @@ use App\Models\backend\Inventory;
 
                                                                     </td>
 
-                                                                    @php
-                                                                    $company = Company::first();
-                                                                    @endphp
+                                                              
                                                                     @if ($company->batch_system)
                                                                     @php
                                                                     $batch_data = Inventory::where([

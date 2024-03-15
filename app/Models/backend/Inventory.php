@@ -24,7 +24,7 @@ class Inventory extends Model
    * @var array
    */
   protected $fillable = [
-    'warehouse_id', 'bin_id', 'batch_no', 'blocked_qty','sku', 'remarks', 'fy_year','company_id', 'user_id', 'item_code', 'qty', 'unit_price', 'manufacturing_date', 'expiry_date'
+    'warehouse_id', 'bin_id', 'batch_no', 'blocked_qty','doc_no','sku', 'remarks', 'fy_year','company_id', 'user_id', 'item_code', 'qty', 'unit_price', 'manufacturing_date', 'expiry_date'
   ];
 
   public function get_unit_price()

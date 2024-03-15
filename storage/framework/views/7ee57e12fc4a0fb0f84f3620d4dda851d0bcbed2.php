@@ -407,7 +407,6 @@
                                                                         'data-name' => 'item_name',
                                                                         'class' => 'form-control
                                                                         item_name typeahead',
-                                                                        'required' => true,
                                                                         'oninput' => 'validateInput(this)',
                                                                         ])); ?>
 
@@ -417,7 +416,6 @@
                                                                         $loop->index . '][hsn_sac]', $items->hsn_sac, [
                                                                         'class' => 'form-control readonly',
                                                                         'data-name' => 'hsn_sac',
-                                                                        'required' => true,
                                                                         ])); ?>
 
                                                                     </td>

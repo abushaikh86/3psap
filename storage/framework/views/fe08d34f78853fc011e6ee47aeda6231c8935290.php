@@ -1,6 +1,14 @@
 <?php $__env->startSection('title', 'Edit A/R Invoice'); ?>
 
 <?php $__env->startSection('content'); ?>
+
+<?php
+use App\Models\backend\Company;
+use App\Models\backend\BussinessPartnerMaster;
+
+$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
+$company = Company::where('company_id',$bp_master->company_id)->first();
+?>
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
         <h3 class="content-header-title">Edit A/R Invoice</h3>
@@ -274,10 +282,7 @@
 
                                         </div>
 
-                                        <?php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        ?>
+                                     
                                         <?php if(isset($company) && $company->is_backdated_date): ?>
                                         <div class="form-group">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
@@ -530,7 +535,6 @@
                                                                         'data-name' => 'item_name',
                                                                         'class' => 'form-control
                                                                         item_name typeahead',
-                                                                        'required' => true,
                                                                         'oninput' => 'validateInput(this)',
                                                                         ])); ?>
 
@@ -541,7 +545,6 @@
                                                                         $items->hsn_sac, [
                                                                         'class' => 'form-control readonly',
                                                                         'data-name' => 'hsn_sac',
-                                                                        'required' => true,
                                                                         ])); ?>
 
                                                                     </td>

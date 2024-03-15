@@ -66,7 +66,8 @@ class MasterDropdownController extends Controller
 
         // dd($request->all());
         $model = new Bpgroup();
-        $model->name = $request->data_name[0];
+        $model->bp_channel_id = $request->data_name[0];
+        $model->name = $request->data_name[1];
         $model->save();
         // $model->fill($request->all());
 
@@ -235,10 +236,11 @@ class MasterDropdownController extends Controller
     {
         $party_id = $request->party_id;
         $series_no = $request->series_no;
-
+        $bp_master = BussinessPartnerMaster::where('business_partner_master',$party_id)->first();
+        $series = SeriesMaster::where('company_id',$bp_master->company_id)->first();
         // dd($party_id,$series_no);
 
-        $data = BillBooking::where(['vendor_id' => $party_id, 'series_no' => $series_no])->pluck('doc_no', 'doc_no');
+        $data = BillBooking::where(['vendor_id' => $party_id, 'series_no' => $series->series_number])->pluck('doc_no', 'doc_no');
 
         // $data = SeriesMaster::WhereIn('id',$series_ids)->get();
 
@@ -298,6 +300,24 @@ class MasterDropdownController extends Controller
 
         return response()->json($sales_officer);
     }
+
+    public function getGroups(Request $request)
+    {
+        $id = $request->input('id');
+        $groups_data = Bpgroup::where(['bp_channel_id' => $id])->pluck('name', 'id');
+
+        return response()->json($groups_data);
+    }
+    
+
+    public function getChannels(Request $request)
+    {
+        $id = $request->input('id');
+        $channel_data = BusinessPartnerCategory::pluck('business_partner_category_name','business_partner_category_id');
+
+        return response()->json($channel_data);
+    }
+    
 
     public function getSalesOfficers(Request $request)
     {
@@ -388,6 +408,8 @@ class MasterDropdownController extends Controller
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->ap_invoice_counter;
         }else if($moduleName == $modules[9]){
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->order_booking_counter;
+        }else if($moduleName == $modules[13]){
+            $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->invoice_return_counter;
         }
 
 

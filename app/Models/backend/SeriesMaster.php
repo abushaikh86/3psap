@@ -26,7 +26,7 @@ class SeriesMaster extends Authenticatable
      *
      * @var array
      */
-    protected  $fillable =  ['series_number','module', 'created_at', 'updated_at', 'deleted_at'];
+    protected  $fillable =  ['series_number','module','transaction_type','company_id', 'created_at', 'updated_at', 'deleted_at'];
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 

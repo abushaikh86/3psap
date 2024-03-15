@@ -51,7 +51,7 @@ class PurchaseorderController extends Controller
 
         if ($request->ajax()) {
             if (session('company_id') != 0 && session('fy_year') != 0) {
-                $purchaseorder = PurchaseOrder::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id,'status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
+                $purchaseorder = PurchaseOrder::where(['created_by' => Auth()->guard('admin')->user()->admin_user_id, 'status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
             } else {
                 $purchaseorder = PurchaseOrder::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
@@ -185,7 +185,7 @@ class PurchaseorderController extends Controller
 
             //set counter and doc number for new gr
             $moduleName = "Goods Service Receipts";
-            $series_no = get_series_number($moduleName);
+            $series_no = get_series_number($moduleName, $goods_receipt_exist->company_id);
             if (empty($series_no)) {
                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
             }
@@ -366,7 +366,7 @@ class PurchaseorderController extends Controller
             //get current module and get module id from modules table
             $routeName = Route::currentRouteName();
             $moduleName = explode('.', $routeName)[1] ?? null;
-            $series_no = get_series_number($moduleName);
+            $series_no = get_series_number($moduleName, $bp_master->company_id);
             if (empty($series_no)) {
                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
             }

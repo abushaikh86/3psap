@@ -25,9 +25,11 @@ use App\Http\Controllers\backend\ExpensesController;
 use App\Http\Controllers\backend\ReturnInvoiceController;
 use App\Http\Controllers\backend\UomsController;
 use App\Http\Controllers\backend\HsncodesController;
+use App\Http\Controllers\backend\MarginController;
 use App\Http\Controllers\backend\InvoiceController;
 use App\Http\Controllers\backend\GSTController;
 use App\Http\Controllers\backend\PurchaseorderController;
+use App\Http\Controllers\backend\SchemesController;
 use App\Http\Controllers\backend\OrderbookingController;
 use App\Http\Controllers\backend\OrderfulfilmentController;
 use App\Http\Controllers\backend\GoodsservicereceiptsController;
@@ -405,6 +407,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getGst', [MasterDropdownController::class, 'getGst'])->name('admin.getGst');
         Route::get('/master/getStates/', [MasterDropdownController::class, 'getStates'])->name('admin.getStates');
         Route::get('/master/getCities/', [MasterDropdownController::class, 'getCities'])->name('admin.getCities');
+        Route::get('/master/getGroups/', [MasterDropdownController::class, 'getGroups'])->name('admin.getGroups');
+        Route::get('/master/getChannels/', [MasterDropdownController::class, 'getChannels'])->name('admin.getChannels');
 
 
         //contact details
@@ -681,6 +685,28 @@ Route::prefix('admin')->group(function () {
         Route::post('/returninvoice/update', [ReturnInvoiceController::class, 'update'])->name('admin.returninvoice.update');
         Route::get('/returninvoice/inv_data/{id}', [ReturnInvoiceController::class, 'inv_data'])->name('admin.returninvoice.inv_data');
         Route::resource('admin/returninvoice', 'ReturnInvoiceController');
+
+           // usmaa_14-03-2024-for offers
+        Route::get('/schemes', [SchemesController::class, 'index'])->name('admin.schemes');
+        Route::get('/schemes/create', [SchemesController::class, 'create'])->name('admin.schemes.create');
+        Route::post('/schemes/store', [SchemesController::class, 'store'])->name('admin.schemes.store');
+        Route::get('/schemes/edit/{id}', [SchemesController::class, 'edit'])->name('admin.schemes.edit');
+        Route::post('/schemes/update', [SchemesController::class, 'update'])->name('admin.schemes.update');
+        Route::get('/schemes/delete/{id}', [SchemesController::class, 'destroy'])->name('admin.schemes.delete');
+        Route::get('/schemes/view/{id}', [SchemesController::class, 'show'])->name('admin.schemes.view');
+        Route::resource('admin/schemes', 'SchemesController');
+
+
+        // usama_15-03-2024 - for margin selling price
+        Route::get('/margin', [MarginController::class, 'index'])->name('admin.margin');
+        Route::get('/margin/create', [MarginController::class, 'create'])->name('admin.margin.create');
+        Route::post('/margin/store', [MarginController::class, 'store'])->name('admin.margin.store');
+        Route::get('/margin/edit/{id}', [MarginController::class, 'edit'])->name('admin.margin.edit');
+        Route::post('/margin/update', [MarginController::class, 'update'])->name('admin.margin.update');
+        Route::get('/margin/delete/{id}', [MarginController::class, 'destroy'])->name('admin.margin.delete');
+        Route::get('/margin/view/{id}', [MarginController::class, 'show'])->name('admin.margin.view');
+        Route::resource('admin/margin', 'MarginController');
+
 
         Route::get('/proforma', [ProformaController::class, 'index'])->name('admin.proforma');
         Route::get('/proforma/create', [ProformaController::class, 'create'])->name('admin.proforma.create');

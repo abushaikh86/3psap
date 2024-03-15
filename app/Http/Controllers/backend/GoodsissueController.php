@@ -177,15 +177,15 @@ class GoodsissueController extends Controller
                 $transactionData = $inventoryData;
                 unset($transactionData['qty']);
 
-                $routeName = Route::currentRouteName();
-                $moduleName = explode('.', $routeName)[1] ?? null;
-                $series_no = get_series_number($moduleName);
-                if (empty($series_no)) {
-                    return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
-                }
+                // $routeName = Route::currentRouteName();
+                // $moduleName = explode('.', $routeName)[1] ?? null;
+                // $series_no = get_series_number($moduleName);
+                // if (empty($series_no)) {
+                //     return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
+                // }
 
                 $transactionHistory = new Transaction();
-                $transactionHistory->transaction_type =  $series_no;
+                // $transactionHistory->transaction_type =  $series_no;
                 $transactionHistory->qty =  $base_quantity;
                 $transactionHistory->updated_qty = - ($row['qty']);
                 $transactionHistory->final_qty = $base_quantity - $row['qty'];

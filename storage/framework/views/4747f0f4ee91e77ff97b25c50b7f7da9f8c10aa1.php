@@ -161,7 +161,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         <?php echo e(Form::label('bp_group', 'Business Partner group *')); ?>
 
                                         <?php echo e(Form::select('bp_group', 
-                                        Bpgroup::pluck('name','id'),
+                                        [],
                                         $model->bp_group, [
                                         'class' => 'form-control select2',
                                         'placeholder' => 'Select Business Partner Group',
@@ -916,6 +916,21 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 </div>
                 <div class="modal-body">
                     <div class="row">
+
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
+
+                                <?php echo e(Form::select('bp_channel', $business_partner_category, null, [
+                                    'class' => 'form-control ',
+                                    'id'=>'bp_channel_modal',
+                                    'placeholder' => 'Business Partner Channel',
+                                    'required' => true,
+                                ])); ?>
+
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <?php echo e(Form::label('bp_group', 'Add Group *')); ?>
@@ -1446,6 +1461,14 @@ $(document).ready(function() {
    var state1 = '<?php echo e($business_partner_address[1]->state); ?>';
    var district1 = '<?php echo e($business_partner_address[1]->district); ?>';
 
+   var bp_channel = '<?php echo e($model->bp_channel); ?>';
+   var bp_group = '<?php echo e($model->bp_group); ?>';
+
+   if(bp_channel){
+        new DynamicDropdown('<?php echo e(route('admin.getGroups')); ?>', 
+        bp_channel, '#bp_group',bp_group);
+   }
+
    if(country){
         new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
         country, '#state',state);
@@ -1467,6 +1490,25 @@ $(document).ready(function() {
         state1, '#district1',district1);
    }
 
+   // usama_15-03-2024-fetch bp-group from channel
+   $('#bp_channel').change(function() {
+        var selectedValue = $(this).val();
+        new DynamicDropdown('<?php echo e(route('admin.getGroups')); ?>',
+            selectedValue, '#bp_group')
+        // fetch channel data in group modal
+        fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',selectedValue,
+        selectedValue,'#bp_channel_modal')
+        
+    });
+    // if new channel added then trigger it in group modal
+    $('#submit_bp_cat').click(function() {
+        setTimeout(() => {
+            // fetch channel data in group modal
+            fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',$('#bp_channel').val(),
+            $('#bp_channel').val(),'#bp_channel_modal')
+        }, 1000);
+       
+    });
 
    $('#country').change(function() {       
    new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
@@ -1621,7 +1663,8 @@ $(document).ready(function() {
                 '<?php echo e(url('admin/master/store_category')); ?>', '', '#bp_category_modal');
 
             new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
-                '<?php echo e(url('admin/master/store_group')); ?>', '', '#bp_group_modal');
+                '<?php echo e(url('admin/master/store_group')); ?>', null, '#bp_channel_modal','#bp_group_modal');
+
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
                 '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_manager_dep->role ?? ''); ?>,

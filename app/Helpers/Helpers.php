@@ -139,7 +139,7 @@ if (!function_exists('amount_in_words')) {
 
 
     if (!function_exists('get_series_number')) {
-        function get_series_number($moduleName)
+        function get_series_number($moduleName, $company_id = null)
         {
             $moduleName = str_replace(' ', '', strtolower(trim($moduleName)));
             $existingModules = DB::table('modules')->pluck('name', 'id')->map(function ($name) {
@@ -147,11 +147,40 @@ if (!function_exists('amount_in_words')) {
             })->toArray();
             $module_id = array_search($moduleName, $existingModules);
             //now get series number
-            $series_data = SeriesMaster::where('module', $module_id)->first();
+            $series_data = SeriesMaster::where('module', $module_id)
+                ->when(!empty($company_id), function ($q) use ($company_id) {
+                    $q->where([
+                        'company_id' => $company_id
+                    ]);
+                })
+                ->first();
 
             return $series_data->series_number ?? '';
         }
     }
+
+
+    if (!function_exists('get_transaction_type')) {
+        function get_transaction_type($moduleName,$company_id=null)
+        {
+            $moduleName = str_replace(' ', '', strtolower(trim($moduleName)));
+            $existingModules = DB::table('modules')->pluck('name', 'id')->map(function ($name) {
+                return  str_replace(' ', '', strtolower(trim($name)));
+            })->toArray();
+            $module_id = array_search($moduleName, $existingModules);
+            //now get series number
+            $series_data = SeriesMaster::where('module', $module_id)
+                ->when(!empty($company_id), function ($q) use ($company_id) {
+                    $q->where([
+                        'company_id' => $company_id
+                    ]);
+                })
+                ->first();
+
+            return $series_data->transaction_type ?? '';
+        }
+    }
+
 
     if (!function_exists('getCommonArrays')) {
         function getCommonArrays()
@@ -227,6 +256,10 @@ if (!function_exists('amount_in_words')) {
 
                         if ($modelOrTable == 'App\Models\backend\Pricings' && !empty($extra_id)) {
                             $newRecord->pricing_type = $extra_id;
+                        }
+
+                        if ($modelOrTable == 'App\Models\backend\Bpgroup' && !empty($extra_id)) {
+                            $newRecord->bp_channel_id = $extra_id;
                         }
 
                         if ($modelOrTable == 'App\Models\backend\AdminUsers' && !empty($extra_id)) {

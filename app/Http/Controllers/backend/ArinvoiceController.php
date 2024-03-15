@@ -61,8 +61,8 @@ class ArinvoiceController extends Controller
         // $apinvoice = ArInvoice::with('get_partyname')->get();
         if ($request->ajax()) {
             if (session('company_id') != 0 && session('fy_year') != 0) {
-                $order_book_ids = OrderBooking::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
-                $apinvoice = ArInvoice::whereIn('order_booking_id',$order_book_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+                $order_book_ids = OrderBooking::where(['created_by' => Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
+                $apinvoice = ArInvoice::whereIn('order_booking_id', $order_book_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             } else {
                 $apinvoice = ArInvoice::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
@@ -367,6 +367,9 @@ class ArinvoiceController extends Controller
             'contact_person' => 'required',
         ]);
 
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $request->party_id)->first();
+        $company = Company::where('company_id', $bp_master->company_id)->first();
+
         $invoice_items_array = array();
         $current_invoice_items = array();
 
@@ -432,15 +435,16 @@ class ArinvoiceController extends Controller
                         $product = Products::where('item_code', $row['item_code'])->first();
 
                         if (!empty($product)) {
-
+                            // dd($row);
                             $inventoryExist = Inventory::where([
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
-                                'batch_no' => $batch_no,
-                                // 'fy_year' => $goodsservicereceipt->fy_year,
-                                // 'company_id' => $goodsservicereceipt->company_id,
-                            ])
+                            ])->when(($company->batch_system != 0), function ($q) use ($batch_no) {
+                                return $q->where([
+                                    'batch_no' => $batch_no,
+                                ]);
+                            })
                                 ->when(
                                     session('company_id') != 0 && session('fy_year') != 0,
                                     function ($query) {
@@ -460,10 +464,12 @@ class ArinvoiceController extends Controller
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
-                                'batch_no' => $batch_no,
-                                // 'fy_year' => $goodsservicereceipt->fy_year,
-                                // 'company_id' => $goodsservicereceipt->company_id,
                             ])
+                                ->when(($company->batch_system != 0), function ($q) use ($batch_no) {
+                                    return $q->where([
+                                        'batch_no' => $batch_no,
+                                    ]);
+                                })
                                 ->when(
                                     session('company_id') != 0 && session('fy_year') != 0,
                                     function ($query) {
@@ -483,9 +489,10 @@ class ArinvoiceController extends Controller
 
 
                             $inventoryData = [
+                                'doc_no' => $goodsservicereceipt->bill_no,
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => optional($good_bin)->bin_id,
-                                'batch_no' => $batch_no,
+                                // 'batch_no' => $batch_no,
                                 'item_code' => $row['item_code'],
                                 'sku' => $product->sku,
                                 'qty' => $inventoryExist->qty - $row['qty'],
@@ -521,14 +528,16 @@ class ArinvoiceController extends Controller
                             // $routeName = Route::currentRouteName();
                             $moduleName = "A/r Invoice";
                             // dd($moduleName);
-                            $series_no = get_series_number($moduleName);
+                            $series_no = get_series_number($moduleName, $bp_master->company_id);
+                            $transaction_type = get_transaction_type($moduleName, $bp_master->company_id);
+
                             if (empty($series_no)) {
                                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
                             }
 
 
                             $transactionHistory = new Transaction();
-                            $transactionHistory->transaction_type =  $series_no;
+                            $transactionHistory->transaction_type =  $transaction_type;
                             $transactionHistory->qty =  $base_quantity;
                             $transactionHistory->updated_qty = $row['qty'];
                             $transactionHistory->final_qty = $base_quantity - $row['qty'];
@@ -735,7 +744,7 @@ class ArinvoiceController extends Controller
     {
         $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
         $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
-    
+
         // $comapny_data = Company::first();
         $business_partner_detail = "";
         $bill_to_state = "";

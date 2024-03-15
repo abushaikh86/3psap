@@ -5,6 +5,11 @@
 @php
 use App\Models\backend\Company;
 use App\Models\backend\Products;
+use App\Models\backend\BussinessPartnerMaster;
+
+$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
+$company = Company::where('company_id',$bp_master->company_id)->first();
+// dd($company);
 @endphp
 
 <div class="content-header row">
@@ -207,10 +212,7 @@ use App\Models\backend\Products;
                                             ]) }}
                                         </div>
 
-                                        @php
 
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        @endphp
                                         @if (isset($company) && $company->is_backdated_date)
                                         <div class="form-group">
                                             {{ Form::label('bill_date', 'Date *') }}
@@ -310,8 +312,11 @@ use App\Models\backend\Products;
                                                                     <td>{{ Form::label('storage_location_id',
                                                                         'Warehouse') }}
                                                                     </td>
+                                                                   
+                                                                    @if ($company->batch_system)
                                                                     <td>{{ Form::label('bacth_id', 'Batch Details') }}
                                                                     </td>
+                                                                    @endif
 
                                                                 </tr>
                                                             </thead>
@@ -395,7 +400,6 @@ use App\Models\backend\Products;
                                                                         'data-name' => 'item_name',
                                                                         'class' => 'form-control readonly
                                                                         item_name typeahead',
-                                                                        'required' => true,
                                                                         'oninput' => 'validateInput(this)',
                                                                         ]) }}
                                                                     </td>
@@ -404,7 +408,6 @@ use App\Models\backend\Products;
                                                                         $loop->index . '][hsn_sac]', $items->hsn_sac, [
                                                                         'class' => 'form-control readonly',
                                                                         'data-name' => 'hsn_sac ',
-                                                                        'required' => true,
                                                                         ]) }}
                                                                     </td>
                                                                     <td>
@@ -557,9 +560,7 @@ use App\Models\backend\Products;
 
                                                                     </td>
 
-                                                                    @php
-                                                                    $company = Company::first();
-                                                                    @endphp
+                                                                    
                                                                     @if ($company->batch_system)
                                                                     <td>
                                                                         <button type="button"

@@ -214,12 +214,11 @@ $role_id = Role::where(['department_id'=>10])->first();
 
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
-                                                <?php echo e(Form::label('ay_type', 'Academic Year Type *')); ?>
+                                                <?php echo e(Form::label('ay_type', 'Financial Year Type *')); ?>
 
                                                 <?php echo e(Form::select('ay_type', ['fi_year' => 'Financial Year (1st April-31st
                                                 March)', 'cal_year' => 'Calender Year'],
-                                                null, ['class' => 'form-control', 'placeholder' => 'Select Academic Year
-                                                Type', 'required' => true])); ?>
+                                                null, ['class' => 'form-control', 'required' => true])); ?>
 
                                             </div>
                                         </div>

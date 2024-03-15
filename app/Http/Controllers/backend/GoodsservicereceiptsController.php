@@ -55,11 +55,11 @@ class GoodsservicereceiptsController extends Controller
         $GLOBALS['breadcrumb'] = [['name' => 'GoodsServiceReceipts', 'route' => ""]];
 
         if ($request->ajax()) {
-            if(session('company_id') != 0 && session('fy_year')!=0){
-            $po_ids = PurchaseOrder::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('purchase_order_id');
-            $goodsservicereceipts = GoodsServiceReceipts::whereIn('purchase_order_id',$po_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
-            }else{
-            $goodsservicereceipts = GoodsServiceReceipts::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            if (session('company_id') != 0 && session('fy_year') != 0) {
+                $po_ids = PurchaseOrder::where(['created_by' => Auth()->guard('admin')->user()->admin_user_id])->pluck('purchase_order_id');
+                $goodsservicereceipts = GoodsServiceReceipts::whereIn('purchase_order_id', $po_ids)->where(['fy_year' => session('fy_year'), 'company_id' => session('company_id'), 'status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
+            } else {
+                $goodsservicereceipts = GoodsServiceReceipts::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
             // dd($purchaseorder);
 
@@ -333,9 +333,6 @@ class GoodsservicereceiptsController extends Controller
                 return view('backend.goodsservicereceipts.edit', compact('model', 'gst', 'party', 'financial_year', 'purchase_order_counter', 'fyear', 'storage_locations', 'purchaseorder'));
             }
         }
-
-
-
     }
 
     /**
@@ -418,14 +415,14 @@ class GoodsservicereceiptsController extends Controller
 
                         $batch_no = $row['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
-   
+
                             DB::table('def_bacth_no_counter')->increment('counter');
                             $counterValue = DB::table('def_bacth_no_counter')->value('counter');
                             $batch_no = $counterValue . '-Batch-' . $row['sku'];
                             // }
                         }
 
- 
+
 
 
                         // dd( $good_bin);
@@ -462,6 +459,7 @@ class GoodsservicereceiptsController extends Controller
 
 
                             $inventoryData = [
+                                'doc_no' => $goodsservicereceipt->bill_no,
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => optional($good_bin)->bin_id,
                                 'batch_no' => $batch_no,
@@ -498,14 +496,15 @@ class GoodsservicereceiptsController extends Controller
 
                             $routeName = Route::currentRouteName();
                             $moduleName = explode('.', $routeName)[1] ?? null;
-                            $series_no = get_series_number($moduleName);
+                            $series_no = get_series_number($moduleName, $goodsservicereceipt->company_id);
+                            $transaction_type = get_transaction_type($moduleName, $goodsservicereceipt->company_id);
                             if (empty($series_no)) {
                                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
                             }
 
 
                             $transactionHistory = new Transaction();
-                            $transactionHistory->transaction_type =  $series_no;
+                            $transactionHistory->transaction_type =  $transaction_type;
                             $transactionHistory->qty =  $base_quantity;
                             $transactionHistory->updated_qty = $row['qty'];
                             $transactionHistory->final_qty = $base_quantity + $row['qty'];
@@ -761,12 +760,12 @@ class GoodsservicereceiptsController extends Controller
         //get current module and get module id from modules table
         $routeName = Route::currentRouteName();
         $moduleName = explode('.', $routeName)[1] ?? null;
-        $series_no = get_series_number($moduleName);
+        $series_no = get_series_number($moduleName, $existing_data->company_id);
         if (empty($series_no)) {
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
-        $bp_master = BussinessPartnerMaster::where('business_partner_id',$existing_data->party_id)->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $existing_data->party_id)->first();
         $Financialyear = get_fy_year($bp_master->company_id);
         // set counter
         $financial_year = Financialyear::where(['year' => $Financialyear])->first();
@@ -811,22 +810,25 @@ class GoodsservicereceiptsController extends Controller
     public function createapinvoice($id)
     {
 
-        $moduleName = "A/P Invoice";
-        $series_no = get_series_number($moduleName);
-        if (empty($series_no)) {
-            return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
-        }
 
 
 
         $roles = Role::pluck('name', 'id')->all();
         $greceipt = GoodsServiceReceipts::where('goods_service_receipt_id', $id)->first();
         // dd($purchaseorder->toArray());
+
+        $moduleName = "A/P Invoice";
+        $series_no = get_series_number($moduleName, $greceipt->company_id);
+        if (empty($series_no)) {
+            return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
+        }
+
+
         $apinvoice = Apinvoice::where('vendor_inv_no', $greceipt->vendor_inv_no)->first();
         // dd($goods_receipt_exist->toArray());
 
         // set counter
-        $bp_master = BussinessPartnerMaster::where('business_partner_id',$greceipt->party_id)->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $greceipt->party_id)->first();
         $Financialyear = get_fy_year($bp_master->company_id);
         $financial_year = Financialyear::where(['year' => $Financialyear])->first();
         $ap_invoice_counter = 0;
@@ -869,7 +871,7 @@ class GoodsservicereceiptsController extends Controller
                             // dd($gst_rate);
                             if (!empty($gst_rate)) {
                                 $get_data = Gst::where('gst_id', $gst_rate)->first();
-                                $gst_rate = isset($get_data->gst_percent)?$get_data->gst_percent:18;
+                                $gst_rate = isset($get_data->gst_percent) ? $get_data->gst_percent : 18;
                             }
                             Apinvoice::where('purchase_order_id', $goods_receipt_items->goods_service_receipt_id)->update(['gst_rate' => $gst_rate]);
 

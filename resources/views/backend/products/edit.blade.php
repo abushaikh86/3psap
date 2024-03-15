@@ -194,9 +194,9 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                 </div>
                                 <div class="col-md-4 col-12" id="">
                                     <div class="form-group">
-                                        {{ Form::label('dimensions_unit_pack', 'Pack/Unit ') }}
+                                        {{ Form::label('dimensions_unit_pack', 'Unit/Pack ') }}
                                         {{ Form::text('dimensions_unit_pack', null, ['class' => 'form-control',
-                                        'placeholder' => 'Enter Pack/Unit']) }}
+                                        'placeholder' => 'Enter Unit/Pack']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-12">

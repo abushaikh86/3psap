@@ -141,7 +141,7 @@
                                             <?php echo e(Form::label('bp_group', 'Business Partner group *')); ?>
 
                                             <?php echo e(Form::select('bp_group', 
-                                                Bpgroup::pluck('name','id'),
+                                                [],
                                                 null, [
                                                 'class' => 'form-control select2',
                                                 'placeholder' => 'Select Business Partner Group',
@@ -1037,6 +1037,22 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+
+                        
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
+
+                                <?php echo e(Form::select('bp_channel', $business_partner_category, null, [
+                                    'class' => 'form-control ',
+                                    'id'=>'bp_channel_modal',
+                                    'placeholder' => 'Business Partner Channel',
+                                    'required' => true,
+                                ])); ?>
+
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <?php echo e(Form::label('bp_group', 'Add Group *')); ?>
@@ -1364,6 +1380,7 @@
     
     <script>
         function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
+            console.log(route,id,selectedValue,append_id);
             var id = id;
             if(parent_id != null){
                 id = parent_id;
@@ -1376,7 +1393,7 @@
                     },
                     dataType: 'json',
                     success: function(data) {
-                        // console.log(data);
+                        console.log(data);
                         var html = '';
                         for (var index in data) {
                             if (data.hasOwnProperty(index)) {
@@ -1394,6 +1411,26 @@
 
         $(document).ready(function() {
 
+            // usama_15-03-2024-fetch bp-group from channel
+            $('#bp_channel').change(function() {
+                var selectedValue = $(this).val();
+                new DynamicDropdown('<?php echo e(route('admin.getGroups')); ?>',
+                    selectedValue, '#bp_group');
+
+                // fetch channel data in group modal
+                fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',selectedValue,
+                selectedValue,'#bp_channel_modal')
+                
+            });
+            // if new channel added then trigger it in group modal
+            $('#submit_bp_cat').click(function() {
+                setTimeout(() => {
+                    // fetch channel data in group modal
+                    fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',$('#bp_channel').val(),
+                    $('#bp_channel').val(),'#bp_channel_modal')
+                }, 1000);
+               
+            });
 
             // usama_19-02-2024_get states
             $('#country').change(function() {
@@ -1486,11 +1523,12 @@
                 '<?php echo e(url('admin/master/store_category')); ?>', '', '#bp_category_modal');
 
             new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
-                '<?php echo e(url('admin/master/store_group')); ?>', '', '#bp_group_modal');
+                '<?php echo e(url('admin/master/store_group')); ?>', null, '#bp_channel_modal','#bp_group_modal');
 
+            var sales_manader_role = "<?php echo e($sales_manager_dep->role ?? ''); ?>";
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_manager_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', sales_manader_role,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal');
 

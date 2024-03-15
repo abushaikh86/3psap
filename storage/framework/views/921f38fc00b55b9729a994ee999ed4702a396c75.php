@@ -432,7 +432,6 @@
                                                                                 typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
-                                                                                'required' => true,
                                                                                 'oninput' => 'validateInput(this)',
                                                                                 ])); ?>
 
@@ -443,7 +442,6 @@
                                                                                 'class' => 'form-control
                                                                                 hsn_sac',
                                                                                 'data-name' => 'hsn_sac',
-                                                                                'required' => true,
                                                                                 'readonly'=>true,
                                                                                 ])); ?>
 

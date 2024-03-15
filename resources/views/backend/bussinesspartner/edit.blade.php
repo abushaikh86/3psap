@@ -147,7 +147,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         {{ Form::label('bp_group', 'Business Partner group *') }}
                                         {{ Form::select('bp_group', 
-                                        Bpgroup::pluck('name','id'),
+                                        [],
                                         $model->bp_group, [
                                         'class' => 'form-control select2',
                                         'placeholder' => 'Select Business Partner Group',
@@ -801,6 +801,19 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 </div>
                 <div class="modal-body">
                     <div class="row">
+
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                {{ Form::label('bp_channel', 'Business Partner Channel *') }}
+                                {{ Form::select('bp_channel', $business_partner_category, null, [
+                                    'class' => 'form-control ',
+                                    'id'=>'bp_channel_modal',
+                                    'placeholder' => 'Business Partner Channel',
+                                    'required' => true,
+                                ]) }}
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-12">
                             <div class="form-group">
                                 {{ Form::label('bp_group', 'Add Group *') }}
@@ -1286,6 +1299,14 @@ $(document).ready(function() {
    var state1 = '{{$business_partner_address[1]->state}}';
    var district1 = '{{$business_partner_address[1]->district}}';
 
+   var bp_channel = '{{$model->bp_channel}}';
+   var bp_group = '{{$model->bp_group}}';
+
+   if(bp_channel){
+        new DynamicDropdown('{{ route('admin.getGroups') }}', 
+        bp_channel, '#bp_group',bp_group);
+   }
+
    if(country){
         new DynamicDropdown('{{ route('admin.getStates') }}', 
         country, '#state',state);
@@ -1307,6 +1328,25 @@ $(document).ready(function() {
         state1, '#district1',district1);
    }
 
+   // usama_15-03-2024-fetch bp-group from channel
+   $('#bp_channel').change(function() {
+        var selectedValue = $(this).val();
+        new DynamicDropdown('{{ route('admin.getGroups') }}',
+            selectedValue, '#bp_group')
+        // fetch channel data in group modal
+        fetchmodaldropdown('{{ route('admin.getChannels') }}',selectedValue,
+        selectedValue,'#bp_channel_modal')
+        
+    });
+    // if new channel added then trigger it in group modal
+    $('#submit_bp_cat').click(function() {
+        setTimeout(() => {
+            // fetch channel data in group modal
+            fetchmodaldropdown('{{ route('admin.getChannels') }}',$('#bp_channel').val(),
+            $('#bp_channel').val(),'#bp_channel_modal')
+        }, 1000);
+       
+    });
 
    $('#country').change(function() {       
    new DynamicDropdown('{{ route('admin.getStates') }}', 
@@ -1461,7 +1501,8 @@ $(document).ready(function() {
                 '{{ url('admin/master/store_category') }}', '', '#bp_category_modal');
 
             new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
-                '{{ url('admin/master/store_group') }}', '', '#bp_group_modal');
+                '{{ url('admin/master/store_group') }}', null, '#bp_channel_modal','#bp_group_modal');
+
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
                 '{{ url('admin/master/store_users') }}', {{ $sales_manager_dep->role ?? '' }},

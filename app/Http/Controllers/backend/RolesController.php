@@ -22,8 +22,8 @@ class RolesController extends Controller
     public function index()
     {
         // dd(Auth()->guard('admin')->user()->role);
-        $roles = Role::where('id', '!=', Auth()->guard('admin')->user()->role)->where('department_id', '!=', 1)->get();
-        // $roles = Role::get();
+        // $roles = Role::where('id', '!=', Auth()->guard('admin')->user()->role)->where('department_id', '!=', 1)->get();
+        $roles = Role::get();
         return view('backend.roles.index')->with('roles', $roles);
     }
 

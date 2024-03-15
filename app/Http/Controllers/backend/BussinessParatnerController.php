@@ -54,9 +54,9 @@ class BussinessParatnerController extends Controller
         if ($request->ajax()) {
             $bussinesspartner = BussinessPartnerMaster::with('get_org_type', 'get_category', 'paymentterms', 'get_partner_type_name')
                 ->where('is_converted', 1)->when(Auth()->guard('admin')->user()->role == 41, function ($query) {
-                    return $query->where('company_id',Auth()->guard('admin')->user()->company_id);
-                })->orderBy('business_partner_id','desc')->get();
-                
+                    return $query->where('company_id', Auth()->guard('admin')->user()->company_id);
+                })->orderBy('business_partner_id', 'desc')->get();
+
             // dd($bussinesspartner);
 
             return DataTables::of($bussinesspartner)
@@ -145,15 +145,15 @@ class BussinessParatnerController extends Controller
                             'business_partner_type' => getOrCreateIdUnified(BussinessMasterType::class, 'bussiness_master_type', $sheet->getCell('A' . $row)->getValue(), 'bussiness_master_type_id'),
                             'bp_name' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
                             'bp_organisation_type' => getOrCreateIdUnified(BussinessPartnerOrganizationType::class, 'bp_organisation_type', $sheet->getCell('C' . $row)->getValue(), 'bp_organisation_type_id'),
-                            'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id',null,null,null,1),
-                            'bp_channel' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('E' . $row)->getValue(), 'id'),
-                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('F' . $row)->getValue(), 'business_partner_category_id'),
-                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id'),
+                            'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id', null, null, null, 1),
+                            'bp_channel' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id'),
+                            'bp_category' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('F' . $row)->getValue(), 'id'),
+                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id', getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id')),
                             'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('H' . $row)->getValue(), 'payment_terms_id'),
                             'gst_details' => trim(addslashes($sheet->getCell('I' . $row)->getValue())),
                             'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('J' . $row)->getValue(), 'id'),
                             'rcm_app' => (int) trim(addslashes($sheet->getCell('K' . $row)->getValue() == 'Yes' ? 1 : 0)),
-                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('L' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
+                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('L' . $row)->getValue(), 'pricing_master_id', $sheet->getCell('A' . $row)->getValue() == 'Vendor' ? 'purchase' : 'sale'),
                             'msme_reg' => (int) trim(addslashes($sheet->getCell('M' . $row)->getValue() == 'Yes' ? 1 : 0)),
                             'company_id' => getOrCreateIdUnified(Company::class, 'name', $sheet->getCell('N' . $row)->getValue(), 'company_id'),
                         ];
@@ -190,7 +190,7 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('AA' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AD' . $row)->getValue(), 'city_id',$state1) : null,
+                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AD' . $row)->getValue(), 'city_id', $state1) : null,
                                 'city' => trim(addslashes($sheet->getCell('AE' . $row)->getValue())),
                                 'pin_code' => trim(addslashes($sheet->getCell('AF' . $row)->getValue())),
                             ];
@@ -233,14 +233,14 @@ class BussinessParatnerController extends Controller
 
                         $asm_email = '';
                         if (!empty($sheet->getCell('I' . $row)->getValue()) && !empty($sheet->getCell('H' . $row)->getValue())) {
-                            $asm_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('I' . $row)->getValue(), 'admin_user_id', 5,$sheet->getCell('H' . $row)->getValue());
+                            $asm_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('I' . $row)->getValue(), 'admin_user_id', 5, $sheet->getCell('H' . $row)->getValue());
                             $ase_email = '';
                             if (!empty($sheet->getCell('K' . $row)->getValue()) && !empty($sheet->getCell('J' . $row)->getValue())) {
-                                $ase_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('K' . $row)->getValue(), 'admin_user_id', 4,$sheet->getCell('J' . $row)->getValue(), $asm_email);
+                                $ase_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('K' . $row)->getValue(), 'admin_user_id', 4, $sheet->getCell('J' . $row)->getValue(), $asm_email);
 
                                 $sales_officer_email = '';
                                 if (!empty($sheet->getCell('M' . $row)->getValue()) && !empty($sheet->getCell('L' . $row)->getValue())) {
-                                    $sales_officer_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('M' . $row)->getValue(), 'admin_user_id', 6,$sheet->getCell('L' . $row)->getValue(),$ase_email);
+                                    $sales_officer_email = getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('M' . $row)->getValue(), 'admin_user_id', 6, $sheet->getCell('L' . $row)->getValue(), $ase_email);
                                 }
                             }
                         }
@@ -249,22 +249,22 @@ class BussinessParatnerController extends Controller
                             'business_partner_type' => getOrCreateIdUnified(BussinessMasterType::class, 'bussiness_master_type', $sheet->getCell('A' . $row)->getValue(), 'bussiness_master_type_id'),
                             'bp_name' => trim(addslashes($sheet->getCell('B' . $row)->getValue())),
                             'bp_organisation_type' => getOrCreateIdUnified(BussinessPartnerOrganizationType::class, 'bp_organisation_type', $sheet->getCell('C' . $row)->getValue(), 'bp_organisation_type_id'),
-                            'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id',null,null,null,1),
-                            'bp_channel' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('E' . $row)->getValue(), 'id'),
-                            'bp_category' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('F' . $row)->getValue(), 'business_partner_category_id'),
-                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id'),
+                            'residential_status' => getOrCreateIdUnified('residential_status', 'name', $sheet->getCell('D' . $row)->getValue(), 'id', null, null, null, 1),
+                            'bp_channel' => getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id'),
+                            'bp_category' => getOrCreateIdUnified("bp_category", 'name', $sheet->getCell('F' . $row)->getValue(), 'id'),
+                            'bp_group' => getOrCreateIdUnified(Bpgroup::class, 'name', $sheet->getCell('G' . $row)->getValue(), 'id', getOrCreateIdUnified(BusinessPartnerCategory::class, 'business_partner_category_name', $sheet->getCell('E' . $row)->getValue(), 'business_partner_category_id')),
                             'sales_manager' => $asm_email,
                             'ase' => !empty($asm_email) ? $ase_email : null,
                             'sales_officer' => !empty($ase_email) ? $sales_officer_email : null,
-                            'salesman' => !empty($sales_officer_email && $sheet->getCell('N' . $row)->getValue()) ? getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('O' . $row)->getValue(), 'admin_user_id', 8, $sheet->getCell('N' . $row)->getValue(),$sales_officer_email) : null,
+                            'salesman' => !empty($sales_officer_email && $sheet->getCell('N' . $row)->getValue()) ? getOrCreateIdUnified(AdminUsers::class, 'email', $sheet->getCell('O' . $row)->getValue(), 'admin_user_id', 8, $sheet->getCell('N' . $row)->getValue(), $sales_officer_email) : null,
                             'payment_terms_id' => getOrCreateIdUnified(TermPayment::class, 'term_type', $sheet->getCell('P' . $row)->getValue(), 'payment_terms_id'),
                             'gst_details' => trim(addslashes($sheet->getCell('Q' . $row)->getValue())),
                             'gst_reg_type' => getOrCreateIdUnified('gst_reg_type', 'name', $sheet->getCell('R' . $row)->getValue(), 'id'),
                             'rcm_app' => (int) trim(addslashes($sheet->getCell('S' . $row)->getValue() == 'Yes' ? 1 : 0)),
-                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('T' . $row)->getValue(), 'pricing_master_id',$sheet->getCell('A' . $row)->getValue()=='Vendor'?'purchase':'sale'),
+                            'pricing_profile' => getOrCreateIdUnified(Pricings::class, 'pricing_name', $sheet->getCell('T' . $row)->getValue(), 'pricing_master_id', $sheet->getCell('A' . $row)->getValue() == 'Vendor' ? 'purchase' : 'sale'),
                             'msme_reg' => (int) trim(addslashes($sheet->getCell('U' . $row)->getValue() == 'Yes' ? 1 : 0)),
                             'company_id' => getOrCreateIdUnified(Company::class, 'name', $sheet->getCell('V' . $row)->getValue(), 'company_id'),
-                            'beat_id' => getOrCreateIdUnified(Beat::class, 'beat_name', $sheet->getCell('BC' . $row)->getValue(), 'beat_id',null,null,null,1),
+                            'beat_id' => getOrCreateIdUnified(Beat::class, 'beat_name', $sheet->getCell('BC' . $row)->getValue(), 'beat_id', null, null, null, 1),
                         ];
 
                         // dd($data);
@@ -288,8 +288,8 @@ class BussinessParatnerController extends Controller
                         }
 
                         //to enter dependent data in database
-                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AJ' . $row)->getValue(), 'country_id',1);
-                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AK' . $row)->getValue(), 'id', $country,1);
+                        $country1 = getOrCreateIdUnified(Country::class, 'name', $sheet->getCell('AJ' . $row)->getValue(), 'country_id', 1);
+                        $state1 = getOrCreateIdUnified(State::class, 'name', $sheet->getCell('AK' . $row)->getValue(), 'id', $country, 1);
                         //ship-address
                         if (!empty($sheet->getCell('AF' . $row)->getValue())) {
                             $ship_add = [
@@ -300,7 +300,7 @@ class BussinessParatnerController extends Controller
                                 'landmark' => trim(addslashes($sheet->getCell('AI' . $row)->getValue())),
                                 'country' => $country1,
                                 'state' => !empty($country1) ? $state1 : null,
-                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AL' . $row)->getValue(), 'city_id',1) : null,
+                                'district' => !empty($state1) ? getOrCreateIdUnified(City::class, 'city_name', $sheet->getCell('AL' . $row)->getValue(), 'city_id', 1) : null,
                                 'city' => trim(addslashes($sheet->getCell('AM' . $row)->getValue())),
                                 'pin_code' => trim(addslashes($sheet->getCell('AN' . $row)->getValue())),
                             ];
@@ -400,7 +400,7 @@ class BussinessParatnerController extends Controller
         //fetch asm
         $salesman_manager_ids = Role::where('department_id', 5)->pluck('id')->toArray();
         // dd($salesman_manager_ids);
-        $sales_manager = AdminUsers::where('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id');//('company_id', session('company_id'))->whereIn//27-02-2024
+        $sales_manager = AdminUsers::where('role', $salesman_manager_ids)->get()->pluck('first_name', 'admin_user_id'); //('company_id', session('company_id'))->whereIn//27-02-2024
         //fetch ase
         $ase_ids = Role::where('department_id', 4)->pluck('id')->toArray();
         $ase = AdminUsers::whereIn('role', $ase_ids)->get()->pluck('first_name', 'admin_user_id');
@@ -422,8 +422,8 @@ class BussinessParatnerController extends Controller
         $bpOrgType = BussinessPartnerOrganizationType::pluck('bp_organisation_type', 'bp_organisation_type_id');
         $termPayment = TermPayment::pluck('term_type', 'payment_terms_id');
         $business_partner_category = BusinessPartnerCategory::pluck("business_partner_category_name", "business_partner_category_id");
-        $company = Company::pluck('name', 'company_id');//28-02-2024//for distributor tagging
-        return view('backend.bussinesspartner.create', compact('area_data', 'ase', 'sales_officer', 'salesman', 'route_data', 'pricing_data', 'beat_data', 'bussinesstype', 'sales_manager', 'bpOrgType', 'termPayment', 'business_partner_category','company'));
+        $company = Company::pluck('name', 'company_id'); //28-02-2024//for distributor tagging
+        return view('backend.bussinesspartner.create', compact('area_data', 'ase', 'sales_officer', 'salesman', 'route_data', 'pricing_data', 'beat_data', 'bussinesstype', 'sales_manager', 'bpOrgType', 'termPayment', 'business_partner_category', 'company'));
     }
 
 
@@ -602,10 +602,10 @@ class BussinessParatnerController extends Controller
             $ase_users = AdminUsers::where(['admin_user_id' => $officer_users->parent_users])->first();
             $asm_users = AdminUsers::where(['admin_user_id' => $ase_users->parent_users])->first();
         }
-        $company = Company::pluck('name', 'company_id');//28-02-2024//for distributor tagging
+        $company = Company::pluck('name', 'company_id'); //28-02-2024//for distributor tagging
 
 
-        return view('backend.bussinesspartner.edit', compact('officer_users','company', 'ase_users', 'asm_users', 'sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
+        return view('backend.bussinesspartner.edit', compact('officer_users', 'company', 'ase_users', 'asm_users', 'sales_manager', 'ase', 'sales_officer', 'salesman', 'area_data', 'pricing_data', 'route_data', 'beat_data', 'model', 'business_partner_category', 'bussiness_master_type', 'admin_users', 'bussinesstype', 'bpOrgType', 'termPayment', 'business_partner_address', 'business_partner_contact', 'business_partner_banking'));
     }
 
     public function update(Request $request, $id = null)
@@ -680,9 +680,9 @@ class BussinessParatnerController extends Controller
                     $address = BussinessPartnerContactDetails::where(
                         ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id]
                     )->first();
-                    if(isset($address)){
-                    $address->fill($full_data);
-                    $address->save();
+                    if (isset($address)) {
+                        $address->fill($full_data);
+                        $address->save();
                     }
                 }
 
@@ -699,9 +699,9 @@ class BussinessParatnerController extends Controller
                         'landline'  => $data['landline1'],
                     ];
 
-                    if(isset($address1)){
-                    $address1->fill($arr_data);
-                    $address1->save();
+                    if (isset($address1)) {
+                        $address1->fill($arr_data);
+                        $address1->save();
                     }
                 }
 

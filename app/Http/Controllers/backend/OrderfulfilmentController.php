@@ -65,8 +65,8 @@ class OrderfulfilmentController extends Controller
         if ($request->ajax()) {
 
             if (session('company_id') != 0 && session('fy_year') != 0) {
-                $order_book_ids = OrderBooking::where(['created_by'=>Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
-                $purchaseorder = OrderFulfilment::whereIn('order_booking_id',$order_book_ids)->where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
+                $order_book_ids = OrderBooking::where(['created_by' => Auth()->guard('admin')->user()->admin_user_id])->pluck('order_booking_id');
+                $purchaseorder = OrderFulfilment::whereIn('order_booking_id', $order_book_ids)->where(['status' => 'open', 'fy_year' => session('fy_year'), 'company_id' => session('company_id')])->with('get_partyname')->orderby('created_at', 'desc')->get();
             } else {
                 $purchaseorder = OrderFulfilment::where(['status' => 'open'])->with('get_partyname')->orderby('created_at', 'desc')->get();
             }
@@ -403,6 +403,7 @@ class OrderfulfilmentController extends Controller
                     // $old_goodsservicereceipts_items = $request->old_invoice_items;
                     // dd($old_goodsservicereceipts_items);
                     $filteredItems = $request->old_invoice_items;
+                    // dd($filteredItems);
 
                     $old_goodsservicereceipts_items = array_filter($filteredItems, function ($item) {
                         return $item['order_fulfillment_item_id'] !== null;
@@ -752,7 +753,7 @@ class OrderfulfilmentController extends Controller
         //get current module and get module id from modules table
         $routeName = Route::currentRouteName();
         $moduleName = explode('.', $routeName)[1] ?? null;
-        $series_no = get_series_number($moduleName);
+        $series_no = get_series_number($moduleName, $existing_data->company_id);
         if (empty($series_no)) {
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
@@ -803,17 +804,18 @@ class OrderfulfilmentController extends Controller
 
     public function createarinvoice($id)
     {
-        $moduleName = "A/R INVOICE";
-        $series_no = get_series_number($moduleName);
-        if (empty($series_no)) {
-            return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
-        }
 
 
 
         $roles = Role::pluck('name', 'id')->all();
         $greceipt = OrderFulfilment::where('order_fulfillment_id', $id)->first();
         // dd($purchaseorder->toArray());
+        $moduleName = "A/R INVOICE";
+        $series_no = get_series_number($moduleName, $greceipt->company_id);
+        if (empty($series_no)) {
+            return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
+        }
+
         $apinvoice = ArInvoice::where('customer_inv_no', $greceipt->customer_inv_no)->first();
         // $apinvoice = ArInvoice::where('order_fulfillment_id', $id)->first();
         // dd($goods_receipt_exist->toArray());
@@ -941,10 +943,10 @@ class OrderfulfilmentController extends Controller
 
 
     public function partydetails($business_partner_id)
-    {  
+    {
         $business_partner = BussinessPartnerMaster::where('business_partner_id', $business_partner_id)->first();
         $comapny_data = Company::where('company_id', $business_partner->company_id)->first();
-    
+
         // $comapny_data = Company::first();
         $business_partner_detail = "";
         $bill_to_state = "";

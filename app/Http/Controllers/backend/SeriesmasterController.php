@@ -10,14 +10,8 @@ use App\Models\backend\Bsplcategory;
 use App\Models\backend\Bsplsubcategory;
 use App\Models\backend\Bspltype;
 use Illuminate\Http\Request;
-use App\Models\backend\BussinessPartnerMaster;
-use App\Models\backend\BussinessMasterType;
-use App\Models\backend\BussinessPartnerOrganizationType;
-use App\Models\backend\TermPayment;
-use App\Models\backend\BussinessPartnerAddress;
-use App\Models\backend\BussinessPartnerContactDetails;
-use App\Models\backend\BussinessPartnerBankingDetails;
-use App\Models\backend\BusinessPartnerCategory;
+
+use App\Models\backend\Company;
 use App\Models\backend\SeriesMaster;
 use Illuminate\Support\Facades\DB;
 
@@ -44,11 +38,12 @@ class SeriesmasterController extends Controller
     // //create new user
     public function create()
     {
+        $company = Company::pluck('name', 'company_id');
 
         $bspl_subcat_data = SeriesMaster::pluck('series_number', 'id');
         $modules = DB::table('modules')->pluck('name', 'id')->toArray();
-        
-        return view('backend.seriesmaster.create', compact('bspl_subcat_data','modules'));
+
+        return view('backend.seriesmaster.create', compact('bspl_subcat_data', 'company', 'modules'));
     }
 
     public function store(Request $request)
@@ -56,15 +51,15 @@ class SeriesmasterController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'series_number' => 'required',
+            'company_id' => 'required',
             'module' => 'required',
         ]);
 
-        $if_exists = SeriesMaster::where('module', $request->module)->first();
+        $if_exists = SeriesMaster::where(['module' => $request->module, 'company_id' => $request->company_id])->first();
         if (!empty($if_exists)) {
             return redirect()->back()->with('error', 'This module is already having series number');
         }
-        
+
         $model = new SeriesMaster;
         $model->fill($request->all());
 
@@ -85,11 +80,12 @@ class SeriesmasterController extends Controller
     public function edit($id)
     {
         $model = SeriesMaster::where('id', $id)->first();
+        $company = Company::pluck('name', 'company_id');
 
         $modules = DB::table('modules')->pluck('name', 'id')->toArray();
 
         // dd($model);
-        return view('backend.seriesmaster.edit', compact('model','modules'));
+        return view('backend.seriesmaster.edit', compact('company', 'model', 'modules'));
     }
 
     public function update(Request $request)
@@ -97,16 +93,16 @@ class SeriesmasterController extends Controller
 
         // dd($request->route);
         $request->validate([
-            'series_number' => 'required',
+            'company_id' => 'required',
             'module' => 'required',
         ]);
 
 
-        $if_exists = SeriesMaster::where('module', $request->module)->where('id', '!=', $request->id)->first();
+        $if_exists = SeriesMaster::where(['module' => $request->module, 'company_id' => $request->company_id])->where('id', '!=', $request->id)->first();
         if (!empty($if_exists)) {
             return redirect()->back()->with('error', 'This module is already having series number');
         }
-        
+
         $model = SeriesMaster::where('id', $request->id)->first();
 
         $model->fill($request->all());
