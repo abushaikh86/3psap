@@ -229,6 +229,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             'class' => 'form-control status',
                                             'placeholder' => 'Select Status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ]) }}
                                         </div>
 

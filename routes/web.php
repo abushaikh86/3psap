@@ -401,7 +401,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getSalesmen/', [MasterDropdownController::class, 'getSalesmen'])->name('admin.getSalesmen');
         Route::get('/master/getAse/', [MasterDropdownController::class, 'getAse'])->name('admin.getAse');
         Route::get('/master/getAsm/', [MasterDropdownController::class, 'getAsm'])->name('admin.getAsm');
-        Route::get('/master/getPricing/', [MasterDropdownController::class, 'getPricing'])->name('admin.getPricing');
         Route::get('/master/getHsnCodes/', [MasterDropdownController::class, 'getHsnCodes'])->name('admin.getHsnCodes');
         Route::get('/master/getEanBarCodes/', [MasterDropdownController::class, 'getEanBarCodes'])->name('admin.getEanBarCodes');
         Route::get('/master/getGst', [MasterDropdownController::class, 'getGst'])->name('admin.getGst');
@@ -409,6 +408,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/master/getCities/', [MasterDropdownController::class, 'getCities'])->name('admin.getCities');
         Route::get('/master/getGroups/', [MasterDropdownController::class, 'getGroups'])->name('admin.getGroups');
         Route::get('/master/getChannels/', [MasterDropdownController::class, 'getChannels'])->name('admin.getChannels');
+        Route::get('/master/get_company/', [MasterDropdownController::class, 'get_company'])->name('admin.get_company');
+        Route::get('/master/getPricing/', [MasterDropdownController::class, 'getPricing'])->name('admin.getPricing');
+        Route::post('/master/store_combitype/', [MasterDropdownController::class, 'store_combitype'])->name('admin.store_combitype');
+        Route::get('/master/getPricingPurchase/', [MasterDropdownController::class, 'getPricingPurchase'])->name('admin.getPricingPurchase');
+        Route::get('/master/getPricingSale/', [MasterDropdownController::class, 'getPricingSale'])->name('admin.getPricingSale');
 
 
         //contact details

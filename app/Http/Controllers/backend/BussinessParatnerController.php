@@ -599,8 +599,18 @@ class BussinessParatnerController extends Controller
         $asm_users = [];
         if (!empty($model->salesman)) {
             $officer_users = AdminUsers::where(['admin_user_id' => $model->salesman])->first();
-            $ase_users = AdminUsers::where(['admin_user_id' => $officer_users->parent_users])->first();
-            $asm_users = AdminUsers::where(['admin_user_id' => $ase_users->parent_users])->first();
+            if (!empty($officer_users)) {
+                $ase_users = AdminUsers::when(!empty($officer_users->parent_users), function ($q) use ($officer_users) {
+                    $q->where([
+                        'admin_user_id' => $officer_users->parent_users
+                    ]);
+                })->first();
+                $asm_users = AdminUsers::when(!empty($ase_users->parent_users), function ($q) use ($ase_users) {
+                    $q->where([
+                        'admin_user_id' => $ase_users->parent_users
+                    ]);
+                })->first();
+            }
         }
         $company = Company::pluck('name', 'company_id'); //28-02-2024//for distributor tagging
 

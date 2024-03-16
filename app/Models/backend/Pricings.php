@@ -24,6 +24,6 @@ class Pricings extends Model
    * @var array
    */
   protected $fillable = [
-    'pricing_name','pricing_type','status'
+    'pricing_name','pricing_type','status','company_id'
   ];
 }

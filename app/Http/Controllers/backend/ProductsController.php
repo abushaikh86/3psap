@@ -30,6 +30,7 @@ use App\Models\backend\BussinessPartnerAddress;
 use App\Models\backend\BussinessPartnerBankingDetails;
 use App\Models\backend\BussinessPartnerContactDetails;
 use App\Models\backend\BussinessPartnerOrganizationType;
+use App\Models\backend\Combitype;
 use App\Models\backend\ProductQtyStorageRevision;
 use App\Models\backend\ProductRevision;
 use App\Models\backend\Variant;
@@ -88,7 +89,7 @@ class ProductsController extends Controller
                 if ($srno > 0 &&  !$isEmptyRow) {
 
                     $gst_percent =  $numericPart = preg_replace('/[^0-9]/', '', $sheet->getCell('AB' . $row)->getFormattedValue());
-          
+
                     $data = [
                         // 'item_type_id' => trim(addslashes($sheet->getCell('A' . $row)->getValue())),
                         'item_type_id' => getOrCreateIdUnified(ItemTypes::class, 'item_type_name', $sheet->getCell('A' . $row)->getValue(), 'item_type_id'),
@@ -122,8 +123,10 @@ class ProductsController extends Controller
                         'ean_barcode' =>  trim(addslashes($sheet->getCell('Z' . $row)->getValue())),
                         'mrp' => trim(addslashes($sheet->getCell('AA' . $row)->getCalculatedValue())),
                         // 'gst_id' => (int) trim(addslashes($sheet->getCell('AB' . $row)->getValue())),
-                        'gst_id' => getOrCreateIdUnified(Gst::class, 'gst_name', $sheet->getCell('AB' . $row)->getFormattedValue(), 'gst_id',$gst_percent),
-                        'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue()=='Yes'?1:0)),
+                        'gst_id' => getOrCreateIdUnified(Gst::class, 'gst_name', $sheet->getCell('AB' . $row)->getFormattedValue(), 'gst_id', $gst_percent),
+                        'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue() == 'Yes' ? 1 : 0)),
+                        'combi_type' => getOrCreateIdUnified(Combitype::class, 'name', $sheet->getCell('AD' . $row)->getValue(), 'id'),
+
                         // Add more fields as needed
                     ];
 
@@ -218,7 +221,7 @@ class ProductsController extends Controller
             $products->product_thumb = $imageName;
         }
 
-        $sku = $request->brand_id  . $request->category_id . $request->sub_category_id . $request->variant;
+        $sku = $request->brand_id  . $request->sub_category_id . $request->variant;
         $products->sku = $sku;
 
         // $products->save();

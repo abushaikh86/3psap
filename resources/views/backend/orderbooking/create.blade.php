@@ -3,13 +3,7 @@
 
 
 @section('content')
-@php
-use App\Models\backend\BussinessPartnerMaster;
-use App\Models\backend\Company;
 
-$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
-$company = Company::where('company_id',$bp_master->company_id)->first();
-@endphp
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -213,13 +207,14 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             {{ Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
                                             'class' => 'form-control status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ]) }}
                                         </div>
 
 
                                        
-                                        @if (isset($company) && $company->is_backdated_date)
-                                        <div class="form-group">
+                                        
+                                        <div class="form-group d-none back_dated">
                                             {{ Form::label('bill_date', 'Date *') }}
                                             {{ Form::date('bill_date', date('Y-m-d'), [
                                             'class' => 'form-control ',
@@ -227,7 +222,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             'required' => true,
                                             ]) }}
                                         </div>
-                                        @endif
+                                        
 
 
 
@@ -766,6 +761,23 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+            // fetch company_id for party
+            $.ajax({
+                    method: 'get',
+                    url: '{{ route('admin.get_company') }}',
+                    data: {
+                        party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        if(data.is_backdated_date != 0){
+                            $('.back_dated').removeClass('d-none');
+                        }
+
+                    }
+            });
 
                 // usama_12-03-2024-fetch company of party and then make doc number
                 $('.doc_no').removeClass('d-none');

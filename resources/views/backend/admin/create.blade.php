@@ -112,7 +112,7 @@ use Spatie\Permission\Models\Role;
 
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
-                                        {{ Form::label('company_id', 'Distributor *') }}
+                                        {{ Form::label('company_id', 'Distributor') }}
                                         {{ Form::select('company_id', $company, null, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Distributor',

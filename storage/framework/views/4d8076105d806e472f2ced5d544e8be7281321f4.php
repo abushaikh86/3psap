@@ -5,7 +5,7 @@
 <div class="card">
     <div class="card-body">
         <h3 class="mb-2">Welcome to Dashboard</h3>
-        <a href="<?php echo e(url('/')); ?>/admin/logout" class="btn btn-secondary">Logout</a>
+        
     </div>
 </div>
 

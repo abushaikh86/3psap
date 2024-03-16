@@ -119,6 +119,15 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                         'placeholder' => 'Select Variant', 'id' => 'variant']) }}
                                     </div>
                                 </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        {{ Form::label('combi_type', 'Combi Types ') }}
+                                        {{ Form::select('combi_type', DB::table('combi_types')->pluck('name','id'), null, ['class' => 'select2 form-control
+                                        ', 'placeholder' => 'Select Combi Type']) }}
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
                                         {{ Form::label('buom_pack_size', 'BUoM/ Pack Size ') }}
@@ -194,9 +203,9 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                 </div>
                                 <div class="col-md-4 col-12" id="">
                                     <div class="form-group">
-                                        {{ Form::label('dimensions_unit_pack', 'Unit/Pack ') }}
+                                        {{ Form::label('dimensions_unit_pack', 'Unit Per Pack ') }}
                                         {{ Form::text('dimensions_unit_pack', null, ['class' => 'form-control',
-                                        'placeholder' => 'Enter Unit/Pack']) }}
+                                        'placeholder' => 'Enter Unit Per Pack']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-12">
@@ -382,6 +391,25 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
     </div>
 </div>
 
+
+{{-- Combi Types  modal --}}
+<div class="modal fade text-left" id="add_combi_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Add Combi Type</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @include('backend.products.combi_form')
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- uoms modal -->
 <div class="modal fade text-left" id="add_uom_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
     aria-hidden="true">
@@ -523,6 +551,8 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
             new MasterHandler('#variant', '#add_variant_modal', '#submit_variant',
                 '{{ url('admin/master/store_variant') }}', '', '#name');
 
+            new MasterHandler('#combi_type', '#add_combi_modal', '#submit_combi',
+                '{{ url('admin/master/store_combitype') }}', '', '#name');
 
 
 

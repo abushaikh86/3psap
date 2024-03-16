@@ -3,6 +3,8 @@
 
 @section('content')
 @php
+use App\Models\backend\Company;
+
 $status = ['No' => 'No', 'Yes' => 'Yes'];
 $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
 
@@ -70,6 +72,14 @@ $product_types = ['simple' => 'Simple', 'configurable' => 'Configurable'];
                                 {{ Form::select('pricing_type',['purchase'=>'Purchase','sale'=>'Sale'],null, ['class' =>
                                 'form-control d-none']) }}
 
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        {{ Form::label('company_id', 'Distributor') }}
+                                        {{ Form::select('company_id',Company::pluck('name','company_id'),null, ['class' =>
+                                        'form-control ','placeholder'=>'Select Distributor','required'=>true]) }}
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">

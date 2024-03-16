@@ -61,6 +61,13 @@ use Spatie\Permission\Models\Role;
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
+                                            {{ Form::label('acc_holdername', 'Account Holder *') }}
+                                            {{ Form::text('acc_holdername', null, ['class' => 'form-control', 'placeholder' => 'Enter Account Holder', 'required' => true]) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
                                             {{ Form::label('ifsc', 'IFSC Code *') }}
                                             {{ Form::text('ifsc', null, ['class' => 'form-control', 'placeholder' => 'Enter IFSC Code', 'required' => true]) }}
                                         </div>
@@ -73,15 +80,15 @@ use Spatie\Permission\Models\Role;
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 col-12">
-                                        <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             {{ Form::label('bank_address', 'Bank Address *') }}
-                                            {{ Form::textarea('bank_address', null, ['class' => 'form-control', 'placeholder' => 'Enter Bank Address.', 'required' => true, 'rows' => 2, 'cols' => 5, 'id' => 'bank_address', 'style' => "resize:none"  ]) }}
+                                            {{ Form::text('bank_address', null, ['class' => 'form-control', 'placeholder' => 'Enter Bank Address.', 'required' => true, 'rows' => 2, 'cols' => 5, 'id' => 'bank_address', 'style' => "resize:none"  ]) }}
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
 
+                                <div class="row">
                                     <div class="col md-12">
                                         {{ Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1']) }}
                                         <button type="reset" class="btn btn-dark mr-1 mb-1">Reset</button>

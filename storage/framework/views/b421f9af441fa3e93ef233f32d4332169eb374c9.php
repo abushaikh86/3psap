@@ -3,6 +3,7 @@
 
 <?php $__env->startSection('content'); ?>
 
+
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
         <h3 class="content-header-title">Purchase Order</h3>
@@ -126,13 +127,12 @@
                                                             class="form-control" required></select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-12 col-sm-12 d-none doc_no">
                                                     <div class="form-group">
-                                                        <?php echo e(Form::label('po_temp_no', 'PO Order Number *')); ?>
+                                                        <?php echo e(Form::label('po_temp_no', 'PO Order Number')); ?>
 
-                                                        <?php echo e(Form::text('po_temp_no', $latestPoRecordNumber, [
-                                                        'class' => 'form-control
-                                                        po_temp_no',
+                                                        <?php echo e(Form::text('po_temp_no', null, [
+                                                        'class' => 'form-control po_temp_no',
                                                         'placeholder' => 'PO Number',
                                                         'disabled' => true,
                                                         ])); ?>
@@ -183,17 +183,14 @@
                                             <?php echo e(Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
                                             'class' => 'form-control status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
 
 
-                                        <?php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        ?>
-                                        <?php if($company->is_backdated_date): ?>
-                                        <div class="form-group">
+                             
+                                        <div class="form-group d-none back_dated">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
 
                                             <?php echo e(Form::date('bill_date', date('Y-m-d'), [
@@ -203,7 +200,6 @@
                                             ])); ?>
 
                                         </div>
-                                        <?php endif; ?>
 
 
 
@@ -433,7 +429,6 @@
                                                                                 typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
-                                                                                'required' => true,
                                                                                 'oninput' => 'validateInput(this)',
                                                                                 ])); ?>
 
@@ -444,7 +439,6 @@
                                                                                 'class' => 'form-control
                                                                                 hsn_sac',
                                                                                 'data-name' => 'hsn_sac',
-                                                                                'required' => true,
                                                                                 'readonly'=>true,
                                                                                 ])); ?>
 
@@ -788,6 +782,49 @@
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+
+            // fetch company_id for party
+            $.ajax({
+                    method: 'get',
+                    url: '<?php echo e(route('admin.get_company')); ?>',
+                    data: {
+                        party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        if(data.is_backdated_date != 0){
+                            $('.back_dated').removeClass('d-none');
+                        }
+
+                    }
+            });
+
+                // usama_12-03-2024-fetch company of party and then make doc number
+                $('.doc_no').removeClass('d-none');
+                $.ajax({
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-Token': '<?php echo e(csrf_token()); ?>',
+                    },
+                    url: '<?php echo e(route('admin.get_doc_number')); ?>',
+                    data: {
+                        id: '<?php echo e($series_no); ?>',
+                                party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        var matches = data.match(/(\d+)$/);
+                        var currentNumber = matches ? parseInt(matches[1], 10) : 0;
+                        var newNumber = currentNumber + 1;
+                        var newDocNumber = data.replace(/\d+$/, newNumber);
+                        $('#po_temp_no').val(newDocNumber);
+
+                    }
+                });
+               
+
                 $(".gst_dropdown").val('');
                 $(".all_gst").val('');
                 var customer_id = $(this).val();

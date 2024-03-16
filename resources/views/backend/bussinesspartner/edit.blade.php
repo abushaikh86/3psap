@@ -158,10 +158,10 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        {{ Form::label('sales_manager', 'ASM *') }}
+                                        {{ Form::label('sales_manager', 'RKE *') }}
                                         {{ Form::select('sales_manager', $sales_manager, $model->sales_manager, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASM',
+                                        'placeholder' => 'RKE',
                                         ]) }}
                                     </div>
                                 </div>
@@ -170,10 +170,10 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        {{ Form::label('ase', 'ASE *') }}
+                                        {{ Form::label('ase', 'KAM *') }}
                                         {{ Form::select('ase', [], $model->ase, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASE',
+                                        'placeholder' => 'KAM',
                                         ]) }}
                                     </div>
 
@@ -256,15 +256,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-label-group">
-                                        {{ Form::label('pricing_profile', 'Pricing Profile') }}
-                                        {{ Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Select Pricing Profile',
-                                        ]) }}
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6 col-12 d-none shelf_left">
                                     <div class="form-label-group">
@@ -296,6 +287,18 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                   @else 
                                       {{ Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')}}
                                   @endif
+
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-label-group">
+                                        {{ Form::label('pricing_profile', 'Pricing Profile') }}
+                                        {{ Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Pricing Profile',
+                                        ]) }}
+                                    </div>
+                                </div>
+                                
                                   <hr>
 
                                  {{-- Address Details --}}
@@ -1409,9 +1412,9 @@ $(document).ready(function() {
             var salesman = '{{ $model->salesman }}';
 
             if(salesman){
-               var manager_id = '{{$asm_users->parent_users??''}}';
-               var ase_id = '{{$ase_users->parent_users??''}}';
-               var officer_id = '{{$officer_users->parent_users??''}}';
+               var manager_id = "{{$asm_users->parent_users??''}}";
+               var ase_id = "{{$ase_users->parent_users??''}}";
+               var officer_id = "{{$officer_users->parent_users??''}}";
                salesManager = manager_id;
                ase = ase_id;
                salesOfficer = officer_id;
@@ -1548,21 +1551,43 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
+            var distributor = $('#company_id').find('option:selected').text().trim();
             // alert(bptype);
 
+
+            $('#company_id').change(function(){
+                if($('#business_partner_type').val()){
+                if (bptype == 'Customer') {
+                    $('.sm_dynamic').removeClass('d-none');
+                    $('.shelf_left').removeClass('d-none');
+                    $('.beat_det').removeClass('d-none');
+                    new DynamicDropdown('{{ route('admin.getPricingPurchase') }}',
+                        $(this).val(), '#pricing_profile',);
+                } else {
+                    $('.sm_dynamic').addClass('d-none');
+                    $('.shelf_left').addClass('d-none');
+                    $('.beat_det').addClass('d-none');
+                    new DynamicDropdown('{{ route('admin.getPricingSale') }}',
+                        $(this).val(), '#pricing_profile');
+                }
+            }
+            });
+
+            if(distributor && bptype){
             if (bptype == 'Customer') {
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('{{ route('admin.getPricing') }}',
-                    'sale', '#pricing_profile','{{$model->pricing_profile}}');
+                new DynamicDropdown('{{ route('admin.getPricingPurchase') }}',
+                    distributor, '#pricing_profile','{{$model->pricing_profile}}');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
-                new DynamicDropdown('{{ route('admin.getPricing') }}',
-                    'purchase', '#pricing_profile','{{$model->pricing_profile}}');
+                new DynamicDropdown('{{ route('admin.getPricingSale') }}',
+                    distributor, '#pricing_profile','{{$model->pricing_profile}}');
             }
+         }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
             if (terms_of_payment == 'On Credit') {
@@ -1572,22 +1597,22 @@ $(document).ready(function() {
             }
         });
 
-        $('#business_partner_type').on('change', function() {
-            var bptype = $(this).find('option:selected').text().trim();
-            if (bptype == 'Customer') {
-                $('.sm_dynamic').removeClass('d-none');
-                $('.shelf_left').removeClass('d-none');
-                $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('{{ route('admin.getPricing') }}',
-                    'sale', '#pricing_profile');
-            } else {
-                $('.sm_dynamic').addClass('d-none');
-                $('.shelf_left').addClass('d-none');
-                $('.beat_det').addClass('d-none');
-                new DynamicDropdown('{{ route('admin.getPricing') }}',
-                    'purchase', '#pricing_profile');
-            }
-        });
+        // $('#business_partner_type').on('change', function() {
+        //     var bptype = $(this).find('option:selected').text().trim();
+        //     if (bptype == 'Customer') {
+        //         $('.sm_dynamic').removeClass('d-none');
+        //         $('.shelf_left').removeClass('d-none');
+        //         $('.beat_det').removeClass('d-none');
+        //         new DynamicDropdown('{{ route('admin.getPricing') }}',
+        //             'sale', '#pricing_profile');
+        //     } else {
+        //         $('.sm_dynamic').addClass('d-none');
+        //         $('.shelf_left').addClass('d-none');
+        //         $('.beat_det').addClass('d-none');
+        //         new DynamicDropdown('{{ route('admin.getPricing') }}',
+        //             'purchase', '#pricing_profile');
+        //     }
+        // });
 
         $('#payment_terms_id').on('change', function() {
             var terms_of_payment = $(this).find('option:selected').text().trim();

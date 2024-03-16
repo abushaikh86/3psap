@@ -108,7 +108,7 @@ use App\Models\backend\Beat;
 
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
-                                        {{ Form::label('company_id', 'Distributor *') }}
+                                        {{ Form::label('company_id', 'Distributor') }}
                                         {{ Form::select('company_id', $company, $userdata->company_id, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Distributor',

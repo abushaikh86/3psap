@@ -54,7 +54,7 @@ class SelllingpricingController extends Controller
         $pricings = new Pricings;
         $pricings->fill($request->all());
         if ($pricings->save()) {
-            return redirect('/admin/pricings')->with('success', 'New Pricing Added');
+            return redirect('/admin/sellingpricing')->with('success', 'New Pricing Added');
         }
     }
 
@@ -73,7 +73,7 @@ class SelllingpricingController extends Controller
     public function edit($id)
     {
         $pricings = Pricings::where('pricing_master_id', $id)->first();
-        return view('backend.pricings.edit', compact('pricings'));
+        return view('backend.sellingpricing.edit', compact('pricings'));
     }
 
     public function update(Request $request)
@@ -86,7 +86,8 @@ class SelllingpricingController extends Controller
         $pricings = Pricings::where('pricing_master_id', $request->pricing_master_id)->first();
         $pricings->fill($request->all());
         if ($pricings->save()) {
-            return redirect('/admin/pricings')->with('success', 'Pricing Updated');
+            return redirect('/admin/sellingpricing')->with('success', 'Pricing Updated');
+
         }
     }
 
@@ -100,7 +101,7 @@ class SelllingpricingController extends Controller
         Session::flash('success', 'Pricing deleted!');
         Session::flash('status', 'success');
 
-        return redirect('admin/pricings');
+        return redirect('admin/sellingpricing');
     }
 
     public function setpricing(Request $request, $id)
@@ -179,7 +180,8 @@ class SelllingpricingController extends Controller
                             'category_id' => trim(addslashes($sheet->getCell('F' . $row)->getValue())),
                             'sub_category_id' => trim(addslashes($sheet->getCell('G' . $row)->getValue())),
                             'variant' => trim(addslashes($sheet->getCell('H' . $row)->getValue())),
-                            'selling_price' => trim(addslashes($sheet->getCell('I' . $row)->getValue())),
+                            'selling_price' => number_format(trim(addslashes($sheet->getCell('I' . $row)->getValue())), 2, '.', '')
+
                             // Add more fields as needed
                         ];
 

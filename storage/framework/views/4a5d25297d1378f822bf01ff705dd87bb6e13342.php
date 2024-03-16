@@ -40,7 +40,7 @@
             },
             updater: function(item) {
                 selectedItemData = item;
-                // console.log(item);
+                console.log(item);
                 var counter = globalCounter;
                 var name = this.$element.attr('name');
                 var group = name.substring(0, name.indexOf('['));
@@ -54,6 +54,15 @@
                 var sku = item.sku;
                 var gst_percent = item.gst_percent;
 
+                var item_code = '';
+
+                var numericRegex = /^[0-9]+$/;
+
+                if (numericRegex.test(item.name)) {
+                    item_code = item.name;
+                } else {
+                    item_code = item.item_code;
+                }
 
                 var customer_id = $('#party_id').val();
                 if (customer_id || customer_id != '') {
@@ -63,7 +72,7 @@
                             method: 'GET',
                             data: {
                                 customer_id: customer_id,
-                                'item_code': item.name,
+                                'item_code': item_code,
                                 'sku': sku
                             },
                             success: function(response) {

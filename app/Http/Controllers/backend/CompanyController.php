@@ -102,7 +102,7 @@ class CompanyController extends Controller
 
       if ($model->getChanges()) {
         $new_changes = $model->getChanges();
-        $log = ['module' => 'Company Master', 'action' => 'Company Updated', 'description' => 'Company Updated: Name=>' . $model->name];
+        $log = ['module' => 'Distributor Master', 'action' => 'Distributor Updated', 'description' => 'Distributor Updated: Name=>' . $model->name];
         captureActivityupdate($new_changes, $log);
       }
       $distributor_check = AdminUsers::where('email',$model->email)->first();
@@ -127,7 +127,7 @@ class CompanyController extends Controller
         $create_distributor->save();
         $create_distributor->assignRole(41);//distributor role id//28-02-2024
       }
-      Session::flash('message', 'Company Added Successfully!');
+      Session::flash('message', 'Distributor Added Successfully!');
       Session::flash('status', 'success');
     } else {
       Session::flash('message', 'Something went wrong!');
@@ -253,7 +253,7 @@ class CompanyController extends Controller
         $create_distributor->save();
         $create_distributor->assignRole(41);//distributor role id//28-02-2024
       }
-      Session::flash('success', 'Company Updated Successfully!');
+      Session::flash('success', 'Distributor Updated Successfully!');
       Session::flash('status', 'success');
     } else {
       Session::flash('error', 'Something went wrong!');
@@ -276,7 +276,7 @@ class CompanyController extends Controller
     $company = Company::findOrFail($id);
 
     if ($company->delete()) {
-      Session::flash('message', 'Company Deleted Successfully!');
+      Session::flash('message', 'Distributor Deleted Successfully!');
       Session::flash('status', 'success');
     } else {
       Session::flash('message', 'Something went wrong!');

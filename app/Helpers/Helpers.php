@@ -3,6 +3,8 @@
 use Carbon\Carbon;
 use App\Models\backend\ActivityLog;
 use App\Models\backend\Company;
+use PHPMailer\PHPMailer;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -161,7 +163,7 @@ if (!function_exists('amount_in_words')) {
 
 
     if (!function_exists('get_transaction_type')) {
-        function get_transaction_type($moduleName,$company_id=null)
+        function get_transaction_type($moduleName, $company_id = null)
         {
             $moduleName = str_replace(' ', '', strtolower(trim($moduleName)));
             $existingModules = DB::table('modules')->pluck('name', 'id')->map(function ($name) {
@@ -336,6 +338,39 @@ if (!function_exists('amount_in_words')) {
             }
 
             return $Financialyear;
+        }
+    }
+
+    // usama_send email
+    if (!function_exists('send_email')) {
+        function send_email($to,$from,$subject,$body)
+        {
+            $mail = new PHPMailer\PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->CharSet = "utf-8"; // set charset to utf8
+            $mail->SMTPAuth = true; // authentication enabled
+            $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for Gmail
+            $mail->Host = "smtp.gmail.com";
+            $mail->SMTPAutoTLS = false;
+            $mail->Port = 587; // port - 587/465
+            $mail->Username = "ideaportal@jmbaxi.com";
+            $mail->Password = 'hfaiylpdgtfsovag';
+      
+            $mail->SMTPOptions = array(
+              'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+              )
+            );
+            
+      
+            $mail->isHTML(true);
+            $mail->setFrom("ideaportal@jmbaxi.com", 'Jmbaxi');
+            $mail->addAddress($from);
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->Send();
         }
     }
 }

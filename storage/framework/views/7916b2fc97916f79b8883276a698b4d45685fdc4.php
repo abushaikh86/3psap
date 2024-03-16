@@ -4,6 +4,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\backend\Beat;
 use App\Models\backend\AdminUsers;
 use App\Models\backend\Country;
+use App\Models\backend\Bpgroup;
 
 $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->first())->first();
 $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
@@ -129,17 +130,28 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('bp_category', 'Business Partner Category *')); ?>
+                                        <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
 
-                                        <?php echo e(Form::select('bp_category', $business_partner_category, $model->bp_category,
+                                        <?php echo e(Form::select('bp_channel', $business_partner_category, $model->bp_channel,
                                         [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'Business Partner
-                                        Category',
+                                        'placeholder' => 'Business Partner Channel',
                                         'required' => true,
                                         ])); ?>
 
+                                    </div>
+                                </div>
 
+                                <div class="col-md-6 col-12">
+                                    <div class="form-label-group">
+                                        <?php echo e(Form::label('bp_category', 'Business Partner Category *')); ?>
+
+                                        <?php echo e(Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), $model->bp_category,
+                                        [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Business Partner Category',
+                                        'required' => true,
+                                        ])); ?>
 
                                     </div>
                                 </div>
@@ -148,9 +160,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('bp_group', 'Business Partner group *')); ?>
 
-                                        <?php echo e(Form::text('bp_group', $model->bp_group, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Business Partner Group',
+                                        <?php echo e(Form::select('bp_group', 
+                                        [],
+                                        $model->bp_group, [
+                                        'class' => 'form-control select2',
+                                        'placeholder' => 'Select Business Partner Group',
                                         'required' => true,
                                         ])); ?>
 
@@ -159,11 +173,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('sales_manager', 'ASM *')); ?>
+                                        <?php echo e(Form::label('sales_manager', 'RKE *')); ?>
 
                                         <?php echo e(Form::select('sales_manager', $sales_manager, $model->sales_manager, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASM',
+                                        'placeholder' => 'RKE',
                                         ])); ?>
 
                                     </div>
@@ -173,11 +187,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('ase', 'ASE *')); ?>
+                                        <?php echo e(Form::label('ase', 'KAM *')); ?>
 
                                         <?php echo e(Form::select('ase', [], $model->ase, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASE',
+                                        'placeholder' => 'KAM',
                                         ])); ?>
 
                                     </div>
@@ -274,17 +288,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-label-group">
-                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
-
-                                        <?php echo e(Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Select Pricing Profile',
-                                        ])); ?>
-
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6 col-12 d-none shelf_left">
                                     <div class="form-label-group">
@@ -308,6 +311,36 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                     </div>
                                 </div>
+
+                                  <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                  <?php if(Auth()->guard('admin')->user()->role != 41): ?>
+                                  <div class="col-md-6 col-12 company_drp">
+                                      <div class="form-group">
+                                          <?php echo e(Form::label('company_id', 'Distributor *')); ?>
+
+                                          <?php echo e(Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',])); ?>
+
+                                      </div>
+                                  </div>
+                                  <?php else: ?> 
+                                      <?php echo e(Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')); ?>
+
+                                  <?php endif; ?>
+
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-label-group">
+                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
+
+                                        <?php echo e(Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Pricing Profile',
+                                        ])); ?>
+
+                                    </div>
+                                </div>
+                                
+                                  <hr>
 
                                  
 
@@ -842,7 +875,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Add Business Partner Category</h4>
+                <h4 class="modal-title" id="myModalLabel1">Add Business Partner Channel</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -851,12 +884,12 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                 <div class="row">
                     <div class="col-md-12 col-12">
                         <div class="form-group">
-                            <?php echo e(Form::label('bp_category', 'Add Category *')); ?>
+                            <?php echo e(Form::label('bp_channel', 'Add Channel *')); ?>
 
-                            <?php echo e(Form::text('bp_category', null, [
+                            <?php echo e(Form::text('bp_channel', null, [
                             'class' => 'form-control',
                             'id' => 'bp_category_modal',
-                            'placeholder' => 'Business Partner Category',
+                            'placeholder' => 'Business Partner Channel',
                             'required' => true,
                             ])); ?>
 
@@ -872,6 +905,58 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
         </div>
     </div>
 </div>
+
+    
+    <div class="modal fade text-left" id="add_bp_group_modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1">Add Business Partner Group</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
+
+                                <?php echo e(Form::select('bp_channel', $business_partner_category, null, [
+                                    'class' => 'form-control ',
+                                    'id'=>'bp_channel_modal',
+                                    'placeholder' => 'Business Partner Channel',
+                                    'required' => true,
+                                ])); ?>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <?php echo e(Form::label('bp_group', 'Add Group *')); ?>
+
+                                <?php echo e(Form::text('bp_group', null, [
+                                    'class' => 'form-control',
+                                    'id' => 'bp_group_modal',
+                                    'placeholder' => 'Business Partner Group',
+                                    'required' => true,
+                                ])); ?>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-start">
+                            <button type="submit" class="btn btn-primary mr-1 mb-1" id="submit_bp_group">Submit</button>
+                            <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- area modal -->
 <div class="modal fade text-left " id="add_area_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
@@ -1379,6 +1464,14 @@ $(document).ready(function() {
    var state1 = '<?php echo e($business_partner_address[1]->state); ?>';
    var district1 = '<?php echo e($business_partner_address[1]->district); ?>';
 
+   var bp_channel = '<?php echo e($model->bp_channel); ?>';
+   var bp_group = '<?php echo e($model->bp_group); ?>';
+
+   if(bp_channel){
+        new DynamicDropdown('<?php echo e(route('admin.getGroups')); ?>', 
+        bp_channel, '#bp_group',bp_group);
+   }
+
    if(country){
         new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
         country, '#state',state);
@@ -1400,6 +1493,25 @@ $(document).ready(function() {
         state1, '#district1',district1);
    }
 
+   // usama_15-03-2024-fetch bp-group from channel
+   $('#bp_channel').change(function() {
+        var selectedValue = $(this).val();
+        new DynamicDropdown('<?php echo e(route('admin.getGroups')); ?>',
+            selectedValue, '#bp_group')
+        // fetch channel data in group modal
+        fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',selectedValue,
+        selectedValue,'#bp_channel_modal')
+        
+    });
+    // if new channel added then trigger it in group modal
+    $('#submit_bp_cat').click(function() {
+        setTimeout(() => {
+            // fetch channel data in group modal
+            fetchmodaldropdown('<?php echo e(route('admin.getChannels')); ?>',$('#bp_channel').val(),
+            $('#bp_channel').val(),'#bp_channel_modal')
+        }, 1000);
+       
+    });
 
    $('#country').change(function() {       
    new DynamicDropdown('<?php echo e(route('admin.getStates')); ?>', 
@@ -1462,9 +1574,9 @@ $(document).ready(function() {
             var salesman = '<?php echo e($model->salesman); ?>';
 
             if(salesman){
-               var manager_id = '<?php echo e($asm_users->parent_users??''); ?>';
-               var ase_id = '<?php echo e($ase_users->parent_users??''); ?>';
-               var officer_id = '<?php echo e($officer_users->parent_users??''); ?>';
+               var manager_id = "<?php echo e($asm_users->parent_users??''); ?>";
+               var ase_id = "<?php echo e($ase_users->parent_users??''); ?>";
+               var officer_id = "<?php echo e($officer_users->parent_users??''); ?>";
                salesManager = manager_id;
                ase = ase_id;
                salesOfficer = officer_id;
@@ -1550,8 +1662,11 @@ $(document).ready(function() {
             });
            
 
-            new MasterHandler('#bp_category', '#add_bp_cat_modal', '#submit_bp_cat',
+            new MasterHandler('#bp_channel', '#add_bp_cat_modal', '#submit_bp_cat',
                 '<?php echo e(url('admin/master/store_category')); ?>', '', '#bp_category_modal');
+
+            new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
+                '<?php echo e(url('admin/master/store_group')); ?>', null, '#bp_channel_modal','#bp_group_modal');
 
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
@@ -1598,21 +1713,43 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
+            var distributor = $('#company_id').find('option:selected').text().trim();
             // alert(bptype);
 
+
+            $('#company_id').change(function(){
+                if($('#business_partner_type').val()){
+                if (bptype == 'Customer') {
+                    $('.sm_dynamic').removeClass('d-none');
+                    $('.shelf_left').removeClass('d-none');
+                    $('.beat_det').removeClass('d-none');
+                    new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>',
+                        $(this).val(), '#pricing_profile',);
+                } else {
+                    $('.sm_dynamic').addClass('d-none');
+                    $('.shelf_left').addClass('d-none');
+                    $('.beat_det').addClass('d-none');
+                    new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>',
+                        $(this).val(), '#pricing_profile');
+                }
+            }
+            });
+
+            if(distributor && bptype){
             if (bptype == 'Customer') {
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>',
+                    distributor, '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>',
+                    distributor, '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             }
+         }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
             if (terms_of_payment == 'On Credit') {
@@ -1622,22 +1759,22 @@ $(document).ready(function() {
             }
         });
 
-        $('#business_partner_type').on('change', function() {
-            var bptype = $(this).find('option:selected').text().trim();
-            if (bptype == 'Customer') {
-                $('.sm_dynamic').removeClass('d-none');
-                $('.shelf_left').removeClass('d-none');
-                $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile');
-            } else {
-                $('.sm_dynamic').addClass('d-none');
-                $('.shelf_left').addClass('d-none');
-                $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile');
-            }
-        });
+        // $('#business_partner_type').on('change', function() {
+        //     var bptype = $(this).find('option:selected').text().trim();
+        //     if (bptype == 'Customer') {
+        //         $('.sm_dynamic').removeClass('d-none');
+        //         $('.shelf_left').removeClass('d-none');
+        //         $('.beat_det').removeClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'sale', '#pricing_profile');
+        //     } else {
+        //         $('.sm_dynamic').addClass('d-none');
+        //         $('.shelf_left').addClass('d-none');
+        //         $('.beat_det').addClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'purchase', '#pricing_profile');
+        //     }
+        // });
 
         $('#payment_terms_id').on('change', function() {
             var terms_of_payment = $(this).find('option:selected').text().trim();

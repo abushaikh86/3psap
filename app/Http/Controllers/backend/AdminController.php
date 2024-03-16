@@ -86,8 +86,8 @@ class AdminController extends Controller
                 $role_name = Role::where('id', $row)->first();
                 $selectedUserIds = [];
 
-                $html .= "<label> $role_name->name *</label>";
-                $html .= "<select name='parent_users[]' class='form-control' required>";
+                $html .= "<label> $role_name->name </label>";
+                $html .= "<select name='parent_users[]' class='form-control'>";
 
                 $html .= "<option value=''>Select $role_name->name</option>";
                 foreach ($users as $user) {
@@ -112,7 +112,6 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -125,6 +124,10 @@ class AdminController extends Controller
         }
 
         // dd($request->parent_users);
+        // usama_16-03-2024-send email
+        // $subject = '';
+        // $body = '';
+        // send_email(,$request->email,$subject,$body);
 
         $user = new AdminUsers;
         $user->fill($request->all());

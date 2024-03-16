@@ -21,6 +21,7 @@ use App\Models\backend\Financialyear;
 use App\Models\backend\GLCodes;
 use App\Models\backend\GoodsServiceReceipts;
 use App\Models\backend\Gst;
+use App\Models\backend\Company;
 use App\Models\backend\HSNCodes;
 use App\Models\backend\PricingItem;
 use App\Models\backend\Pricings;
@@ -32,6 +33,7 @@ use App\Models\backend\SubCategories;
 use App\Models\backend\Variant;
 use App\Models\backend\State;
 use App\Models\backend\City;
+use App\Models\backend\Combitype;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule; //import Rule class
 use Spatie\Permission\Models\Role;
@@ -154,6 +156,22 @@ class MasterDropdownController extends Controller
     }
 
 
+    public function store_combitype(Request $request)
+    {
+        $combitype = new Combitype();
+        $combitype->name = $request->data_name[0];
+        $combitype->save();
+
+        $combitype = Combitype::orderBy('created_at', 'desc')->pluck('name', 'id');
+        // $brands->put('add_brand','Add Brand +');
+        $brand_options = "";
+        foreach ($combitype as $id => $name) {
+            $brand_options .= '<option value="' . $id . '">' . $name . '</option>';
+        }
+        return ['flag' => 'success', 'message' => 'New Combi Type Added!', 'data' => $brand_options];
+    }
+
+
     public function store_product_category(Request $request)
     {
         // dd($request->all());
@@ -251,6 +269,19 @@ class MasterDropdownController extends Controller
 
 
 
+    public function get_company(Request $request)
+    {
+        $party_id = $request->party_id;
+        $bp_master = BussinessPartnerMaster::where('business_partner_id',$party_id)->first();
+        $company = Company::where('company_id',$bp_master->company_id)->first(); 
+
+
+
+        return response()->json($company);
+    }
+
+
+
     public function get_series(Request $request)
     {
         $party_id = $request->party_id;
@@ -336,10 +367,17 @@ class MasterDropdownController extends Controller
     }
 
 
-    public function getPricing(Request $request)
+    public function getPricingPurchase(Request $request)
     {
-        $pricing_type = $request->input('id');
-        $pricing = Pricings::where(['pricing_type' => $pricing_type, 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        $company_id = $request->input('id');
+        $pricing = Pricings::where(['company_id'=>$company_id,'pricing_type' => 'purchase', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        return response()->json($pricing);
+    }
+
+    public function getPricingSale(Request $request)
+    {
+        $company_id = $request->input('id');
+        $pricing = Pricings::where(['company_id'=>$company_id,'pricing_type' => 'sale', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
         return response()->json($pricing);
     }
 
@@ -473,6 +511,8 @@ class MasterDropdownController extends Controller
         $customer_id = $_GET['customer_id'];
         $item_code = $_GET['item_code'];
         $sku = $_GET['sku'];
+
+
 
         $data = BussinessPartnerMaster::where(['business_partner_id' => $customer_id])->first();
         if (!empty($data)) {
