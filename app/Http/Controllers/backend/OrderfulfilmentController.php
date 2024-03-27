@@ -82,7 +82,7 @@ class OrderfulfilmentController extends Controller
                     }
 
                     if (request()->user()->can('Clone Order Fulfilment/Dispatch')) {
-                        if ($purchaseorder->is_of_done && empty($ap_inv_data->ar_inv_no)) {
+                        if ($purchaseorder->is_of_done && empty($ap_inv_data->is_bill_booking_done)) {
                             $actionBtn .= '<a href="' . route('admin.orderfulfilment.createarinvoice', ['id' => $purchaseorder->order_fulfillment_id]) . '
                      " class="btn btn-sm btn-info" title="Create A/R Invoice"   >
                      <i class="feather icon-plus"></i></a> ';
@@ -423,9 +423,22 @@ class OrderfulfilmentController extends Controller
 
                         $batch_no = $row['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
-                            DB::table('def_bacth_no_counter')->increment('counter');
-                            $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                            $batch_no = $counterValue . '-Batch-' . $row['sku'];
+
+                            $check_for_batch = Inventory::where([
+                                'warehouse_id' => $row['storage_location_id'],
+                                'bin_id' => $good_bin->bin_id,
+                                'item_code' => $row['item_code'],
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
+
+                            if (!empty($check_for_batch)) {
+                                $batch_no = $check_for_batch->batch_no;
+                            } else {
+                                DB::table('def_bacth_no_counter')->increment('counter');
+                                $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                $batch_no = $counterValue . '-Batch-' . $row['item_code'];
+                            }
                         }
 
                         $product = Products::where('item_code', $row['item_code'])->first();
@@ -436,18 +449,10 @@ class OrderfulfilmentController extends Controller
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
-
-                            ])
-                                ->when(
-                                    session('company_id') != 0 && session('fy_year') != 0,
-                                    function ($query) {
-                                        return $query->where([
-                                            'fy_year' => session('fy_year'),
-                                            'company_id' => session('company_id'),
-                                        ]);
-                                    }
-                                )
-                                ->first();
+                                'batch_no' => $batch_no,
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
 
 
                             // dd($inventoryExist, $goodsservicereceipt);
@@ -469,9 +474,22 @@ class OrderfulfilmentController extends Controller
 
                                 $batch_no = $item['batch_no'] ?? '';
                                 if (empty($batch_no) || $batch_no == null) {
-                                    DB::table('def_bacth_no_counter')->increment('counter');
-                                    $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                                    $batch_no = $counterValue . '-Batch-' . $item['sku'];
+
+                                    $check_for_batch = Inventory::where([
+                                        'warehouse_id' => $item['storage_location_id'],
+                                        'bin_id' => $good_bin->bin_id,
+                                        'item_code' => $item['item_code'],
+                                        'fy_year' => $goodsservicereceipt->fy_year,
+                                        'company_id' => $goodsservicereceipt->company_id,
+                                    ])->first();
+
+                                    if (!empty($check_for_batch)) {
+                                        $batch_no = $check_for_batch->batch_no;
+                                    } else {
+                                        DB::table('def_bacth_no_counter')->increment('counter');
+                                        $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                        $batch_no = $counterValue . '-Batch-' . $item['item_code'];
+                                    }
                                 }
 
                                 $goodsservicereceipts_item = new OrderFulfilmentItems();
@@ -528,9 +546,22 @@ class OrderfulfilmentController extends Controller
 
                         $batch_no = $old_item['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
-                            DB::table('def_bacth_no_counter')->increment('counter');
-                            $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                            $batch_no = $counterValue . '-Batch-' . $old_item['sku'];
+
+                            $check_for_batch = Inventory::where([
+                                'warehouse_id' => $old_item['storage_location_id'],
+                                'bin_id' => $good_bin->bin_id,
+                                'item_code' => $old_item['item_code'],
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
+
+                            if (!empty($check_for_batch)) {
+                                $batch_no = $check_for_batch->batch_no;
+                            } else {
+                                DB::table('def_bacth_no_counter')->increment('counter');
+                                $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                $batch_no = $counterValue . '-Batch-' . $old_item['item_code'];
+                            }
                         }
 
 
@@ -560,49 +591,6 @@ class OrderfulfilmentController extends Controller
                         if (!empty($gst_rate)) {
                             $get_data = Gst::where('gst_id', $gst_rate)->first();
                             $gst_rate = $get_data->gst_percent;
-                        }
-
-                        //batches
-                        $goods_service_receipt_id = $goodsservicereceipt->order_fulfillment_id;
-                        $purchase_order_item_id = $old_goodsservicereceipts_item->order_fulfillment_item_id;
-                        $storage_location_id = $old_goodsservicereceipts_item->storage_location_id;
-                        // dd($item);
-
-                        if (isset($old_item['batches'])) {
-                            foreach ($old_item['batches'] as $old_bat) {
-                                // dd($old_bat );
-                                if ($old_bat['batch_no'] != '') {
-
-
-                                    if ((isset($old_bat['order_fulfilment_batches_id']) && $old_bat['order_fulfilment_batches_id'] != '') && (isset($old_bat['order_fulfillment_item_id']) && $old_bat['order_fulfillment_item_id'] != '')) {
-                                        $old_goodsservicereceiptsbatches = OrderFulfilmentBatches::updateOrCreate(
-
-                                            [
-                                                'order_fulfilment_batches_id' => $old_bat['order_fulfilment_batches_id'],
-                                                'order_fulfillment_item_id' => $old_bat['order_fulfillment_item_id'],
-                                            ],
-
-                                            [
-                                                'order_fulfillment_item_id' => $old_bat['order_fulfillment_item_id'],
-                                                'storage_location_id' => $storage_location_id,
-                                                'batch_no' => $old_bat['batch_no'],
-                                                'manufacturing_date' => $old_bat['manufacturing_date'],
-                                                'expiry_date' => $old_bat['expiry_date'],
-                                            ]
-                                        );
-                                    } else {
-                                        // dd('else');
-                                        $contine_old_batch = new OrderFulfilmentBatches;
-                                        $contine_old_batch->batch_no = $old_bat['batch_no'];
-                                        $contine_old_batch->manufacturing_date = $old_bat['manufacturing_date'];
-                                        $contine_old_batch->expiry_date = $old_bat['expiry_date'];
-                                        $contine_old_batch->storage_location_id = $storage_location_id;
-                                        $contine_old_batch->order_fulfillment_id = $goods_service_receipt_id;
-                                        $contine_old_batch->order_fulfillment_item_id = $purchase_order_item_id;
-                                        $contine_old_batch->save();
-                                    }
-                                }
-                            }
                         }
                     }   //end of loop of old items
                     $gst_grand_total = ($cgst_total + $sgst_utgst_total + $igst_total);
@@ -730,10 +718,9 @@ class OrderfulfilmentController extends Controller
         }
 
         //update status
-        $update_data = OrderFulfilment::where('order_fulfillment_id', $goodsservicereceipt['order_fulfillment_id'])->first();
-        $update_data->is_of_done = 1;
-        $update_data->is_inventory_updated = 1;
-        $update_data->save();
+        $goodsservicereceipt->is_of_done = 1;
+        $goodsservicereceipt->is_inventory_updated = 1;
+        $goodsservicereceipt->save();
 
         if ($goodsservicereceipt->getChanges()) {
             $new_changes = $goodsservicereceipt->getChanges();
@@ -816,7 +803,7 @@ class OrderfulfilmentController extends Controller
             return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
         }
 
-        $apinvoice = ArInvoice::where('customer_inv_no', $greceipt->customer_inv_no)->first();
+        $apinvoice = ArInvoice::where('of_id', $greceipt->order_fulfillment_id)->first();
         // $apinvoice = ArInvoice::where('order_fulfillment_id', $id)->first();
         // dd($goods_receipt_exist->toArray());
 

@@ -50,7 +50,7 @@
                                             <th>Sr. No</th>
                                             <th>Area</th>
                                             <th>Route</th>
-                                            <th colspan="3">Action</th>
+                                            <th></th>
 
                                         </tr>
                                     </thead>
@@ -107,4 +107,8 @@
         </div>
     </section>
 
+@endsection
+
+@section('scripts')
+@include('backend.export_pagination_script')
 @endsection

@@ -1,6 +1,11 @@
+
 <?php $__env->startSection('title', 'Inventory Transactions'); ?>
 
 <?php $__env->startSection('content'); ?>
+<?php
+use App\Models\backend\City;
+    
+?>
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
             <h3 class="content-header-title">Inventory Transactions</h3>
@@ -62,7 +67,7 @@
                                             <th>Item Description</th>
                                             <th>Brand</th>
                                             <th>Category</th>
-                                            <th>Sub Category</th>
+                                            <th>Format</th>
                                             <th>Variant</th>
                                             <th>EAN Code</th>
                                             <th>Product</th>
@@ -98,9 +103,14 @@
                                                     if ($expiryDate && $mfgDate) {
                                                         $daysRemaining = now()->diffInDays($expiryDate);
                                                         $total_days = $expiryDate->diffInDays($mfgDate);
-                                                        // dd($total_days);
-                                                        $freshnessPercentage = round(($daysRemaining / $total_days) * 100);
+                                                        $freshnessPercentage = round(($daysRemaining / $total_days) * 100,2);
                                                     }
+
+                                                    if ($expiryDate < now()) {
+                                                        $daysRemaining = 0;
+                                                        $freshnessPercentage = 0;
+                                                    }
+
 
                                                 ?>
 
@@ -111,15 +121,19 @@
                                                     <td><?php echo e($company_data->name); ?></td>
                                                     <td><?php echo e($company_data->db_type); ?></td>
                                                     <td><?php echo e($company_data->city); ?></td>
-                                                    <td><?php echo e($company_data->district); ?></td>
+                                                    <td>
+                                                        <?php
+                                                            $districts = City::where('city_id',$company_data->district)->first();
+                                                        ?>
+                                                        <?php echo e($districts->city_name); ?></td>
                                                     <td><?php echo e($row->item_code); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->product_desc); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->brand->brand_name); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->category->category_name); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->sub_category->subcategory_name); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->variants->name); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->ean_barcode); ?></td>
-                                                    <td><?php echo e($row->get_unit_price->consumer_desc); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->product_desc??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->brand->brand_name??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->category->category_name??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->sub_category->subcategory_name??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->variants->name??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->ean_barcode??''); ?></td>
+                                                    <td><?php echo e($row->get_unit_price->consumer_desc??''); ?></td>
                                                     <td><?php echo e($row->get_warehouse->storage_location_name); ?>
 
                                                         (<?php echo e($row->get_bin->get_bin->name ?? ''); ?>)
@@ -158,16 +172,11 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-    <script src="<?php echo e(asset('public/backend-assets/vendors/js/datatables.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('public/backend-assets/vendors/js/dataTables.bootstrap4.min.js')); ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<?php echo $__env->make('backend.export_pagination_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() {            
 
             const from_date_param = new URLSearchParams(window.location.search).get('from_date');
             const to_date_param = new URLSearchParams(window.location.search).get('to_date');

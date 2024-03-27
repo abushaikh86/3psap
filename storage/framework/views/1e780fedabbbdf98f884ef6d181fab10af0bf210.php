@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'user activity'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="content-header row">

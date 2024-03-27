@@ -65,6 +65,16 @@ function calculategst(elem) {
         var gst = $(
             "select[name='" + data_group + "[" + index + "][gst_rate]']"
         ).val();
+        if (gst == undefined) {
+            var gst = $(
+                "input[name='" + data_group + "[" + index + "][gst_rate]']"
+            ).val();
+        }
+
+        var uom = $(
+            "input[name='" + data_group + "[" + index + "][uom]']"
+        ).val();
+
         var gst_amount = $(
             "input[name='" + data_group + "[" + index + "][gst_amount]']"
         );
@@ -95,16 +105,38 @@ function calculategst(elem) {
         var gross_total = 0;
         var taxt_amount = 0;
 
-        discount_item_amount = parseFloat(
-            (taxable_amount * discount_item) / 100
-        );
-        // alert(discount_item_amount);
-        price_after_discount = taxable_amount - discount_item_amount;
-        // alert(price_after_discount);
-        taxable_amount = taxable_amount - discount_item_amount;
-        // $(".price_af_discount").val(rate.toFixed(2));
+        // fetch final qty
+        var final_qty = 0;
+        var unit_pack = $(
+            "input[name='" + data_group + "[" + index + "][unit_pack]']"
+        ).val();
+        var pack_case = $(
+            "input[name='" + data_group + "[" + index + "][pack_case]']"
+        ).val();
 
-        var total = taxable_amount * qty;
+        if (uom == "case") {
+            final_qty = pack_case * unit_pack * qty;
+        } else {
+            final_qty = qty;
+        }
+        $("input[name='" + data_group + "[" + index + "][final_qty]']").val(
+            final_qty
+        );
+
+        // alert(taxable_amount);
+        if (discount_item) {
+            discount_item_amount = parseFloat(
+                (taxable_amount * discount_item) / 100
+            );
+            price_after_discount = taxable_amount - discount_item_amount;
+            taxable_amount = taxable_amount - discount_item_amount;
+        }
+        if (final_qty != 0) {
+            var total = taxable_amount * final_qty;
+        } else {
+            var total = taxable_amount * qty;
+        }
+
         if (isNaN(total)) {
             total = parseInt(
                 $(
@@ -112,7 +144,7 @@ function calculategst(elem) {
                 ).val()
             );
         }
-        
+
         //get gst percent first
         getGstPercentage(gst, function (gst_percentage) {
             if (gst == 4 || taxable_amount == "") {
@@ -235,7 +267,6 @@ function calculate_grand_total() {
     console.log(taxable_amount_array);
     $(taxable_amount_array).each(function (input) {
         var value = jQuery(this).val();
-        // console.log('value',value);
 
         if (value == "") {
             return true;
@@ -244,7 +275,6 @@ function calculate_grand_total() {
             parseFloat(taxable_amount_total) + parseFloat(value);
         // alert(rate);
     });
-    // alert(taxable_amount_total);
 
     $(cgst_amount_array).each(function (input) {
         var value = jQuery(this).val();
@@ -279,7 +309,6 @@ function calculate_grand_total() {
     ).toFixed(2);
 
     total_amount = parseFloat(taxable_amount_total).toFixed(2);
-    // alert(discount);
     if (discount != "" || discount != 0) {
         disc_amount = parseFloat((total_amount * discount) / 100);
         final_amount =

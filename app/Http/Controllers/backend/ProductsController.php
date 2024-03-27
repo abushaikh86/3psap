@@ -37,6 +37,7 @@ use App\Models\backend\Variant;
 use Carbon\Exceptions\Exception;
 use Illuminate\Support\Facades\Session as FacadesSession;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductsController extends Controller
 {
@@ -49,11 +50,45 @@ class ProductsController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Products::all();
+        if ($request->ajax()) {
+            $products = Products::with('category', 'sub_category', 'item_type', 'brand')
+                ->orderBy('product_item_id', 'desc')->get();
 
-        return view('backend.products.index', compact('products'));
+            return DataTables::of($products)
+                ->addIndexColumn()
+                ->addColumn('action', function ($product) {
+                    $actionBtn = '<div id="action_buttons">';
+                    // if (request()->user()->can('Update Business Master')) {
+                    $actionBtn .= '<a href="' . route('admin.products.edit', ['id' => $product->product_item_id]) . '
+                     " class="btn btn-sm btn-primary" title="Edit"><i class="feather icon-edit"></i></a> ';
+                    // }
+                    // if (request()->user()->can('Delete Business Master')) {
+                    $actionBtn .= '<a href="' . route('admin.products.delete', ['id' => $product->product_item_id]) . '"
+                    class="btn btn-sm btn-danger" title="Delete" id="delete_btn" onclick="return confirm(`Are you sure you want to Delete this Entry ?`)">
+                    <i class="feather icon-trash"></i></a>';
+                    // }
+                    return $actionBtn;
+                })
+                ->addColumn('brand_id', fn ($row) => $row->brand->brand_name ?? '')
+                ->addColumn('category_id', fn ($row) => $row->category->category_name ?? '')
+                ->addColumn('product_thumb', function ($row) {
+                    if (!empty($row->product_thumb)) {
+                        $url = asset('public/backend-assets/images/') . '/' . $row->product_thumb;
+                        $html = '<a href="' . $url . '" target="_blank">' .
+                            '<img class="card-img-top img-fluid mb-1" src="' . $url . '" alt="Product Image" style="width:50px">' .
+                            '</a>';
+                    } else {
+                        $html = '';
+                    }
+                    return $html;
+                })
+                ->rawColumns(['product_thumb', 'action'])
+                ->make(true);
+        }
+
+        return view('backend.products.index');
     }
 
     public function updateProduct(Request $request)
@@ -126,6 +161,7 @@ class ProductsController extends Controller
                         'gst_id' => getOrCreateIdUnified(Gst::class, 'gst_name', $sheet->getCell('AB' . $row)->getFormattedValue(), 'gst_id', $gst_percent),
                         'visibility' => (int) trim(addslashes($sheet->getCell('AC' . $row)->getValue() == 'Yes' ? 1 : 0)),
                         'combi_type' => getOrCreateIdUnified(Combitype::class, 'name', $sheet->getCell('AD' . $row)->getValue(), 'id'),
+                        'combi_type_int' => trim(addslashes($sheet->getCell('AD' . $row)->getValue())),
 
                         // Add more fields as needed
                     ];

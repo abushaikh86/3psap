@@ -125,9 +125,9 @@ class AdminController extends Controller
 
         // dd($request->parent_users);
         // usama_16-03-2024-send email
-        // $subject = '';
-        // $body = '';
-        // send_email(,$request->email,$subject,$body);
+        // $subject = 'User Credentials';
+        // $body = 'Username: '.$request->email."<br>"."Password: ".$request->password;
+        // send_email($request->email,$subject,$body);
 
         $user = new AdminUsers;
         $user->fill($request->all());

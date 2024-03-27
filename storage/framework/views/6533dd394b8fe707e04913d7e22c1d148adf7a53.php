@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Series Master'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -52,7 +53,7 @@
                                         <th>Transaction Type</th>
                                         <th>Module Name</th>
                                         <th>Sample Doc Number</th>
-                                        <th colspan="3">Action</th>
+                                        <th></th>
 
                                     </tr>
                                 </thead>
@@ -92,8 +93,7 @@
                                             'type' => 'submit',
                                             'title' => 'Delete',
                                             'class' => 'btn btn-danger',
-                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry
-                                            ?')",
+                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry?')",
                                             ]); ?>
 
                                             <?php echo Form::close(); ?>
@@ -117,5 +117,9 @@
     </div>
 </section>
 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<?php echo $__env->make('backend.export_pagination_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/seriesmaster/index.blade.php ENDPATH**/ ?>

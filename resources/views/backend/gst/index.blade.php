@@ -49,7 +49,7 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>GST Percent(%)</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -91,4 +91,7 @@
 
 </div>
 
+@endsection
+@section('scripts')
+@include('backend.export_pagination_script')
 @endsection

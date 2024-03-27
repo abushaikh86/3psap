@@ -1,7 +1,9 @@
+
 <?php $__env->startSection('title', 'Create Sales Order'); ?>
 
 
 <?php $__env->startSection('content'); ?>
+
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -155,7 +157,7 @@
                                                         <?php echo e(Form::text('temp_sales_order_no', $latestSoRecordNumber, [
                                                         'class' => 'form-control
                                                         temp_sales_order_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        // 'placeholder' => 'Customer OB Refrence Number',
                                                         'disabled' => true,
                                                         ])); ?>
 
@@ -163,13 +165,13 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <?php echo e(Form::label('customer_ref_no', 'Customer OB Refrence Number
+                                                        <?php echo e(Form::label('customer_ref_no', 'Customer Refrence Number
                                                         *')); ?>
 
                                                         <?php echo e(Form::text('customer_ref_no', null, [
                                                         'class' => 'form-control
                                                         customer_ref_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        'placeholder' => 'Customer Refrence Number',
                                                         'required' => true,
                                                         ])); ?>
 
@@ -228,17 +230,15 @@
                                             <?php echo e(Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
                                             'class' => 'form-control status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
 
 
-                                        <?php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        ?>
-                                        <?php if(isset($company) && $company->is_backdated_date): ?>
-                                        <div class="form-group">
+                                       
+                                        
+                                        <div class="form-group d-none back_dated">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
 
                                             <?php echo e(Form::date('bill_date', date('Y-m-d'), [
@@ -248,7 +248,7 @@
                                             ])); ?>
 
                                         </div>
-                                        <?php endif; ?>
+                                        
 
 
 
@@ -341,11 +341,14 @@
                                                                             <td><?php echo e(Form::label('qty', 'Quantity')); ?>
 
                                                                             </td>
+                                                                            
                                                                             <td><?php echo e(Form::label('taxable_amount', 'Unit
                                                                                 Price')); ?>
 
                                                                             </td>
+                                                                            <td><?php echo e(Form::label('total', 'Total INR')); ?>
 
+                                                                            </td>
 
                                                                             <td class="adjust_col">
                                                                                 <?php echo e(Form::label('GST', 'GST (%)')); ?>
@@ -364,7 +367,7 @@
                                                                             <td><?php echo e(Form::label('Amount', 'GST Amount')); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::label('total', 'Total INR')); ?>
+                                                                            <td><?php echo e(Form::label('gross_total','GrossTotal')); ?>
 
                                                                             </td>
                                                                             <td><?php echo e(Form::label('storage_location_id',
@@ -489,10 +492,11 @@
                                                                             ])); ?>
 
 
-                                                                            <td><?php echo e(Form::number('item_code',
+                                                                            <td><?php echo e(Form::text('item_code',
                                                                                 old('invoice_items')[$i]['item_code'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_code',
+                                                                                'data-name' => 'item_code',
                                                                                 'id' => 'auto_product_' . $i,
                                                                                 'class' => 'form-control item_code
                                                                                 typeahead',
@@ -512,7 +516,6 @@
                                                                                 'class' => 'form-control item_name
                                                                                 typeahead',
                                                                                 'autocomplete' => 'off',
-                                                                                'required' => true,
                                                                                 'oninput' => 'validateInput(this)',
                                                                                 ])); ?>
 
@@ -523,7 +526,6 @@
                                                                                 'class' => 'form-control
                                                                                 hsn_sac readonly',
                                                                                 'data-name' => 'hsn_sac',
-                                                                                'required' => true,
                                                                                 ])); ?>
 
                                                                             </td>
@@ -539,6 +541,7 @@
                                                                                 ])); ?>
 
                                                                             </td>
+                                                                            
                                                                             <td><?php echo e(Form::number('taxable_amount',
                                                                                 old('invoice_items')[$i]['taxable_amount']
                                                                                 ?? null, [
@@ -552,6 +555,21 @@
                                                                                 ])); ?>
 
                                                                             </td>
+
+                                                                            <td><?php echo e(Form::text('total',
+                                                                                old('invoice_items')[$i]['total'] ??
+                                                                                null, [
+                                                                                'class' => 'form-control
+                                                                                total',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'total',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'required' => true,
+                                                                                'readonly' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+
                                                                             <?php echo e(Form::hidden('discount_item',
                                                                             old('invoice_items')[$i]['discount_item'] ??
                                                                             null, [
@@ -649,19 +667,21 @@
                                                                                 ])); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::text('total',
-                                                                                old('invoice_items')[$i]['total'] ??
-                                                                                null, [
+
+                                                                            <td><?php echo e(Form::text('gross_total',
+                                                                                old('invoice_items')[$i]['gross_total']
+                                                                                ?? null, [
                                                                                 'class' => 'form-control
-                                                                                total',
+                                                                                gross_total',
                                                                                 'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'total',
+                                                                                'data-name' => 'gross_total',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'readonly' => true,
                                                                                 ])); ?>
 
                                                                             </td>
+                                                                           
                                                                             <td style="width: 210px;">
                                                                                 <?php echo e(Form::select(
                                                                                 'storage_location_id',
@@ -826,6 +846,23 @@
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+            // fetch company_id for party
+            $.ajax({
+                    method: 'get',
+                    url: '<?php echo e(route('admin.get_company')); ?>',
+                    data: {
+                        party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        if(data.is_backdated_date != 0){
+                            $('.back_dated').removeClass('d-none');
+                        }
+
+                    }
+            });
 
                 // usama_12-03-2024-fetch company of party and then make doc number
                 $('.doc_no').removeClass('d-none');

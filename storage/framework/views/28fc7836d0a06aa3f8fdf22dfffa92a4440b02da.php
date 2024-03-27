@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Beat Calender'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -88,7 +89,7 @@
                                             <th>Year
                                                 <div class="my-1">
                                                     <div class="dropdown">
-                                                        <?php echo Form::select('beat_year', $all_data['year'], null, ['id' => 'beat_year', 'placeholder' => 'Select Year']); ?>
+                                                        <?php echo Form::select('beat_year', $all_data['year'], null, ['id' => 'beat_year1', 'placeholder' => 'Select Year']); ?>
 
                                                     </div>
                                                 </div>

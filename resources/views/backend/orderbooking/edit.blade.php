@@ -135,7 +135,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                         {{ Form::text('temp_sales_order_no', $model->bill_no, [
                                                         'class' => 'form-control
                                                         temp_sales_order_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        // 'placeholder' => 'Customer OB Refrence Number',
                                                         'disabled' => true,
                                                         ]) }}
                                                     </div>
@@ -145,14 +145,13 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                     <div class="form-group">
                                                         {{ Form::label(
                                                         'customer_ref_no',
-                                                        'Customer OB Refrence Number
+                                                        'Customer Refrence Number
                                                         *',
                                                         ) }}
                                                         {{ Form::text('customer_ref_no', null, [
                                                         'class' => 'form-control
                                                         customer_ref_no',
-                                                        'placeholder' => 'Customer OB Refrence
-                                                        Number',
+                                                        'placeholder' => 'Customer Refrence Number',
                                                         'required' => true,
                                                         ]) }}
                                                     </div>
@@ -292,11 +291,15 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         {{ Form::label('hsn_sac', 'HSN/SAC') }}
                                                                     </td>
                                                                     <td>{{ Form::label('qty', 'Quantity') }}</td>
+                                                                    {{-- <td>{{ Form::label('mrp', 'MRP') }}
+                                                                    </td> --}}
                                                                     <td>{{ Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
                                                                         Price',
                                                                         ) }}
+                                                                    </td>
+                                                                    <td>{{ Form::label('total', 'Total INR') }}
                                                                     </td>
 
                                                                     <td class="adjust_col">
@@ -307,7 +310,8 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
                                                                     <td>{{ Form::label('Amount', 'GST Amount') }}
                                                                     </td>
-                                                                    <td>{{ Form::label('total', 'Total INR') }}
+                                                                    
+                                                                    <td>{{ Form::label('gross_total','GrossTotal') }}
                                                                     </td>
                                                                     <td>{{ Form::label('storage_location_id', 'From
                                                                         Warehouse') }}
@@ -407,7 +411,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     ]) }}
 
 
-                                                                    <td>{{ Form::number('old_invoice_items[' .
+                                                                    <td>{{ Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -444,6 +448,18 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'required' => true,
                                                                         ]) }}
                                                                     </td>
+
+                                                                    {{-- <td>
+                                                                        {{ Form::text('old_invoice_items[' .
+                                                                        $loop->index . '][mrp]', $items->mrp, [
+                                                                        'class' => 'form-control mrp',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'mrp',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'readonly' => true,
+                                                                        ]) }}
+                                                                    </td> --}}
+                                                            
                                                                     <td>
                                                                         {{ Form::text('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',
@@ -456,6 +472,18 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'required' => true,
                                                                         ]) }}
                                                                     </td>
+
+                                                                    <td>{{ Form::text('old_invoice_items[' .
+                                                                        $loop->index . '][total]', $items->total, [
+                                                                        'class' => 'form-control total',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'total',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'required' => true,
+                                                                        'readonly' => true,
+                                                                        ]) }}
+                                                                    </td>
+
                                                                     {{-- <td>
                                                                     </td> --}}
                                                                     {{ Form::hidden('old_invoice_items[' . $loop->index
@@ -545,16 +573,20 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'required' => true,
                                                                         ]) }}
                                                                     </td>
+                                                                   
+
                                                                     <td>{{ Form::text('old_invoice_items[' .
-                                                                        $loop->index . '][total]', $items->total, [
-                                                                        'class' => 'form-control total',
+                                                                        $loop->index . '][gross_total]',
+                                                                        $items->gross_total, [
+                                                                        'class' => 'form-control gross_total',
                                                                         'onchange' => 'calculategst(this)',
-                                                                        'data-name' => 'total',
+                                                                        'data-name' => 'gross_total',
                                                                         'data-group' => 'old_invoice_items',
                                                                         'required' => true,
                                                                         'readonly' => true,
                                                                         ]) }}
                                                                     </td>
+
                                                                     <td style="width: 210px;">
                                                                         {{ Form::select(
                                                                         'old_invoice_items[' . $loop->index .

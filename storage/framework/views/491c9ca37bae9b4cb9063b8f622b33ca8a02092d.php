@@ -1,10 +1,11 @@
+
 <?php $__env->startSection('title', 'Edit Goods & Service Receipts'); ?>
 
 <?php $__env->startSection('content'); ?>
 <?php
 use App\Models\backend\Company;
-use App\Models\backend\BussinessPartnerMaster;
 use App\Models\backend\Products;
+use App\Models\backend\BussinessPartnerMaster;
 
 $bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
 $company = Company::where('company_id',$bp_master->company_id)->first();
@@ -230,6 +231,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             'class' => 'form-control status',
                                             'placeholder' => 'Select Status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
@@ -424,7 +426,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
 
 
-                                                                    <td><?php echo e(Form::number('old_invoice_items[' .
+                                                                    <td><?php echo e(Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',

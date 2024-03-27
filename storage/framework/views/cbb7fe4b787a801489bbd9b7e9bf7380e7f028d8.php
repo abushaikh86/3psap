@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Internal Users'); ?>
 <?php
 use Spatie\Permission\Models\Role;
@@ -123,7 +124,7 @@ use Spatie\Permission\Models\Role;
 
                                 <div class="col-md-6 col-12 company_drp">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('company_id', 'Distributor *')); ?>
+                                        <?php echo e(Form::label('company_id', 'Distributor')); ?>
 
                                         <?php echo e(Form::select('company_id', $company, null, [
                                         'class' => 'form-control',

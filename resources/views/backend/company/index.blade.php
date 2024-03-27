@@ -105,8 +105,7 @@
                                                                         {!! Form::button('<i class="feather icon-trash"></i>', [
                                                                             'type' => 'submit',
                                                                             'class' => 'btn btn-danger',
-                                                                            'onclick' => "return
-                                                                                                                                                                                                                                                                    confirm('Are you sure you want to Delete this Entry ?')",
+                                                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry ?')",
                                                                         ]) !!}
 
                                                                         {!! Form::close() !!}

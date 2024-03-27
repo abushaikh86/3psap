@@ -88,17 +88,16 @@ class StockManagementController extends Controller
           'bin_id' => $from_binData->bin_id,
           'sku' => $item['sku'],
           'item_code' => $item['item_code'],
-          'batch_no' => $item['batch'],
         ])
-          // ->when(
-          //   session('company_id') != 0 && session('fy_year') != 0,
-          //   function ($query) {
-          //     return $query->where([
-          //       'fy_year' => session('fy_year'),
-          //       'company_id' => session('company_id'),
-          //     ]);
-          //   }
-          // )
+          ->when(
+            session('company_id') != 0 && session('fy_year') != 0,
+            function ($query) {
+              return $query->where([
+                'fy_year' => session('fy_year'),
+                'company_id' => session('company_id'),
+              ]);
+            }
+          )
           ->first())) {
           // dd($from_inventory,$item);
           $this->updateInventory($from_inventory, $item['from_qty'], -$item['qty'], $item, $from_binData->bin_id, $request->remarks);
@@ -110,17 +109,16 @@ class StockManagementController extends Controller
           'bin_id' => $to_binData->bin_id,
           'sku' => $item['sku'],
           'item_code' => $item['item_code'],
-          'batch_no' => $item['batch'],
         ])
-          // ->when(
-          //   session('company_id') != 0 && session('fy_year') != 0,
-          //   function ($query) {
-          //     return $query->where([
-          //       'fy_year' => session('fy_year'),
-          //       'company_id' => session('company_id'),
-          //     ]);
-          //   }
-          // )
+          ->when(
+            session('company_id') != 0 && session('fy_year') != 0,
+            function ($query) {
+              return $query->where([
+                'fy_year' => session('fy_year'),
+                'company_id' => session('company_id'),
+              ]);
+            }
+          )
           ->first())) {
           $this->updateInventory($to_inventory, $to_inventory->qty, $item['qty'], $item, $to_binData->bin_id, $request->remarks);
         } else {
@@ -148,7 +146,7 @@ class StockManagementController extends Controller
     $transactionHistory = new Transaction();
     $transactionHistory->warehouse_id = $item['to_warehouse'];
     $transactionHistory->bin_id = $binId;
-    $transactionHistory->batch_no = $inventory->batch_no;
+    // $transactionHistory->batch_no = $inventory->batch_no;
     $transactionHistory->item_code = $item['item_code'];
     $transactionHistory->unit_price = $inventory->get_unit_price->mrp;
     $transactionHistory->manufacturing_date = $inventory->manufacturing_date;
@@ -169,7 +167,7 @@ class StockManagementController extends Controller
     $inventory = new Inventory();
     $inventory->warehouse_id = $item['to_warehouse'];
     $inventory->bin_id = $binId;
-    $inventory->batch_no = $item['batch'] ?? null;
+    // $inventory->batch_no = $item['batch'] ?? null;
     $inventory->sku = $item['sku'] ?? null;
     $inventory->item_code = $item['item_code'] ?? null;
     $inventory->qty = $item['qty'];
@@ -185,7 +183,7 @@ class StockManagementController extends Controller
     $transactionHistory = new Transaction();
     $transactionHistory->warehouse_id = $item['to_warehouse'];
     $transactionHistory->bin_id = $item['to_bin'];
-    $transactionHistory->batch_no = $item['batch'];
+    // $transactionHistory->batch_no = $item['batch'];
     $transactionHistory->item_code = $item['item_code'];
     $transactionHistory->unit_price = $inventory->get_unit_price->mrp;
     $transactionHistory->sku = $item['sku'];
@@ -241,14 +239,14 @@ class StockManagementController extends Controller
   {
     $warehouse_id = $_GET['warehouse_id'];
     $from_bin_id = $_GET['from_bin_id'];
-    $batch_no = $_GET['batch_no'];
+    // $batch_no = $_GET['batch_no'];
     $sku = $_GET['sku'];
     $item_code = $_GET['item_code'];
 
 
 
     $binData = BinManagement::where(['bin_type' => $from_bin_id, 'warehouse_id' => $warehouse_id])->first();
-    $data = Inventory::where(['warehouse_id' => $warehouse_id, 'item_code' => $item_code, 'bin_id' => $binData->bin_id, 'sku' => $sku, 'batch_no' => $batch_no])->first();
+    $data = Inventory::where(['warehouse_id' => $warehouse_id, 'item_code' => $item_code, 'bin_id' => $binData->bin_id, 'sku' => $sku])->first();
 
     // dd($data);
 

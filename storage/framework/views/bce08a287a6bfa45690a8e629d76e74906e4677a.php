@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Bin Transfer'); ?>
 
 
@@ -74,10 +75,10 @@
 
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    <?php echo e(Form::label('sku', 'Base Pack')); ?>
+                                                                    <?php echo e(Form::label('sku', 'SKU')); ?>
 
                                                                 </td>
-                                                                <td class="adjust_col"><?php echo e(Form::label('batch', 'Batch')); ?>
+                                                                <td class="adjust_col"><?php echo e(Form::label('item_name', 'Item Description')); ?>
 
                                                                 </td>
                                                                 <td class="adjust_col">
@@ -123,10 +124,10 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <?php echo e(Form::select('batch', [], null, ['class' => 'form-control  batch', 'data-name' => 'batch', 'required' => true])); ?>
+                                                                    <?php echo e(Form::text('item_name', null, ['class' => 'form-control  item_name typeahead', 'data-name' => 'item_name','data-id' => 'item_name', 'required' => true])); ?>
 
                                                                 </td>
-                                                                <td><?php echo e(Form::number('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code', 'required' => true])); ?>
+                                                                <td><?php echo e(Form::text('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code','data-id' => 'item_code', 'required' => true])); ?>
 
                                                                 </td>
 

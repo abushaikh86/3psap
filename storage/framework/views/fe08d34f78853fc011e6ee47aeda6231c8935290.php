@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Edit A/R Invoice'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -181,46 +182,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <?php echo e(Form::label('customer_inv_no', 'Customer Invoice Number *')); ?>
-
-                                                        <?php echo e(Form::text('customer_inv_no', null, [
-                                                        'class' => 'form-control
-                                                        readonly',
-                                                        'placeholder' => 'Customer Invoice Number',
-                                                        'required' => true,
-                                                        ])); ?>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <?php echo e(Form::label('ar_inv_no', 'Invoice Number *')); ?>
-
-                                                        <?php echo e(Form::text('ar_inv_no', null, [
-                                                        'class' => 'form-control ',
-                                                        'placeholder' => 'Invoice Number',
-                                                        'required' => true,
-                                                        ])); ?>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <?php echo e(Form::label('trans_type', 'Transaction Type *')); ?>
-
-                                                        <?php echo e(Form::text('trans_type', null, [
-                                                        'class' => 'form-control
-                                                        trans_type',
-                                                        'placeholder' => 'Transaction Type',
-                                                        'required' => true,
-                                                        ])); ?>
-
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <?php echo e(Form::label('place_of_supply', 'Place Of Supply')); ?>
@@ -278,6 +240,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             'class' => 'form-control status',
                                             'placeholder' => 'Select Status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
@@ -366,6 +329,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
                                                                     </td>
                                                                     <td><?php echo e(Form::label('qty', 'Quantity')); ?></td>
+                                                                    
                                                                     <td><?php echo e(Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
@@ -518,7 +482,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     ])); ?>
 
 
-                                                                    <td><?php echo e(Form::number('old_invoice_items[' .
+                                                                    <td><?php echo e(Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -559,6 +523,9 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         ])); ?>
 
                                                                     </td>
+
+                                                                    
+
                                                                     <td>
                                                                         <?php echo e(Form::number('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',

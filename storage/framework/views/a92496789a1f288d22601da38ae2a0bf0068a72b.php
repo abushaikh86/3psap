@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Set Price'); ?>
 
 
@@ -32,6 +33,7 @@
                     <div class="card-content">
                         <div class="card-body">
 
+                            <?php if(Auth()->guard('admin')->user()->role != 41): ?>
 
                             <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             <?php echo e(Form::open(['url' => 'admin/updatepricings/update', 'class' => 'w-100', 'enctype' => 'multipart/form-data'])); ?>
@@ -67,6 +69,7 @@
                             <?php echo e(Form::close()); ?>
 
                             <hr>
+                            <?php endif; ?>
 
 
                             <table class="table table-bordered table-striped" id="tbl-datatable">

@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Goods Receipt'); ?>
 
 <?php $__env->startSection('content'); ?>

@@ -26,7 +26,7 @@ class BinTransfer extends Model
    */
   protected $fillable = [
     'from_warehouse', 'from_bin', 'to_warehouse', 'to_bin',
-    'sku', 'item_code', 'from_qty', 'qty', 'batch', 'remarks', 'fy_year','company_id', 'user_id'
+    'sku', 'item_code', 'from_qty', 'qty', 'item_name', 'remarks', 'fy_year','company_id', 'user_id'
   ];
 
   public function get_from_warehouse_name()

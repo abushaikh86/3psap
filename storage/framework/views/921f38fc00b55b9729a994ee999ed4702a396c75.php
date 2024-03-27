@@ -1,7 +1,9 @@
+
 <?php $__env->startSection('title', 'Create PurchaseOrder'); ?>
 
 
 <?php $__env->startSection('content'); ?>
+
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -182,17 +184,14 @@
                                             <?php echo e(Form::select('status', ['open' => 'Open', 'close' => 'Close'], null, [
                                             'class' => 'form-control status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
 
 
-                                        <?php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        ?>
-                                        <?php if(isset($company) && $company->is_backdated_date): ?>
-                                        <div class="form-group">
+                             
+                                        <div class="form-group d-none back_dated">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
 
                                             <?php echo e(Form::date('bill_date', date('Y-m-d'), [
@@ -202,7 +201,6 @@
                                             ])); ?>
 
                                         </div>
-                                        <?php endif; ?>
 
 
 
@@ -291,7 +289,24 @@
                                                                                 <?php echo e(Form::label('hsn_sac', 'HSN/SAC')); ?>
 
                                                                             </td>
-                                                                            <td><?php echo e(Form::label('qty', 'Quantity')); ?>
+                                                                            <td class="adjust_col">
+                                                                                <?php echo e(Form::label('uom', 'UOM',['style'=>'display: flex;justify-content: center;'])); ?>
+
+                                                                                <?php echo e(Form::select('uom',
+                                                                                ['units'=>'Units','case'=>'Case'],
+                                                                               null,
+                                                                                [
+                                                                                    'class' => 'form-control uom',
+                                                                                    'data-name' => 'uom',
+                                                                                    'data-group' => 'invoice_items',
+                                                                                ])); ?>
+
+                                                                        </td>
+                                                                            </td>
+                                                                            <td><?php echo e(Form::label('qty', 'Quantity',['id'=>'qty_label'])); ?>
+
+                                                                            </td>
+                                                                            <td><?php echo e(Form::label('final_qty', 'Quantity (Units)')); ?>
 
                                                                             </td>
                                                                             <td><?php echo e(Form::label('taxable_amount', 'Unit
@@ -347,6 +362,11 @@
                                                                     ?>
                                                                         <tr data-repeater-item class="item_row">
 
+                                                                            <?php echo e(Form::hidden('unit_pack',old('invoice_items')[$i]['unit_pack']??null, ['data-group' => 'invoice_items'])); ?>
+
+                                                                            <?php echo e(Form::hidden('pack_case',old('invoice_items')[$i]['pack_case']??null, ['data-group' => 'invoice_items'])); ?>
+
+                                                                            
                                                                             <?php echo e(Form::hidden('bill_to_state',
                                                                             old('invoice_items')[$i]['bill_to_state'] ??
                                                                             null, [
@@ -410,13 +430,13 @@
 
 
 
-                                                                            <td><?php echo e(Form::number('item_code',
+                                                                            <td><?php echo e(Form::text('item_code',
                                                                                 old('invoice_items')[$i]['item_code'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_code',
+                                                                                'data-name' => 'item_code',
                                                                                 'id' => 'auto_product_' . $i,
-                                                                                'class' => 'form-control item_code
-                                                                                typeahead',
+                                                                                'class' => 'form-control item_code typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
@@ -427,9 +447,9 @@
                                                                                 old('invoice_items')[$i]['item_name'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_name',
+                                                                                'data-name' => 'item_name',
                                                                                 'id' => 'auto_product_' . $i,
-                                                                                'class' => 'form-control item_name
-                                                                                typeahead',
+                                                                                'class' => 'form-control item_name typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'oninput' => 'validateInput(this)',
@@ -446,6 +466,22 @@
                                                                                 ])); ?>
 
                                                                             </td>
+
+                                                                            <td>
+                                                                                <?php echo e(Form::text('uom',
+                                                                                    old('invoice_items')[$i]['uom'] ?? null,
+                                                                                    [
+                                                                                        'class' => 'form-control uom_field',
+                                                                                        'onchange' => 'calculategst(this)',
+                                                                                        'data-name' => 'uom',
+                                                                                        'data-group' => 'invoice_items',
+                                                                                        'readonly' => true,
+                                                                                    ])); ?>
+
+                                                                            </td>
+                                                                            
+                                                                            
+
                                                                             <td> <?php echo e(Form::number('qty',
                                                                                 old('invoice_items')[$i]['qty'] ?? null,
                                                                                 [
@@ -454,6 +490,17 @@
                                                                                 'data-name' => 'qty',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
+                                                                                ])); ?>
+
+                                                                            </td>
+                                                                            <td> <?php echo e(Form::number('final_qty',
+                                                                                old('invoice_items')[$i]['final_qty'] ?? 0,
+                                                                                [
+                                                                                'class' => 'form-control final_qty',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'final_qty',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
                                                                                 ])); ?>
 
                                                                             </td>
@@ -518,12 +565,13 @@
                                                                                 old('invoice_items')[$i]['gst_rate'] ??
                                                                                 null, [
                                                                                 'class' => 'form-control
-                                                                                gst_type gst_dropdown readonly',
+                                                                                gst_type gst_dropdown ',
                                                                                 'placeholder' => 'Select GST',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'gst_rate',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
+                                                                                'readonly' => true,
                                                                                 ])); ?>
 
                                                                             </td>
@@ -777,7 +825,14 @@
             });
 
         }
+
+        
+
+    
+
         $(document).ready(function() {
+
+
 
 
             var customer_id = $('#party_id option:selected,#party_code option:selected').val();
@@ -785,6 +840,24 @@
                 get_data_display(customer_id);
             }
             $("#party_id,#party_code").on('change', function() {
+
+
+            // fetch company_id for party
+            $.ajax({
+                    method: 'get',
+                    url: '<?php echo e(route('admin.get_company')); ?>',
+                    data: {
+                        party_id: $(this).val(),
+                    },
+                    // dataType: 'json',
+                    success: function(data) {
+                        // console.log(data);
+                        if(data.is_backdated_date != 0){
+                            $('.back_dated').removeClass('d-none');
+                        }
+
+                    }
+            });
 
                 // usama_12-03-2024-fetch company of party and then make doc number
                 $('.doc_no').removeClass('d-none');
@@ -855,7 +928,6 @@
                 var item = itemContent;
                 var input = item.find('.modal_items');
 
-                // console.log(input);
                 input.each(function(index, el) {
                     // console.log(el.name);
                     var attrName = $(el).attr('name');
@@ -899,6 +971,8 @@
 
             $('.add_btn_rep').click(function() {
                 get_invoice_itemnames();
+                var lastIndex = $('.repeater tbody tr').length - 1;
+                $("input[name='invoice_items[" + lastIndex + "][uom]']").val($("input[name='invoice_items[0][uom]']").val());
             });
 
 

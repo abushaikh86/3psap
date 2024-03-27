@@ -53,7 +53,7 @@
                                         <th>Transaction Type</th>
                                         <th>Module Name</th>
                                         <th>Sample Doc Number</th>
-                                        <th colspan="3">Action</th>
+                                        <th></th>
 
                                     </tr>
                                 </thead>
@@ -92,8 +92,7 @@
                                             'type' => 'submit',
                                             'title' => 'Delete',
                                             'class' => 'btn btn-danger',
-                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry
-                                            ?')",
+                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry?')",
                                             ]) !!}
                                             {!! Form::close() !!}
                                             @endcan
@@ -115,4 +114,8 @@
     </div>
 </section>
 
+@endsection
+
+@section('scripts')
+@include('backend.export_pagination_script')
 @endsection

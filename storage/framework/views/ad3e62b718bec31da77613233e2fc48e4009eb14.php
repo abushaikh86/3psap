@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'View Purchase Order'); ?>
 
 <?php $__env->startSection('content'); ?>

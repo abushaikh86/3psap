@@ -71,12 +71,12 @@
                       </div>
                     </th>
                     {{-- <th>Vendor Invoice Number </th> --}}
-                    <th>Customer OB Refrence Number
+                    <th>Customer Refrence Number
                       <div class="my-1">
                         <input type="text" id="vendor_po_ref_num">
                       </div>
                     </th>
-                    <th>Customer Invoice Number
+                    {{-- <th>Customer Invoice Number
                       <div class="my-1">
                         <input type="text" id="vendor_inv_no">
                       </div>
@@ -85,7 +85,7 @@
                       <div class="my-1">
                         <input type="text" id="ap_inv_no">
                       </div>
-                    </th>
+                    </th> --}}
 
                     <th>Invoice For
                       <div class="my-1">
@@ -136,13 +136,13 @@
 
             var table = $('#tbl-datatable').DataTable({
 
-                scrollY: 600,
-                scrollX: true,
-                scrollCollapse: true,
-                fixedColumns:   {
-                    leftColumns: 0,
-                    rightColumns: 1,
-                },
+                // scrollY: 600,
+                // scrollX: true,
+                // scrollCollapse: true,
+                // fixedColumns:   {
+                //     leftColumns: 0,
+                //     rightColumns: 1,
+                // },
 
                 processing: true,
                 serverSide: true,
@@ -164,14 +164,14 @@
                         data: 'customer_ref_no',
                         name: 'customer_ref_no'
                     },
-                    {
-                        data: 'customer_inv_no',
-                        name: 'customer_inv_no'
-                    },
-                    {
-                        data: 'ar_inv_no',
-                        name: 'ar_inv_no'
-                    },
+                    // {
+                    //     data: 'customer_inv_no',
+                    //     name: 'customer_inv_no'
+                    // },
+                    // {
+                    //     data: 'ar_inv_no',
+                    //     name: 'ar_inv_no'
+                    // },
                   
                     {
                         data: 'get_partyname.bp_name',
@@ -194,7 +194,7 @@
                     buttons: [{
                             extend: 'excel',
                             exportOptions: {
-                                columns: [0,1, 2, 3, 4, 5, 6, 7],
+                                columns: [0,1, 2, 3, 4, 5],
                                 modifier: {
                                     page: 'all',
                                     search: 'applied'
@@ -208,7 +208,7 @@
                         {
                             extend: 'pdf',
                             exportOptions: {
-                                columns: [0,1, 2, 3, 4, 5, 6, 7],
+                                columns: [0,1, 2, 3, 4, 5],
                                 modifier: {
                                     page: 'all',
                                     search: 'applied'
@@ -234,12 +234,12 @@
             $('#vendor_po_ref_num').on('keyup', function() {
                 table.column(3).search(this.value).draw();
             });
-            $('#vendor_inv_no').on('keyup', function() {
-                table.column(4).search(this.value).draw();
-            });
-            $('#ap_inv_no').on('keyup', function() {
-                table.column(5).search(this.value).draw();
-            });
+            // $('#vendor_inv_no').on('keyup', function() {
+            //     table.column(4).search(this.value).draw();
+            // });
+            // $('#ap_inv_no').on('keyup', function() {
+            //     table.column(5).search(this.value).draw();
+            // });
 
             // var flag = false;
             $('#date', this).on('keyup change', function() {
@@ -251,11 +251,11 @@
             });
 
             $('#invoice_for').on('keyup', function() {
-                table.column(6).search(this.value).draw();
+                table.column(4).search(this.value).draw();
             });
 
             $('#status').on('change', function() {
-                table.column(7).search(this.value).draw();
+                table.column(5).search(this.value).draw();
             });
         });
 </script>

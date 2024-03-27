@@ -1,10 +1,13 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
 use Carbon\Carbon;
 use App\Models\backend\ActivityLog;
 use App\Models\backend\Company;
-use PHPMailer\PHPMailer;
-
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -343,34 +346,27 @@ if (!function_exists('amount_in_words')) {
 
     // usama_send email
     if (!function_exists('send_email')) {
-        function send_email($to,$from,$subject,$body)
+        function send_email($to, $subject, $body)
         {
-            $mail = new PHPMailer\PHPMailer(true);
-            $mail->IsSMTP();
-            $mail->CharSet = "utf-8"; // set charset to utf8
-            $mail->SMTPAuth = true; // authentication enabled
-            $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for Gmail
-            $mail->Host = "smtp.gmail.com";
-            $mail->SMTPAutoTLS = false;
-            $mail->Port = 587; // port - 587/465
-            $mail->Username = "ideaportal@jmbaxi.com";
-            $mail->Password = 'hfaiylpdgtfsovag';
-      
-            $mail->SMTPOptions = array(
-              'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-              )
-            );
-            
-      
-            $mail->isHTML(true);
-            $mail->setFrom("ideaportal@jmbaxi.com", 'Jmbaxi');
-            $mail->addAddress($from);
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';  // Specify your SMTP server
+            $mail->SMTPAuth = true;
+            $mail->Username = 'abuosamas@parasightsolutions.com'; // SMTP username
+            $mail->Password = 'para@123'; // SMTP password
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            //Recipients
+            $mail->setFrom('abuosamas@parasightsolutions.com', 'Eureka');
+            $mail->addAddress($to); // Add a recipient
+
+            // Content
+            $mail->isHTML(true); // Set email format to HTML
             $mail->Subject = $subject;
-            $mail->Body = $body;
-            $mail->Send();
+            $mail->Body    = $body;
+
+            $mail->send();
         }
     }
 }

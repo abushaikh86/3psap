@@ -47,7 +47,7 @@
                                             <th>#</th>
                                             <th>Bin</th>
                                             <th>Warehouse</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,4 +100,9 @@
     </div>
     </div>
 
+@endsection
+
+
+@section('scripts')
+@include('backend.export_pagination_script')
 @endsection

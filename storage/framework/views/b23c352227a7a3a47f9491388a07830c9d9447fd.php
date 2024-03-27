@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Create Product'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -124,12 +125,33 @@
 
                                     </div>
                                 </div>
+
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('buom_pack_size', 'BUoM/ Pack Size ')); ?>
+                                        <?php echo e(Form::label('combi_type', 'Combi Types ')); ?>
+
+                                        <?php echo e(Form::select('combi_type', DB::table('combi_types')->pluck('name','id'), null, ['class' => 'select2 form-control
+                                        ', 'placeholder' => 'Select Combi Type'])); ?>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <?php echo e(Form::label('combi_type', 'Combi Type Int. ')); ?>
+
+                                        <?php echo e(Form::number('combi_type', null, ['class' => 'form-control
+                                        ', 'placeholder' => 'Enter Combi Type Int.'])); ?>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <?php echo e(Form::label('buom_pack_size', 'BUoM Per Pack Size ')); ?>
 
                                         <?php echo e(Form::text('buom_pack_size', null, ['class' => 'form-control', 'placeholder'
-                                        => 'Enter BUoM/ Pack Size', 'id' => 'buom_pack_size'])); ?>
+                                        => 'Enter BUoM Per Pack Size', 'id' => 'buom_pack_size'])); ?>
 
                                     </div>
                                 </div>
@@ -144,10 +166,10 @@
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('unit_case', 'Pack/Case')); ?>
+                                        <?php echo e(Form::label('unit_case', 'Pack Per Case')); ?>
 
                                         <?php echo e(Form::number('unit_case', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Enter Pack/Case', 'id' => 'unit_case'])); ?>
+                                        'Enter Pack Per Case', 'id' => 'unit_case'])); ?>
 
                                     </div>
                                 </div>
@@ -191,37 +213,37 @@
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('sourcing', 'Sourcing Unit/ Source ')); ?>
+                                        <?php echo e(Form::label('sourcing', 'Sourcing Unit Per Source ')); ?>
 
                                         <?php echo e(Form::text('sourcing', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Enter Sourcing Unit/ Source', 'required' => true, 'id' => 'sourcing'])); ?>
+                                        'Enter Sourcing Unit Per Source', 'required' => true, 'id' => 'sourcing'])); ?>
 
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('case_pallet', 'Case/ Pallet ')); ?>
+                                        <?php echo e(Form::label('case_pallet', 'Case Per Pallet ')); ?>
 
                                         <?php echo e(Form::text('case_pallet', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Enter Case/ Pallet', 'id' => 'case_pallet'])); ?>
+                                        'Enter Case Per Pallet', 'id' => 'case_pallet'])); ?>
 
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('layer_pallet', 'Layer/ Pallet ')); ?>
+                                        <?php echo e(Form::label('layer_pallet', 'Layer Per Pallet ')); ?>
 
                                         <?php echo e(Form::text('layer_pallet', null, ['class' => 'form-control', 'placeholder' =>
-                                        'Enter Layer/ Pallet', 'id' => 'layer_pallet'])); ?>
+                                        'Enter Layer Per Pallet', 'id' => 'layer_pallet'])); ?>
 
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12" id="">
                                     <div class="form-group">
-                                        <?php echo e(Form::label('dimensions_unit_pack', 'Pack/Unit ')); ?>
+                                        <?php echo e(Form::label('dimensions_unit_pack', 'Unit Per Pack ')); ?>
 
                                         <?php echo e(Form::text('dimensions_unit_pack', null, ['class' => 'form-control',
-                                        'placeholder' => 'Enter Pack/Unit'])); ?>
+                                        'placeholder' => 'Enter Unit Per Pack'])); ?>
 
                                     </div>
                                 </div>
@@ -415,6 +437,24 @@
 </div>
 
 
+<div class="modal fade text-left" id="add_combi_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Add Combi Type</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php echo $__env->make('backend.products.combi_form', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <!-- uoms modal -->
@@ -557,6 +597,9 @@
 
             new MasterHandler('#variant', '#add_variant_modal', '#submit_variant',
                 '<?php echo e(url('admin/master/store_variant')); ?>', '', '#name');
+
+            new MasterHandler('#combi_type', '#add_combi_modal', '#submit_combi',
+                '<?php echo e(url('admin/master/store_combitype')); ?>', '', '#name');
 
 
 

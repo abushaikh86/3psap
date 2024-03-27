@@ -44,7 +44,7 @@
                                             <th>From (Warehouse/Bin)</th>
                                             <th>To (Warehouse/Bin)</th>
                                             <th>Base Pack</th>
-                                            <th>Bacth Number</th>
+                                            <th>Item Description</th>
                                             <th>Item Code</th>
                                             <th>Available Quantity</th>
                                             <th>Transferred Quantity</th>
@@ -63,7 +63,7 @@
                                                     <td>{{ $row->get_from_warehouse_name->storage_location_name }} / {{$row->get_from_bin_name->get_bin->name??''}}</td>
                                                     <td>{{ $row->get_to_warehouse_name->storage_location_name }} / {{$row->get_to_bin_name->get_bin->name??''}}</td>
                                                     <td>{{$row->sku}}</td>
-                                                    <td>{{$row->batch}}</td>
+                                                    <td>{{$row->item_name}}</td>
                                                     <td>{{$row->item_code}}</td>
                                                     <td>{{$row->from_qty}}</td>
                                                     <td>{{$row->qty}}</td>

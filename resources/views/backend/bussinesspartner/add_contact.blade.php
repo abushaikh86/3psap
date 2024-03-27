@@ -58,21 +58,21 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            {{ Form::label('contact_person', 'Contact Person Name') }}
+                                            {{ Form::label('contact_person', 'Contact Person Name *') }}
                                             {{ Form::text('contact_person', null, ['class' => 'form-control', 'placeholder' => 'Contact Person Name', 'required' => true]) }}
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            {{ Form::label('email_id', 'Enter Email') }}
+                                            {{ Form::label('email_id', 'Enter Email *') }}
                                             {{ Form::text('email_id', null, ['class' => 'form-control', 'placeholder' => 'Enter Email', 'required' => true]) }}
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            {{ Form::label('mobile_no', 'Enter Mobile No') }}
+                                            {{ Form::label('mobile_no', 'Enter Mobile No *') }}
                                             {{ Form::text('mobile_no', null, ['class' => 'form-control', 'placeholder' => 'Enter Mobile No', 'required' => true]) }}
                                         </div>
                                     </div>

@@ -18,46 +18,49 @@
   </div>
   <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
     <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+      <a href="{{ route('admin.orderbooking') }}" class="btn btn-secondary">Back</a>
 
     </div>
   </div>
 </div>
 
 <section id="multiple-column-form">
-<div class="row match-height">
-<div class="col-12">
-<div class="card">
-<div class="card-content">
-<div class="card-body">
-<div class="content-header row">
-<div class="col-sm-12 text-sm-end mb-1">
-          </div>
-</div>
-  @include('backend.includes.errors')
+  <div class="row match-height">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="content-header row">
+              <div class="col-sm-12 text-sm-end mb-1">
+              </div>
+            </div>
+            @include('backend.includes.errors')
 
-  @if($purchaseorder->split_purchaseorder == 1)
-  @include('backend.orderbooking.invoice_format_split', ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false])
-  @else
-  @include('backend.orderbooking.invoice_format', ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false])
-  @endif
-      <div class="row">
-        <div class="col-lg-12 text-center">
-  <a href="javascript:void(0);" class="btn btn-primary" onclick="PrintElem('.printable');">Print</a>
-          <a href="{{ route('admin.orderbooking') }}" class="btn btn-secondary">Back</a>
+            @if($purchaseorder->split_purchaseorder == 1)
+            @include('backend.orderbooking.invoice_format_split',
+            ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false])
+            @else
+            @include('backend.orderbooking.invoice_format',
+            ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false])
+            @endif
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <a href="javascript:void(0);" class="btn btn-primary" onclick="PrintElem('.printable');">Print</a>
+                <a href="{{ route('admin.orderbooking') }}" class="btn btn-secondary">Back</a>
+              </div>
+            </div>
+
+
+          </div>
         </div>
       </div>
-
-
-</div>
-</div>
-</div>
-</div>
-</div>
+    </div>
+  </div>
 </section>
 </div>
 </div>
 <script>
-    $(document).ready(function(){
+  $(document).ready(function(){
       //$(".print_button").click(function()
       //{
         @php
@@ -67,10 +70,9 @@
        @endphp
     //  });
     });
-    </script>
-    <script type="text/javascript">
-
-        function PrintElem(elem)
+</script>
+<script type="text/javascript">
+  function PrintElem(elem)
         { //alert(elem);
           var print=  Popup($(elem).html());
         //  alert(print);
@@ -96,5 +98,5 @@
             return true;
         }
 
-    </script>
+</script>
 @endsection

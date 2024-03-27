@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Edit Business Partner'); ?>
 <?php
 use Spatie\Permission\Models\Role;
@@ -10,8 +11,15 @@ $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->
 $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
 $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
 $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
+
+$dep = Role::where('id',Auth()->guard('admin')->user()->role)->first();
+$pricing_access = [1,2,5,11];
+
 ?>
 <?php $__env->startSection('content'); ?>
+<link rel="stylesheet" type="text/css"
+    href="<?php echo e(asset('public/backend-assets/css/jquery.multi-emails.css')); ?>">
+
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -78,6 +86,21 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
+                                <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                <?php if(Auth()->guard('admin')->user()->role != 41): ?>
+                                <div class="col-md-6 col-12 company_drp">
+                                    <div class="form-group">
+                                        <?php echo e(Form::label('company_id', 'Distributor *')); ?>
+
+                                        <?php echo e(Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',])); ?>
+
+                                    </div>
+                                </div>
+                                <?php else: ?> 
+                                   <?php echo e(Form::hidden('company_id', Auth()->guard('admin')->user()->company_id ?? '', ['id' => 'company_id'])); ?>
+
+                                <?php endif; ?>
+
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
@@ -128,7 +151,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 </div>
 
 
-                                <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12 d-none bp_channel">
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
 
@@ -146,7 +169,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('bp_category', 'Business Partner Category *')); ?>
 
-                                        <?php echo e(Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), $model->bp_category,
+                                        <?php echo e(Form::select('bp_category', [], $model->bp_category,
                                         [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Business Partner Category',
@@ -156,7 +179,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12 d-none bp_group">
                                     <div class="form-label-group">
                                         <?php echo e(Form::label('bp_group', 'Business Partner group *')); ?>
 
@@ -173,11 +196,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('sales_manager', 'ASM *')); ?>
+                                        <?php echo e(Form::label('sales_manager', 'RKE *')); ?>
 
                                         <?php echo e(Form::select('sales_manager', $sales_manager, $model->sales_manager, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASM',
+                                        'placeholder' => 'RKE',
                                         ])); ?>
 
                                     </div>
@@ -187,11 +210,11 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('ase', 'ASE *')); ?>
+                                        <?php echo e(Form::label('ase', 'KAM *')); ?>
 
                                         <?php echo e(Form::select('ase', [], $model->ase, [
                                         'class' => 'form-control select2',
-                                        'placeholder' => 'ASE',
+                                        'placeholder' => 'KAM',
                                         ])); ?>
 
                                     </div>
@@ -253,7 +276,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        <?php echo e(Form::label('gst_details', 'GST Number *')); ?>
+                                        <?php echo e(Form::label('gst_details', 'GST Number')); ?>
 
                                         <?php echo e(Form::text('gst_details', $model->gst_details, [
                                         'class' => 'form-control',
@@ -288,17 +311,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
-                                    <div class="form-label-group">
-                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
-
-                                        <?php echo e(Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Select Pricing Profile',
-                                        ])); ?>
-
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6 col-12 d-none shelf_left">
                                     <div class="form-label-group">
@@ -323,20 +335,22 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                  <!-- added to tagg distributor for thier bp only 28-02-2024 -->
-                                  <?php if(Auth()->guard('admin')->user()->role != 41): ?>
-                                  <div class="col-md-6 col-12 company_drp">
-                                      <div class="form-group">
-                                          <?php echo e(Form::label('company_id', 'Distributor *')); ?>
+                            
 
-                                          <?php echo e(Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',])); ?>
+                                <?php if(in_array($dep->department_id,$pricing_access)): ?>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-label-group">
+                                        <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
 
-                                      </div>
-                                  </div>
-                                  <?php else: ?> 
-                                      <?php echo e(Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')); ?>
+                                        <?php echo e(Form::select('pricing_profile', [], $model->pricing_profile, [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Select Pricing Profile',
+                                        ])); ?>
 
-                                  <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                                
                                   <hr>
 
                                  
@@ -366,6 +380,20 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                                 <h4>Bill-To/ Bill-From</h4>
                                             </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('gst_no', 'GST Number ')); ?>
+
+                                                    <?php echo e(Form::text('gst_no', $business_partner_address[0]->gst_no, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'GST Number',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
+                                            </div>
+
                                             <div class=" col-12">
                                                 <div class="form-label-group">
                                                     <?php echo e(Form::label('bp_address_name', 'Address Name ')); ?>
@@ -481,6 +509,19 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                                 <h4>Ship-To/ Ship-From</h4>
 
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    <?php echo e(Form::label('gst_no1', 'GST Number ')); ?>
+
+                                                    <?php echo e(Form::text('gst_no1', $business_partner_address[1]->gst_no, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'GST Number',
+                                                        'required' => true,
+                                                    ])); ?>
+
+                                                </div>
                                             </div>
 
                                             <div class=" col-12">
@@ -638,6 +679,9 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                             <div class=" col-12">
                                                 <div class="form-label-group">
+                                                    <?php
+                                                        $emails_bill = explode(",",$business_partner_contact[0]->email_id);
+                                                    ?>
                                                     <?php echo e(Form::label('email_id', 'Email')); ?>
 
                                                     <?php echo e(Form::text('email_id', $business_partner_contact[0]->email_id??'', ['class' => 'form-control', 'placeholder' => 'Email', 'required' => true])); ?>
@@ -742,7 +786,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             <?php echo e(Form::text('acc_holdername', $business_partner_banking->acc_holdername??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Account Holder Name',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -752,7 +795,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                         <div class="form-label-group">
                                             <?php echo e(Form::label('bank_name', 'Bank Name')); ?>
 
-                                            <?php echo e(Form::text('bank_name', $business_partner_banking->bank_name??'', ['class' => 'form-control', 'placeholder' => 'Bank Name', 'required' => true])); ?>
+                                            <?php echo e(Form::text('bank_name', $business_partner_banking->bank_name??'', ['class' => 'form-control', 'placeholder' => 'Bank Name'])); ?>
 
                                         </div>
                                     </div>
@@ -764,7 +807,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             <?php echo e(Form::text('bank_branch',  $business_partner_banking->bank_branch??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Branch Name',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -778,7 +820,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                                 'class' => 'form-control',
                                                 'maxlength' => '15',
                                                 'placeholder' => 'IFSC Code',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -791,7 +832,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             <?php echo e(Form::text('ac_number',  $business_partner_banking->ac_number??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Account No',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -804,7 +844,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             <?php echo e(Form::text('bank_address', $business_partner_banking->bank_address??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Bank Address',
-                                                'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -828,6 +867,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             <?php echo e(Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), $model->beat_id??'', [
                                                 'class' => 'form-control select2',
                                                 'placeholder' => 'Select Beat',
+                                                'required'=>true,
                                             ])); ?>
 
 
@@ -1441,16 +1481,32 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
     </div>
 </div>
 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
 
 <script src="<?php echo e(asset('public/backend-assets/js/MasterHandler.js')); ?>"></script>
 <script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
+<script src="<?php echo e(asset('public/backend-assets/js/jquery.multi-emails.js')); ?>"></script>
 
 
-<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
 <script>
 $(document).ready(function() {
 
+
+    // let email_bill = '<?php echo json_encode($emails_bill, 15, 512) ?>}}';
+    // console.log(email_bill);
+    // var initialEmails = $('#email_id').val().split(',');
+    // var displayList = '';
+    // initialEmails.forEach((value, ind) => {
+    //     displayList += "<li style='background-color:"+"#ccc"+";border-left: 3px solid #343a40'>"+value+"<span class='float-right remove' data-index="+ind+"><i class='feather icon-x-square'></i></span></li>"
+    // });
+    // let buildEmailList = '<div id="show-emails"><ul style="color:#000000">'+displayList+'</ul></div>';
+    // $('#email_id').parent().after(buildEmailList);
+    // $("#email_id").multiEmails();
+    // $("#email_id1").multiEmails();
+            
    // usama_19-02-2024_get states
 
    var country = '<?php echo e($business_partner_address[0]->country); ?>';
@@ -1571,9 +1627,9 @@ $(document).ready(function() {
             var salesman = '<?php echo e($model->salesman); ?>';
 
             if(salesman){
-               var manager_id = '<?php echo e($asm_users->parent_users??''); ?>';
-               var ase_id = '<?php echo e($ase_users->parent_users??''); ?>';
-               var officer_id = '<?php echo e($officer_users->parent_users??''); ?>';
+               var manager_id = "<?php echo e($asm_users->parent_users??''); ?>";
+               var ase_id = "<?php echo e($ase_users->parent_users??''); ?>";
+               var officer_id = "<?php echo e($officer_users->parent_users??''); ?>";
                salesManager = manager_id;
                ase = ase_id;
                salesOfficer = officer_id;
@@ -1665,27 +1721,32 @@ $(document).ready(function() {
             new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
                 '<?php echo e(url('admin/master/store_group')); ?>', null, '#bp_channel_modal','#bp_group_modal');
 
+                
+            var sales_manader_role = "<?php echo e($sales_manager_dep->role ?? ''); ?>";
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_manager_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', sales_manader_role,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal');
 
+            var ase_dep = "<?php echo e($ase_dep->role ?? ''); ?>";
             // for ase
             new MasterHandler('#ase', '#add_ase_modal', '#submit_ase',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($ase_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', ase_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesManager_ase');
 
+            var sales_officer_dep = "<?php echo e($sales_officer_dep->role ?? ''); ?>";
             // for sales officer
             new MasterHandler('#sales_officer', '#add_sales_officer_modal', '#submit_sales_officer',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($sales_officer_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', sales_officer_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#ase_salesoff');
 
+            var salesman_dep = "<?php echo e($salesman_dep->role ?? ''); ?>";
             // for salesman
             new MasterHandler('#salesman', '#add_salesman_modal', '#submit_salesman',
-                '<?php echo e(url('admin/master/store_users')); ?>', <?php echo e($salesman_dep->role ?? ''); ?>,
+                '<?php echo e(url('admin/master/store_users')); ?>', salesman_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesOfficer');
 
@@ -1710,21 +1771,90 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
-            // alert(bptype);
+            var distributor = $('#company_id').find('option:selected').text().trim();
 
+            // if retails then remove requires attr from gst number
+            if($('#bp_category').val() == 2){
+                $('#gst_details').removeAttr('required');
+            }else{
+                $('#gst_details').attr('required', true);
+            }
+            $('#bp_category').change(function() {
+                if($(this).val() == 2){
+                    $('#gst_details').removeAttr('required');
+                }else{
+                    $('#gst_details').attr('required', true);
+                }
+            });
+
+            if( $('#business_partner_type').val()){
+                new DynamicDropdown('<?php echo e(route('admin.get_categories')); ?>',
+                    $('#business_partner_type').val(), '#bp_category',<?php echo e($model->bp_category); ?>);
+            }
+            $('#business_partner_type').change(function() {
+                // fetch categories dynamic
+                new DynamicDropdown('<?php echo e(route('admin.get_categories')); ?>',
+                    $(this).val(), '#bp_category');
+            });
+
+            if($('#company_id').val()){
+                if ($('#business_partner_type').val()) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        setTimeout(() => {
+                            new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>', $('#company_id').val(), '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                        }, 500);
+                    
+                        } else {
+                        hideElements();
+                        setTimeout(() => {
+                            new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>', $('#company_id').val(), '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                        }, 500);
+                    }
+                }
+            }
+
+            $('#company_id, #business_partner_type').change(function() {
+
+                if ($('#business_partner_type').val()) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>', $('#company_id').val(), '#pricing_profile');
+                    } else {
+                        hideElements();
+                        new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>', $('#company_id').val(), '#pricing_profile');
+                    }
+                }
+            });
+
+
+            function showElements() {
+                $('.sm_dynamic, .shelf_left, .beat_det').removeClass('d-none');
+                $('.bp_group, .bp_channel').removeClass('d-none');
+                $('#bp_group,#bp_channel,#beat_id').attr('required', true);
+            }
+
+            function hideElements() {
+                $('.sm_dynamic, .shelf_left, .beat_det').addClass('d-none');
+                $('.bp_group, .bp_channel').addClass('d-none');
+                $('#bp_group,#bp_channel,#beat_id').removeAttr('required');
+            }
+
+            if(distributor && bptype){
             if (bptype == 'Customer') {
                 $('.sm_dynamic').removeClass('d-none');
                 $('.shelf_left').removeClass('d-none');
                 $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>',
+                    distributor, '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             } else {
                 $('.sm_dynamic').addClass('d-none');
                 $('.shelf_left').addClass('d-none');
                 $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
+                new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>',
+                    distributor, '#pricing_profile','<?php echo e($model->pricing_profile); ?>');
             }
+         }
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
             if (terms_of_payment == 'On Credit') {
@@ -1734,22 +1864,22 @@ $(document).ready(function() {
             }
         });
 
-        $('#business_partner_type').on('change', function() {
-            var bptype = $(this).find('option:selected').text().trim();
-            if (bptype == 'Customer') {
-                $('.sm_dynamic').removeClass('d-none');
-                $('.shelf_left').removeClass('d-none');
-                $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile');
-            } else {
-                $('.sm_dynamic').addClass('d-none');
-                $('.shelf_left').addClass('d-none');
-                $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile');
-            }
-        });
+        // $('#business_partner_type').on('change', function() {
+        //     var bptype = $(this).find('option:selected').text().trim();
+        //     if (bptype == 'Customer') {
+        //         $('.sm_dynamic').removeClass('d-none');
+        //         $('.shelf_left').removeClass('d-none');
+        //         $('.beat_det').removeClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'sale', '#pricing_profile');
+        //     } else {
+        //         $('.sm_dynamic').addClass('d-none');
+        //         $('.shelf_left').addClass('d-none');
+        //         $('.beat_det').addClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'purchase', '#pricing_profile');
+        //     }
+        // });
 
         $('#payment_terms_id').on('change', function() {
             var terms_of_payment = $(this).find('option:selected').text().trim();

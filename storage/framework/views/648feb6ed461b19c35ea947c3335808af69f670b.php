@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Edit Sales Order'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -150,7 +151,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                         <?php echo e(Form::text('temp_sales_order_no', $model->bill_no, [
                                                         'class' => 'form-control
                                                         temp_sales_order_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        // 'placeholder' => 'Customer OB Refrence Number',
                                                         'disabled' => true,
                                                         ])); ?>
 
@@ -161,15 +162,14 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                     <div class="form-group">
                                                         <?php echo e(Form::label(
                                                         'customer_ref_no',
-                                                        'Customer OB Refrence Number
+                                                        'Customer Refrence Number
                                                         *',
                                                         )); ?>
 
                                                         <?php echo e(Form::text('customer_ref_no', null, [
                                                         'class' => 'form-control
                                                         customer_ref_no',
-                                                        'placeholder' => 'Customer OB Refrence
-                                                        Number',
+                                                        'placeholder' => 'Customer Refrence Number',
                                                         'required' => true,
                                                         ])); ?>
 
@@ -229,6 +229,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                             'class' => 'form-control status',
                                             'placeholder' => 'Select Status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
@@ -323,11 +324,15 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
                                                                     </td>
                                                                     <td><?php echo e(Form::label('qty', 'Quantity')); ?></td>
+                                                                    
                                                                     <td><?php echo e(Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
                                                                         Price',
                                                                         )); ?>
+
+                                                                    </td>
+                                                                    <td><?php echo e(Form::label('total', 'Total INR')); ?>
 
                                                                     </td>
 
@@ -340,7 +345,8 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     <td><?php echo e(Form::label('Amount', 'GST Amount')); ?>
 
                                                                     </td>
-                                                                    <td><?php echo e(Form::label('total', 'Total INR')); ?>
+                                                                    
+                                                                    <td><?php echo e(Form::label('gross_total','GrossTotal')); ?>
 
                                                                     </td>
                                                                     <td><?php echo e(Form::label('storage_location_id', 'From
@@ -449,7 +455,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
 
 
-                                                                    <td><?php echo e(Form::number('old_invoice_items[' .
+                                                                    <td><?php echo e(Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -490,6 +496,9 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         ])); ?>
 
                                                                     </td>
+
+                                                                    
+                                                            
                                                                     <td>
                                                                         <?php echo e(Form::text('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',
@@ -503,6 +512,19 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         ])); ?>
 
                                                                     </td>
+
+                                                                    <td><?php echo e(Form::text('old_invoice_items[' .
+                                                                        $loop->index . '][total]', $items->total, [
+                                                                        'class' => 'form-control total',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'total',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'required' => true,
+                                                                        'readonly' => true,
+                                                                        ])); ?>
+
+                                                                    </td>
+
                                                                     
                                                                     <?php echo e(Form::hidden('old_invoice_items[' . $loop->index
                                                                     . '][discount_item]', $items->discount_item, [
@@ -597,17 +619,21 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         ])); ?>
 
                                                                     </td>
+                                                                   
+
                                                                     <td><?php echo e(Form::text('old_invoice_items[' .
-                                                                        $loop->index . '][total]', $items->total, [
-                                                                        'class' => 'form-control total',
+                                                                        $loop->index . '][gross_total]',
+                                                                        $items->gross_total, [
+                                                                        'class' => 'form-control gross_total',
                                                                         'onchange' => 'calculategst(this)',
-                                                                        'data-name' => 'total',
+                                                                        'data-name' => 'gross_total',
                                                                         'data-group' => 'old_invoice_items',
                                                                         'required' => true,
                                                                         'readonly' => true,
                                                                         ])); ?>
 
                                                                     </td>
+
                                                                     <td style="width: 210px;">
                                                                         <?php echo e(Form::select(
                                                                         'old_invoice_items[' . $loop->index .

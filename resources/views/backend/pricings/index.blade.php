@@ -45,7 +45,9 @@
                                             {{-- <th>Type</th> --}}
                                             <th>Name</th>
                                             <th>Price Data</th>
+                                            @if(Auth()->guard('admin')->user()->role != 41)
                                             <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,7 +59,14 @@
                                                     {{-- <td>{{ ucFirst($pricing->pricing_type)}}</td> --}}
                                                     <td>{{ $pricing->pricing_name }}</td>
                                                     <td><a href="{{ route('admin.pricings.setpricing', ['id' => $pricing->pricing_master_id]) }}"
-                                                            class="btn btn-sm btn-outline-primary">Update</a></td>
+                                                            class="btn btn-sm btn-outline-primary">
+                                                        @if(Auth()->guard('admin')->user()->role != 41)
+                                                        Update
+                                                        @else
+                                                        View
+                                                        @endif
+                                                        </a></td>
+                                                    
                                                     <td>
                                                         @can('Update Purchase Pricelist')
                                                             <a href="{{ url('admin/pricings/edit/' . $pricing->pricing_master_id) }}"

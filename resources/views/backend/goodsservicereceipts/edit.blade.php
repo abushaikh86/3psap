@@ -385,7 +385,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     ]) }}
 
 
-                                                                    <td>{{ Form::number('old_invoice_items[' .
+                                                                    <td>{{ Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',

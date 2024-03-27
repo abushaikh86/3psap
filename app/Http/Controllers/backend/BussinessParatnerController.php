@@ -8,6 +8,8 @@ use App\Models\backend\AdminUsers;
 use App\Models\backend\Area;
 use App\Models\backend\Beat;
 use App\Models\backend\Bpgroup;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\backend\InternalUser;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -52,7 +54,7 @@ class BussinessParatnerController extends Controller
         session(['previous_controller' => $controllerName]);
 
         if ($request->ajax()) {
-            $bussinesspartner = BussinessPartnerMaster::with('get_org_type', 'get_category', 'paymentterms', 'get_partner_type_name')
+            $bussinesspartner = BussinessPartnerMaster::with('get_group', 'get_org_type', 'get_category', 'paymentterms', 'get_partner_type_name')
                 ->where('is_converted', 1)->when(Auth()->guard('admin')->user()->role == 41, function ($query) {
                     return $query->where('company_id', Auth()->guard('admin')->user()->company_id);
                 })->orderBy('business_partner_id', 'desc')->get();
@@ -74,29 +76,66 @@ class BussinessParatnerController extends Controller
                     <i class="feather icon-trash"></i></a>';
                     }
 
-                    // $actionBtn .= '<a href="' . route('admin.bussinesspartner.address', ['id' => $bussinesspartner->business_partner_id]) . '"
-                    // class="btn btn-sm btn-primary" title="Address"><i class="feather icon-map"></i></a> ';
-
-                    // $actionBtn .= '<a href="' . route('admin.bussinesspartner.contact', ['id' => $bussinesspartner->business_partner_id]) . '"
-                    // class="btn btn-sm btn-secondary" title="Contact"><i class="feather icon-mail"></i></a> ';
-
-                    // $actionBtn .= '<a href="' . route('admin.bussinesspartner.banking', ['id' => $bussinesspartner->business_partner_id]) . '
-                    //  " class="btn btn-sm btn-success" title="Banking" ">
-                    //  <i class="feather icon-dollar-sign"></i></a></div>';
-
                     return $actionBtn;
                 })
+                ->addColumn('bp_channel', fn ($row) => $row->get_category->business_partner_category_name ?? '')
+                ->addColumn('bp_group', fn ($row) => $row->get_group->name ?? '')
 
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
+        // Fetch all data for exporting
+        $allBussinessPartnerDataArray = BussinessPartnerMaster::where('is_converted', 1)->when(Auth()->guard('admin')->user()->role == 41, function ($query) {
+            return $query->where('company_id', Auth()->guard('admin')->user()->company_id);
+        })->orderBy('business_partner_id', 'desc')
+            ->get()
+            ->map(function ($item) {
+                $residentialStatus = DB::table('residential_status')
+                    ->where('id', $item->residential_status)
+                    ->first();
+                $bp_category = DB::table('bp_category')
+                    ->where('id', $item->bp_category)
+                    ->first();
+                $gst_reg_type = DB::table('gst_reg_type')
+                    ->where('id', $item->gst_reg_type ?? '')
+                    ->first();
+
+                return [
+                    'business_partner_type' => $item->get_partnerTypeName->bussiness_master_type,
+                    'company_id' => $item->get_company->name,
+                    'bp_name' => $item->bp_name,
+                    'bp_organisation_type' => $item->get_org_type->bp_organisation_type,
+                    'residential_status' => $residentialStatus ? $residentialStatus->name : null,
+                    'bp_channel' => $item->get_category->business_partner_category_name ?? '',
+                    'bp_category' => $bp_category ? $bp_category->name : null,
+                    'bp_group' => $item->get_group->name ?? '',
+                    'sales_manager' => isset($item->salesManager) ? ($item->salesManager->first_name ?? '' . " " . $item->salesManager->last_name) : '',
+                    'ase' => isset($item->get_ase) ? ($item->get_ase->first_name ?? '' . " " . $item->get_ase->last_name) : '',
+                    'sales_officer' => isset($item->salesOfficer) ? ($item->salesOfficer->first_name ?? '' . " " . $item->salesOfficer->last_name) : '',
+                    'salesman' => isset($item->get_salesman) ? ($item->get_salesman->first_name ?? '' . " " . $item->get_salesman->last_name) : '',
+                    'payment_terms_id' => $item->paymentterms->term_type,
+                    'gst_details' => $item->gst_details ?? '',
+                    'gst_reg_type' => $gst_reg_type ? $gst_reg_type->name : null,
+                    'rcm_app' => $item->rcm_app == 1 ? 'Yes' : 'No',
+                    'shelf_life' => $item->shelf_life ?? '',
+                    'msme_reg' => $item->msme_reg == 1 ? 'Yes' : 'No',
+                    'pricing_profile' => $item->get_pricing->pricing_name ?? '',
+                ];
+            })
+            ->toArray();
+        // dd($allBussinessPartnerDataArray);
+
+        // Convert data to array
+
         $bussinesstype = BussinessMasterType::pluck('bussiness_master_type', 'bussiness_master_type_id');
         $bpOrgType = BussinessPartnerOrganizationType::pluck('bp_organisation_type', 'bp_organisation_type_id');
         $termPayment = TermPayment::pluck('term_type', 'payment_terms_id');
+        $bpGroup = Bpgroup::pluck('name', 'id');
 
 
-        return view('backend.bussinesspartner.index', compact('bussinesstype', 'bpOrgType', 'termPayment'));
+
+        return view('backend.bussinesspartner.index', compact('allBussinessPartnerDataArray', 'bpGroup', 'bussinesstype', 'bpOrgType', 'termPayment'));
     }
 
 
@@ -441,7 +480,7 @@ class BussinessParatnerController extends Controller
             'bp_category' => 'required',
             // 'pricing_profile' => 'required',
             // 'shelf_life' => 'required',
-            'bp_group' => 'required',
+            // 'bp_group' => 'required',
             // 'sales_manager' => 'required_if',
             // 'sales_officer' => 'required',
             // 'salesman' => 'required',
@@ -481,7 +520,8 @@ class BussinessParatnerController extends Controller
                     $address1 = new BussinessPartnerAddress;
                     $arr_data = [
                         'bussiness_partner_id' => $bid,
-                        'bp_address_name'  => $data['bp_address_name'],
+                        'gst_no'  => $data['gst_no1'],
+                        'bp_address_name'  => $data['bp_address_name1'],
                         'address_type' => $data['address_type1'],
                         'building_no_name'  => $data['building_no_name1'],
                         'street_name' => $data['street_name1'],
@@ -500,17 +540,23 @@ class BussinessParatnerController extends Controller
                 //for contact
                 if ($data['type'] == 'Bill-To/ Bill-From') {
                     $address = new BussinessPartnerContactDetails;
+                    $emailArray = json_decode($data['email_id']); // Convert string to array
+                    $emails = implode(",", $emailArray);
+                    $address->email_id = $emails;
+                    unset($full_data['email_id']);
                     $address->fill($full_data);
                     $address->save();
                 }
 
                 if ($data['type1'] == 'Ship-To/ Ship-From') {
                     $address1 = new BussinessPartnerContactDetails;
+                    $emailArray = json_decode($data['email_id1']); // Convert string to array
+                    $emails = implode(",", $emailArray);
                     $arr_data = [
                         'type' => $data['type1'],
                         'bussiness_partner_id' => $bid,
                         'contact_person'  => $data['contact_person1'],
-                        'email_id'  => $data['email_id1'],
+                        'email_id'  => $emails,
                         'mobile_no'  => $data['mobile_no1'],
                         'landline'  => $data['landline1'],
                     ];
@@ -520,10 +566,11 @@ class BussinessParatnerController extends Controller
                 }
 
 
-
-                $banking = new BussinessPartnerBankingDetails;
-                $banking->fill($full_data);
-                $banking->save();
+                if (!empty($data['acc_holdername']) && !empty($data['bank_name']) && !empty($data['bank_branch'])) {
+                    $banking = new BussinessPartnerBankingDetails;
+                    $banking->fill($full_data);
+                    $banking->save();
+                }
 
 
                 $log = ['module' => 'Bussiness Partner Master', 'action' => 'Bussiness Partner Created', 'description' => 'Bussiness Partner Created: ' . $request->bp_name];
@@ -633,7 +680,7 @@ class BussinessParatnerController extends Controller
             'bp_category' => 'required',
             // 'pricing_profile' => 'required',
             // 'shelf_life' => 'required',
-            'bp_group' => 'required',
+            // 'bp_group' => 'required',
             // 'sales_manager' => 'required',
             // 'sales_officer' => 'required',
             // 'salesman' => 'required',
@@ -660,16 +707,20 @@ class BussinessParatnerController extends Controller
             $full_data = array_merge($uid, $data);
             if ($bid != "") {
                 if ($data['address_type'] == 'Bill-To/ Bill-From') {
-                    $address =  BussinessPartnerAddress::where(['address_type' => 'Bill-To/ Bill-From', 'bussiness_partner_id' => $request->business_partner_id])->first();
-                    $address->fill($full_data);
-                    $address->save();
+                    BussinessPartnerAddress::updateOrCreate(
+                        ['address_type' => 'Bill-To/ Bill-From', 'bussiness_partner_id' => $request->business_partner_id],
+                        $full_data
+                    );
                 }
 
                 if ($data['address_type1'] == 'Ship-To/ Ship-From') {
-                    $address1 = BussinessPartnerAddress::where(['address_type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id])->first();
+
+
+
                     $arr_data = [
                         'bussiness_partner_id' => $bid,
-                        'bp_address_name'  => $data['bp_address_name'],
+                        'gst_no'  => $data['gst_no1'],
+                        'bp_address_name'  => $data['bp_address_name1'],
                         'address_type' => $data['address_type1'],
                         'building_no_name'  => $data['building_no_name1'],
                         'street_name' => $data['street_name1'],
@@ -681,25 +732,21 @@ class BussinessParatnerController extends Controller
                         'country' => $data['country1']
                     ];
 
-                    $address1->fill($arr_data);
-                    $address1->save();
+                    BussinessPartnerAddress::updateOrCreate(
+                        ['address_type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id],
+                        $arr_data
+                    );
                 }
 
                 //for contact
                 if ($data['type'] == 'Bill-To/ Bill-From') {
-                    $address = BussinessPartnerContactDetails::where(
-                        ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id]
-                    )->first();
-                    if (isset($address)) {
-                        $address->fill($full_data);
-                        $address->save();
-                    }
+                    BussinessPartnerContactDetails::updateOrCreate(
+                        ['type' => 'Bill-To/ Bill-From', 'bussiness_partner_id' => $request->business_partner_id],
+                        $full_data
+                    );
                 }
 
                 if ($data['type1'] == 'Ship-To/ Ship-From') {
-                    $address1 = BussinessPartnerContactDetails::where(
-                        ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id]
-                    )->first();
                     $arr_data = [
                         'type' => $data['type1'],
                         'bussiness_partner_id' => $bid,
@@ -709,10 +756,10 @@ class BussinessParatnerController extends Controller
                         'landline'  => $data['landline1'],
                     ];
 
-                    if (isset($address1)) {
-                        $address1->fill($arr_data);
-                        $address1->save();
-                    }
+                    BussinessPartnerContactDetails::updateOrCreate(
+                        ['type' => 'Ship-To/ Ship-From', 'bussiness_partner_id' => $request->business_partner_id],
+                        $arr_data
+                    );
                 }
 
 

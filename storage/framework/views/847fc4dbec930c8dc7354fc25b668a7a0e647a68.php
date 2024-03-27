@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Products'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -89,67 +90,24 @@
                                         <th>Description</th>
                                         <th>Brand</th>
                                         <th>Category</th>
-        
+
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <?php if(isset($products) && count($products) > 0): ?>
-                                    <?php $srno = 1; ?>
-                                    <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <thead id="search_input">
                                     <tr>
-                                        <td><?php echo e($srno); ?></td>
-                                        <td>
-                                            <?php if(!empty($product->product_thumb)): ?>
-                                            <a href="<?php echo e(asset('public/backend-assets/images/')); ?>/<?php echo e($product->product_thumb); ?>"
-                                                target="_blank"><img class="card-img-top img-fluid mb-1"
-                                                    src="<?php echo e(asset('public/backend-assets/images/')); ?>/<?php echo e($product->product_thumb); ?>"
-                                                    alt="Product Image" style="width:50px"></a>
-                                            <?php endif; ?>
-                                        </td>
-                                        </td>
-                                        <!-- <td><?php echo e(isset($product->item_type) ? $product->item_type->item_type_name : ''); ?>
-
-                                        </td> -->
-                                        <td><?php echo e($product->item_code); ?></td>
-                                        <td><?php echo e($product->sku); ?></td>
-                                        <td><?php echo e($product->item_description); ?></td>
-                                        <td><?php echo e(isset($product->brand) ? $product->brand->brand_name : ''); ?>
-
-                                        </td>
-                                        <td><?php echo e(isset($product->category) ? $product->category->category_name : ''); ?>
-
-                                        </td>
-                                   
-                                        <td>
-
-                                            <a href="<?php echo e(url('admin/products/edit/' . $product->product_item_id)); ?>"
-                                                class="btn btn-primary" title="Edit"><i
-                                                    class="feather icon-edit"></i></a>
-
-                                            <?php echo Form::open([
-                                            'method' => 'GET',
-                                            'url' => ['admin/products/delete', $product->product_item_id],
-                                            'style' => 'display:inline',
-                                            ]); ?>
-
-                                            <?php echo Form::button('<i class="feather icon-trash"></i>', [
-                                            'type' => 'submit',
-                                            'title' => 'Delete',
-                                            'class' => 'btn btn-danger',
-                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry
-                                            ?')",
-                                            ]); ?>
-
-                                            <?php echo Form::close(); ?>
-
-                                        </td>
+                                        <th></th>
+                                        <th></th>
+                                        <th><input type="text" id="item_code"></th>
+                                        <th><input type="text" id="sku"></th>
+                                        <th><input type="text" id="consumer_desc"></th>
+                                        <th><input type="text" id="brand_id"></th>
+                                        <th><input type="text" id="category_id"></th>
+                                        <th></th>
                                     </tr>
-                                    <?php $srno++; ?>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    <?php endif; ?>
-                                </tbody>
+                                </thead>
 
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -158,7 +116,88 @@
         </div>
     </div>
 </section>
+<?php $__env->startSection('scripts'); ?>
 
+<script>
+    $(function() {
+            var table = $('#tbl-datatable').DataTable({
+
+                processing: true,
+                serverSide: false,
+                ajax: "<?php echo e(route('admin.products')); ?>",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'product_thumb',
+                        name: 'product_thumb'
+                    },
+                    
+                    {
+                        data: 'item_code',
+                        name: 'item_code'
+                    },
+                    {
+                        data: 'sku',
+                        name: 'sku'
+                    },
+                    {
+                        data: 'consumer_desc',
+                        name: 'consumer_desc'
+                    },
+                    {
+                        data: 'brand_id',
+                        name: 'brand_id'
+                    },
+                    {
+                        data: 'category_id',
+                        name: 'category_id'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: false
+                    }
+                ],
+
+                buttons: [{
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [0, 2, 3, 4, 5, 6],
+                                modifier: {
+                                    page: 'all',
+                                    search: 'applied'
+                                }
+                            },
+                            title: function() {
+                                var pageTitle = 'PRODUCTS';
+                                return pageTitle
+                            }
+                        },
+                       
+
+                    ]
+                }],
+                dom: 'lBfrtip',
+                select: true
+            });
+
+            function applySearch(columnIndex, value) {
+                table.column(columnIndex).search(value).draw();
+            }
+
+            $('#item_code,#sku, #consumer_desc, #brand_id, #category_id').on('keyup', function() {
+                var columnIndex = $(this).closest('th').index();
+                applySearch(columnIndex, this.value);
+            });
+
+        });
+</script>
 <?php $__env->stopSection(); ?>
-
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/products/index.blade.php ENDPATH**/ ?>

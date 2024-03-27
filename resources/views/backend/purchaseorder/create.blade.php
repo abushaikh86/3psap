@@ -265,7 +265,22 @@
                                                                             <td class="adjust_col">
                                                                                 {{ Form::label('hsn_sac', 'HSN/SAC') }}
                                                                             </td>
-                                                                            <td>{{ Form::label('qty', 'Quantity') }}
+                                                                            <td class="adjust_col">
+                                                                                {{ Form::label('uom', 'UOM',['style'=>'display: flex;justify-content: center;']) }}
+                                                                                {{ Form::select('uom',
+                                                                                ['units'=>'Units','case'=>'Case'],
+                                                                               null,
+                                                                                [
+                                                                                    'class' => 'form-control uom',
+                                                                                    'data-name' => 'uom',
+                                                                                    'data-group' => 'invoice_items',
+                                                                                ])
+                                                                            }}
+                                                                        </td>
+                                                                            </td>
+                                                                            <td>{{ Form::label('qty', 'Quantity',['id'=>'qty_label']) }}
+                                                                            </td>
+                                                                            <td>{{ Form::label('final_qty', 'Quantity (Units)') }}
                                                                             </td>
                                                                             <td>{{ Form::label('taxable_amount', 'Unit
                                                                                 Price') }}
@@ -311,6 +326,9 @@
                                                                     ?>
                                                                         <tr data-repeater-item class="item_row">
 
+                                                                            {{ Form::hidden('unit_pack',old('invoice_items')[$i]['unit_pack']??null, ['data-group' => 'invoice_items']) }}
+                                                                            {{ Form::hidden('pack_case',old('invoice_items')[$i]['pack_case']??null, ['data-group' => 'invoice_items']) }}
+                                                                            
                                                                             {{ Form::hidden('bill_to_state',
                                                                             old('invoice_items')[$i]['bill_to_state'] ??
                                                                             null, [
@@ -369,13 +387,13 @@
 
 
 
-                                                                            <td>{{ Form::number('item_code',
+                                                                            <td>{{ Form::text('item_code',
                                                                                 old('invoice_items')[$i]['item_code'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_code',
+                                                                                'data-name' => 'item_code',
                                                                                 'id' => 'auto_product_' . $i,
-                                                                                'class' => 'form-control item_code
-                                                                                typeahead',
+                                                                                'class' => 'form-control item_code typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
@@ -385,9 +403,9 @@
                                                                                 old('invoice_items')[$i]['item_name'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_name',
+                                                                                'data-name' => 'item_name',
                                                                                 'id' => 'auto_product_' . $i,
-                                                                                'class' => 'form-control item_name
-                                                                                typeahead',
+                                                                                'class' => 'form-control item_name typeahead',
                                                                                 'autocomplete' => 'on',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'oninput' => 'validateInput(this)',
@@ -402,6 +420,22 @@
                                                                                 'readonly'=>true,
                                                                                 ]) }}
                                                                             </td>
+
+                                                                            <td>
+                                                                                {{ Form::text('uom',
+                                                                                    old('invoice_items')[$i]['uom'] ?? null,
+                                                                                    [
+                                                                                        'class' => 'form-control uom_field',
+                                                                                        'onchange' => 'calculategst(this)',
+                                                                                        'data-name' => 'uom',
+                                                                                        'data-group' => 'invoice_items',
+                                                                                        'readonly' => true,
+                                                                                    ])
+                                                                                }}
+                                                                            </td>
+                                                                            
+                                                                            
+
                                                                             <td> {{ Form::number('qty',
                                                                                 old('invoice_items')[$i]['qty'] ?? null,
                                                                                 [
@@ -410,6 +444,16 @@
                                                                                 'data-name' => 'qty',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
+                                                                                ]) }}
+                                                                            </td>
+                                                                            <td> {{ Form::number('final_qty',
+                                                                                old('invoice_items')[$i]['final_qty'] ?? 0,
+                                                                                [
+                                                                                'class' => 'form-control final_qty',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'final_qty',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
                                                                                 ]) }}
                                                                             </td>
                                                                             <td>{{ Form::number('taxable_amount',
@@ -469,12 +513,13 @@
                                                                                 old('invoice_items')[$i]['gst_rate'] ??
                                                                                 null, [
                                                                                 'class' => 'form-control
-                                                                                gst_type gst_dropdown readonly',
+                                                                                gst_type gst_dropdown ',
                                                                                 'placeholder' => 'Select GST',
                                                                                 'onchange' => 'calculategst(this)',
                                                                                 'data-name' => 'gst_rate',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
+                                                                                'readonly' => true,
                                                                                 ]) }}
                                                                             </td>
 
@@ -717,7 +762,14 @@
             });
 
         }
+
+        
+
+    
+
         $(document).ready(function() {
+
+
 
 
             var customer_id = $('#party_id option:selected,#party_code option:selected').val();
@@ -813,7 +865,6 @@
                 var item = itemContent;
                 var input = item.find('.modal_items');
 
-                // console.log(input);
                 input.each(function(index, el) {
                     // console.log(el.name);
                     var attrName = $(el).attr('name');
@@ -857,6 +908,8 @@
 
             $('.add_btn_rep').click(function() {
                 get_invoice_itemnames();
+                var lastIndex = $('.repeater tbody tr').length - 1;
+                $("input[name='invoice_items[" + lastIndex + "][uom]']").val($("input[name='invoice_items[0][uom]']").val());
             });
 
 

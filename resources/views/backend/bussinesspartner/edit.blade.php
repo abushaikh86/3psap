@@ -11,8 +11,15 @@ $sales_manager_dep = AdminUsers::where('admin_user_id', $sales_manager->keys()->
 $ase_dep = AdminUsers::where('admin_user_id', $ase->keys()->first())->first();
 $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
 $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
+
+$dep = Role::where('id',Auth()->guard('admin')->user()->role)->first();
+$pricing_access = [1,2,5,11];
+
 @endphp
 @section('content')
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/backend-assets/css/jquery.multi-emails.css') }}">
+
 
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
@@ -75,6 +82,18 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
+                                <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                @if(Auth()->guard('admin')->user()->role != 41)
+                                <div class="col-md-6 col-12 company_drp">
+                                    <div class="form-group">
+                                        {{ Form::label('company_id', 'Distributor *') }}
+                                        {{ Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',]) }}
+                                    </div>
+                                </div>
+                                @else 
+                                   {{ Form::hidden('company_id', Auth()->guard('admin')->user()->company_id ?? '', ['id' => 'company_id']) }}
+                                @endif
+
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
@@ -119,7 +138,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 </div>
 
 
-                                <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12 d-none bp_channel">
                                     <div class="form-label-group">
                                         {{ Form::label('bp_channel', 'Business Partner Channel *') }}
                                         {{ Form::select('bp_channel', $business_partner_category, $model->bp_channel,
@@ -134,7 +153,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
                                         {{ Form::label('bp_category', 'Business Partner Category *') }}
-                                        {{ Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), $model->bp_category,
+                                        {{ Form::select('bp_category', [], $model->bp_category,
                                         [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Business Partner Category',
@@ -143,7 +162,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-12">
+                                <div class="col-md-6 col-12 d-none bp_group">
                                     <div class="form-label-group">
                                         {{ Form::label('bp_group', 'Business Partner group *') }}
                                         {{ Form::select('bp_group', 
@@ -227,7 +246,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
-                                        {{ Form::label('gst_details', 'GST Number *') }}
+                                        {{ Form::label('gst_details', 'GST Number') }}
                                         {{ Form::text('gst_details', $model->gst_details, [
                                         'class' => 'form-control',
                                         'placeholder' => 'GST Number',
@@ -276,28 +295,19 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     </div>
                                 </div>
 
-                                  <!-- added to tagg distributor for thier bp only 28-02-2024 -->
-                                  @if(Auth()->guard('admin')->user()->role != 41)
-                                  <div class="col-md-6 col-12 company_drp">
-                                      <div class="form-group">
-                                          {{ Form::label('company_id', 'Distributor *') }}
-                                          {{ Form::select('company_id', $company, $model->company_id, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',]) }}
-                                      </div>
-                                  </div>
-                                  @else 
-                                      {{ Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')}}
-                                  @endif
+                            
 
-
+                                @if(in_array($dep->department_id,$pricing_access))
                                 <div class="col-md-6 col-12">
                                     <div class="form-label-group">
                                         {{ Form::label('pricing_profile', 'Pricing Profile') }}
-                                        {{ Form::select('pricing_profile', $pricing_data, $model->pricing_profile, [
+                                        {{ Form::select('pricing_profile', [], $model->pricing_profile, [
                                         'class' => 'form-control',
                                         'placeholder' => 'Select Pricing Profile',
                                         ]) }}
                                     </div>
                                 </div>
+                                @endif
                                 
                                   <hr>
 
@@ -327,6 +337,18 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                                 <h4>Bill-To/ Bill-From</h4>
                                             </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    {{ Form::label('gst_no', 'GST Number ') }}
+                                                    {{ Form::text('gst_no', $business_partner_address[0]->gst_no, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'GST Number',
+                                                        'required' => true,
+                                                    ]) }}
+                                                </div>
+                                            </div>
+
                                             <div class=" col-12">
                                                 <div class="form-label-group">
                                                     {{ Form::label('bp_address_name', 'Address Name ') }}
@@ -424,6 +446,17 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                                 <h4>Ship-To/ Ship-From</h4>
 
+                                            </div>
+
+                                            <div class=" col-12">
+                                                <div class="form-label-group">
+                                                    {{ Form::label('gst_no1', 'GST Number ') }}
+                                                    {{ Form::text('gst_no1', $business_partner_address[1]->gst_no, [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => 'GST Number',
+                                                        'required' => true,
+                                                    ]) }}
+                                                </div>
                                             </div>
 
                                             <div class=" col-12">
@@ -559,6 +592,9 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
 
                                             <div class=" col-12">
                                                 <div class="form-label-group">
+                                                    @php
+                                                        $emails_bill = explode(",",$business_partner_contact[0]->email_id);
+                                                    @endphp
                                                     {{ Form::label('email_id', 'Email') }}
                                                     {{ Form::text('email_id', $business_partner_contact[0]->email_id??'', ['class' => 'form-control', 'placeholder' => 'Email', 'required' => true]) }}
                                                 </div>
@@ -647,7 +683,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             {{ Form::text('acc_holdername', $business_partner_banking->acc_holdername??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Account Holder Name',
-                                                'required' => true,
                                             ]) }}
                                         </div>
                                     </div>
@@ -655,7 +690,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
                                             {{ Form::label('bank_name', 'Bank Name') }}
-                                            {{ Form::text('bank_name', $business_partner_banking->bank_name??'', ['class' => 'form-control', 'placeholder' => 'Bank Name', 'required' => true]) }}
+                                            {{ Form::text('bank_name', $business_partner_banking->bank_name??'', ['class' => 'form-control', 'placeholder' => 'Bank Name']) }}
                                         </div>
                                     </div>
 
@@ -665,7 +700,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             {{ Form::text('bank_branch',  $business_partner_banking->bank_branch??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Branch Name',
-                                                'required' => true,
                                             ]) }}
                                         </div>
                                     </div>
@@ -677,7 +711,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                                 'class' => 'form-control',
                                                 'maxlength' => '15',
                                                 'placeholder' => 'IFSC Code',
-                                                'required' => true,
                                             ]) }}
                                         </div>
                                     </div>
@@ -688,7 +721,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             {{ Form::text('ac_number',  $business_partner_banking->ac_number??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Account No',
-                                                'required' => true,
                                             ]) }}
                                         </div>
                                     </div>
@@ -699,7 +731,6 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             {{ Form::text('bank_address', $business_partner_banking->bank_address??'', [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'Bank Address',
-                                                'required' => true,
                                             ]) }}
                                         </div>
                                     </div>
@@ -721,6 +752,7 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
                                             {{ Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), $model->beat_id??'', [
                                                 'class' => 'form-control select2',
                                                 'placeholder' => 'Select Beat',
+                                                'required'=>true,
                                             ]) }}
 
                                         </div>
@@ -1282,16 +1314,32 @@ $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
 
 <script src="{{ asset('public/backend-assets/js/MasterHandler.js') }}"></script>
 <script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
+<script src="{{ asset('public/backend-assets/js/jquery.multi-emails.js') }}"></script>
 
 
-<script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
 
 <script>
 $(document).ready(function() {
 
+
+    // let email_bill = '@json($emails_bill)}}';
+    // console.log(email_bill);
+    // var initialEmails = $('#email_id').val().split(',');
+    // var displayList = '';
+    // initialEmails.forEach((value, ind) => {
+    //     displayList += "<li style='background-color:"+"#ccc"+";border-left: 3px solid #343a40'>"+value+"<span class='float-right remove' data-index="+ind+"><i class='feather icon-x-square'></i></span></li>"
+    // });
+    // let buildEmailList = '<div id="show-emails"><ul style="color:#000000">'+displayList+'</ul></div>';
+    // $('#email_id').parent().after(buildEmailList);
+    // $("#email_id").multiEmails();
+    // $("#email_id1").multiEmails();
+            
    // usama_19-02-2024_get states
 
    var country = '{{$business_partner_address[0]->country}}';
@@ -1506,27 +1554,32 @@ $(document).ready(function() {
             new MasterHandler('#bp_group', '#add_bp_group_modal', '#submit_bp_group',
                 '{{ url('admin/master/store_group') }}', null, '#bp_channel_modal','#bp_group_modal');
 
+                
+            var sales_manader_role = "{{$sales_manager_dep->role ?? ''}}";
             // for sales manager
             new MasterHandler('#sales_manager', '#add_sales_manager_modal', '#submit_sales_manager',
-                '{{ url('admin/master/store_users') }}', {{ $sales_manager_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', sales_manader_role,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal');
 
+            var ase_dep = "{{$ase_dep->role ?? ''}}";
             // for ase
             new MasterHandler('#ase', '#add_ase_modal', '#submit_ase',
-                '{{ url('admin/master/store_users') }}', {{ $ase_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', ase_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesManager_ase');
 
+            var sales_officer_dep = "{{$sales_officer_dep->role ?? ''}}";
             // for sales officer
             new MasterHandler('#sales_officer', '#add_sales_officer_modal', '#submit_sales_officer',
-                '{{ url('admin/master/store_users') }}', {{ $sales_officer_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', sales_officer_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#ase_salesoff');
 
+            var salesman_dep = "{{$salesman_dep->role ?? ''}}";
             // for salesman
             new MasterHandler('#salesman', '#add_salesman_modal', '#submit_salesman',
-                '{{ url('admin/master/store_users') }}', {{ $salesman_dep->role ?? '' }},
+                '{{ url('admin/master/store_users') }}', salesman_dep,
                 '#first_name_modal',
                 '#last_name_modal', '#email_modal', '#salesOfficer');
 
@@ -1552,26 +1605,73 @@ $(document).ready(function() {
     $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
             var distributor = $('#company_id').find('option:selected').text().trim();
-            // alert(bptype);
 
+            // if retails then remove requires attr from gst number
+            if($('#bp_category').val() == 2){
+                $('#gst_details').removeAttr('required');
+            }else{
+                $('#gst_details').attr('required', true);
+            }
+            $('#bp_category').change(function() {
+                if($(this).val() == 2){
+                    $('#gst_details').removeAttr('required');
+                }else{
+                    $('#gst_details').attr('required', true);
+                }
+            });
 
-            $('#company_id').change(function(){
-                if($('#business_partner_type').val()){
-                if (bptype == 'Customer') {
-                    $('.sm_dynamic').removeClass('d-none');
-                    $('.shelf_left').removeClass('d-none');
-                    $('.beat_det').removeClass('d-none');
-                    new DynamicDropdown('{{ route('admin.getPricingPurchase') }}',
-                        $(this).val(), '#pricing_profile',);
-                } else {
-                    $('.sm_dynamic').addClass('d-none');
-                    $('.shelf_left').addClass('d-none');
-                    $('.beat_det').addClass('d-none');
-                    new DynamicDropdown('{{ route('admin.getPricingSale') }}',
-                        $(this).val(), '#pricing_profile');
+            if( $('#business_partner_type').val()){
+                new DynamicDropdown('{{ route('admin.get_categories') }}',
+                    $('#business_partner_type').val(), '#bp_category',{{$model->bp_category}});
+            }
+            $('#business_partner_type').change(function() {
+                // fetch categories dynamic
+                new DynamicDropdown('{{ route('admin.get_categories') }}',
+                    $(this).val(), '#bp_category');
+            });
+
+            if($('#company_id').val()){
+                if ($('#business_partner_type').val()) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        setTimeout(() => {
+                            new DynamicDropdown('{{ route('admin.getPricingSale') }}', $('#company_id').val(), '#pricing_profile','{{$model->pricing_profile}}');
+                        }, 500);
+                    
+                        } else {
+                        hideElements();
+                        setTimeout(() => {
+                            new DynamicDropdown('{{ route('admin.getPricingPurchase') }}', $('#company_id').val(), '#pricing_profile','{{$model->pricing_profile}}');
+                        }, 500);
+                    }
                 }
             }
+
+            $('#company_id, #business_partner_type').change(function() {
+
+                if ($('#business_partner_type').val()) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        new DynamicDropdown('{{ route('admin.getPricingSale') }}', $('#company_id').val(), '#pricing_profile');
+                    } else {
+                        hideElements();
+                        new DynamicDropdown('{{ route('admin.getPricingPurchase') }}', $('#company_id').val(), '#pricing_profile');
+                    }
+                }
             });
+
+
+            function showElements() {
+                $('.sm_dynamic, .shelf_left, .beat_det').removeClass('d-none');
+                $('.bp_group, .bp_channel').removeClass('d-none');
+                $('#bp_group,#bp_channel,#beat_id').attr('required', true);
+            }
+
+            function hideElements() {
+                $('.sm_dynamic, .shelf_left, .beat_det').addClass('d-none');
+                $('.bp_group, .bp_channel').addClass('d-none');
+                $('#bp_group,#bp_channel,#beat_id').removeAttr('required');
+            }
 
             if(distributor && bptype){
             if (bptype == 'Customer') {

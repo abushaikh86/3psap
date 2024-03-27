@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Bin Transfer History'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -43,7 +44,7 @@
                                             <th>From (Warehouse/Bin)</th>
                                             <th>To (Warehouse/Bin)</th>
                                             <th>Base Pack</th>
-                                            <th>Bacth Number</th>
+                                            <th>Item Description</th>
                                             <th>Item Code</th>
                                             <th>Available Quantity</th>
                                             <th>Transferred Quantity</th>
@@ -62,7 +63,7 @@
                                                     <td><?php echo e($row->get_from_warehouse_name->storage_location_name); ?> / <?php echo e($row->get_from_bin_name->get_bin->name??''); ?></td>
                                                     <td><?php echo e($row->get_to_warehouse_name->storage_location_name); ?> / <?php echo e($row->get_to_bin_name->get_bin->name??''); ?></td>
                                                     <td><?php echo e($row->sku); ?></td>
-                                                    <td><?php echo e($row->batch); ?></td>
+                                                    <td><?php echo e($row->item_name); ?></td>
                                                     <td><?php echo e($row->item_code); ?></td>
                                                     <td><?php echo e($row->from_qty); ?></td>
                                                     <td><?php echo e($row->qty); ?></td>

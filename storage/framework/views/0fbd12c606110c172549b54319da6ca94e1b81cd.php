@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Create Goods Receipt'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -139,7 +140,7 @@
 
 
 
-                                                                            <td><?php echo e(Form::number('old_invoice_items[' . $i . '][item_code]', null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true])); ?>
+                                                                            <td><?php echo e(Form::text('old_invoice_items[' . $i . '][item_code]', null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true])); ?>
 
                                                                             </td>
 

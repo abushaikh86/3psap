@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'View Goods Service Receipts'); ?>
 
 <?php $__env->startSection('content'); ?>

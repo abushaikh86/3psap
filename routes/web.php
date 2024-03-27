@@ -413,6 +413,9 @@ Route::prefix('admin')->group(function () {
         Route::post('/master/store_combitype/', [MasterDropdownController::class, 'store_combitype'])->name('admin.store_combitype');
         Route::get('/master/getPricingPurchase/', [MasterDropdownController::class, 'getPricingPurchase'])->name('admin.getPricingPurchase');
         Route::get('/master/getPricingSale/', [MasterDropdownController::class, 'getPricingSale'])->name('admin.getPricingSale');
+        Route::get('/master/get_categories/', [MasterDropdownController::class, 'get_categories'])->name('admin.get_categories');
+        Route::get('/master/get_ar_invoices/', [MasterDropdownController::class, 'get_ar_invoices'])->name('admin.get_ar_invoices');
+        Route::get('/master/send_email/', [MasterDropdownController::class, 'send_email'])->name('admin.send_email');
 
 
         //contact details
@@ -619,6 +622,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/orderbooking/store', [OrderbookingController::class, 'store'])->name('admin.orderbooking.store');
         Route::get('/orderbooking/edit/{id}', [OrderbookingController::class, 'edit'])->name('admin.orderbooking.edit');
         Route::get('/orderbooking/view/{id}', [OrderbookingController::class, 'show'])->name('admin.orderbooking.view');
+        Route::get('/orderbooking/plist/{id}', [OrderbookingController::class, 'plist'])->name('admin.orderbooking.plist');
         Route::post('/orderbooking/update', [OrderbookingController::class, 'update'])->name('admin.orderbooking.update');
         Route::get('/orderbooking/delete/{id}', [OrderbookingController::class, 'destroy'])->name('admin.orderbooking.delete');
         Route::get('/orderbooking/amountinwords/{number}', [OrderbookingController::class, 'amountinwords'])->name('admin.orderbooking.amountinwords');

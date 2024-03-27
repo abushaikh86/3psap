@@ -1,6 +1,15 @@
+
 <?php $__env->startSection('title', 'Edit PurchaseOrder'); ?>
 
 <?php $__env->startSection('content'); ?>
+<?php
+use App\Models\backend\BussinessPartnerMaster;
+use App\Models\backend\Company;
+
+$bp_master = BussinessPartnerMaster::where('business_partner_id',$model->party_id)->first();
+$company = Company::where('company_id',$bp_master->company_id)->first();
+?>
+
 <div class="content-header row">
     <div class="content-header-left col-md-6 col-12 mb-2">
         <h3 class="content-header-title">Purchase Order</h3>
@@ -191,14 +200,12 @@
                                             'class' => 'form-control status',
                                             'placeholder' => 'Select Status',
                                             'required' => true,
+                                            'readonly' => true,
                                             ])); ?>
 
                                         </div>
 
-                                        <?php
-                                        use App\Models\backend\Company;
-                                        $company = Company::where('company_id', session('company_id'))->first();
-                                        ?>
+                                      
                                         <?php if(isset($company) && $company->is_backdated_date): ?>
                                         <div class="form-group">
                                             <?php echo e(Form::label('bill_date', 'Date *')); ?>
@@ -298,7 +305,25 @@
                                                                         <?php echo e(Form::label('hsn_sac', 'HSN/SAC')); ?>
 
                                                                     </td>
-                                                                    <td><?php echo e(Form::label('qty', 'Quantity')); ?></td>
+                                                                    <td class="adjust_col">
+                                                                        <?php echo e(Form::label('uom', 'UOM',['style'=>'display: flex;justify-content: center;'])); ?>
+
+                                                                        <?php echo e(Form::select('uom',
+                                                                        ['units'=>'Units','case'=>'Case'],
+                                                                        $model->purchaseorder_items[0]->uom,
+                                                                        [
+                                                                            'class' => 'form-control uom',
+                                                                            'data-name' => 'uom',
+                                                                            'data-group' => 'invoice_items',
+                                                                        ])); ?>
+
+                                                                    </td>
+                                                                    <td><?php echo e(Form::label('qty', 'Quantity',['id'=>'qty_label'])); ?>
+
+                                                                    </td>
+                                                                    <td><?php echo e(Form::label('final_qty', 'Quantity (Units)')); ?>
+
+                                                                    </td>
                                                                     <td><?php echo e(Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
@@ -336,6 +361,11 @@
                                                                 <tr data-repeater-item class="item_row item-content"
                                                                     id="old_row_<?php echo e($loop->index); ?>">
 
+                                                                    <?php echo e(Form::hidden('old_invoice_items[' . $loop->index .'][unit_pack]',$items->get_product[0]->dimensions_unit_pack??null, ['data-group' => 'old_invoice_items'])); ?>
+
+                                                                    <?php echo e(Form::hidden('old_invoice_items[' . $loop->index .'][pack_case]',$items->get_product[0]->unit_case??null, ['data-group' => 'old_invoice_items'])); ?>
+
+                                                                    
                                                                     <?php echo e(Form::hidden(
                                                                     'old_invoice_items[' . $loop->index .
                                                                     '][purchase_order_item_id]',
@@ -348,8 +378,6 @@
                                                                     'autocomplete' => 'off',
                                                                     ],
                                                                     )); ?>
-
-
 
 
 
@@ -390,7 +418,7 @@
 
 
 
-                                                                    <td><?php echo e(Form::number('old_invoice_items[' .
+                                                                    <td><?php echo e(Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -419,6 +447,21 @@
                                                                         ])); ?>
 
                                                                     </td>
+
+                                                                    <td>
+                                                                        <?php echo e(Form::text('old_invoice_items[' .
+                                                                            $loop->index . '][uom]',
+                                                                            $items->uom,
+                                                                            [
+                                                                                'class' => 'form-control uom_field',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'uom',
+                                                                                'data-group' => 'old_invoice_items',
+                                                                                'readonly' => true,
+                                                                            ])); ?>
+
+                                                                    </td>
+
                                                                     <td>
                                                                         <?php echo e(Form::number('old_invoice_items[' .
                                                                         $loop->index . '][qty]', $items->qty, [
@@ -430,6 +473,19 @@
                                                                         ])); ?>
 
                                                                     </td>
+
+                                                                    <td>
+                                                                        <?php echo e(Form::number('old_invoice_items[' .
+                                                                        $loop->index . '][final_qty]', $items->final_qty, [
+                                                                        'class' => 'form-control final_qty',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'final_qty',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'readonly' => true,
+                                                                        ])); ?>
+
+                                                                    </td>
+                                                                    
                                                                     <td>
                                                                         <?php echo e(Form::number('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',
@@ -845,6 +901,8 @@
 
             $('.add_btn_rep').click(function() {
                 get_invoice_itemnames();
+                var lastIndex = $('.repeater tbody tr').length - 1;
+                $("input[name='old_invoice_items[" + lastIndex + "][uom]']").val($("input[name='old_invoice_items[0][uom]']").val());
             });
 
 

@@ -113,10 +113,10 @@ class PricingsController extends Controller
         if ($request->ajax()) {
             return DataTables::of($products)
                 ->addIndexColumn()
-                ->addColumn('brand.brand_name', fn ($row) => $row->brand->brand_name)
-                ->addColumn('category.category_name', fn ($row) => $row->category->category_name)
-                ->addColumn('sub_category.subcategory_name', fn ($row) => $row->sub_category->subcategory_name)
-                ->addColumn('variants.name', fn ($row) => $row->variants->name)
+                ->addColumn('brand.brand_name', fn ($row) => $row->brand->brand_name??'')
+                ->addColumn('category.category_name', fn ($row) => $row->category->category_name??'')
+                ->addColumn('sub_category.subcategory_name', fn ($row) => $row->sub_category->subcategory_name??'')
+                ->addColumn('variants.name', fn ($row) => $row->variants->name??'')
                 ->addColumn('selling_price', function ($row) use ($id) {
                     $pricing_item = PricingItem::where(['sku' => $row->sku, 'item_code' => $row->item_code, 'pricing_master_id' => $id])->first();
                     return $pricing_item->selling_price ?? 0;

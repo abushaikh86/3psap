@@ -64,6 +64,10 @@ class OrderbookingController extends Controller
         ->addIndexColumn()
         ->addColumn('action', function ($purchaseorder) {
           $actionBtn = '<div id="action_buttons">';
+
+          $actionBtn .= '<a href="' . route('admin.orderbooking.plist', ['id' => $purchaseorder->order_booking_id]) . '"
+          class="btn btn-sm btn-secondary mr-1" title="Pick List"> P </a></div>';
+
           if (request()->user()->can('View Sales Order')) {
             $actionBtn .= '<a href="' . route('admin.orderbooking.view', ['id' => $purchaseorder->order_booking_id]) . '"
               class="btn btn-sm btn-primary" title="View"><i class="feather icon-eye"></i></a> ';
@@ -85,6 +89,7 @@ class OrderbookingController extends Controller
               class="btn btn-sm btn-danger" title="Delete" id="delete_btn" onclick="return confirm(`Are you sure you want to Delete this Entry ?`)">
               <i class="feather icon-trash"></i></a></div>';
           }
+
           return $actionBtn;
         })
 
@@ -94,6 +99,22 @@ class OrderbookingController extends Controller
     return view('backend.orderbooking.index');
   }
 
+  public function plist($id)
+  {
+    $GLOBALS['breadcrumb'] = [['name' => 'Sales Order', 'route' => "admin.orderbooking"], ['name' => 'View', 'route' => ""]];
+    $roles = Role::pluck('name', 'id')->all();
+    $purchaseorder = OrderBooking::where('order_booking_id', $id)->with('purchaseorder_items')->with('get_bill_toaddress')->with('get_ship_toaddress')->first();
+    $party = BussinessPartnerMaster::where('business_partner_id', $purchaseorder->party_id)->first();
+    $bank_details = BussinessPartnerBankingDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
+    $bill_address = BussinessPartnerAddress::where(['bussiness_partner_id' => $purchaseorder->party_id, 'address_type' => 'Bill-To/ Bill-From'])->first();
+    $ship_address = BussinessPartnerAddress::where(['bussiness_partner_id' => $purchaseorder->party_id, 'address_type' => 'Ship-To/ Ship-From'])->first();
+    $contact = BussinessPartnerContactDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
+    $bank_details = BussinessPartnerBankingDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
+    $invoice = $purchaseorder;
+    // dd($invoice->toArray());
+
+    return view('backend.orderbooking.show_plist', compact('roles', 'bill_address', 'ship_address', 'bank_details', 'purchaseorder', 'party', 'invoice'));
+  }
   /**
    * Show the form for creating a new resource.
    *
@@ -154,10 +175,14 @@ class OrderbookingController extends Controller
     $purchaseorder = OrderBooking::where('order_booking_id', $id)->with('purchaseorder_items')->with('get_bill_toaddress')->with('get_ship_toaddress')->first();
     $party = BussinessPartnerMaster::where('business_partner_id', $purchaseorder->party_id)->first();
     $bank_details = BussinessPartnerBankingDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
+    $bill_address = BussinessPartnerAddress::where(['bussiness_partner_id' => $purchaseorder->party_id, 'address_type' => 'Bill-To/ Bill-From'])->first();
+    $ship_address = BussinessPartnerAddress::where(['bussiness_partner_id' => $purchaseorder->party_id, 'address_type' => 'Ship-To/ Ship-From'])->first();
+    $contact = BussinessPartnerContactDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
+    $bank_details = BussinessPartnerBankingDetails::where('bussiness_partner_id', $purchaseorder->party_id)->first();
     $invoice = $purchaseorder;
     // dd($invoice->toArray());
 
-    return view('backend.orderbooking.show', compact('roles', 'bank_details', 'purchaseorder', 'party', 'invoice'));
+    return view('backend.orderbooking.show', compact('roles', 'bill_address', 'ship_address', 'bank_details', 'purchaseorder', 'party', 'invoice'));
   }
 
   public function creategr($id)
@@ -287,6 +312,14 @@ class OrderbookingController extends Controller
     $purchaseorder->company_id = $bp_master->company_id;
     $purchaseorder->created_by = Auth()->guard('admin')->user()->admin_user_id;
 
+    //get current module and get module id from modules table
+    $routeName = Route::currentRouteName();
+    $moduleName = explode('.', $routeName)[1] ?? null;
+    $series_no = get_series_number($moduleName, $bp_master->company_id);
+    if (empty($series_no)) {
+      return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
+    }
+
     if ($purchaseorder->save()) {
       // dd($purchaseorder->toArray());
       $sub_total = $cgst_total = $sgst_utgst_total = $igst_total = $gst_grand_total = $grand_total = 0;
@@ -298,7 +331,7 @@ class OrderbookingController extends Controller
         $purchase_order_id = $purchaseorder->order_booking_id;
         $total_inr = 0;
         foreach ($purchaseorder_items as $item) {
-          $total_inr += $item['total'];
+          $total_inr += isset($item['total']) ? $item['total'] : 0;
           $purchaseorder_item = new OrderBookingItems();
           $sku = Products::where('item_code', $item['item_code'])->first();
           $purchaseorder_item->sku = $sku->sku ?? '';
@@ -350,13 +383,7 @@ class OrderbookingController extends Controller
         OrderBooking::where('order_booking_id', $purchaseorder->order_booking_id)->update(['sub_total' => $sub_total, 'cgst_total' => $cgst_total, 'sgst_utgst_total' => $sgst_utgst_total, 'igst_total' => $igst_total, 'gst_grand_total' => $gst_grand_total, 'grand_total' => $final_amt, 'amount_in_words' => $amount_in_words, 'gst_rate' => $gst_rate, 'tax_in_words' => $tax_in_words]);
       }
 
-      //get current module and get module id from modules table
-      $routeName = Route::currentRouteName();
-      $moduleName = explode('.', $routeName)[1] ?? null;
-      $series_no = get_series_number($moduleName, $bp_master->company_id);
-      if (empty($series_no)) {
-        return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
-      }
+
 
       // set counter
       $financial_year = Financialyear::where(['year' => $Financialyear])->first();

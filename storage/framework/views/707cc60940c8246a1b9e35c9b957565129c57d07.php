@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Roles'); ?>
 <?php $__env->startSection('content'); ?>
     <?php
@@ -40,7 +41,7 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Parent Role</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -101,4 +102,7 @@
 
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('scripts'); ?>
+<?php echo $__env->make('backend.export_pagination_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/roles/index.blade.php ENDPATH**/ ?>

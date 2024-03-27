@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Business Partner'); ?>
 <?php
     use Spatie\Permission\Models\Role;
@@ -11,8 +12,14 @@
     //dd($ase_dep);
     $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
     $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
+
+    $dep = Role::where('id',Auth()->guard('admin')->user()->role)->first();
+    $pricing_access = [1,2,5,11];
+    // dd($dep->department_id);
 ?>
 <?php $__env->startSection('content'); ?>
+<link rel="stylesheet" type="text/css"
+    href="<?php echo e(asset('public/backend-assets/css/jquery.multi-emails.css')); ?>">
 
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -67,6 +74,22 @@
                                         </div>
                                     </div>
 
+                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                    <?php if(Auth()->guard('admin')->user()->role != 41): ?>
+                                    <div class="col-md-6 col-12 company_drp">
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('company_id', 'Distributor *')); ?>
+
+                                            <?php echo e(Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',])); ?>
+
+                                        </div>
+                                    </div>
+                                    <?php else: ?> 
+                                    <?php echo e(Form::hidden('company_id', Auth()->guard('admin')->user()->company_id ?? '', ['id' => 'company_id'])); ?>
+
+
+                                    <?php endif; ?>
+
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
@@ -108,7 +131,7 @@
                                     </div>
 
 
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12 d-none bp_channel">
                                         <div class="form-label-group">
                                             
                                             <?php echo e(Form::label('bp_channel', 'Business Partner Channel *')); ?>
@@ -126,7 +149,7 @@
                                         <div class="form-label-group">
                                             <?php echo e(Form::label('bp_category', 'Business Partner Category *')); ?>
 
-                                            <?php echo e(Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), null,
+                                            <?php echo e(Form::select('bp_category', [], null,
                                             [
                                             'class' => 'form-control',
                                             'placeholder' => 'Select Business Partner Category',
@@ -136,7 +159,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12 d-none bp_group">
                                         <div class="form-label-group">
                                             <?php echo e(Form::label('bp_group', 'Business Partner group *')); ?>
 
@@ -155,11 +178,11 @@
                                     <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('sales_manager', 'ASM *')); ?>
+                                            <?php echo e(Form::label('sales_manager', 'KAM *')); ?>
 
                                             <?php echo e(Form::select('sales_manager', $sales_manager, null, [
                                                 'class' => 'form-control select2',
-                                                'placeholder' => 'ASM',
+                                                'placeholder' => 'KAM',
                                             ])); ?>
 
                                         </div>
@@ -169,11 +192,11 @@
                                     <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('ase', 'ASE *')); ?>
+                                            <?php echo e(Form::label('ase', 'RKE *')); ?>
 
                                             <?php echo e(Form::select('ase', [], null, [
                                                 'class' => 'form-control select2',
-                                                'placeholder' => 'ASE',
+                                                'placeholder' => 'RKE',
                                             ])); ?>
 
                                         </div>
@@ -230,7 +253,7 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            <?php echo e(Form::label('gst_details', 'GST Number *')); ?>
+                                            <?php echo e(Form::label('gst_details', 'GST Number')); ?>
 
                                             <?php echo e(Form::text('gst_details', null, [
                                                 'class' => 'form-control',
@@ -263,17 +286,7 @@
                                     </div>
 
 
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-label-group">
-                                            <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
-
-                                            <?php echo e(Form::select('pricing_profile', [], null, [
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Select Pricing Profile',
-                                            ])); ?>
-
-                                        </div>
-                                    </div>
+              
 
                                     <div class="col-md-6 col-12 d-none shelf_left">
                                         <div class="form-label-group">
@@ -292,19 +305,22 @@
 
                                         </div>
                                     </div>
-                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
-                                    <?php if(Auth()->guard('admin')->user()->role != 41): ?>
-                                    <div class="col-md-6 col-12 company_drp">
-                                        <div class="form-group">
-                                            <?php echo e(Form::label('company_id', 'Distributor *')); ?>
 
-                                            <?php echo e(Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',])); ?>
+
+                            
+
+                                    <?php if(in_array($dep->department_id,$pricing_access)): ?>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-label-group">
+                                            <?php echo e(Form::label('pricing_profile', 'Pricing Profile')); ?>
+
+                                            <?php echo e(Form::select('pricing_profile', [], null, [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Select Pricing Profile',
+                                            ])); ?>
 
                                         </div>
                                     </div>
-                                    <?php else: ?> 
-                                        <?php echo e(Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')); ?>
-
                                     <?php endif; ?>
 
                                     <hr>
@@ -336,6 +352,19 @@
 
                                                     <h4>Bill-To/ Bill-From</h4>
                                                 </div>
+                                                <div class=" col-12">
+                                                    <div class="form-label-group">
+                                                        <?php echo e(Form::label('gst_no', 'GST Number ')); ?>
+
+                                                        <?php echo e(Form::text('gst_no', null, [
+                                                            'class' => 'form-control',
+                                                            'placeholder' => 'GST Number',
+                                                            'required' => true,
+                                                        ])); ?>
+
+                                                    </div>
+                                                </div>
+
                                                 <div class=" col-12">
                                                     <div class="form-label-group">
                                                         <?php echo e(Form::label('bp_address_name', 'Address Name ')); ?>
@@ -452,6 +481,19 @@
 
                                                     <h4>Ship-To/ Ship-From</h4>
 
+                                                </div>
+
+                                                <div class=" col-12">
+                                                    <div class="form-label-group">
+                                                        <?php echo e(Form::label('gst_no1', 'GST Number ')); ?>
+
+                                                        <?php echo e(Form::text('gst_no1', null, [
+                                                            'class' => 'form-control',
+                                                            'placeholder' => 'GST Number',
+                                                            'required' => true,
+                                                        ])); ?>
+
+                                                    </div>
                                                 </div>
 
                                                 <div class=" col-12">
@@ -714,7 +756,6 @@
                                                 <?php echo e(Form::text('acc_holdername', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Account Holder Name',
-                                                    'required' => true,
                                                 ])); ?>
 
                                             </div>
@@ -724,7 +765,7 @@
                                             <div class="form-label-group">
                                                 <?php echo e(Form::label('bank_name', 'Bank Name')); ?>
 
-                                                <?php echo e(Form::text('bank_name', null, ['class' => 'form-control', 'placeholder' => 'Bank Name', 'required' => true])); ?>
+                                                <?php echo e(Form::text('bank_name', null, ['class' => 'form-control', 'placeholder' => 'Bank Name'])); ?>
 
                                             </div>
                                         </div>
@@ -736,7 +777,6 @@
                                                 <?php echo e(Form::text('bank_branch', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Branch Name',
-                                                    'required' => true,
                                                 ])); ?>
 
                                             </div>
@@ -750,7 +790,6 @@
                                                     'class' => 'form-control',
                                                     'maxlength' => '15',
                                                     'placeholder' => 'IFSC Code',
-                                                    'required' => true,
                                                 ])); ?>
 
                                             </div>
@@ -763,7 +802,6 @@
                                                 <?php echo e(Form::text('ac_number', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Account No',
-                                                    'required' => true,
                                                 ])); ?>
 
                                             </div>
@@ -776,7 +814,6 @@
                                                 <?php echo e(Form::text('bank_address', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Bank Address',
-                                                    'required' => true,
                                                 ])); ?>
 
                                             </div>
@@ -800,6 +837,7 @@
                                                 <?php echo e(Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), null, [
                                                     'class' => 'form-control select2',
                                                     'placeholder' => 'Select Beat',
+                                                    'required'=>true,
                                                 ])); ?>
 
 
@@ -1371,16 +1409,19 @@
             </div>
         </div>
     </div>
+    <?php $__env->stopSection(); ?>
 
+    <?php $__env->startSection('scripts'); ?>
 
     <script src="<?php echo e(asset('public/backend-assets/js/MasterHandler.js')); ?>"></script>
     <script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
+    <script src="<?php echo e(asset('public/backend-assets/js/jquery.multi-emails.js')); ?>"></script>
 
 
     
     <script>
         function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
-            console.log(route,id,selectedValue,append_id);
+            // console.log(route,id,selectedValue,append_id);
             var id = id;
             if(parent_id != null){
                 id = parent_id;
@@ -1410,6 +1451,10 @@
         } 
 
         $(document).ready(function() {
+
+              $("#email_id").multiEmails();
+              $("#email_id1").multiEmails();
+            
 
             // usama_15-03-2024-fetch bp-group from channel
             $('#bp_channel').change(function() {
@@ -1572,19 +1617,58 @@
         $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
 
-            if (bptype == 'Customer') {
-                $('.sm_dynamic').removeClass('d-none');
-                $('.shelf_left').removeClass('d-none');
-                $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile');
-            } else {
-                $('.sm_dynamic').addClass('d-none');
-                $('.shelf_left').addClass('d-none');
-                $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile');
+            // if retails then remove requires attr from gst number
+            $('#bp_category').change(function() {
+                if($(this).val() == 2){
+                    $('#gst_details').removeAttr('required');
+                }else{
+                    $('#gst_details').attr('required', true);
+                }
+            });
+
+            $('#business_partner_type').change(function() {
+                // fetch categories dynamic
+                new DynamicDropdown('<?php echo e(route('admin.get_categories')); ?>',
+                    $(this).val(), '#bp_category');
+            });
+
+            if($('#company_id').val()){
+                if ($('#business_partner_type').val() ) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>', $('#company_id').val(), '#pricing_profile');
+                    } else {
+                        hideElements();
+                        new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>', $('#company_id').val(), '#pricing_profile');
+                    }
+                }
             }
+
+        $('#company_id, #business_partner_type').change(function() {
+
+            if ($('#business_partner_type').val() ) {
+                if ($('#business_partner_type').val() == 1) {
+                    showElements();
+                    new DynamicDropdown('<?php echo e(route('admin.getPricingSale')); ?>', $('#company_id').val(), '#pricing_profile');
+                } else {
+                    hideElements();
+                    new DynamicDropdown('<?php echo e(route('admin.getPricingPurchase')); ?>', $('#company_id').val(), '#pricing_profile');
+                }
+            }
+        });
+
+        function showElements() {
+            $('.sm_dynamic, .shelf_left, .beat_det').removeClass('d-none');
+            $('.bp_group, .bp_channel').removeClass('d-none');
+            $('#bp_group,#bp_channel,#beat_id').attr('required', true);
+        }
+
+        function hideElements() {
+            $('.sm_dynamic, .shelf_left, .beat_det').addClass('d-none');
+            $('.bp_group, .bp_channel').addClass('d-none');
+            $('#bp_group,#bp_channel,#beat_id').removeAttr('required');
+        }
+
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();
             if (terms_of_payment == 'On Credit') {
@@ -1597,22 +1681,22 @@
 
         });
 
-        $('#business_partner_type').on('change', function() {
-            var bptype = $(this).find('option:selected').text().trim();
-            if (bptype == 'Customer') {
-                $('.sm_dynamic').removeClass('d-none');
-                $('.shelf_left').removeClass('d-none');
-                $('.beat_det').removeClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'sale', '#pricing_profile');
-            } else {
-                $('.sm_dynamic').addClass('d-none');
-                $('.shelf_left').addClass('d-none');
-                $('.beat_det').addClass('d-none');
-                new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
-                    'purchase', '#pricing_profile');
-            }
-        });
+        // $('#business_partner_type').on('change', function() {
+        //     var bptype = $(this).find('option:selected').text().trim();
+        //     if (bptype == 'Customer') {
+        //         $('.sm_dynamic').removeClass('d-none');
+        //         $('.shelf_left').removeClass('d-none');
+        //         $('.beat_det').removeClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'sale', '#pricing_profile');
+        //     } else {
+        //         $('.sm_dynamic').addClass('d-none');
+        //         $('.shelf_left').addClass('d-none');
+        //         $('.beat_det').addClass('d-none');
+        //         new DynamicDropdown('<?php echo e(route('admin.getPricing')); ?>',
+        //             'purchase', '#pricing_profile');
+        //     }
+        // });
 
         $('#payment_terms_id').on('change', function() {
             var terms_of_payment = $(this).find('option:selected').text().trim();

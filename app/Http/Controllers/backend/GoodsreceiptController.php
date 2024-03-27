@@ -84,7 +84,7 @@ class GoodsreceiptController extends Controller
 
 
                 if (!empty($sk_inventory_available)) {
-                    $batch_no = $sk_inventory_available->sku;
+                    $batch_no = $sk_inventory_available->batch_no;
                 } else {
                     DB::table('def_bacth_no_counter')->increment('counter');
                     $counterValue = DB::table('def_bacth_no_counter')->value('counter');

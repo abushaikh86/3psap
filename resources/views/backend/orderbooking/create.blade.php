@@ -142,19 +142,19 @@
                                                         {{ Form::text('temp_sales_order_no', $latestSoRecordNumber, [
                                                         'class' => 'form-control
                                                         temp_sales_order_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        // 'placeholder' => 'Customer OB Refrence Number',
                                                         'disabled' => true,
                                                         ]) }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        {{ Form::label('customer_ref_no', 'Customer OB Refrence Number
+                                                        {{ Form::label('customer_ref_no', 'Customer Refrence Number
                                                         *') }}
                                                         {{ Form::text('customer_ref_no', null, [
                                                         'class' => 'form-control
                                                         customer_ref_no',
-                                                        'placeholder' => 'Customer OB Refrence Number',
+                                                        'placeholder' => 'Customer Refrence Number',
                                                         'required' => true,
                                                         ]) }}
                                                     </div>
@@ -310,10 +310,13 @@
                                                                             </td>
                                                                             <td>{{ Form::label('qty', 'Quantity') }}
                                                                             </td>
+                                                                            {{-- <td>{{ Form::label('mrp', 'MRP') }}
+                                                                            </td> --}}
                                                                             <td>{{ Form::label('taxable_amount', 'Unit
                                                                                 Price') }}
                                                                             </td>
-
+                                                                            <td>{{ Form::label('total', 'Total INR') }}
+                                                                            </td>
 
                                                                             <td class="adjust_col">
                                                                                 {{ Form::label('GST', 'GST (%)') }}
@@ -325,10 +328,9 @@
                                                                             <td>{{ Form::label('IGST', 'IGST (%)') }}
                                                                             </td>
 
-                                                                            <td>{{ Form::label('Amount', 'GST Amount')
-                                                                                }}
+                                                                            <td>{{ Form::label('Amount', 'GST Amount')}}
                                                                             </td>
-                                                                            <td>{{ Form::label('total', 'Total INR') }}
+                                                                            <td>{{ Form::label('gross_total','GrossTotal') }}
                                                                             </td>
                                                                             <td>{{ Form::label('storage_location_id',
                                                                                 'From Warehouse') }}
@@ -442,10 +444,11 @@
                                                                             'readonly' => true,
                                                                             ]) }}
 
-                                                                            <td>{{ Form::number('item_code',
+                                                                            <td>{{ Form::text('item_code',
                                                                                 old('invoice_items')[$i]['item_code'] ??
                                                                                 null, [
                                                                                 'data-id' => 'item_code',
+                                                                                'data-name' => 'item_code',
                                                                                 'id' => 'auto_product_' . $i,
                                                                                 'class' => 'form-control item_code
                                                                                 typeahead',
@@ -486,6 +489,17 @@
                                                                                 'required' => true,
                                                                                 ]) }}
                                                                             </td>
+                                                                            {{-- <td> {{ Form::number('mrp',
+                                                                                old('invoice_items')[$i]['mrp'] ?? null,
+                                                                                [
+                                                                                'class' => 'form-control
+                                                                                mrp',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'mrp',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'readonly' => true,
+                                                                                ]) }}
+                                                                            </td> --}}
                                                                             <td>{{ Form::number('taxable_amount',
                                                                                 old('invoice_items')[$i]['taxable_amount']
                                                                                 ?? null, [
@@ -498,6 +512,20 @@
                                                                                 'required' => true,
                                                                                 ]) }}
                                                                             </td>
+
+                                                                            <td>{{ Form::text('total',
+                                                                                old('invoice_items')[$i]['total'] ??
+                                                                                null, [
+                                                                                'class' => 'form-control
+                                                                                total',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'total',
+                                                                                'data-group' => 'invoice_items',
+                                                                                'required' => true,
+                                                                                'readonly' => true,
+                                                                                ]) }}
+                                                                            </td>
+
                                                                             {{ Form::hidden('discount_item',
                                                                             old('invoice_items')[$i]['discount_item'] ??
                                                                             null, [
@@ -590,18 +618,20 @@
                                                                                 'readonly' => true,
                                                                                 ]) }}
                                                                             </td>
-                                                                            <td>{{ Form::text('total',
-                                                                                old('invoice_items')[$i]['total'] ??
-                                                                                null, [
+
+                                                                            <td>{{ Form::text('gross_total',
+                                                                                old('invoice_items')[$i]['gross_total']
+                                                                                ?? null, [
                                                                                 'class' => 'form-control
-                                                                                total',
+                                                                                gross_total',
                                                                                 'onchange' => 'calculategst(this)',
-                                                                                'data-name' => 'total',
+                                                                                'data-name' => 'gross_total',
                                                                                 'data-group' => 'invoice_items',
                                                                                 'required' => true,
                                                                                 'readonly' => true,
                                                                                 ]) }}
                                                                             </td>
+                                                                           
                                                                             <td style="width: 210px;">
                                                                                 {{ Form::select(
                                                                                 'storage_location_id',

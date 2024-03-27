@@ -44,7 +44,7 @@
                                             <th>#</th>
                                             <th>Warehouse Name</th>
                                             <th>Warehouse Location</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,3 +97,6 @@
 
 @endsection
 
+@section('scripts')
+@include('backend.export_pagination_script')
+@endsection

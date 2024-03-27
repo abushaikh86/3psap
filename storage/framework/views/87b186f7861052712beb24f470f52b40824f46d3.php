@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Purchase Pricelist'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -44,7 +45,9 @@
                                             
                                             <th>Name</th>
                                             <th>Price Data</th>
+                                            <?php if(Auth()->guard('admin')->user()->role != 41): ?>
                                             <th>Action</th>
+                                            <?php endif; ?>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,7 +59,14 @@
                                                     
                                                     <td><?php echo e($pricing->pricing_name); ?></td>
                                                     <td><a href="<?php echo e(route('admin.pricings.setpricing', ['id' => $pricing->pricing_master_id])); ?>"
-                                                            class="btn btn-sm btn-outline-primary">Update</a></td>
+                                                            class="btn btn-sm btn-outline-primary">
+                                                        <?php if(Auth()->guard('admin')->user()->role != 41): ?>
+                                                        Update
+                                                        <?php else: ?>
+                                                        View
+                                                        <?php endif; ?>
+                                                        </a></td>
+                                                    
                                                     <td>
                                                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Update Purchase Pricelist')): ?>
                                                             <a href="<?php echo e(url('admin/pricings/edit/' . $pricing->pricing_master_id)); ?>"

@@ -123,7 +123,7 @@ class SelllingpricingController extends Controller
                 ->make(true);
         }
         $pricing_items = PricingItem::where('pricing_master_id', $id)->get();
-        return view('backend.pricings.setpricing', compact('pricings', 'pricing_items', 'products'));
+        return view('backend.sellingpricing.setpricing', compact('pricings', 'pricing_items', 'products'));
     }
 
     public function updatepricings(Request $request)

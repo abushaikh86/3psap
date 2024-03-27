@@ -21,7 +21,7 @@
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.2",
         "maatwebsite/excel": "^3.1",
-        "phpmailer/phpmailer": "^6.5",
+        "phpmailer/phpmailer": "^6.9",
         "spatie/laravel-permission": "^3.17",
         "spatie/laravel-pjax": "^2.1",
         "spatie/menu": "^2.8",

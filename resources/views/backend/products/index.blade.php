@@ -87,61 +87,24 @@
                                         <th>Description</th>
                                         <th>Brand</th>
                                         <th>Category</th>
-        
+
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @if (isset($products) && count($products) > 0)
-                                    @php $srno = 1; @endphp
-                                    @foreach ($products as $product)
+                                <thead id="search_input">
                                     <tr>
-                                        <td>{{ $srno }}</td>
-                                        <td>
-                                            @if (!empty($product->product_thumb))
-                                            <a href="{{ asset('public/backend-assets/images/') }}/{{ $product->product_thumb }}"
-                                                target="_blank"><img class="card-img-top img-fluid mb-1"
-                                                    src="{{ asset('public/backend-assets/images/') }}/{{ $product->product_thumb }}"
-                                                    alt="Product Image" style="width:50px"></a>
-                                            @endif
-                                        </td>
-                                        </td>
-                                        <!-- <td>{{ isset($product->item_type) ? $product->item_type->item_type_name : '' }}
-                                        </td> -->
-                                        <td>{{ $product->item_code }}</td>
-                                        <td>{{ $product->sku }}</td>
-                                        <td>{{ $product->item_description }}</td>
-                                        <td>{{ isset($product->brand) ? $product->brand->brand_name : '' }}
-                                        </td>
-                                        <td>{{ isset($product->category) ? $product->category->category_name : '' }}
-                                        </td>
-                                   
-                                        <td>
-
-                                            <a href="{{ url('admin/products/edit/' . $product->product_item_id) }}"
-                                                class="btn btn-primary" title="Edit"><i
-                                                    class="feather icon-edit"></i></a>
-
-                                            {!! Form::open([
-                                            'method' => 'GET',
-                                            'url' => ['admin/products/delete', $product->product_item_id],
-                                            'style' => 'display:inline',
-                                            ]) !!}
-                                            {!! Form::button('<i class="feather icon-trash"></i>', [
-                                            'type' => 'submit',
-                                            'title' => 'Delete',
-                                            'class' => 'btn btn-danger',
-                                            'onclick' => "return confirm('Are you sure you want to Delete this Entry
-                                            ?')",
-                                            ]) !!}
-                                            {!! Form::close() !!}
-                                        </td>
+                                        <th></th>
+                                        <th></th>
+                                        <th><input type="text" id="item_code"></th>
+                                        <th><input type="text" id="sku"></th>
+                                        <th><input type="text" id="consumer_desc"></th>
+                                        <th><input type="text" id="brand_id"></th>
+                                        <th><input type="text" id="category_id"></th>
+                                        <th></th>
                                     </tr>
-                                    @php $srno++; @endphp
-                                    @endforeach
-                                    @endif
-                                </tbody>
+                                </thead>
 
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -150,5 +113,87 @@
         </div>
     </div>
 </section>
+@section('scripts')
 
+<script>
+    $(function() {
+            var table = $('#tbl-datatable').DataTable({
+
+                processing: true,
+                serverSide: false,
+                ajax: "{{ route('admin.products') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'product_thumb',
+                        name: 'product_thumb'
+                    },
+                    
+                    {
+                        data: 'item_code',
+                        name: 'item_code'
+                    },
+                    {
+                        data: 'sku',
+                        name: 'sku'
+                    },
+                    {
+                        data: 'consumer_desc',
+                        name: 'consumer_desc'
+                    },
+                    {
+                        data: 'brand_id',
+                        name: 'brand_id'
+                    },
+                    {
+                        data: 'category_id',
+                        name: 'category_id'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: false
+                    }
+                ],
+
+                buttons: [{
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [{
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [0, 2, 3, 4, 5, 6],
+                                modifier: {
+                                    page: 'all',
+                                    search: 'applied'
+                                }
+                            },
+                            title: function() {
+                                var pageTitle = 'PRODUCTS';
+                                return pageTitle
+                            }
+                        },
+                       
+
+                    ]
+                }],
+                dom: 'lBfrtip',
+                select: true
+            });
+
+            function applySearch(columnIndex, value) {
+                table.column(columnIndex).search(value).draw();
+            }
+
+            $('#item_code,#sku, #consumer_desc, #brand_id, #category_id').on('keyup', function() {
+                var columnIndex = $(this).closest('th').index();
+                applySearch(columnIndex, this.value);
+            });
+
+        });
+</script>
+@endsection
 @endsection

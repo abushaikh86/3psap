@@ -1,64 +1,65 @@
+
 <?php $__env->startSection('title', 'Add Sales Return / Credit Note'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php
-        use App\Models\backend\Company;
-        use App\Models\backend\Products;
-    ?>
-    <div class="content-header row">
-        <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title">Add Sales Return / Credit Note</h3>
-            <div class="row breadcrumbs-top">
-                <div class="breadcrumb-wrapper col-12">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">Add Sales Return / Credit Note</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-            <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                <div class="btn-group" role="group">
-                    <a class="btn btn-outline-secondary" href="<?php echo e(route('admin.returninvoice')); ?>">
-                        Back
-                    </a>
-                </div>
+<?php
+use App\Models\backend\Company;
+use App\Models\backend\Products;
+?>
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-2">
+        <h3 class="content-header-title">Add Sales Return / Credit Note</h3>
+        <div class="row breadcrumbs-top">
+            <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Add Sales Return / Credit Note</li>
+                </ol>
             </div>
         </div>
     </div>
+    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
+        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+                <a class="btn btn-outline-secondary" href="<?php echo e(route('admin.returninvoice')); ?>">
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <section id="multiple-column-form">
-        <div class="row match-height">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
 
-                        
-                            <div class="content-header row">
-                                <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                                <?php echo e(Form::model([], ['url' => 'admin/returninvoice/update', 'class' => 'w-100'])); ?>
 
-                                <?php echo e(Form::hidden('bill_to_state', null, ['class' => 'bill_to_state'])); ?>
+                        <div class="content-header row">
+                            <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            <?php echo e(Form::model([], ['url' => 'admin/returninvoice/update', 'class' => 'w-100'])); ?>
 
-                                <?php echo e(Form::hidden('party_state', null, ['class' => 'party_state'])); ?>
+                            <?php echo e(Form::hidden('bill_to_state', null, ['class' => 'bill_to_state'])); ?>
 
-                                <?php echo e(Form::hidden('bill_to_gst_no', null, ['class' => 'bill_to_gst_no'])); ?>
+                            <?php echo e(Form::hidden('party_state', null, ['class' => 'party_state'])); ?>
 
-                                <div class="form-body">
+                            <?php echo e(Form::hidden('bill_to_gst_no', null, ['class' => 'bill_to_gst_no'])); ?>
+
+                            <div class="form-body">
 
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
-                                        <?php echo e(Form::label('bp_id', 'Business Partner')); ?>
+                                            <?php echo e(Form::label('bp_id', 'Business Partner *')); ?>
 
-                                        <?php echo e(Form::select('bp_id', $bp_data, null, [
+                                            <?php echo e(Form::select('bp_id', $bp_data, null, [
                                             'class' => 'form-control select2',
                                             'placeholder' => 'Select Business Partner',
-                                            'required' => true,
+                                            // 'required' => true,
                                             ])); ?>
 
                                         </div>
@@ -84,7 +85,7 @@
                                         <div class="form-group">
                                             <?php echo e(Form::label('inv_no', 'Invoice *')); ?>
 
-                                            <?php echo e(Form::select('inv_no', $invocies, null, [
+                                            <?php echo e(Form::select('inv_no',[], null, [
                                             'class' => 'form-control select2',
                                             'placeholder' => 'Select Invoice',
                                             'required' => true,
@@ -135,132 +136,139 @@
                                         </div>
                                     </div>
                                 </div>
-                                    
-
-                                    <h5 class="text-center">Invoice Items</h5>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-12 mb-3">
-                                            <section id="form-repeater-wrapper">
-                                                <!-- form default repeater -->
-                                                <div class="row">
-                                                    <div class="col-12">
 
 
-                                                        
-                                                        <div class="conatiner-fluid table-responsive repeater">
-                                                         
-                                                            <div class="table-responsive">
-                                                                <table class="table table-bordered " id="repeater"
-                                                                    style="width:100%;">
-                                                                    <thead class="bg-light" style="font-size:10px;">
-                                                                        <tr>
-                                                                            <td>
-                                                                                <?php echo e(Form::label('item_code', 'Item Code')); ?>
+                                <h5 class="text-center">Invoice Items</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3">
+                                        <section id="form-repeater-wrapper">
+                                            <!-- form default repeater -->
+                                            <div class="row">
+                                                <div class="col-12">
 
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo e(Form::label('item_name', 'Item Description')); ?>
 
-                                                                            </td>
-                                                                            <td>
-                                                                                <?php echo e(Form::label('hsn_sac', 'HSN/SAC')); ?>
+                                                    
+                                                    <div class="conatiner-fluid table-responsive repeater">
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('qty', 'Quantity')); ?></td>
-                                                                            <td><?php echo e(Form::label('taxable_amount', 'Unit Price')); ?>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered " id="repeater"
+                                                                style="width:100%;">
+                                                                <thead class="bg-light" style="font-size:10px;">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <?php echo e(Form::label('item_code', 'Item Code')); ?>
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('total', 'Total INR')); ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo e(Form::label('item_name', 'Item
+                                                                            Description')); ?>
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('GST', 'GST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('CGST', 'CGST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('SGST', 'SGST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('IGST', 'IGST (%)')); ?></td>
-                                                                            <td><?php echo e(Form::label('Amount', 'GST Amount')); ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo e(Form::label('hsn_sac', 'HSN/SAC')); ?>
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('gross_total', 'Gross Total')); ?>
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('qty', 'Quantity')); ?></td>
+                                                                        <td><?php echo e(Form::label('taxable_amount', 'Unit
+                                                                            Price')); ?>
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('storage_location_id', 'Warehouse')); ?>
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('total', 'Total INR')); ?>
 
-                                                                            </td>
-                                                                            <td><?php echo e(Form::label('bacth_id', 'Batch Details')); ?>
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('GST', 'GST (%)')); ?></td>
+                                                                        <td><?php echo e(Form::label('CGST', 'CGST (%)')); ?></td>
+                                                                        <td><?php echo e(Form::label('SGST', 'SGST (%)')); ?></td>
+                                                                        <td><?php echo e(Form::label('IGST', 'IGST (%)')); ?></td>
+                                                                        <td><?php echo e(Form::label('Amount', 'GST Amount')); ?>
 
-                                                                            </td>
-                                                                          
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('gross_total', 'Gross Total')); ?>
 
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody data-repeater-list="old_invoice_items">
-                                                                       
-                                                                    </tbody>
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('storage_location_id',
+                                                                            'Warehouse')); ?>
 
-                                                                </table>
-                                                            </div>
+                                                                        </td>
+                                                                        <td><?php echo e(Form::label('bacth_id', 'Batch Details')); ?>
+
+                                                                        </td>
+                                                                        <td></td>
+
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody data-repeater-list="old_invoice_items">
+
+                                                                </tbody>
+
+                                                            </table>
                                                         </div>
-
-
-
                                                     </div>
+
+
+
                                                 </div>
-
-                                            </section>
-
-                                        </div>
-
-
-
-
-                                        <div class="col-sm-12">
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    
-
-                                    <div class="row">
-
-
-                                        <div class="col-md-3 col-sm-3">
-                                            <div class="form-group">
-                                                <?php echo e(Form::label('remarks', 'Remarks')); ?>
-
-                                                <?php echo e(Form::textarea('remarks', null, ['class' => 'form-control remarks', 'placeholder' => 'Remarks', 'style' => 'height:100px;'])); ?>
-
                                             </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6">
-                                        </div>
-                                        
+
+                                        </section>
+
                                     </div>
 
-                                    <div class="col-sm-12 d-flex justify-content-center">
-                                        <?php echo e(Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1', 'id' => 'custom_form'])); ?>
 
-                                        <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+
+
+                                    <div class="col-sm-12">
+                                        <hr>
                                     </div>
-                                    <?php echo e(Form::close()); ?>
+                                </div>
+                                
+
+                                <div class="row">
+
+
+                                    <div class="col-md-3 col-sm-3">
+                                        <div class="form-group">
+                                            <?php echo e(Form::label('remarks', 'Remarks')); ?>
+
+                                            <?php echo e(Form::textarea('remarks', null, ['class' => 'form-control remarks',
+                                            'placeholder' => 'Remarks', 'style' => 'height:100px;'])); ?>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                    </div>
 
                                 </div>
+
+                                <div class="col-sm-12 d-flex justify-content-center">
+                                    <?php echo e(Form::submit('Save', ['class' => 'btn btn-primary mr-1 mb-1', 'id' =>
+                                    'custom_form'])); ?>
+
+                                    <button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>
+                                </div>
+                                <?php echo e(Form::close()); ?>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
     </div>
-    </div>
+</section>
+</div>
+</div>
 
-    <?php echo $__env->make('backend.autocomplete_typeahead_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('backend.autocomplete_typeahead_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<script src="<?php echo e(asset('public/backend-assets/js/DynamicDropdown.js')); ?>"></script>
 
 
 
 
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
 
             // usama_13-03-2024-fetch inv items
             $('#inv_no').change(function() {
@@ -270,31 +278,46 @@
                     var data = $.parseJSON(response);
                     var invoice_data = data.inv_data;
                     var invoice_items = data.inv_items;
-                    // console.log(invoice_data);
                     $('tbody[data-repeater-list="old_invoice_items"]').empty();
                     $.each(invoice_items, function(index, item) {
-                    var newRow = '<tr data-repeater-item class="item_row item-content">';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][item_code]" value="' + item.item_code + '" class="form-control item_code typeahead readonly"  readonly></td>';
-                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][item_name]" value="' + item.item_name + '" class="form-control item_name typeahead readonly"  readonly></td>';
-                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][hsn_sac]" value="' + item.hsn_sac + '" class="form-control readonly"  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][qty]" value="' + item.qty + '" class="form-control qty" required></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][taxable_amount]" value="' + item.taxable_amount + '" class="form-control taxable_amount readonly" required readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][total]" value="' + item.total + '" class="form-control total readonly"  readonly></td>';
+                        // console.log(item);
+                    var newRow = '<tr data-repeater-item class="item_row item-content" id="old_row_'+index+'">';
+                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][item_code]" value="' + item.item_code + '" class="form-control item_code typeahead " data-name = "item_code"  readonly></td>';
+                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][item_name]" value="' + item.item_name + '" class="form-control item_name typeahead " data-name = "item_name"  readonly></td>';
+                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][hsn_sac]" value="' + item.hsn_sac + '" class="form-control "  readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][qty]" value="' + item.qty + '" class="form-control qty" oninput = "validateInputZero(this)" onchange="calculategst(this)" , data-name = "qty", data-group = "old_invoice_items" required></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][taxable_amount]" value="' + item.taxable_amount + '" class="form-control taxable_amount " onchange="calculategst(this)" , data-name = "taxable_amount", data-group = "old_invoice_items"  readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][total]" value="' + item.total + '" class="form-control total " onchange="calculategst(this)" , data-name = "total", data-group = "old_invoice_items"  readonly></td>';                    
+                    // hidden fields
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][cgst_amount]" value="' + item.cgst_amount + '" class="form-control cgst_amount typeahead" onchange="calculategst(this)" , data-name = "cgst_amount", data-group = "old_invoice_items"  readonly></td>';
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][sgst_utgst_amount]" value="' + item.sgst_utgst_amount + '" class="form-control sgst_utgst_amount typeahead" onchange="calculategst(this)" , data-name = "sgst_utgst_amount", data-group = "old_invoice_items"  readonly></td>';
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][igst_amount]" value="' + item.igst_amount + '" class="form-control igst_amount typeahead" onchange="calculategst(this)" , data-name = "igst_amount", data-group = "old_invoice_items"  readonly></td>';
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][sku]" value="' + item.sku + '" class="form-control sku typeahead" , data-name = "sku", data-group = "old_invoice_items"  readonly></td>';
+
+                    var gst_rate= item.gst_rate??''; 
+                    var gstData = <?php echo $encoded_gst; ?>;
+                    newRow += '<td><input type="text" name="gst" value="'+gstData[gst_rate]+'" class="form-control" readonly></td>';
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][gst_rate]" value="'+gst_rate+'" class="form-control gst_rate" onchange="calculategst(this)" , data-name = "gst_rate", data-group = "old_invoice_items" readonly></td>';
                     
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][gst_rate]" value="' + item.gst_rate + '" class="form-control gst_rate "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][cgst_rate]" value="' + item.cgst_rate + '" class="form-control cgst_rate "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][sgst_utgst_rate]" value="' + item.sgst_utgst_rate + '" class="form-control sgst_utgst_rate "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][igst_rate]" value="' + item.igst_rate + '" class="form-control igst_rate "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][gst_amount]" value="' + item.gst_amount + '" class="form-control gst_amount "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][gross_total]" value="' + item.gross_total + '" class="form-control gross_total "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][storage_location_id]" value="' + item.storage_location_id + '" class="form-control storage_location_id "  readonly></td>';
-                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][batch_no]" value="' + item.batch_no + '" class="form-control batch_no "  readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][cgst_rate]" value="' + item.cgst_rate + '" class="form-control cgst_rate " onchange="calculategst(this)" , data-name = "cgst_rate", data-group = "old_invoice_items" readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][sgst_utgst_rate]" value="' + item.sgst_utgst_rate + '" class="form-control sgst_utgst_rate " onchange="calculategst(this)" , data-name = "sgst_utgst_rate", data-group = "old_invoice_items" readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][igst_rate]" value="' + item.igst_rate + '" class="form-control igst_rate " onchange="calculategst(this)" , data-name = "igst_rate", data-group = "old_invoice_items" readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][gst_amount]" value="' + item.gst_amount + '" class="form-control gst_amount "  onchange="calculategst(this)" , data-name = "gst_amount", data-group = "old_invoice_items" readonly></td>';
+                    newRow += '<td><input type="number" name="old_invoice_items[' + index + '][gross_total]" value="' + item.gross_total + '" class="form-control gross_total "  onchange="calculategst(this)" , data-name = "gross_total", data-group = "old_invoice_items" readonly></td>';
+                    
+                    var wh_id= item.storage_location_id??''; 
+                    var whData = <?php echo $encoded_wh; ?>;
+                    newRow += '<td><input type="text" name="storage" value="' + whData[wh_id] + '" class="form-control "  readonly></td>';
+                    newRow += '<td class="d-none"><input type="hidden" name="old_invoice_items[' + index + '][storage_location_id]" value="' + wh_id + '" class="form-control storage_location_id "  readonly></td>';
+                    
+                    newRow += '<td><input type="text" name="old_invoice_items[' + index + '][batch_no]" value="' + item.batch_no + '" class="form-control batch_no "  readonly></td>';
                     // Add more columns as needed
+                    newRow += `<td><button type='button' class='btn btn-danger btn-flat btn-xs old_rep_item_del' data-repeater-delete><i class='fa fa-fw fa-remove'></i></button> </td>`;
 
                     // Append the new row to the tbody
                     $('tbody[data-repeater-list="old_invoice_items"]').append(newRow);
 
-                    $('#bp_id').val(invoice_data.party_name);
+                    // $('#bp_id').val(invoice_data.party_name);
                 });
                 
                 });
@@ -343,11 +366,11 @@
             });
 
         });
-    </script>
+</script>
 
 
-    <script>
-        function get_data_display(customer_id) {
+<script>
+    function get_data_display(customer_id) {
 
             // alert(customer_id);
 
@@ -379,6 +402,10 @@
                 get_data_display(customer_id);
             }
             $("#bp_id").on('change', function() {
+
+                // usama_18-03-2024-fethc invoice details
+                new DynamicDropdown('<?php echo e(route('admin.get_ar_invoices')); ?>',
+                    $(this).val(), '#inv_no');
 
                  // usama_12-03-2024-fetch company of party and then make doc number
                 $('.doc_no').removeClass('d-none');
@@ -416,12 +443,12 @@
 
 
         });
-    </script>
+</script>
 
 
-    
-    <script>
-        var generateId = function(string) {
+
+<script>
+    var generateId = function(string) {
             return string
                 .replace(/\[/g, '_')
                 .replace(/\]/g, '')
@@ -508,10 +535,10 @@
         $("#discount").on('change', function() {
             calculate_grand_total();
         });
-    </script>
+</script>
 
-    <script>
-        function validateInputZero(input) {
+<script>
+    function validateInputZero(input) {
             // Get the entered value
             var value = input.value;
 
@@ -523,7 +550,7 @@
 
             return true;
         }
-    </script>
+</script>
 
 
 
@@ -532,5 +559,4 @@
 
 
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/returninvoice/goodsreceipt_create.blade.php ENDPATH**/ ?>

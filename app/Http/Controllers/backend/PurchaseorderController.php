@@ -185,7 +185,7 @@ class PurchaseorderController extends Controller
 
             //set counter and doc number for new gr
             $moduleName = "Goods Service Receipts";
-            $series_no = get_series_number($moduleName, $goods_receipt_exist->company_id);
+            $series_no = get_series_number($moduleName, $purchaseorder->company_id);
             if (empty($series_no)) {
                 return redirect()->back()->with(['error' => 'Series Number Is Not Defind For This Module']);
             }

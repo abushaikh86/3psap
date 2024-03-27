@@ -12,8 +12,14 @@
     //dd($ase_dep);
     $sales_officer_dep = AdminUsers::where('admin_user_id', $sales_officer->keys()->first())->first();
     $salesman_dep = AdminUsers::where('admin_user_id', $salesman->keys()->first())->first();
+
+    $dep = Role::where('id',Auth()->guard('admin')->user()->role)->first();
+    $pricing_access = [1,2,5,11];
+    // dd($dep->department_id);
 @endphp
 @section('content')
+<link rel="stylesheet" type="text/css"
+    href="{{ asset('public/backend-assets/css/jquery.multi-emails.css') }}">
 
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -65,6 +71,19 @@
                                         </div>
                                     </div>
 
+                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
+                                    @if(Auth()->guard('admin')->user()->role != 41)
+                                    <div class="col-md-6 col-12 company_drp">
+                                        <div class="form-group">
+                                            {{ Form::label('company_id', 'Distributor *') }}
+                                            {{ Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',]) }}
+                                        </div>
+                                    </div>
+                                    @else 
+                                    {{ Form::hidden('company_id', Auth()->guard('admin')->user()->company_id ?? '', ['id' => 'company_id']) }}
+
+                                    @endif
+
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
@@ -100,7 +119,7 @@
                                     </div>
 
 
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12 d-none bp_channel">
                                         <div class="form-label-group">
                                             {{-- {{dd($admin_users)}} --}}
                                             {{ Form::label('bp_channel', 'Business Partner Channel *') }}
@@ -115,7 +134,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
                                             {{ Form::label('bp_category', 'Business Partner Category *') }}
-                                            {{ Form::select('bp_category', DB::table('bp_category')->pluck('name','id'), null,
+                                            {{ Form::select('bp_category', [], null,
                                             [
                                             'class' => 'form-control',
                                             'placeholder' => 'Select Business Partner Category',
@@ -124,7 +143,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12 d-none bp_group">
                                         <div class="form-label-group">
                                             {{ Form::label('bp_group', 'Business Partner group *') }}
                                             {{ Form::select('bp_group', 
@@ -141,10 +160,10 @@
                                     <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                         <div class="form-label-group">
-                                            {{ Form::label('sales_manager', 'RKE *') }}
+                                            {{ Form::label('sales_manager', 'KAM *') }}
                                             {{ Form::select('sales_manager', $sales_manager, null, [
                                                 'class' => 'form-control select2',
-                                                'placeholder' => 'RKE',
+                                                'placeholder' => 'KAM',
                                             ]) }}
                                         </div>
 
@@ -153,10 +172,10 @@
                                     <div class="col-md-6 col-12 d-none sm_dynamic">
 
                                         <div class="form-label-group">
-                                            {{ Form::label('ase', 'KAM *') }}
+                                            {{ Form::label('ase', 'RKE *') }}
                                             {{ Form::select('ase', [], null, [
                                                 'class' => 'form-control select2',
-                                                'placeholder' => 'KAM',
+                                                'placeholder' => 'RKE',
                                             ]) }}
                                         </div>
 
@@ -204,7 +223,7 @@
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
-                                            {{ Form::label('gst_details', 'GST Number *') }}
+                                            {{ Form::label('gst_details', 'GST Number') }}
                                             {{ Form::text('gst_details', null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'GST Number',
@@ -248,18 +267,9 @@
                                     </div>
 
 
-                                    <!-- added to tagg distributor for thier bp only 28-02-2024 -->
-                                    @if(Auth()->guard('admin')->user()->role != 41)
-                                    <div class="col-md-6 col-12 company_drp">
-                                        <div class="form-group">
-                                            {{ Form::label('company_id', 'Distributor *') }}
-                                            {{ Form::select('company_id', $company, null, [ 'class' => 'form-control', 'placeholder' => 'Select Distributor',]) }}
-                                        </div>
-                                    </div>
-                                    @else 
-                                        {{ Form::hidden('company_id',Auth()->guard('admin')->user()->company_id??'')}}
-                                    @endif
+                            
 
+                                    @if(in_array($dep->department_id,$pricing_access))
                                     <div class="col-md-6 col-12">
                                         <div class="form-label-group">
                                             {{ Form::label('pricing_profile', 'Pricing Profile') }}
@@ -269,6 +279,7 @@
                                             ]) }}
                                         </div>
                                     </div>
+                                    @endif
 
                                     <hr>
 
@@ -298,6 +309,17 @@
 
                                                     <h4>Bill-To/ Bill-From</h4>
                                                 </div>
+                                                <div class=" col-12">
+                                                    <div class="form-label-group">
+                                                        {{ Form::label('gst_no', 'GST Number ') }}
+                                                        {{ Form::text('gst_no', null, [
+                                                            'class' => 'form-control',
+                                                            'placeholder' => 'GST Number',
+                                                            'required' => true,
+                                                        ]) }}
+                                                    </div>
+                                                </div>
+
                                                 <div class=" col-12">
                                                     <div class="form-label-group">
                                                         {{ Form::label('bp_address_name', 'Address Name ') }}
@@ -396,6 +418,17 @@
 
                                                     <h4>Ship-To/ Ship-From</h4>
 
+                                                </div>
+
+                                                <div class=" col-12">
+                                                    <div class="form-label-group">
+                                                        {{ Form::label('gst_no1', 'GST Number ') }}
+                                                        {{ Form::text('gst_no1', null, [
+                                                            'class' => 'form-control',
+                                                            'placeholder' => 'GST Number',
+                                                            'required' => true,
+                                                        ]) }}
+                                                    </div>
                                                 </div>
 
                                                 <div class=" col-12">
@@ -620,7 +653,6 @@
                                                 {{ Form::text('acc_holdername', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Account Holder Name',
-                                                    'required' => true,
                                                 ]) }}
                                             </div>
                                         </div>
@@ -628,7 +660,7 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-label-group">
                                                 {{ Form::label('bank_name', 'Bank Name') }}
-                                                {{ Form::text('bank_name', null, ['class' => 'form-control', 'placeholder' => 'Bank Name', 'required' => true]) }}
+                                                {{ Form::text('bank_name', null, ['class' => 'form-control', 'placeholder' => 'Bank Name']) }}
                                             </div>
                                         </div>
 
@@ -638,7 +670,6 @@
                                                 {{ Form::text('bank_branch', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Branch Name',
-                                                    'required' => true,
                                                 ]) }}
                                             </div>
                                         </div>
@@ -650,7 +681,6 @@
                                                     'class' => 'form-control',
                                                     'maxlength' => '15',
                                                     'placeholder' => 'IFSC Code',
-                                                    'required' => true,
                                                 ]) }}
                                             </div>
                                         </div>
@@ -661,7 +691,6 @@
                                                 {{ Form::text('ac_number', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Account No',
-                                                    'required' => true,
                                                 ]) }}
                                             </div>
                                         </div>
@@ -672,7 +701,6 @@
                                                 {{ Form::text('bank_address', null, [
                                                     'class' => 'form-control',
                                                     'placeholder' => 'Bank Address',
-                                                    'required' => true,
                                                 ]) }}
                                             </div>
                                         </div>
@@ -694,6 +722,7 @@
                                                 {{ Form::select('beat_id', Beat::pluck('beat_name', 'beat_id'), null, [
                                                     'class' => 'form-control select2',
                                                     'placeholder' => 'Select Beat',
+                                                    'required'=>true,
                                                 ]) }}
 
                                             </div>
@@ -1216,16 +1245,19 @@
             </div>
         </div>
     </div>
+    @endsection
 
+    @section('scripts')
 
     <script src="{{ asset('public/backend-assets/js/MasterHandler.js') }}"></script>
     <script src="{{ asset('public/backend-assets/js/DynamicDropdown.js') }}"></script>
+    <script src="{{ asset('public/backend-assets/js/jquery.multi-emails.js') }}"></script>
 
 
     {{-- add data for area,route and beat --}}
     <script>
         function fetchmodaldropdown(route,id,selectedValue,append_id,parent_id=null){
-            console.log(route,id,selectedValue,append_id);
+            // console.log(route,id,selectedValue,append_id);
             var id = id;
             if(parent_id != null){
                 id = parent_id;
@@ -1255,6 +1287,10 @@
         } 
 
         $(document).ready(function() {
+
+              $("#email_id").multiEmails();
+              $("#email_id1").multiEmails();
+            
 
             // usama_15-03-2024-fetch bp-group from channel
             $('#bp_channel').change(function() {
@@ -1417,23 +1453,57 @@
         $(document).ready(function() {
             var bptype = $('#business_partner_type').find('option:selected').text().trim();
 
-            $('#company_id').change(function(){
-                if($('#business_partner_type').val()){
-                if (bptype == 'Customer') {
-                    $('.sm_dynamic').removeClass('d-none');
-                    $('.shelf_left').removeClass('d-none');
-                    $('.beat_det').removeClass('d-none');
-                    new DynamicDropdown('{{ route('admin.getPricingPurchase') }}',
-                        $(this).val(), '#pricing_profile',);
-                } else {
-                    $('.sm_dynamic').addClass('d-none');
-                    $('.shelf_left').addClass('d-none');
-                    $('.beat_det').addClass('d-none');
-                    new DynamicDropdown('{{ route('admin.getPricingSale') }}',
-                        $(this).val(), '#pricing_profile');
+            // if retails then remove requires attr from gst number
+            $('#bp_category').change(function() {
+                if($(this).val() == 2){
+                    $('#gst_details').removeAttr('required');
+                }else{
+                    $('#gst_details').attr('required', true);
+                }
+            });
+
+            $('#business_partner_type').change(function() {
+                // fetch categories dynamic
+                new DynamicDropdown('{{ route('admin.get_categories') }}',
+                    $(this).val(), '#bp_category');
+            });
+
+            if($('#company_id').val()){
+                if ($('#business_partner_type').val() ) {
+                    if ($('#business_partner_type').val() == 1) {
+                        showElements();
+                        new DynamicDropdown('{{ route('admin.getPricingSale') }}', $('#company_id').val(), '#pricing_profile');
+                    } else {
+                        hideElements();
+                        new DynamicDropdown('{{ route('admin.getPricingPurchase') }}', $('#company_id').val(), '#pricing_profile');
+                    }
                 }
             }
-            });
+
+        $('#company_id, #business_partner_type').change(function() {
+
+            if ($('#business_partner_type').val() ) {
+                if ($('#business_partner_type').val() == 1) {
+                    showElements();
+                    new DynamicDropdown('{{ route('admin.getPricingSale') }}', $('#company_id').val(), '#pricing_profile');
+                } else {
+                    hideElements();
+                    new DynamicDropdown('{{ route('admin.getPricingPurchase') }}', $('#company_id').val(), '#pricing_profile');
+                }
+            }
+        });
+
+        function showElements() {
+            $('.sm_dynamic, .shelf_left, .beat_det').removeClass('d-none');
+            $('.bp_group, .bp_channel').removeClass('d-none');
+            $('#bp_group,#bp_channel,#beat_id').attr('required', true);
+        }
+
+        function hideElements() {
+            $('.sm_dynamic, .shelf_left, .beat_det').addClass('d-none');
+            $('.bp_group, .bp_channel').addClass('d-none');
+            $('#bp_group,#bp_channel,#beat_id').removeAttr('required');
+        }
 
 
             var terms_of_payment = $('#payment_terms_id').find('option:selected').text().trim();

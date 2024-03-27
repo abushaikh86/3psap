@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\backend\AdminUsers;
 use App\Models\backend\Apinvoice;
 use App\Models\backend\Area;
+use App\Models\backend\ArInvoice;
 use App\Models\backend\Beat;
 use App\Models\backend\BillBooking;
 use App\Models\backend\BillBookingItems;
@@ -189,6 +190,32 @@ class MasterDropdownController extends Controller
         return ['flag' => 'success', 'message' => 'New Category Added!', 'data' => $category_options];
     }
 
+    public function get_categories(Request $request)
+    {
+        $type = $request->input('id');
+        if ($type != 1) {
+            $categories_list = DB::table('bp_category')->orderBy('id', 'desc')->limit(2)->pluck('name', 'id');
+        } else {
+            $categories_list = DB::table('bp_category')->limit(2)->pluck('name', 'id');
+        }
+
+        return response()->json($categories_list);
+    }
+
+    public function get_ar_invoices(Request $request)
+    {
+        $id = $request->input('id');
+        $invocies = ArInvoice::when((session('company_id') != 0 && session('fy_year')), function ($query) {
+            $query->where([
+                'company_id' => session('company_id'),
+                'fy_year' => session('fy_year'),
+            ]);
+        })
+            ->where('party_id', $id)
+            ->pluck('bill_no', 'bill_no');
+        return response()->json($invocies);
+    }
+
     public function store_product_sub_category(Request $request)
     {
         // dd($request->all());
@@ -254,8 +281,8 @@ class MasterDropdownController extends Controller
     {
         $party_id = $request->party_id;
         $series_no = $request->series_no;
-        $bp_master = BussinessPartnerMaster::where('business_partner_master',$party_id)->first();
-        $series = SeriesMaster::where('company_id',$bp_master->company_id)->first();
+        $bp_master = BussinessPartnerMaster::where('business_partner_master', $party_id)->first();
+        $series = SeriesMaster::where('company_id', $bp_master->company_id)->first();
         // dd($party_id,$series_no);
 
         $data = BillBooking::where(['vendor_id' => $party_id, 'series_no' => $series->series_number])->pluck('doc_no', 'doc_no');
@@ -272,8 +299,8 @@ class MasterDropdownController extends Controller
     public function get_company(Request $request)
     {
         $party_id = $request->party_id;
-        $bp_master = BussinessPartnerMaster::where('business_partner_id',$party_id)->first();
-        $company = Company::where('company_id',$bp_master->company_id)->first(); 
+        $bp_master = BussinessPartnerMaster::where('business_partner_id', $party_id)->first();
+        $company = Company::where('company_id', $bp_master->company_id)->first();
 
 
 
@@ -339,16 +366,25 @@ class MasterDropdownController extends Controller
 
         return response()->json($groups_data);
     }
-    
+
+    public function send_email()
+    {
+        $email = $_GET['email'];
+        $subject = 'User Credentials';
+        $body = 'Username: ' . $email . "<br>" . "Password: " . '123456';
+        send_email($email, $subject, $body);
+        return true;
+    }
+
 
     public function getChannels(Request $request)
     {
         $id = $request->input('id');
-        $channel_data = BusinessPartnerCategory::pluck('business_partner_category_name','business_partner_category_id');
+        $channel_data = BusinessPartnerCategory::pluck('business_partner_category_name', 'business_partner_category_id');
 
         return response()->json($channel_data);
     }
-    
+
 
     public function getSalesOfficers(Request $request)
     {
@@ -370,14 +406,14 @@ class MasterDropdownController extends Controller
     public function getPricingPurchase(Request $request)
     {
         $company_id = $request->input('id');
-        $pricing = Pricings::where(['company_id'=>$company_id,'pricing_type' => 'purchase', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        $pricing = Pricings::where(['company_id' => $company_id, 'pricing_type' => 'purchase', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
         return response()->json($pricing);
     }
 
     public function getPricingSale(Request $request)
     {
         $company_id = $request->input('id');
-        $pricing = Pricings::where(['company_id'=>$company_id,'pricing_type' => 'sale', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
+        $pricing = Pricings::where(['company_id' => $company_id, 'pricing_type' => 'sale', 'status' => 1])->pluck('pricing_name', 'pricing_master_id');
         return response()->json($pricing);
     }
 
@@ -425,7 +461,8 @@ class MasterDropdownController extends Controller
         $module = $exploded[0];
 
 
-        $data = SeriesMaster::where('series_number', $module)->first();
+
+        $data = SeriesMaster::where('series_number', $series_number)->first();
         $modules = DB::table('modules')->pluck('name', 'id')->toArray();
         $moduleName = DB::table('modules')->where('id', $data->module)->value('name');
 
@@ -444,9 +481,9 @@ class MasterDropdownController extends Controller
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->goods_servie_receipt_counter;
         } else if ($moduleName == $modules[3]) {
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->ap_invoice_counter;
-        }else if($moduleName == $modules[9]){
+        } else if ($moduleName == $modules[9]) {
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->order_booking_counter;
-        }else if($moduleName == $modules[13]){
+        } else if ($moduleName == $modules[13]) {
             $doc_number = $series_number . '-' .  $fy_year->year . '-' .  $fy_year->invoice_return_counter;
         }
 
@@ -475,6 +512,10 @@ class MasterDropdownController extends Controller
     public function getGst(Request $request)
     {
         $query = $request->get('id');
+        // $uom = $request->get('uom')??'';
+        // if(!empty($uom)){
+        //     $
+        // }
         $gst = Gst::where('gst_id', $query)->first();
 
         return response()->json($gst);
@@ -484,21 +525,20 @@ class MasterDropdownController extends Controller
     {
 
         $query = $_GET['query'] ?? '';
-        if (is_numeric($query)) {
-            $data = Products::select(DB::raw("item_code as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'consumer_desc')
+        $type = $_GET['type'];
+        if ($type == 'code') {
+            $data = Products::select(DB::raw("item_code as name"), 'product_item_id', 'unit_case', 'dimensions_unit_pack', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'consumer_desc')
                 ->where("item_code", "LIKE", "%" . $query . "%")
                 ->orWhere("hsncode_id", "LIKE", "%" . $query . "%")
                 ->get();
         } else if (preg_match('/^\d+-\d+$/', $query)) {
             // Check if the query matches the pattern "digits-hyphen-digits"
-            $data = Products::select(DB::raw("sku as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'item_code')
+            $data = Products::select(DB::raw("sku as name"), 'product_item_id', 'unit_case', 'dimensions_unit_pack', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'item_code')
                 ->where("sku", "LIKE", "%" . $query . "%")
                 ->get();
         } else {
             $data = Products::select(DB::raw("consumer_desc as name"), 'product_item_id', 'hsncode_id', 'sku', 'mrp', 'gst_id', 'item_code')->where("consumer_desc", "LIKE", "%" . $query . "%")->get();
         }
-
-
 
         DB::table('def_bacth_no_counter')->increment('counter');
         $counterValue = DB::table('def_bacth_no_counter')->value('counter');
@@ -519,7 +559,7 @@ class MasterDropdownController extends Controller
             $pricing_data = PricingItem::where([
                 'pricing_master_id' => $data->pricing_profile,
                 'item_code' => $item_code, 'sku' => $sku
-                ])->first();
+            ])->first();
             if (!empty($pricing_data)) {
                 return $pricing_data->selling_price;
             } else {

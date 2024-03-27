@@ -68,7 +68,42 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
+
+
+
+
+<script>
+    var uom_type = $('#uom').val();
+
+    if(uom_type == 'case'){
+        $('#qty_label').text('Quantity (Case)');
+        $('.uom_field').val('case');
+    }else{
+        $('#qty_label').text('Quantity (Units)');
+        $('.uom_field').val('units');
+    }
+
+    $('#uom').change(function(){
+        setTimeout(() => {
+            $('.uom_field').trigger('change');
+        }, 500);
+        if($(this).val() == 'case'){
+            $('#qty_label').text('Quantity (Case)');
+            $('.uom_field').val('case');
+        }else{
+            $('#qty_label').text('Quantity (Units)');
+            $('.uom_field').val('units');
+        }
+    });
+    
+
+
+    
+</script>
 
 
 <script>
@@ -76,6 +111,7 @@
     $("#filladdress").change(function() {
         // If the checkbox is checked, copy values
         if ($(this).prop("checked")) {
+            $("#gst_no1").val($("#gst_no").val());
             $("#bp_address_name1").val($("#bp_address_name").val());
             $("#building_no_name1").val($("#building_no_name").val());
             $("#street_name1").val($("#street_name").val());
@@ -951,5 +987,4 @@
             }
         }
     });
-</script>
-<?php /**PATH C:\wamp64\www\eureka\resources\views/backend/includes/footer.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/includes/footer.blade.php ENDPATH**/ ?>

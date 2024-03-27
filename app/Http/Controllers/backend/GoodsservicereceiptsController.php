@@ -401,7 +401,6 @@ class GoodsservicereceiptsController extends Controller
                         return $item['goods_service_receipts_item_id'] == null;
                     });
 
-                    // dd($old_goodsservicereceipts_items);
 
                     // dd($filteredItems);
 
@@ -416,14 +415,22 @@ class GoodsservicereceiptsController extends Controller
                         $batch_no = $row['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
 
-                            DB::table('def_bacth_no_counter')->increment('counter');
-                            $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                            $batch_no = $counterValue . '-Batch-' . $row['sku'];
-                            // }
+                            $check_for_batch = Inventory::where([
+                                'warehouse_id' => $row['storage_location_id'],
+                                'bin_id' => $good_bin->bin_id,
+                                'item_code' => $row['item_code'],
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
+
+                            if (!empty($check_for_batch)) {
+                                $batch_no = $check_for_batch->batch_no;
+                            } else {
+                                DB::table('def_bacth_no_counter')->increment('counter');
+                                $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                $batch_no = $counterValue . '-Batch-' . $row['item_code'];
+                            }
                         }
-
-
-
 
                         // dd( $good_bin);
 
@@ -482,6 +489,8 @@ class GoodsservicereceiptsController extends Controller
                                 $inventoryExist->update($inventoryData);
                             }
 
+                            // dd($inventoryData);
+
                             if ($perday_inventoryExist === null) {
                                 PerDayInventory::create($inventoryData);
                             } else {
@@ -525,10 +534,24 @@ class GoodsservicereceiptsController extends Controller
                             if ($item['item_name'] != '') {
 
                                 $batch_no = $item['batch_no'] ?? '';
+
                                 if (empty($batch_no) || $batch_no == null) {
-                                    DB::table('def_bacth_no_counter')->increment('counter');
-                                    $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                                    $batch_no = $counterValue . '-Batch-' . $item['sku'];
+
+                                    $check_for_batch = Inventory::where([
+                                        'warehouse_id' => $item['storage_location_id'],
+                                        'bin_id' => $good_bin->bin_id,
+                                        'item_code' => $item['item_code'],
+                                        'fy_year' => $goodsservicereceipt->fy_year,
+                                        'company_id' => $goodsservicereceipt->company_id,
+                                    ])->first();
+
+                                    if (!empty($check_for_batch)) {
+                                        $batch_no = $check_for_batch->batch_no;
+                                    } else {
+                                        DB::table('def_bacth_no_counter')->increment('counter');
+                                        $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                        $batch_no = $counterValue . '-Batch-' . $item['item_code'];
+                                    }
                                 }
 
                                 $goodsservicereceipts_item = new GoodsServiceReceiptsItems();
@@ -575,6 +598,7 @@ class GoodsservicereceiptsController extends Controller
                     }
 
 
+                    // dd($old_goodsservicereceipts_items);
                     foreach ($old_goodsservicereceipts_items as $old_item) {
                         $total_inr += $old_item['total'];
 
@@ -582,9 +606,22 @@ class GoodsservicereceiptsController extends Controller
 
                         $batch_no = $old_item['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
-                            DB::table('def_bacth_no_counter')->increment('counter');
-                            $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                            $batch_no = $counterValue . '-Batch-' . $old_item['sku'];
+
+                            $check_for_batch = Inventory::where([
+                                'warehouse_id' => $old_item['storage_location_id'],
+                                'bin_id' => $good_bin->bin_id,
+                                'item_code' => $old_item['item_code'],
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
+
+                            if (!empty($check_for_batch)) {
+                                $batch_no = $check_for_batch->batch_no;
+                            } else {
+                                DB::table('def_bacth_no_counter')->increment('counter');
+                                $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                $batch_no = $counterValue . '-Batch-' . $old_item['item_code'];
+                            }
                         }
 
                         $old_goodsservicereceipts_item = GoodsServiceReceiptsItems::where('goods_service_receipts_item_id', $old_item['goods_service_receipts_item_id'])->first();

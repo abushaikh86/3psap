@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Warehouses'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -43,7 +44,7 @@
                                             <th>#</th>
                                             <th>Warehouse Name</th>
                                             <th>Warehouse Location</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,5 +101,8 @@
 
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('scripts'); ?>
+<?php echo $__env->make('backend.export_pagination_script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/storagelocations/index.blade.php ENDPATH**/ ?>

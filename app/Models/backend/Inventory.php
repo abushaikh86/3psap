@@ -24,7 +24,7 @@ class Inventory extends Model
    * @var array
    */
   protected $fillable = [
-    'warehouse_id', 'bin_id', 'batch_no', 'blocked_qty','doc_no','sku', 'remarks', 'fy_year','company_id', 'user_id', 'item_code', 'qty', 'unit_price', 'manufacturing_date', 'expiry_date'
+    'warehouse_id', 'bin_id', 'batch_no', 'blocked_qty', 'doc_no', 'sku', 'remarks', 'fy_year', 'company_id', 'user_id', 'item_code', 'qty', 'unit_price', 'manufacturing_date', 'expiry_date'
   ];
 
   public function get_unit_price()
@@ -40,6 +40,11 @@ class Inventory extends Model
   public function get_bin()
   {
     return $this->hasOne(BinManagement::class, 'bin_id', 'bin_id');
+  }
+
+  public function get_product()
+  {
+    return $this->hasOne(Products::class, 'item_code', 'item_code');
   }
 
   // public function get_bin_data()

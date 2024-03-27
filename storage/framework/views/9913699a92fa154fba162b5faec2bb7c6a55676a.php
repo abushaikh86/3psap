@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'Order Fulfilment'); ?>
 
 <style>
@@ -70,17 +71,12 @@
                         <input type="text" id="purchase_order_no">
                       </div>
                     </th>
-                    <th>Cutomer OB Refrence Number
+                    <th>Cutomer Refrence Number
                       <div class="my-1">
                         <input type="text" id="vendor_po_ref_num">
                       </div>
                     </th>
 
-                    <th>Cutomer Refrence Number
-                      <div class="my-1">
-                        <input type="text" id="vendor_ref_num">
-                      </div>
-                    </th>
 
                     <th>Order Fulfilment To
                       <div class="my-1">
@@ -131,13 +127,6 @@
   $(function() {
             var table = $('#tbl-datatable').DataTable({
 
-                scrollY: 600,
-                scrollX: true,
-                scrollCollapse: true,
-                fixedColumns:   {
-                    leftColumns: 0,
-                    rightColumns: 1,
-                },
 
                 processing: true,
                 serverSide: true,
@@ -158,10 +147,6 @@
                     {
                         data: 'customer_ref_no',
                         name: 'customer_ref_no'
-                    },
-                    {
-                        data: 'customer_inv_no',
-                        name: 'customer_inv_no'
                     },
                     {
                         data: 'get_partyname.bp_name',
@@ -185,7 +170,7 @@
                     buttons: [{
                             extend: 'excel',
                             exportOptions: {
-                                columns: [0, 1,2, 3, 4, 5,6],
+                                columns: [0, 1,2, 3, 4, 5],
                                 modifier: {
                                     page: 'all',
                                     search: 'applied'
@@ -199,7 +184,7 @@
                         {
                             extend: 'pdf',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5,6],
+                                columns: [0, 1, 2, 3, 4, 5],
                                 modifier: {
                                     page: 'all',
                                     search: 'applied'

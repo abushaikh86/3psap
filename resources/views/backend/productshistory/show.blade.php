@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            {{ Form::label('sub_category_id', 'Sub Category ', ['class' => '']) }}
+                                            {{ Form::label('sub_category_id', 'Format ', ['class' => '']) }}
                                             {{ Form::select('sub_category_id', $sub_categories, null, ['class' => 'select2 form-control subcategory', 'placeholder' => 'Please Select Sub Category']) }}
                                         </div>
                                     </div>

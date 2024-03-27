@@ -122,7 +122,7 @@
                                                                             {{ Form::hidden('old_invoice_items[' . $i . '][sku]', null, ['class' => 'form-control  sku', 'data-name' => 'sku', 'data-group' => 'old_invoice_items']) }}
 
 
-                                                                            <td>{{ Form::number('old_invoice_items[' . $i . '][item_code]', null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true]) }}
+                                                                            <td>{{ Form::text('old_invoice_items[' . $i . '][item_code]', null, ['data-name' => 'item_code', 'class' => 'form-control item_code typeahead', 'required' => true]) }}
                                                                             </td>
 
                                                                             <td>{{ Form::text('old_invoice_items[' . $i . '][item_name]', null, ['data-name' => 'item_name', 'class' => 'form-control item_name typeahead', 'required' => true, 'oninput' => 'validateInput(this)']) }}

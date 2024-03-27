@@ -125,6 +125,11 @@ class CompanyController extends Controller
         $create_distributor->password = 123456;
 
         $create_distributor->save();
+
+        // $subject = 'User Credentials';
+        // $body = 'Username: '.$model->email."<br>"."Password: ".'123456';
+        // send_email($model->email,$subject,$body);
+
         $create_distributor->assignRole(41);//distributor role id//28-02-2024
       }
       Session::flash('message', 'Distributor Added Successfully!');

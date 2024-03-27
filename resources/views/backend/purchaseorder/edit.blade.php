@@ -275,7 +275,22 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     <td class="adjust_col">
                                                                         {{ Form::label('hsn_sac', 'HSN/SAC') }}
                                                                     </td>
-                                                                    <td>{{ Form::label('qty', 'Quantity') }}</td>
+                                                                    <td class="adjust_col">
+                                                                        {{ Form::label('uom', 'UOM',['style'=>'display: flex;justify-content: center;']) }}
+                                                                        {{ Form::select('uom',
+                                                                        ['units'=>'Units','case'=>'Case'],
+                                                                        $model->purchaseorder_items[0]->uom,
+                                                                        [
+                                                                            'class' => 'form-control uom',
+                                                                            'data-name' => 'uom',
+                                                                            'data-group' => 'invoice_items',
+                                                                        ])
+                                                                    }}
+                                                                    </td>
+                                                                    <td>{{ Form::label('qty', 'Quantity',['id'=>'qty_label']) }}
+                                                                    </td>
+                                                                    <td>{{ Form::label('final_qty', 'Quantity (Units)') }}
+                                                                    </td>
                                                                     <td>{{ Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
@@ -309,6 +324,9 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                 <tr data-repeater-item class="item_row item-content"
                                                                     id="old_row_{{ $loop->index }}">
 
+                                                                    {{ Form::hidden('old_invoice_items[' . $loop->index .'][unit_pack]',$items->get_product[0]->dimensions_unit_pack??null, ['data-group' => 'old_invoice_items']) }}
+                                                                    {{ Form::hidden('old_invoice_items[' . $loop->index .'][pack_case]',$items->get_product[0]->unit_case??null, ['data-group' => 'old_invoice_items']) }}
+                                                                    
                                                                     {{ Form::hidden(
                                                                     'old_invoice_items[' . $loop->index .
                                                                     '][purchase_order_item_id]',
@@ -321,8 +339,6 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     'autocomplete' => 'off',
                                                                     ],
                                                                     ) }}
-
-
 
 
                                                                     {{ Form::hidden('old_invoice_items[' . $loop->index
@@ -359,7 +375,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     ]) }}
 
 
-                                                                    <td>{{ Form::number('old_invoice_items[' .
+                                                                    <td>{{ Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -385,6 +401,21 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'data-name' => 'hsn_sac',
                                                                         ]) }}
                                                                     </td>
+
+                                                                    <td>
+                                                                        {{ Form::text('old_invoice_items[' .
+                                                                            $loop->index . '][uom]',
+                                                                            $items->uom,
+                                                                            [
+                                                                                'class' => 'form-control uom_field',
+                                                                                'onchange' => 'calculategst(this)',
+                                                                                'data-name' => 'uom',
+                                                                                'data-group' => 'old_invoice_items',
+                                                                                'readonly' => true,
+                                                                            ])
+                                                                        }}
+                                                                    </td>
+
                                                                     <td>
                                                                         {{ Form::number('old_invoice_items[' .
                                                                         $loop->index . '][qty]', $items->qty, [
@@ -395,6 +426,18 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'required' => true,
                                                                         ]) }}
                                                                     </td>
+
+                                                                    <td>
+                                                                        {{ Form::number('old_invoice_items[' .
+                                                                        $loop->index . '][final_qty]', $items->final_qty, [
+                                                                        'class' => 'form-control final_qty',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'final_qty',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'readonly' => true,
+                                                                        ]) }}
+                                                                    </td>
+                                                                    
                                                                     <td>
                                                                         {{ Form::number('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',
@@ -796,6 +839,8 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
 
             $('.add_btn_rep').click(function() {
                 get_invoice_itemnames();
+                var lastIndex = $('.repeater tbody tr').length - 1;
+                $("input[name='old_invoice_items[" + lastIndex + "][uom]']").val($("input[name='old_invoice_items[0][uom]']").val());
             });
 
 

@@ -25,7 +25,7 @@ class OrderFulfilmentItems extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['party_id', 'gst_amount', 'gst_rate','batch_no', 'item_code', 'sku', 'discount_item', 'price_af_discount', 'gross_total', 'order_fulfillment_id', 'order_booking_id', 'item_name', 'hsn_sac', 'og_qty', 'fulfil_qty', 'qty', 'taxable_amount', 'cgst_rate', 'cgst_amount', 'sgst_utgst_rate', 'sgst_utgst_amount', 'igst_rate', 'igst_amount', 'total', 'storage_location_id'];
+    protected $fillable = ['party_id','mrp', 'gst_amount', 'gst_rate','batch_no', 'item_code', 'sku', 'discount_item', 'price_af_discount', 'gross_total', 'order_fulfillment_id', 'order_booking_id', 'item_name', 'hsn_sac', 'og_qty', 'fulfil_qty', 'qty', 'taxable_amount', 'cgst_rate', 'cgst_amount', 'sgst_utgst_rate', 'sgst_utgst_amount', 'igst_rate', 'igst_amount', 'total', 'storage_location_id'];
 
     // ALTER TABLE `goods_service_receipts_items` ADD `storage_location_id` INT(11) NULL AFTER `total`; 
 
@@ -36,5 +36,10 @@ class OrderFulfilmentItems extends Authenticatable
     public function order_fulfilment_batches()
     {
         return $this->hasMany(OrderFulfilmentBatches::class, 'order_fulfillment_item_id');
+    }
+
+    public function get_product()
+    {
+        return $this->hasOne(Products::class, 'item_code','item_code');
     }
 }

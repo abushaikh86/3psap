@@ -34,6 +34,7 @@
                     <div class="card-content">
                         <div class="card-body">
 
+                            @if(Auth()->guard('admin')->user()->role != 41)
 
                             @include('backend.includes.errors')
                             {{ Form::open(['url' => 'admin/updatepricings/update', 'class' => 'w-100', 'enctype' => 'multipart/form-data']) }}
@@ -64,6 +65,8 @@
 
                             {{ Form::close() }}
                             <hr>
+
+                            @endif
 
 
                             <table class="table table-bordered table-striped" id="tbl-datatable">

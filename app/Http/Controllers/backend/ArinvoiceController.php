@@ -74,7 +74,7 @@ class ArinvoiceController extends Controller
                         $actionBtn .= '<a href="' . route('admin.arinvoice.view', ['id' => $apinvoice->order_fulfillment_id]) . '"
                     class="btn btn-sm btn-primary" title="View"><i class="feather icon-eye"></i></a> ';
                     }
-                    if (request()->user()->can('Update A/R Invoice') && empty($apinvoice->ar_inv_no)) {
+                    if (request()->user()->can('Update A/R Invoice') && (empty($apinvoice->is_bill_booking_done))) {
                         // dd("yes");
                         $actionBtn .= '<a href="' . route('admin.arinvoice.edit', ['id' => $apinvoice->order_fulfillment_id]) . '
                      " class="btn btn-sm btn-primary" title="Edit"><i class="feather icon-edit"></i></a> ';
@@ -150,7 +150,7 @@ class ArinvoiceController extends Controller
         $contact = BussinessPartnerContactDetails::where('bussiness_partner_id', $goodsservicereceipts->party_id)->first();
         $bank_details = BussinessPartnerBankingDetails::where('bussiness_partner_id', $goodsservicereceipts->party_id)->first();
         $invoice = $goodsservicereceipts;
-        // dd($invoice->toArray());
+        // dd($goodsservicereceipts->toArray());
 
         return view('backend.arinvoice.show', compact('roles', 'bill_address', 'ship_address', 'contact', 'bank_details', 'goodsservicereceipts', 'party', 'invoice'));
     }
@@ -356,7 +356,7 @@ class ArinvoiceController extends Controller
         // dd($request->all());
         $this->validate($request, [
             // 'receipt_type' => 'required',
-            'trans_type' => 'required',
+            // 'trans_type' => 'required',
             'party_id' => 'required',
             // 'place_of_supply' => 'required',
             'customer_ref_no' => 'required',
@@ -427,9 +427,22 @@ class ArinvoiceController extends Controller
 
                         $batch_no = $row['batch_no'] ?? '';
                         if (empty($batch_no) || $batch_no == null) {
-                            DB::table('def_bacth_no_counter')->increment('counter');
-                            $counterValue = DB::table('def_bacth_no_counter')->value('counter');
-                            $batch_no = $counterValue . '-Batch-' . $row['sku'];
+
+                            $check_for_batch = Inventory::where([
+                                'warehouse_id' => $row['storage_location_id'],
+                                'bin_id' => $good_bin->bin_id,
+                                'item_code' => $row['item_code'],
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
+                            ])->first();
+
+                            if (!empty($check_for_batch)) {
+                                $batch_no = $check_for_batch->batch_no;
+                            } else {
+                                DB::table('def_bacth_no_counter')->increment('counter');
+                                $counterValue = DB::table('def_bacth_no_counter')->value('counter');
+                                $batch_no = $counterValue . '-Batch-' . $row['item_code'];
+                            }
                         }
 
                         $product = Products::where('item_code', $row['item_code'])->first();
@@ -440,21 +453,13 @@ class ArinvoiceController extends Controller
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                             ])->when(($company->batch_system != 0), function ($q) use ($batch_no) {
                                 return $q->where([
                                     'batch_no' => $batch_no,
                                 ]);
-                            })
-                                ->when(
-                                    session('company_id') != 0 && session('fy_year') != 0,
-                                    function ($query) {
-                                        return $query->where([
-                                            'fy_year' => session('fy_year'),
-                                            'company_id' => session('company_id'),
-                                        ]);
-                                    }
-                                )
-                                ->first();
+                            })->first();
 
                             if (empty($inventoryExist)) {
                                 return redirect()->back()->with('error', 'Selected batch is not found in this warehouse');
@@ -464,21 +469,15 @@ class ArinvoiceController extends Controller
                                 'warehouse_id' => $row['storage_location_id'],
                                 'bin_id' => $good_bin->bin_id,
                                 'sku' => $product->sku,
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                             ])
                                 ->when(($company->batch_system != 0), function ($q) use ($batch_no) {
                                     return $q->where([
                                         'batch_no' => $batch_no,
                                     ]);
                                 })
-                                ->when(
-                                    session('company_id') != 0 && session('fy_year') != 0,
-                                    function ($query) {
-                                        return $query->where([
-                                            'fy_year' => session('fy_year'),
-                                            'company_id' => session('company_id'),
-                                        ]);
-                                    }
-                                )
+
                                 ->whereDate('created_at', Carbon::today())
                                 ->first();
 
@@ -497,8 +496,8 @@ class ArinvoiceController extends Controller
                                 'sku' => $product->sku,
                                 'qty' => $inventoryExist->qty - $row['qty'],
                                 'blocked_qty' => 0,
-                                // 'fy_year' => $goodsservicereceipt->fy_year,
-                                // 'company_id' => $goodsservicereceipt->company_id,
+                                'fy_year' => $goodsservicereceipt->fy_year,
+                                'company_id' => $goodsservicereceipt->company_id,
                                 'user_id' => Auth()->guard('admin')->user()->admin_user_id,
                                 // 'unit_price' => $row['taxable_amount'],
                                 'manufacturing_date' => $row['manufacturing_date'] ?? optional($inventory)->manufacturing_date ?? '',
@@ -580,10 +579,6 @@ class ArinvoiceController extends Controller
                                     $get_data = Gst::where('gst_id', $gst_rate)->first();
                                     $gst_rate = $get_data->gst_percent;
                                 }
-                                // batches
-                                $goods_service_receipt_id = $goodsservicereceipt->order_fulfillment_id;
-                                $purchase_order_item_id = $goodsservicereceipts_item->order_fulfillment_item_id;
-                                $storage_location_id = $goodsservicereceipts_item->storage_location_id;
                             }
 
                             //update old  data of repeater
@@ -687,7 +682,9 @@ class ArinvoiceController extends Controller
             }
         }
 
-
+        //update ar invoice first update status
+        $goodsservicereceipt->is_bill_booking_done = 1;
+        $goodsservicereceipt->save();
 
 
 

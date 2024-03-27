@@ -8,7 +8,9 @@
     // Ensure jQuery is loaded before this script
     function initTypeaheadForElement(element) {
 
+
         var path = "<?php echo e(route('admin.autocomplete')); ?>";
+        var type= '';
         var globalCounter;
 
         // $('input.typeahead').typeahead({
@@ -20,6 +22,15 @@
             minLength: 3,
             source: function(query, process) {
 
+                var elementId = $(element).data('name');
+                // console.log(elementId);
+                if (elementId === 'item_name') {
+                    type = 'name';
+                } else if (elementId === 'item_code') {
+                    type = 'code';
+                }    
+    
+                // console.log('Element ID:', this.$element.data-id);
                 var elements = document.querySelectorAll('.table-responsive');
 
                 setTimeout(() => {
@@ -30,7 +41,8 @@
 
 
                 return $.get(path, {
-                    query: query
+                    query: query,
+                    type: type,
                 }, function(data) {
                     // console.log(data);
                     globalCounter = data.counter;
@@ -54,8 +66,16 @@
                 var sku = item.sku;
                 var gst_percent = item.gst_percent;
 
+                var item_code = '';
+
+                if (item && item.consumer_desc) {
+                    item_code = item.name;
+                } else if (item && item.item_code) {
+                    item_code = item.item_code;
+                }
 
                 var customer_id = $('#party_id').val();
+
                 if (customer_id || customer_id != '') {
                     if ($('#party_id').length != 0) {
                         $.ajax({
@@ -63,7 +83,7 @@
                             method: 'GET',
                             data: {
                                 customer_id: customer_id,
-                                'item_code': item.item_code,
+                                'item_code': item_code,
                                 'sku': sku
                             },
                             success: function(response) {
@@ -93,6 +113,10 @@
                     }
 
 
+                    $("input[name='" + group + "[" + index + "][unit_pack]']").val(item.dimensions_unit_pack);
+                    $("input[name='" + group + "[" + index + "][pack_case]']").val(item.unit_case);
+
+
                     // for default bacth number
                     var def_batch_no = counter + '-Batch-' + sku;
                     if ($("#def_batch_no").length) {
@@ -104,6 +128,7 @@
 
                     $("input[name='" + group + "[" + index + "][hsn_sac]']").val(hsn_sac);
                     $("input[name='" + group + "[" + index + "][taxable_amount]']").val(taxable_amount);
+                    $("input[name='" + group + "[" + index + "][mrp]']").val(taxable_amount);
                     $("select[name='" + group + "[" + index + "][gst_rate]']").val(item.gst_id);
 
                     if (name == '' + group + '[' + index + '][item_code]' || name == '' + group + '[' +
@@ -171,5 +196,4 @@
     $(document).ready(function() {
         loadLibrary();
     });
-</script>
-<?php /**PATH C:\wamp64\www\eureka\resources\views/backend/autocomplete_typeahead_script.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/autocomplete_typeahead_script.blade.php ENDPATH**/ ?>

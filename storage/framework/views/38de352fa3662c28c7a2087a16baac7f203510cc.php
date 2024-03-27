@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', 'View Sales Order'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -17,46 +18,49 @@
   </div>
   <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
     <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+      <a href="<?php echo e(route('admin.orderbooking')); ?>" class="btn btn-secondary">Back</a>
 
     </div>
   </div>
 </div>
 
 <section id="multiple-column-form">
-<div class="row match-height">
-<div class="col-12">
-<div class="card">
-<div class="card-content">
-<div class="card-body">
-<div class="content-header row">
-<div class="col-sm-12 text-sm-end mb-1">
-          </div>
-</div>
-  <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+  <div class="row match-height">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="content-header row">
+              <div class="col-sm-12 text-sm-end mb-1">
+              </div>
+            </div>
+            <?php echo $__env->make('backend.includes.errors', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-  <?php if($purchaseorder->split_purchaseorder == 1): ?>
-  <?php echo $__env->make('backend.orderbooking.invoice_format_split', ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-  <?php else: ?>
-  <?php echo $__env->make('backend.orderbooking.invoice_format', ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-  <?php endif; ?>
-      <div class="row">
-        <div class="col-lg-12 text-center">
-  <a href="javascript:void(0);" class="btn btn-primary" onclick="PrintElem('.printable');">Print</a>
-          <a href="<?php echo e(route('admin.orderbooking')); ?>" class="btn btn-secondary">Back</a>
+            <?php if($purchaseorder->split_purchaseorder == 1): ?>
+            <?php echo $__env->make('backend.orderbooking.invoice_format_split',
+            ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php else: ?>
+            <?php echo $__env->make('backend.orderbooking.invoice_format',
+            ['roles'=>$roles,'invoice'=>$purchaseorder,'party'=>$party,'download'=>false], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php endif; ?>
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <a href="javascript:void(0);" class="btn btn-primary" onclick="PrintElem('.printable');">Print</a>
+                <a href="<?php echo e(route('admin.orderbooking')); ?>" class="btn btn-secondary">Back</a>
+              </div>
+            </div>
+
+
+          </div>
         </div>
       </div>
-
-
-</div>
-</div>
-</div>
-</div>
-</div>
+    </div>
+  </div>
 </section>
 </div>
 </div>
 <script>
-    $(document).ready(function(){
+  $(document).ready(function(){
       //$(".print_button").click(function()
       //{
         <?php
@@ -66,10 +70,9 @@
        ?>
     //  });
     });
-    </script>
-    <script type="text/javascript">
-
-        function PrintElem(elem)
+</script>
+<script type="text/javascript">
+  function PrintElem(elem)
         { //alert(elem);
           var print=  Popup($(elem).html());
         //  alert(print);
@@ -95,7 +98,6 @@
             return true;
         }
 
-    </script>
+</script>
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\eureka\resources\views/backend/orderbooking/show.blade.php ENDPATH**/ ?>

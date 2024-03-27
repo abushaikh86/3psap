@@ -165,41 +165,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        {{ Form::label('customer_inv_no', 'Customer Invoice Number *')
-                                                        }}
-                                                        {{ Form::text('customer_inv_no', null, [
-                                                        'class' => 'form-control
-                                                        readonly',
-                                                        'placeholder' => 'Customer Invoice Number',
-                                                        'required' => true,
-                                                        ]) }}
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        {{ Form::label('ar_inv_no', 'Invoice Number *') }}
-                                                        {{ Form::text('ar_inv_no', null, [
-                                                        'class' => 'form-control ',
-                                                        'placeholder' => 'Invoice Number',
-                                                        'required' => true,
-                                                        ]) }}
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        {{ Form::label('trans_type', 'Transaction Type *') }}
-                                                        {{ Form::text('trans_type', null, [
-                                                        'class' => 'form-control
-                                                        trans_type',
-                                                        'placeholder' => 'Transaction Type',
-                                                        'required' => true,
-                                                        ]) }}
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         {{ Form::label('place_of_supply', 'Place Of Supply') }}
@@ -332,6 +298,8 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         {{ Form::label('hsn_sac', 'HSN/SAC') }}
                                                                     </td>
                                                                     <td>{{ Form::label('qty', 'Quantity') }}</td>
+                                                                    {{-- <td>{{ Form::label('mrp', 'MRP') }}
+                                                                    </td> --}}
                                                                     <td>{{ Form::label(
                                                                         'taxable_amount',
                                                                         'Unit
@@ -471,7 +439,7 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                     'readonly' => true,
                                                                     ]) }}
 
-                                                                    <td>{{ Form::number('old_invoice_items[' .
+                                                                    <td>{{ Form::text('old_invoice_items[' .
                                                                         $loop->index . '][item_code]',
                                                                         $items->item_code, [
                                                                         'data-name' => 'item_code',
@@ -508,6 +476,18 @@ $company = Company::where('company_id',$bp_master->company_id)->first();
                                                                         'required' => true,
                                                                         ]) }}
                                                                     </td>
+
+                                                                    {{-- <td>
+                                                                        {{ Form::text('old_invoice_items[' .
+                                                                        $loop->index . '][mrp]', $items->mrp, [
+                                                                        'class' => 'form-control mrp',
+                                                                        'onchange' => 'calculategst(this)',
+                                                                        'data-name' => 'mrp',
+                                                                        'data-group' => 'old_invoice_items',
+                                                                        'readonly' => true,
+                                                                        ]) }}
+                                                                    </td> --}}
+
                                                                     <td>
                                                                         {{ Form::number('old_invoice_items[' .
                                                                         $loop->index . '][taxable_amount]',

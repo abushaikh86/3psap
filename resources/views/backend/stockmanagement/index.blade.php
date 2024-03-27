@@ -85,9 +85,9 @@
                                                                     {{ Form::label('to_bin', 'To Bin') }}
                                                                 </td>
                                                                 <td class="adjust_col">
-                                                                    {{ Form::label('sku', 'Base Pack') }}
+                                                                    {{ Form::label('sku', 'SKU') }}
                                                                 </td>
-                                                                <td class="adjust_col">{{ Form::label('batch', 'Batch') }}
+                                                                <td class="adjust_col">{{ Form::label('item_name', 'Item Description') }}
                                                                 </td>
                                                                 <td class="adjust_col">
                                                                     {{ Form::label('item_code', 'Item Code') }}
@@ -124,9 +124,9 @@
                                                                     {{ Form::text('sku', null, ['class' => 'form-control  sku typeahead', 'data-name' => 'sku', 'required' => true]) }}
                                                                 </td>
                                                                 <td>
-                                                                    {{ Form::select('batch', [], null, ['class' => 'form-control  batch', 'data-name' => 'batch', 'required' => true]) }}
+                                                                    {{ Form::text('item_name', null, ['class' => 'form-control  item_name typeahead', 'data-name' => 'item_name','data-id' => 'item_name', 'required' => true]) }}
                                                                 </td>
-                                                                <td>{{ Form::number('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code', 'required' => true]) }}
+                                                                <td>{{ Form::text('item_code', null, ['class' => 'form-control  item_code typeahead', 'data-name' => 'item_code','data-id' => 'item_code', 'required' => true]) }}
                                                                 </td>
 
                                                                 <td>{{ Form::number('from_qty', 0, ['class' => 'form-control  from_qty', 'data-name' => 'from_qty', 'readonly' => true]) }}

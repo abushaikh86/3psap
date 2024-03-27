@@ -28,25 +28,23 @@ class BussinessPartnerAddress extends Authenticatable
      *
      * @var array
      */
-    protected  $fillable =  ['bp_address_id', 'bussiness_partner_id', 'bp_address_name', 'address_type', 'building_no_name', 'street_name', 'landmark', 'city', 'pin_code', 'district', 'state', 'country'];
+    protected  $fillable =  ['bp_address_id', 'bussiness_partner_id', 'gst_no', 'bp_address_name', 'address_type', 'building_no_name', 'street_name', 'landmark', 'city', 'pin_code', 'district', 'state', 'country'];
 
     // use SoftDeletes;
     // protected $dates = ['deleted_at'];
 
-    public function getCountry(){
-        return $this->hasOne(Country::class,'country_id','country');
+    public function getCountry()
+    {
+        return $this->hasOne(Country::class, 'country_id', 'country');
     }
 
-    public function getState(){
-        return $this->hasOne(State::class,'id','state');
+    public function getState()
+    {
+        return $this->hasOne(State::class, 'id', 'state');
     }
 
-    public function getDistrict(){
-        return $this->hasOne(City::class,'city_id','district');
+    public function getDistrict()
+    {
+        return $this->hasOne(City::class, 'city_id', 'district');
     }
-
-
-
-
-
 }
